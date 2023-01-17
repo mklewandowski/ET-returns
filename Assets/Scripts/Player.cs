@@ -6,6 +6,8 @@ public class Player : MonoBehaviour
 {
     [SerializeField]
     GameObject playerGO;
+    [SerializeField]
+    GameObject gunGO;
 
     float moveSpeed = 2f;
     Vector2 movementVector = new Vector2(0, 0);
@@ -40,6 +42,17 @@ public class Player : MonoBehaviour
             movementVector.x = moveSpeed * -1f;
             playerGO.transform.localEulerAngles = new Vector3(0, 180f, 0);
         }
+        if (!moveUp && !moveDown && (moveRight || moveLeft))
+            gunGO.transform.localEulerAngles = new Vector3(0, 0, 0);
+        else if ((moveUp && moveRight) || (moveUp && moveLeft))
+            gunGO.transform.localEulerAngles = new Vector3(0, 0, 45f);
+        else if (moveUp && !moveRight && !moveLeft)
+            gunGO.transform.localEulerAngles = new Vector3(0, 0, 90f);
+        else if (moveDown && !moveRight && !moveLeft)
+            gunGO.transform.localEulerAngles = new Vector3(0, 0, 270f);
+        else if (moveDown && (moveRight || moveLeft))
+            gunGO.transform.localEulerAngles = new Vector3(0, 0, 315f);
+
 
         if (moveUp)
             movementVector.y = moveSpeed;
