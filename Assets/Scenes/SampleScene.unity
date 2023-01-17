@@ -427,6 +427,7 @@ Transform:
   m_Children:
   - {fileID: 1561650589}
   - {fileID: 971181774}
+  - {fileID: 2098476540}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -476,8 +477,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 163fa5edcb4073d48b229547080f2b18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerGO: {fileID: 163483946}
-  gunGO: {fileID: 396186076}
+  PlayerGO: {fileID: 163483946}
+  GunGO: {fileID: 396186076}
+  BulletPrefab: {fileID: 5148339097020038030, guid: 6db7e2048956a064b970678d45f772b8, type: 3}
+  BulletContainer: {fileID: 2098476539}
 --- !u!50 &971181776
 Rigidbody2D:
   serializedVersion: 4
@@ -645,4 +648,35 @@ Transform:
   - {fileID: 1369688082}
   m_Father: {fileID: 634200340}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2098476539
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2098476540}
+  m_Layer: 0
+  m_Name: Bullets
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2098476540
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2098476539}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 634200340}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
