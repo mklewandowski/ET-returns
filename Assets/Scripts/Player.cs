@@ -21,6 +21,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject GunGO;
     [SerializeField]
+    GameObject MuzzleGO;
+    [SerializeField]
     GameObject BulletPrefab;
     [SerializeField]
     GameObject BulletContainer;
@@ -35,6 +37,9 @@ public class Player : MonoBehaviour
 
     float shootTimer = .5f;
     float shootTimerMax = .25f;
+
+    float muzzleFlashTimer = 0f;
+    float muzzleFlashTimerMax = .05f;
 
     // Start is called before the first frame update
     void Start()
@@ -104,7 +109,7 @@ public class Player : MonoBehaviour
         shootTimer -= Time.deltaTime;
         if (shootTimer < 0)
         {
-            GameObject bulletGO = Instantiate(BulletPrefab, GunGO.transform.position, Quaternion.identity, BulletContainer.transform);
+            GameObject bulletGO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
             Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
             float xMovement = currentPlayerOrientation == PlayerOrientation.Right || currentPlayerOrientation == PlayerOrientation.UpRight || currentPlayerOrientation == PlayerOrientation.DownRight
                 ? 10f
@@ -118,6 +123,16 @@ public class Player : MonoBehaviour
                     : 0;
             bulletRigidbody.velocity = new Vector2(xMovement, yMovement);
             shootTimer = shootTimerMax;
+
+            MuzzleGO.SetActive(true);
+            muzzleFlashTimer = muzzleFlashTimerMax;
+        }
+
+        if (muzzleFlashTimer > 0)
+        {
+            muzzleFlashTimer -= Time.deltaTime;
+            if (muzzleFlashTimer < 0)
+                MuzzleGO.SetActive(false);
         }
     }
 }

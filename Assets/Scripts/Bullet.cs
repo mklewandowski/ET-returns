@@ -6,12 +6,6 @@ public class Bullet : MonoBehaviour
 {
     float lifeTimer = 3f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
