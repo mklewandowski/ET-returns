@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     bool isActive = true;
 
     private Rigidbody2D enemyRigidbody;
-    float moveSpeed = .1f;
+    float moveSpeed = .5f;
     Vector2 movementVector = new Vector2(0, 0);
 
     float positionTimer = .1f;
@@ -29,8 +29,7 @@ public class Enemy : MonoBehaviour
             positionTimer -= Time.deltaTime;
             if (positionTimer < 0)
             {
-                movementVector = playerTransform.position - this.transform.localPosition;
-                movementVector = movementVector * moveSpeed;
+                movementVector = (playerTransform.position - this.transform.localPosition).normalized * moveSpeed;
                 positionTimer = Random.Range(.2f, .5f);
             }
         }
@@ -43,6 +42,11 @@ public class Enemy : MonoBehaviour
         if (bullet != null && isActive)
         {
             KillEnemy(collider);
+        }
+        Player player = collider.gameObject.GetComponent<Player>();
+        if (player != null && isActive)
+        {
+            player.HitPlayer(1f);
         }
     }
 

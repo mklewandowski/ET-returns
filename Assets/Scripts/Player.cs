@@ -34,22 +34,42 @@ public class Player : MonoBehaviour
     bool moveUp;
     bool moveDown;
     private Rigidbody2D playerRigidbody;
+    bool isMoving = false;
+    Animator playerAnimator;
 
     float shootTimer = .5f;
     float shootTimerMax = .25f;
-
     float muzzleFlashTimer = 0f;
     float muzzleFlashTimerMax = .05f;
+
+    bool isAlive = true;
+    float life = 10f;
+    float lifeMax = 10f;
+    float invincibleTimer = 0f;
+    float invincibleTimerMax = 1f;
+    private SpriteRenderer playerRenderer;
+    [SerializeField]
+    GameObject LifeBar;
 
     // Start is called before the first frame update
     void Start()
     {
         playerRigidbody = GetComponent<Rigidbody2D>();
+        playerAnimator = PlayerGO.GetComponent<Animator>();
+        playerRenderer = PlayerGO.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        handleMovement();
+        handleShoot();
+        handleInvincible();
+    }
+
+    private void handleMovement()
+    {
+        if (!isAlive) return;
         moveLeft = Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
         moveRight = Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D);
         moveUp = Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
@@ -72,6 +92,17 @@ public class Player : MonoBehaviour
             movementVector.y = moveSpeed * -1f;
 
         playerRigidbody.velocity = movementVector;
+
+        if ((movementVector.x != 0 || movementVector.y != 0) && !isMoving)
+        {
+            isMoving = true;
+            playerAnimator.Play("et-walk");
+        }
+        else if (movementVector.x == 0 && movementVector.y == 0 && isMoving)
+        {
+            isMoving = false;
+            playerAnimator.Play("et-idle");
+        }
 
         if (moveRight && !moveUp && !moveDown)
             currentPlayerOrientation = PlayerOrientation.Right;
@@ -100,12 +131,11 @@ public class Player : MonoBehaviour
             GunGO.transform.localEulerAngles = new Vector3(0, 0, 270f);
         else if (currentPlayerOrientation == PlayerOrientation.DownLeft || currentPlayerOrientation == PlayerOrientation.DownRight)
             GunGO.transform.localEulerAngles = new Vector3(0, 0, 315f);
-
-        handleShoot();
     }
 
     private void handleShoot()
     {
+        if (!isAlive) return;
         shootTimer -= Time.deltaTime;
         if (shootTimer < 0)
         {
@@ -134,5 +164,54 @@ public class Player : MonoBehaviour
             if (muzzleFlashTimer < 0)
                 MuzzleGO.SetActive(false);
         }
+    }
+
+    private void handleInvincible()
+    {
+        if (invincibleTimer > 0)
+        {
+            invincibleTimer -= Time.deltaTime;
+            bool flashOn = (int)Mathf.Floor(invincibleTimer / .1f) % 2 == 1;
+            if (invincibleTimer < 0)
+            {
+                flashOn = false;
+            }
+            playerRenderer.color = flashOn ? new Color(240f/255f, 165f/255f, 0) : Color.white;
+        }
+    }
+
+
+    public void HitPlayer(float damage)
+    {
+        if (invincibleTimer <= 0)
+        {
+            life -= damage;
+            UpdateLifeBar();
+            if (life <= 0)
+                KillPlayer();
+            else
+                invincibleTimer = invincibleTimerMax;
+        }
+    }
+
+    void UpdateLifeBar()
+    {
+        float lifePercent = life / lifeMax;
+        float maxWidth = 40f;
+        float currentWidth = maxWidth * lifePercent;
+        LifeBar.transform.localScale = new Vector3(currentWidth, LifeBar.transform.localScale.y, LifeBar.transform.localScale.z);
+        float startPos = -.2f;
+        float extent = .2f;
+        float currentPos = startPos + extent * lifePercent;
+        LifeBar.transform.localPosition = new Vector3(currentPos, LifeBar.transform.localPosition.y, LifeBar.transform.localPosition.z);
+    }
+
+    public void KillPlayer()
+    {
+        this.GetComponent<Collider2D>().enabled = false;
+        playerAnimator.Play("et-dead");
+        isAlive = false;
+        GunGO.SetActive(false);
+        MuzzleGO.SetActive(false);
     }
 }
