@@ -44,12 +44,16 @@ public class Player : MonoBehaviour
 
     bool isAlive = true;
     float life = 10f;
+    float invincibleTimer = 0f;
+    float invincibleTimerMax = 1f;
+    private SpriteRenderer playerRenderer;
 
     // Start is called before the first frame update
     void Start()
     {
         playerRigidbody = GetComponent<Rigidbody2D>();
         playerAnimator = PlayerGO.GetComponent<Animator>();
+        playerRenderer = PlayerGO.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -57,6 +61,7 @@ public class Player : MonoBehaviour
     {
         handleMovement();
         handleShoot();
+        handleInvincible();
     }
 
     private void handleMovement()
@@ -158,15 +163,31 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void handleInvincible()
+    {
+        if (invincibleTimer > 0)
+        {
+            invincibleTimer -= Time.deltaTime;
+            bool flashOn = (int)Mathf.Floor(invincibleTimer / .1f) % 2 == 1;
+            if (invincibleTimer < 0)
+            {
+                flashOn = false;
+            }
+            playerRenderer.color = flashOn ? new Color(240f/255f, 165f/255f, 0) : Color.white;
+        }
+    }
+
+
     void OnTriggerEnter2D(Collider2D collider)
     {
         Enemy enemy = collider.gameObject.GetComponent<Enemy>();
-        if (enemy != null)
+        if (enemy != null && invincibleTimer <= 0)
         {
             life -= 1f;
-            Debug.Log(life);
             if (life <= 0)
                 KillPlayer();
+            else
+                invincibleTimer = invincibleTimerMax;
         }
     }
 
