@@ -34,15 +34,16 @@ public class Player : MonoBehaviour
     bool moveUp;
     bool moveDown;
     private Rigidbody2D playerRigidbody;
+    bool isMoving = false;
+    Animator playerAnimator;
 
     float shootTimer = .5f;
     float shootTimerMax = .25f;
-
     float muzzleFlashTimer = 0f;
     float muzzleFlashTimerMax = .05f;
 
-    bool isMoving = false;
-    Animator playerAnimator;
+    bool isAlive = true;
+    float life = 10f;
 
     // Start is called before the first frame update
     void Start()
@@ -54,6 +55,13 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        handleMovement();
+        handleShoot();
+    }
+
+    private void handleMovement()
+    {
+        if (!isAlive) return;
         moveLeft = Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
         moveRight = Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D);
         moveUp = Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
@@ -81,7 +89,6 @@ public class Player : MonoBehaviour
         {
             isMoving = true;
             playerAnimator.Play("et-walk");
-            // WTD change animation controller to play walk animation state
         }
         else if (movementVector.x == 0 && movementVector.y == 0 && isMoving)
         {
@@ -116,12 +123,11 @@ public class Player : MonoBehaviour
             GunGO.transform.localEulerAngles = new Vector3(0, 0, 270f);
         else if (currentPlayerOrientation == PlayerOrientation.DownLeft || currentPlayerOrientation == PlayerOrientation.DownRight)
             GunGO.transform.localEulerAngles = new Vector3(0, 0, 315f);
-
-        handleShoot();
     }
 
     private void handleShoot()
     {
+        if (!isAlive) return;
         shootTimer -= Time.deltaTime;
         if (shootTimer < 0)
         {
@@ -150,5 +156,26 @@ public class Player : MonoBehaviour
             if (muzzleFlashTimer < 0)
                 MuzzleGO.SetActive(false);
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        Enemy enemy = collider.gameObject.GetComponent<Enemy>();
+        if (enemy != null)
+        {
+            life -= 1f;
+            Debug.Log(life);
+            if (life <= 0)
+                KillPlayer();
+        }
+    }
+
+    public void KillPlayer()
+    {
+        this.GetComponent<Collider2D>().enabled = false;
+        playerAnimator.Play("et-dead");
+        isAlive = false;
+        GunGO.SetActive(false);
+        MuzzleGO.SetActive(false);
     }
 }

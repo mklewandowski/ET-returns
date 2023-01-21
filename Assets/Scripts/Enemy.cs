@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     bool isActive = true;
 
     private Rigidbody2D enemyRigidbody;
-    float moveSpeed = .1f;
+    float moveSpeed = 1f;
     Vector2 movementVector = new Vector2(0, 0);
 
     float positionTimer = .1f;
