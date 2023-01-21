@@ -44,9 +44,12 @@ public class Player : MonoBehaviour
 
     bool isAlive = true;
     float life = 10f;
+    float lifeMax = 10f;
     float invincibleTimer = 0f;
     float invincibleTimerMax = 1f;
     private SpriteRenderer playerRenderer;
+    [SerializeField]
+    GameObject LifeBar;
 
     // Start is called before the first frame update
     void Start()
@@ -183,11 +186,24 @@ public class Player : MonoBehaviour
         if (invincibleTimer <= 0)
         {
             life -= damage;
+            UpdateLifeBar();
             if (life <= 0)
                 KillPlayer();
             else
                 invincibleTimer = invincibleTimerMax;
         }
+    }
+
+    void UpdateLifeBar()
+    {
+        float lifePercent = life / lifeMax;
+        float maxWidth = 40f;
+        float currentWidth = maxWidth * lifePercent;
+        LifeBar.transform.localScale = new Vector3(currentWidth, LifeBar.transform.localScale.y, LifeBar.transform.localScale.z);
+        float startPos = -.2f;
+        float extent = .2f;
+        float currentPos = startPos + extent * lifePercent;
+        LifeBar.transform.localPosition = new Vector3(currentPos, LifeBar.transform.localPosition.y, LifeBar.transform.localPosition.z);
     }
 
     public void KillPlayer()
