@@ -41,10 +41,14 @@ public class Player : MonoBehaviour
     float muzzleFlashTimer = 0f;
     float muzzleFlashTimerMax = .05f;
 
+    bool isMoving = false;
+    Animator playerAnimator;
+
     // Start is called before the first frame update
     void Start()
     {
         playerRigidbody = GetComponent<Rigidbody2D>();
+        playerAnimator = PlayerGO.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -72,6 +76,18 @@ public class Player : MonoBehaviour
             movementVector.y = moveSpeed * -1f;
 
         playerRigidbody.velocity = movementVector;
+
+        if ((movementVector.x != 0 || movementVector.y != 0) && !isMoving)
+        {
+            isMoving = true;
+            playerAnimator.Play("et-walk");
+            // WTD change animation controller to play walk animation state
+        }
+        else if (movementVector.x == 0 && movementVector.y == 0 && isMoving)
+        {
+            isMoving = false;
+            playerAnimator.Play("et-idle");
+        }
 
         if (moveRight && !moveUp && !moveDown)
             currentPlayerOrientation = PlayerOrientation.Right;
