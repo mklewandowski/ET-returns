@@ -178,12 +178,11 @@ public class Player : MonoBehaviour
     }
 
 
-    void OnTriggerEnter2D(Collider2D collider)
+    public void HitPlayer(float damage)
     {
-        Enemy enemy = collider.gameObject.GetComponent<Enemy>();
-        if (enemy != null && invincibleTimer <= 0)
+        if (invincibleTimer <= 0)
         {
-            life -= 1f;
+            life -= damage;
             if (life <= 0)
                 KillPlayer();
             else
