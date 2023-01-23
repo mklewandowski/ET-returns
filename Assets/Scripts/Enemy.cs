@@ -39,9 +39,10 @@ public class Enemy : MonoBehaviour
     void ConfigureEnemy(Globals.EnemyTypes newType)
     {
         type = newType;
+        enemyRenderer.sprite = EnemySprites[(int)type];
         if (type == Globals.EnemyTypes.Yar)
         {
-            moveSpeed = Random.Range(.35f, .45f);
+            moveSpeed = Random.Range(.65f, .75f);
             positionTimerMax = 1f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("yar");
@@ -54,10 +55,38 @@ public class Enemy : MonoBehaviour
             moveSpeed = Random.Range(.45f, .55f);
             positionTimerMax = .5f;
             enemyAnimator.enabled = false;
-            enemyRenderer.sprite = EnemySprites[(int)type];
             this.transform.localScale = new Vector3(3f, 3f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = false;
+        }
+        else if (type == Globals.EnemyTypes.Qbert)
+        {
+            moveSpeed = Random.Range(.35f, .45f);
+            positionTimerMax = .5f;
+            enemyAnimator.enabled = false;
+            this.transform.localScale = new Vector3(3f, 3f, 1f);
+            enemyCollider.size = new Vector2(0.15f, 0.15f);
+            flipWithMovement = true;
+        }
+        else if (type == Globals.EnemyTypes.Pac)
+        {
+            moveSpeed = Random.Range(.55f, .65f);
+            positionTimerMax = .5f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("pac");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.07f, 0.07f);
+            flipWithMovement = true;
+        }
+        else if (type == Globals.EnemyTypes.MsPac)
+        {
+            moveSpeed = Random.Range(.55f, .65f);
+            positionTimerMax = .5f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("mspac");
+            this.transform.localScale = new Vector3(3f, 3f, 1f);
+            enemyCollider.size = new Vector2(0.09f, 0.09f);
+            flipWithMovement = true;
         }
     }
 
