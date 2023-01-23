@@ -5,9 +5,9 @@ using UnityEngine;
 public class Globals
 {
     public enum EnemyTypes {
-        Yar,
         Robot,
         Qbert,
+        Yar,
         Pac,
         MsPac,
     }

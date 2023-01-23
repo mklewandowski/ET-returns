@@ -4,21 +4,61 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    Transform playerTransform;
-
     bool isActive = true;
 
+    [SerializeField]
+    Globals.EnemyTypes type = Globals.EnemyTypes.Yar;
+
+    [SerializeField]
+    Sprite[] EnemySprites;
+    private SpriteRenderer enemyRenderer;
+    private Animator enemyAnimator;
+
+    private BoxCollider2D enemyCollider;
     private Rigidbody2D enemyRigidbody;
     float moveSpeed = .5f;
     Vector2 movementVector = new Vector2(0, 0);
+    bool flipWithMovement = false;
 
+    Transform playerTransform;
     float positionTimer = .1f;
+    float positionTimerMax = .5f;
 
     // Start is called before the first frame update
     void Start()
     {
         playerTransform = GameObject.Find("Player").transform;
+        enemyAnimator = GetComponent<Animator>();
+        enemyCollider = GetComponent<BoxCollider2D>();
         enemyRigidbody = GetComponent<Rigidbody2D>();
+        enemyRenderer = GetComponent<SpriteRenderer>();
+
+        ConfigureEnemy(type);
+    }
+
+    void ConfigureEnemy(Globals.EnemyTypes newType)
+    {
+        type = newType;
+        if (type == Globals.EnemyTypes.Yar)
+        {
+            moveSpeed = Random.Range(.35f, .45f);
+            positionTimerMax = 1f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("yar");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.08f, 0.08f);
+            flipWithMovement = true;
+        }
+        else if (type == Globals.EnemyTypes.Robot)
+        {
+            moveSpeed = Random.Range(.45f, .55f);
+            positionTimerMax = .5f;
+            enemyAnimator.enabled = false;
+            enemyRenderer.sprite = EnemySprites[(int)type];
+            this.transform.localScale = new Vector3(3f, 3f, 1f);
+            enemyCollider.size = new Vector2(0.15f, 0.15f);
+            flipWithMovement = false;
+        }
     }
 
     // Update is called once per frame
@@ -30,8 +70,13 @@ public class Enemy : MonoBehaviour
             if (positionTimer < 0)
             {
                 movementVector = (playerTransform.position - this.transform.localPosition).normalized * moveSpeed;
-                positionTimer = Random.Range(.2f, .5f);
+                positionTimer = Random.Range(positionTimerMax - .25f, positionTimerMax + .25f);
             }
+        }
+        if (flipWithMovement)
+        {
+            if ((movementVector.x >= 0 && this.transform.localScale.x < 0) || (movementVector.x < 0 && this.transform.localScale.x > 0))
+                this.transform.localScale = new Vector3(this.transform.localScale.x * -1, this.transform.localScale.y, this.transform.localScale.z);
         }
         enemyRigidbody.velocity = movementVector;
     }
