@@ -5,6 +5,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     bool isActive = true;
+    float life = 1f;
+    float damage = 1f;
 
     [SerializeField]
     Globals.EnemyTypes type = Globals.EnemyTypes.Yar;
@@ -49,6 +51,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.08f, 0.08f);
             flipWithMovement = true;
+            life = 1f;
+            damage = 1f;
         }
         else if (type == Globals.EnemyTypes.Robot)
         {
@@ -58,6 +62,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(3f, 3f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = false;
+            life = 1f;
+            damage = 1f;
         }
         else if (type == Globals.EnemyTypes.Qbert)
         {
@@ -67,6 +73,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(3f, 3f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = true;
+            life = 2f;
+            damage = 2f;
         }
         else if (type == Globals.EnemyTypes.Pac)
         {
@@ -77,6 +85,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.07f, 0.07f);
             flipWithMovement = true;
+            life = 1f;
+            damage = 1f;
         }
         else if (type == Globals.EnemyTypes.MsPac)
         {
@@ -87,6 +97,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(3f, 3f, 1f);
             enemyCollider.size = new Vector2(0.09f, 0.09f);
             flipWithMovement = true;
+            life = 2f;
+            damage = 1.5f;
         }
     }
 
@@ -115,12 +127,14 @@ public class Enemy : MonoBehaviour
         Bullet bullet = collider.gameObject.GetComponent<Bullet>();
         if (bullet != null && isActive)
         {
-            KillEnemy(collider);
+            life = life - 1f;
+            if (life <= 0)
+                KillEnemy(collider);
         }
         Player player = collider.gameObject.GetComponent<Player>();
         if (player != null && isActive)
         {
-            player.HitPlayer(1f);
+            player.HitPlayer(damage);
         }
     }
 
