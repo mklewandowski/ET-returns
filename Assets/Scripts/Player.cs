@@ -37,8 +37,11 @@ public class Player : MonoBehaviour
     bool isMoving = false;
     Animator playerAnimator;
 
-    float shootTimer = .5f;
-    float shootTimerMax = .25f;
+    float shootTimer = 1f;
+    float shootTimerBurstMax = .25f;
+    float shootTimerMax = 1.5f;
+    int burstNum = 4;
+    int burstNumMax = 3;
     float muzzleFlashTimer = 0f;
     float muzzleFlashTimerMax = .05f;
 
@@ -152,7 +155,9 @@ public class Player : MonoBehaviour
                     ? -10f
                     : 0;
             bulletRigidbody.velocity = new Vector2(xMovement, yMovement);
-            shootTimer = shootTimerMax;
+            burstNum = burstNum - 1;
+            shootTimer = burstNum == 0 ? shootTimerMax : shootTimerBurstMax;
+            if (burstNum == 0) burstNum = burstNumMax;
 
             MuzzleGO.SetActive(true);
             muzzleFlashTimer = muzzleFlashTimerMax;
