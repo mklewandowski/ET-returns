@@ -41,6 +41,15 @@ public class SceneManager : MonoBehaviour
             Vector2 playerPos = Player.transform.localPosition;
             Vector2 enemyPos = new Vector2(playerPos.x + normalizedPos.x * Random.Range(4.5f, 7.5f), playerPos.y + normalizedPos.y * Random.Range(5.5f, 7.5f));
             GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
+            Globals.EnemyTypes enemyType = Globals.EnemyTypes.Yar;
+            float randVal = Random.Range(0, 100f);
+            if (randVal > 95f)
+                enemyType = Globals.EnemyTypes.Qbert;
+            else if (randVal > 90f)
+                enemyType = Globals.EnemyTypes.MsPac;
+            else if (randVal > 80f)
+                enemyType = Globals.EnemyTypes.Pac;
+            enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyType);
         }
     }
 }

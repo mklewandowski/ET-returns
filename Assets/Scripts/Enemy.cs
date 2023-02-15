@@ -27,18 +27,16 @@ public class Enemy : MonoBehaviour
     float positionTimerMax = .5f;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         playerTransform = GameObject.Find("Player").transform;
         enemyAnimator = GetComponent<Animator>();
         enemyCollider = GetComponent<BoxCollider2D>();
         enemyRigidbody = GetComponent<Rigidbody2D>();
         enemyRenderer = GetComponent<SpriteRenderer>();
-
-        ConfigureEnemy(type);
     }
 
-    void ConfigureEnemy(Globals.EnemyTypes newType)
+    public void ConfigureEnemy(Globals.EnemyTypes newType)
     {
         type = newType;
         enemyRenderer.sprite = EnemySprites[(int)type];
