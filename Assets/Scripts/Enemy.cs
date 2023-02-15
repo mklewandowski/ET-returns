@@ -130,6 +130,7 @@ public class Enemy : MonoBehaviour
             life = life - 1f;
             if (life <= 0)
                 KillEnemy(collider);
+            Destroy(bullet.gameObject);
         }
         Player player = collider.gameObject.GetComponent<Player>();
         if (player != null && isActive)
