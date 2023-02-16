@@ -185,7 +185,6 @@ public class Player : MonoBehaviour
         }
     }
 
-
     public void HitPlayer(float damage)
     {
         if (invincibleTimer <= 0)

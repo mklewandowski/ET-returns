@@ -26,6 +26,9 @@ public class Enemy : MonoBehaviour
     float positionTimer = .1f;
     float positionTimerMax = .5f;
 
+    float flashTimer = 0f;
+    float flashTimerMax = .15f;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -103,6 +106,12 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        handleMovement();
+        handleFlash();
+    }
+
+    private void handleMovement()
+    {
         if (positionTimer > 0)
         {
             positionTimer -= Time.deltaTime;
@@ -120,6 +129,18 @@ public class Enemy : MonoBehaviour
         enemyRigidbody.velocity = movementVector;
     }
 
+    private void handleFlash()
+    {
+        if (flashTimer > 0)
+        {
+            flashTimer -= Time.deltaTime;
+            if (flashTimer < 0)
+            {
+                enemyRenderer.color = Color.white;
+            }
+        }
+    }
+
     void OnTriggerEnter2D(Collider2D collider)
     {
         Bullet bullet = collider.gameObject.GetComponent<Bullet>();
@@ -127,7 +148,9 @@ public class Enemy : MonoBehaviour
         {
             life = life - 1f;
             if (life <= 0)
-                KillEnemy(collider);
+                KillEnemy();
+            else
+                DamageEnemy();
             Destroy(bullet.gameObject);
         }
         Player player = collider.gameObject.GetComponent<Player>();
@@ -137,10 +160,16 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void KillEnemy(Collider2D collider)
+    public void KillEnemy()
     {
         this.GetComponent<Collider2D>().enabled = false;
         isActive = false;
         Destroy(this.gameObject);
+    }
+
+    void DamageEnemy()
+    {
+        enemyRenderer.color = new Color(87f/255f, 87f/255f, 87f/255f);
+        flashTimer = flashTimerMax;
     }
 }
