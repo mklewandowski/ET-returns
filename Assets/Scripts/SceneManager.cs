@@ -38,8 +38,9 @@ public class SceneManager : MonoBehaviour
         {
             float randomAngle = Random.Range(0f, 360f);
             Vector2 normalizedPos = new Vector2(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle));
+            Vector2 scaledNormalizedPos = normalizedPos * Random.Range (7.0f, 9.0f);
             Vector2 playerPos = Player.transform.localPosition;
-            Vector2 enemyPos = new Vector2(playerPos.x + normalizedPos.x * Random.Range(4.5f, 7.5f), playerPos.y + normalizedPos.y * Random.Range(5.5f, 7.5f));
+            Vector2 enemyPos = new Vector2(playerPos.x + scaledNormalizedPos.x, playerPos.y + scaledNormalizedPos.y);
             GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
             Globals.EnemyTypes enemyType = Globals.EnemyTypes.Yar;
             float randVal = Random.Range(0, 100f);
