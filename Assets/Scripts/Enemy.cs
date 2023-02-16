@@ -20,25 +20,34 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D enemyRigidbody;
     float moveSpeed = .5f;
     Vector2 movementVector = new Vector2(0, 0);
+    Vector2 impactVector = new Vector2(0, 0);
+    float impactTimer = 0f;
+    float impactTimerMax = .1f;
     bool flipWithMovement = false;
 
     Transform playerTransform;
     float positionTimer = .1f;
     float positionTimerMax = .5f;
 
+    float flashTimer = 0f;
+    float flashTimerMax = .15f;
+
+    [SerializeField]
+    GameObject DebrisPrefab;
+    GameObject debrisContainer;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         playerTransform = GameObject.Find("Player").transform;
+        debrisContainer = GameObject.Find("DebrisContainer");
         enemyAnimator = GetComponent<Animator>();
         enemyCollider = GetComponent<BoxCollider2D>();
         enemyRigidbody = GetComponent<Rigidbody2D>();
         enemyRenderer = GetComponent<SpriteRenderer>();
-
-        ConfigureEnemy(type);
     }
 
-    void ConfigureEnemy(Globals.EnemyTypes newType)
+    public void ConfigureEnemy(Globals.EnemyTypes newType)
     {
         type = newType;
         enemyRenderer.sprite = EnemySprites[(int)type];
@@ -105,6 +114,13 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        handleMovement();
+        handleFlash();
+        handleImpact();
+    }
+
+    private void handleMovement()
+    {
         if (positionTimer > 0)
         {
             positionTimer -= Time.deltaTime;
@@ -119,7 +135,27 @@ public class Enemy : MonoBehaviour
             if ((movementVector.x >= 0 && this.transform.localScale.x < 0) || (movementVector.x < 0 && this.transform.localScale.x > 0))
                 this.transform.localScale = new Vector3(this.transform.localScale.x * -1, this.transform.localScale.y, this.transform.localScale.z);
         }
-        enemyRigidbody.velocity = movementVector;
+        enemyRigidbody.velocity = impactTimer > 0 ? impactVector : movementVector;
+    }
+
+    private void handleFlash()
+    {
+        if (flashTimer > 0)
+        {
+            flashTimer -= Time.deltaTime;
+            if (flashTimer < 0)
+            {
+                enemyRenderer.color = Color.white;
+            }
+        }
+    }
+
+    private void handleImpact()
+    {
+        if (impactTimer > 0)
+        {
+            impactTimer -= Time.deltaTime;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D collider)
@@ -129,8 +165,12 @@ public class Enemy : MonoBehaviour
         {
             life = life - 1f;
             if (life <= 0)
-                KillEnemy(collider);
+                KillEnemy();
+            else
+                DamageEnemy(collider.gameObject.GetComponent<Rigidbody2D>().velocity);
+            Destroy(bullet.gameObject);
         }
+
         Player player = collider.gameObject.GetComponent<Player>();
         if (player != null && isActive)
         {
@@ -138,10 +178,25 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void KillEnemy(Collider2D collider)
+    public void KillEnemy()
     {
+        int numDebris = Random.Range(8, 10);
+        for (int x = 0; x < numDebris; x++)
+        {
+            GameObject debrisGO = Instantiate(DebrisPrefab, this.transform.localPosition, Quaternion.identity, debrisContainer.transform);
+            debrisGO.GetComponent<Debris>().Init();
+        }
+
         this.GetComponent<Collider2D>().enabled = false;
         isActive = false;
         Destroy(this.gameObject);
+    }
+
+    void DamageEnemy(Vector2 impactVelocity)
+    {
+        enemyRenderer.color = new Color(87f/255f, 87f/255f, 87f/255f);
+        flashTimer = flashTimerMax;
+        impactVector = new Vector2(impactVelocity.x * .5f, impactVelocity.y * .5f);
+        impactTimer = impactTimerMax;
     }
 }
