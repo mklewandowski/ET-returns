@@ -10,5 +10,6 @@ public class Globals
         Yar,
         Pac,
         MsPac,
+        FBI
     }
 }

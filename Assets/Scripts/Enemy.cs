@@ -114,6 +114,18 @@ public class Enemy : MonoBehaviour
             life = 2f;
             damage = 1.5f;
         }
+        else if (type == Globals.EnemyTypes.FBI)
+        {
+            moveSpeed = Random.Range(.25f, .35f);
+            positionTimerMax = .5f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("fbi");
+            this.transform.localScale = new Vector3(3f, 3f, 1f);
+            enemyCollider.size = new Vector2(0.15f, 0.3f);
+            flipWithMovement = true;
+            life = 2f;
+            damage = 1f;
+        }
     }
 
     // Update is called once per frame

@@ -45,10 +45,12 @@ public class SceneManager : MonoBehaviour
             Globals.EnemyTypes enemyType = Globals.EnemyTypes.Yar;
             float randVal = Random.Range(0, 100f);
             if (randVal > 95f)
-                enemyType = Globals.EnemyTypes.Qbert;
+                enemyType = Globals.EnemyTypes.FBI;
             else if (randVal > 90f)
+                enemyType = Globals.EnemyTypes.Qbert;
+            else if (randVal > 85f)
                 enemyType = Globals.EnemyTypes.MsPac;
-            else if (randVal > 80f)
+            else if (randVal > 75f)
                 enemyType = Globals.EnemyTypes.Pac;
             enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyType);
         }
