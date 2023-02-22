@@ -57,6 +57,7 @@ public class Enemy : MonoBehaviour
     {
         type = newType;
         enemyRenderer.sprite = EnemySprites[(int)type];
+        enemyRigidbody.mass = 1f;
         if (type == Globals.EnemyTypes.Yar)
         {
             moveSpeed = Random.Range(.65f, .75f);
@@ -117,8 +118,8 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.FBI)
         {
-            moveSpeed = Random.Range(.25f, .35f);
-            positionTimerMax = .5f;
+            moveSpeed = Random.Range(1f, 1.5f);
+            positionTimerMax = 4f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("fbi");
             this.transform.localScale = new Vector3(3f, 3f, 1f);
@@ -126,6 +127,7 @@ public class Enemy : MonoBehaviour
             flipWithMovement = true;
             life = 2f;
             damage = 1f;
+            enemyRigidbody.mass = 999f;
         }
     }
 
@@ -144,7 +146,10 @@ public class Enemy : MonoBehaviour
             positionTimer -= Time.deltaTime;
             if (positionTimer < 0)
             {
-                movementVector = (playerTransform.position - this.transform.localPosition).normalized * moveSpeed;
+                Vector3 desiredPosition = type == Globals.EnemyTypes.FBI
+                    ? new Vector3(playerTransform.position.x + 3f * Random.Range(0, 2) == 0 ? -1f : 1f, playerTransform.position.y + 4f * Random.Range(0, 2) == 0 ? -1f : 1f, 0)
+                    : playerTransform.position;
+                movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
                 positionTimer = Random.Range(positionTimerMax - .25f, positionTimerMax + .25f);
             }
         }
