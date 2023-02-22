@@ -218,4 +218,18 @@ public class Player : MonoBehaviour
         GunGO.SetActive(false);
         MuzzleGO.SetActive(false);
     }
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        Candy candy = collider.gameObject.GetComponent<Candy>();
+        if (candy != null && isAlive)
+        {
+            Destroy(candy.gameObject);
+        }
+    }
+
+    void CollectCandy()
+    {
+
+    }
 }
