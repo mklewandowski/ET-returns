@@ -155,6 +155,7 @@ MonoBehaviour:
   - {fileID: -321455076, guid: 6e8722eec164a2045b36c9bf292d1b24, type: 3}
   - {fileID: 1763515217, guid: 6377fe0bdc0d1dd469bb5c068a55811a, type: 3}
   DebrisPrefab: {fileID: 4395591764634758786, guid: 6884334da442b4c4296f325b9b896c61, type: 3}
+  CandyPrefab: {fileID: 2789390833255965416, guid: 49350f0dc1443174ba4820f99ba21979, type: 3}
 --- !u!95 &6232591748759594082
 Animator:
   serializedVersion: 5

@@ -999,8 +999,8 @@ Transform:
   - {fileID: 1561650589}
   - {fileID: 971181774}
   - {fileID: 2098476540}
-  - {fileID: 2043173320}
   - {fileID: 1121603907}
+  - {fileID: 2043173320}
   - {fileID: 1188524196}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -1645,7 +1645,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1121603907}
   m_Layer: 0
-  m_Name: Candy
+  m_Name: CandyContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1665,7 +1665,7 @@ Transform:
   m_Children:
   - {fileID: 2162511281531863249}
   m_Father: {fileID: 634200340}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1121941427
 GameObject:
@@ -2529,7 +2529,7 @@ Transform:
   m_Children:
   - {fileID: 953953657}
   m_Father: {fileID: 634200340}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2098476539
 GameObject:

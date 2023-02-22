@@ -36,11 +36,16 @@ public class Enemy : MonoBehaviour
     GameObject DebrisPrefab;
     GameObject debrisContainer;
 
+    [SerializeField]
+    GameObject CandyPrefab;
+    GameObject candyContainer;
+
     // Start is called before the first frame update
     void Awake()
     {
         playerTransform = GameObject.Find("Player").transform;
         debrisContainer = GameObject.Find("DebrisContainer");
+        candyContainer = GameObject.Find("CandyContainer");
         enemyAnimator = GetComponent<Animator>();
         enemyCollider = GetComponent<BoxCollider2D>();
         enemyRigidbody = GetComponent<Rigidbody2D>();
@@ -180,11 +185,19 @@ public class Enemy : MonoBehaviour
 
     public void KillEnemy()
     {
+        // create debris
         int numDebris = Random.Range(8, 10);
         for (int x = 0; x < numDebris; x++)
         {
             GameObject debrisGO = Instantiate(DebrisPrefab, this.transform.localPosition, Quaternion.identity, debrisContainer.transform);
             debrisGO.GetComponent<Debris>().Init();
+        }
+
+        // spawn candy
+        if (Random.Range(0, 100f) < 50f)
+        {
+            GameObject candyGO = Instantiate(CandyPrefab, this.transform.localPosition, Quaternion.identity, candyContainer.transform);
+            candyGO.GetComponent<Candy>().Init();
         }
 
         this.GetComponent<Collider2D>().enabled = false;
