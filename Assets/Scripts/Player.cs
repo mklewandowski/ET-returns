@@ -63,6 +63,10 @@ public class Player : MonoBehaviour
     float currentExp = 0;
     int currentLevel = 0;
     float maxExp = 400f;
+    int currentPhonePieces = 0;
+    int maxPhonePieces = 3;
+    [SerializeField]
+    GameObject[] PhonePieces;
 
     // Start is called before the first frame update
     void Start()
@@ -260,6 +264,14 @@ public class Player : MonoBehaviour
 
     void CollectPhone()
     {
-
+        currentPhonePieces++;
+        if (currentPhonePieces == maxPhonePieces)
+        {
+            currentPhonePieces = 0;
+        }
+        for (int x = 0; x < PhonePieces.Length; x++)
+        {
+            PhonePieces[x].SetActive(x < currentPhonePieces);
+        }
     }
 }

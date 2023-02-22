@@ -991,7 +991,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1950663752}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1348,7 +1348,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1950663752}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1827,6 +1827,10 @@ MonoBehaviour:
   LifeBar: {fileID: 364796514}
   ExpBar: {fileID: 556872507}
   ExpLevel: {fileID: 1449827230}
+  PhonePieces:
+  - {fileID: 537965401}
+  - {fileID: 1331340653}
+  - {fileID: 786941638}
 --- !u!50 &971181776
 Rigidbody2D:
   serializedVersion: 4
@@ -3171,9 +3175,9 @@ RectTransform:
   - {fileID: 2023033916}
   - {fileID: 362835678}
   - {fileID: 556872507}
-  - {fileID: 786941639}
-  - {fileID: 1331340654}
   - {fileID: 537965402}
+  - {fileID: 1331340654}
+  - {fileID: 786941639}
   m_Father: {fileID: 855781859}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
