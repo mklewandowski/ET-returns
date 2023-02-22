@@ -27,7 +27,7 @@ public class Debris : MonoBehaviour
         float randVal = Random.Range(0, 100f);
         Color newColor = Color.white;
         if (randVal < 25f)
-            newColor = new Color(255f/255f, 233f/255f, 127f/255f); // light yello
+            newColor = new Color(255f/255f, 233f/255f, 127f/255f); // light yellow
         else if (randVal < 50f)
             newColor = Color.yellow;
         else if (randVal < 75f)

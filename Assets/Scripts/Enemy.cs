@@ -36,11 +36,17 @@ public class Enemy : MonoBehaviour
     GameObject DebrisPrefab;
     GameObject debrisContainer;
 
-    // Start is called before the first frame update
+    [SerializeField]
+    GameObject CandyPrefab;
+    [SerializeField]
+    GameObject PhonePrefab;
+    GameObject itemContainer;
+
     void Awake()
     {
         playerTransform = GameObject.Find("Player").transform;
         debrisContainer = GameObject.Find("DebrisContainer");
+        itemContainer = GameObject.Find("ItemContainer");
         enemyAnimator = GetComponent<Animator>();
         enemyCollider = GetComponent<BoxCollider2D>();
         enemyRigidbody = GetComponent<Rigidbody2D>();
@@ -51,6 +57,7 @@ public class Enemy : MonoBehaviour
     {
         type = newType;
         enemyRenderer.sprite = EnemySprites[(int)type];
+        enemyRigidbody.mass = 1f;
         if (type == Globals.EnemyTypes.Yar)
         {
             moveSpeed = Random.Range(.65f, .75f);
@@ -109,6 +116,19 @@ public class Enemy : MonoBehaviour
             life = 2f;
             damage = 1.5f;
         }
+        else if (type == Globals.EnemyTypes.FBI)
+        {
+            moveSpeed = Random.Range(1f, 1.5f);
+            positionTimerMax = 4f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("fbi");
+            this.transform.localScale = new Vector3(3f, 3f, 1f);
+            enemyCollider.size = new Vector2(0.15f, 0.3f);
+            flipWithMovement = true;
+            life = 2f;
+            damage = 1f;
+            enemyRigidbody.mass = 999f;
+        }
     }
 
     // Update is called once per frame
@@ -126,7 +146,10 @@ public class Enemy : MonoBehaviour
             positionTimer -= Time.deltaTime;
             if (positionTimer < 0)
             {
-                movementVector = (playerTransform.position - this.transform.localPosition).normalized * moveSpeed;
+                Vector3 desiredPosition = type == Globals.EnemyTypes.FBI
+                    ? new Vector3(playerTransform.position.x + 3f * Random.Range(0, 2) == 0 ? -1f : 1f, playerTransform.position.y + 4f * Random.Range(0, 2) == 0 ? -1f : 1f, 0)
+                    : playerTransform.position;
+                movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
                 positionTimer = Random.Range(positionTimerMax - .25f, positionTimerMax + .25f);
             }
         }
@@ -180,11 +203,24 @@ public class Enemy : MonoBehaviour
 
     public void KillEnemy()
     {
+        // create debris
         int numDebris = Random.Range(8, 10);
         for (int x = 0; x < numDebris; x++)
         {
             GameObject debrisGO = Instantiate(DebrisPrefab, this.transform.localPosition, Quaternion.identity, debrisContainer.transform);
             debrisGO.GetComponent<Debris>().Init();
+        }
+
+        // spawn candy
+        if (type == Globals.EnemyTypes.FBI)
+        {
+            GameObject phoneGO = Instantiate(PhonePrefab, this.transform.localPosition, Quaternion.identity, itemContainer.transform);
+            phoneGO.GetComponent<Phone>().Init();
+        }
+        else if (Random.Range(0, 100f) < 50f)
+        {
+            GameObject candyGO = Instantiate(CandyPrefab, this.transform.localPosition, Quaternion.identity, itemContainer.transform);
+            candyGO.GetComponent<Candy>().Init();
         }
 
         this.GetComponent<Collider2D>().enabled = false;

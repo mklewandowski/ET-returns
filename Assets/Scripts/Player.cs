@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -54,12 +56,26 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject LifeBar;
 
+    [SerializeField]
+    RectTransform ExpBar;
+    [SerializeField]
+    TextMeshProUGUI ExpLevel;
+    float currentExp = 0;
+    int currentLevel = 0;
+    float maxExpBarWidth = 400f;
+    float[] maxExperiences;
+    int currentPhonePieces = 0;
+    int maxPhonePieces = 3;
+    [SerializeField]
+    GameObject[] PhonePieces;
+
     // Start is called before the first frame update
     void Start()
     {
         playerRigidbody = GetComponent<Rigidbody2D>();
         playerAnimator = PlayerGO.GetComponent<Animator>();
         playerRenderer = PlayerGO.GetComponent<SpriteRenderer>();
+        maxExperiences = new float[] {100f, 200f, 300f, 400f, 500f, 600f, 700f, 800f, 900, 1000f};
     }
 
     // Update is called once per frame
@@ -217,5 +233,48 @@ public class Player : MonoBehaviour
         isAlive = false;
         GunGO.SetActive(false);
         MuzzleGO.SetActive(false);
+    }
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        Candy candy = collider.gameObject.GetComponent<Candy>();
+        if (candy != null && isAlive)
+        {
+            CollectCandy();
+            Destroy(candy.gameObject);
+        }
+        Phone phone = collider.gameObject.GetComponent<Phone>();
+        if (phone != null && isAlive)
+        {
+            CollectPhone();
+            Destroy(phone.gameObject);
+        }
+    }
+
+    void CollectCandy()
+    {
+        currentExp+=20f;
+        float maxExp = currentLevel < maxExperiences.Length ? maxExperiences[currentLevel] : maxExperiences[maxExperiences.Length - 1];
+        currentExp = Mathf.Min(maxExp, currentExp);
+        if (currentExp == maxExp)
+        {
+            currentLevel++;
+            currentExp = 0;
+            ExpLevel.text = "LVL " + (currentLevel + 1);
+        }
+        ExpBar.sizeDelta = new Vector2 ((currentExp / maxExp) * maxExpBarWidth, ExpBar.sizeDelta.y);
+    }
+
+    void CollectPhone()
+    {
+        currentPhonePieces++;
+        if (currentPhonePieces == maxPhonePieces)
+        {
+            currentPhonePieces = 0;
+        }
+        for (int x = 0; x < PhonePieces.Length; x++)
+        {
+            PhonePieces[x].SetActive(x < currentPhonePieces);
+        }
     }
 }
