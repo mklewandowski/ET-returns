@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -56,6 +58,8 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     RectTransform ExpBar;
+    [SerializeField]
+    TextMeshProUGUI ExpLevel;
     float currentExp = 0;
     int currentLevel = 0;
     float maxExp = 400f;
@@ -233,17 +237,29 @@ public class Player : MonoBehaviour
             CollectCandy();
             Destroy(candy.gameObject);
         }
+        Phone phone = collider.gameObject.GetComponent<Phone>();
+        if (phone != null && isAlive)
+        {
+            CollectPhone();
+            Destroy(phone.gameObject);
+        }
     }
 
     void CollectCandy()
     {
-        currentExp+=10f;
+        currentExp+=100f;
         currentExp = Mathf.Min(maxExp, currentExp);
         if (currentExp == maxExp)
         {
             currentLevel++;
             currentExp = 0;
+            ExpLevel.text = "LVL " + (currentLevel + 1);
         }
         ExpBar.sizeDelta = new Vector2 (currentExp, ExpBar.sizeDelta.y);
+    }
+
+    void CollectPhone()
+    {
+
     }
 }
