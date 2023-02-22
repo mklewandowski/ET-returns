@@ -38,14 +38,15 @@ public class Enemy : MonoBehaviour
 
     [SerializeField]
     GameObject CandyPrefab;
-    GameObject candyContainer;
+    [SerializeField]
+    GameObject PhonePrefab;
+    GameObject itemContainer;
 
-    // Start is called before the first frame update
     void Awake()
     {
         playerTransform = GameObject.Find("Player").transform;
         debrisContainer = GameObject.Find("DebrisContainer");
-        candyContainer = GameObject.Find("CandyContainer");
+        itemContainer = GameObject.Find("ItemContainer");
         enemyAnimator = GetComponent<Animator>();
         enemyCollider = GetComponent<BoxCollider2D>();
         enemyRigidbody = GetComponent<Rigidbody2D>();
@@ -206,9 +207,14 @@ public class Enemy : MonoBehaviour
         }
 
         // spawn candy
-        if (Random.Range(0, 100f) < 50f)
+        if (type == Globals.EnemyTypes.FBI)
         {
-            GameObject candyGO = Instantiate(CandyPrefab, this.transform.localPosition, Quaternion.identity, candyContainer.transform);
+            GameObject phoneGO = Instantiate(PhonePrefab, this.transform.localPosition, Quaternion.identity, itemContainer.transform);
+            phoneGO.GetComponent<Phone>().Init();
+        }
+        else if (Random.Range(0, 100f) < 50f)
+        {
+            GameObject candyGO = Instantiate(CandyPrefab, this.transform.localPosition, Quaternion.identity, itemContainer.transform);
             candyGO.GetComponent<Candy>().Init();
         }
 
