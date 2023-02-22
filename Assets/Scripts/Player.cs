@@ -62,7 +62,8 @@ public class Player : MonoBehaviour
     TextMeshProUGUI ExpLevel;
     float currentExp = 0;
     int currentLevel = 0;
-    float maxExp = 400f;
+    float maxExpBarWidth = 400f;
+    float[] maxExperiences;
     int currentPhonePieces = 0;
     int maxPhonePieces = 3;
     [SerializeField]
@@ -74,6 +75,7 @@ public class Player : MonoBehaviour
         playerRigidbody = GetComponent<Rigidbody2D>();
         playerAnimator = PlayerGO.GetComponent<Animator>();
         playerRenderer = PlayerGO.GetComponent<SpriteRenderer>();
+        maxExperiences = new float[] {100f, 200f, 300f, 400f, 500f, 600f, 700f, 800f, 900, 1000f};
     }
 
     // Update is called once per frame
@@ -251,7 +253,8 @@ public class Player : MonoBehaviour
 
     void CollectCandy()
     {
-        currentExp+=100f;
+        currentExp+=20f;
+        float maxExp = currentLevel < maxExperiences.Length ? maxExperiences[currentLevel] : maxExperiences[maxExperiences.Length - 1];
         currentExp = Mathf.Min(maxExp, currentExp);
         if (currentExp == maxExp)
         {
@@ -259,7 +262,7 @@ public class Player : MonoBehaviour
             currentExp = 0;
             ExpLevel.text = "LVL " + (currentLevel + 1);
         }
-        ExpBar.sizeDelta = new Vector2 (currentExp, ExpBar.sizeDelta.y);
+        ExpBar.sizeDelta = new Vector2 ((currentExp / maxExp) * maxExpBarWidth, ExpBar.sizeDelta.y);
     }
 
     void CollectPhone()
