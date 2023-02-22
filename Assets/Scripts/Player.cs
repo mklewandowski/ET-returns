@@ -54,6 +54,12 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject LifeBar;
 
+    [SerializeField]
+    RectTransform ExpBar;
+    float currentExp = 0;
+    int currentLevel = 0;
+    float maxExp = 400f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -224,12 +230,20 @@ public class Player : MonoBehaviour
         Candy candy = collider.gameObject.GetComponent<Candy>();
         if (candy != null && isAlive)
         {
+            CollectCandy();
             Destroy(candy.gameObject);
         }
     }
 
     void CollectCandy()
     {
-
+        currentExp+=10f;
+        currentExp = Mathf.Min(maxExp, currentExp);
+        if (currentExp == maxExp)
+        {
+            currentLevel++;
+            currentExp = 0;
+        }
+        ExpBar.sizeDelta = new Vector2 (currentExp, ExpBar.sizeDelta.y);
     }
 }
