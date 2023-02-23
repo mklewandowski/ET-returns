@@ -173,8 +173,10 @@ public class Player : MonoBehaviour
             Vector2 bulletMovement = new Vector2(xMovement, yMovement);
             bulletRigidbody.velocity = bulletMovement;
 
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.TripleShot])
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.TripleShot] >= 0)
                 HandleShootTriple(bulletMovement);
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.RearShot] >= 0)
+                HandleShootRear(bulletMovement);
 
             burstNum = burstNum - 1;
             shootTimer = burstNum == 0 ? shootTimerMax : shootTimerBurstMax;
@@ -226,6 +228,16 @@ public class Player : MonoBehaviour
         Rigidbody2D bullet2Rigidbody = bullet2GO.GetComponent<Rigidbody2D>();
         bullet1Rigidbody.velocity = bullet1Movement;
         bullet2Rigidbody.velocity = bullet2Movement;
+    }
+
+    private void HandleShootRear(Vector2 bulletMovement)
+    {
+        if (burstNum < burstNumMax)
+            return;
+        Vector2 bulletRearMovement = new Vector2(bulletMovement.x * -1f, bulletMovement.y * -1f);
+        GameObject bulletRearGO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+        Rigidbody2D bulletRearRigidbody = bulletRearGO.GetComponent<Rigidbody2D>();
+        bulletRearRigidbody.velocity = bulletRearMovement;
     }
 
     private void HandleInvincible()
