@@ -39,11 +39,11 @@ public class Player : MonoBehaviour
     bool isMoving = false;
     Animator playerAnimator;
 
-    float shootTimer = 1f;
+    float shootTimer = 2f;
     float shootTimerBurstMax = .25f;
     float shootTimerMax = 1.5f;
     int burstNum = 4;
-    int burstNumMax = 3;
+    int burstNumMax = 4;
     float muzzleFlashTimer = 0f;
     float muzzleFlashTimerMax = .05f;
 

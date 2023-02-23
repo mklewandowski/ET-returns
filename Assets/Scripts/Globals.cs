@@ -12,4 +12,24 @@ public class Globals
         MsPac,
         FBI
     }
+
+    public enum UpgradeTypes {
+        ForceField,
+        RearShot,
+        SideShot,
+        TripleShot,
+        Bomb,
+        SeekerMissile,
+        Swirl,
+        Invader,
+        Ghost,
+        Laser,
+        RobotSuit,
+        DonkeyKong,
+        Coily,
+        Robot,
+        Centipede
+    }
+
+    public static int[] CurrentUpgradeLevels;
 }

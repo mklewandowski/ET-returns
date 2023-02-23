@@ -18,6 +18,8 @@ public class SceneManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        int numUpgrades = System.Enum.GetValues(typeof(Globals.UpgradeTypes)).Length;
+        Globals.CurrentUpgradeLevels = new int[numUpgrades];
         SpawnEnemies(20);
     }
 
