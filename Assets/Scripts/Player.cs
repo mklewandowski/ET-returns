@@ -81,12 +81,12 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        handleMovement();
-        handleShoot();
-        handleInvincible();
+        HandleMovement();
+        HandleShoot();
+        HandleInvincible();
     }
 
-    private void handleMovement()
+    private void HandleMovement()
     {
         if (!isAlive) return;
         moveLeft = Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
@@ -152,7 +152,7 @@ public class Player : MonoBehaviour
             GunGO.transform.localEulerAngles = new Vector3(0, 0, 315f);
     }
 
-    private void handleShoot()
+    private void HandleShoot()
     {
         if (!isAlive) return;
         shootTimer -= Time.deltaTime;
@@ -170,7 +170,12 @@ public class Player : MonoBehaviour
                 : currentPlayerOrientation == PlayerOrientation.Down || currentPlayerOrientation == PlayerOrientation.DownLeft  || currentPlayerOrientation == PlayerOrientation.DownRight
                     ? -10f
                     : 0;
-            bulletRigidbody.velocity = new Vector2(xMovement, yMovement);
+            Vector2 bulletMovement = new Vector2(xMovement, yMovement);
+            bulletRigidbody.velocity = bulletMovement;
+
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.TripleShot])
+                HandleShootTriple(bulletMovement);
+
             burstNum = burstNum - 1;
             shootTimer = burstNum == 0 ? shootTimerMax : shootTimerBurstMax;
             if (burstNum == 0) burstNum = burstNumMax;
@@ -187,7 +192,43 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void handleInvincible()
+    private void HandleShootTriple(Vector2 bulletMovement)
+    {
+        Vector2 bullet1Movement = new Vector2(bulletMovement.x, bulletMovement.y);
+        Vector2 bullet2Movement = new Vector2(bulletMovement.x, bulletMovement.y);
+        if (bulletMovement.x == 0)
+        {
+            bullet1Movement.x = bulletMovement.x + 2f;
+            bullet2Movement.x = bulletMovement.x - 2f;
+        }
+        else if (bulletMovement.y == 0)
+        {
+            bullet1Movement.y = bulletMovement.y + 2f;
+            bullet2Movement.y = bulletMovement.y - 2f;
+        }
+        else if ((bulletMovement.x < 0 && bulletMovement.y > 0) || bulletMovement.x > 0 && bulletMovement.y < 0)
+        {
+            bullet1Movement.x = bulletMovement.x + 2f;
+            bullet2Movement.x = bulletMovement.x - 2f;
+            bullet1Movement.y = bulletMovement.y + 2f;
+            bullet2Movement.y = bulletMovement.y - 2f;
+        }
+        else
+        {
+            bullet1Movement.x = bulletMovement.x + 2f;
+            bullet2Movement.x = bulletMovement.x - 2f;
+            bullet1Movement.y = bulletMovement.y - 2f;
+            bullet2Movement.y = bulletMovement.y + 2f;
+        }
+        GameObject bullet1GO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+        Rigidbody2D bullet1Rigidbody = bullet1GO.GetComponent<Rigidbody2D>();
+        GameObject bullet2GO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+        Rigidbody2D bullet2Rigidbody = bullet2GO.GetComponent<Rigidbody2D>();
+        bullet1Rigidbody.velocity = bullet1Movement;
+        bullet2Rigidbody.velocity = bullet2Movement;
+    }
+
+    private void HandleInvincible()
     {
         if (invincibleTimer > 0)
         {
