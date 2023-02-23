@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour
 {
     bool isActive = true;
     float life = 1f;
-    float damage = 1f;
+    float hitStrength = 1f;
 
     [SerializeField]
     Globals.EnemyTypes type = Globals.EnemyTypes.Yar;
@@ -68,7 +68,7 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.08f, 0.08f);
             flipWithMovement = true;
             life = 1f;
-            damage = 1f;
+            hitStrength = 1f;
         }
         else if (type == Globals.EnemyTypes.Robot)
         {
@@ -79,7 +79,7 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = false;
             life = 1f;
-            damage = 1f;
+            hitStrength = 1f;
         }
         else if (type == Globals.EnemyTypes.Qbert)
         {
@@ -90,7 +90,7 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = true;
             life = 2f;
-            damage = 2f;
+            hitStrength = 2f;
         }
         else if (type == Globals.EnemyTypes.Pac)
         {
@@ -102,7 +102,7 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.07f, 0.07f);
             flipWithMovement = true;
             life = 1f;
-            damage = 1f;
+            hitStrength = 1f;
         }
         else if (type == Globals.EnemyTypes.MsPac)
         {
@@ -114,7 +114,7 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.09f, 0.09f);
             flipWithMovement = true;
             life = 2f;
-            damage = 1.5f;
+            hitStrength = 1.5f;
         }
         else if (type == Globals.EnemyTypes.FBI)
         {
@@ -126,7 +126,7 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.15f, 0.3f);
             flipWithMovement = true;
             life = 2f;
-            damage = 1f;
+            hitStrength = 2f;
             enemyRigidbody.mass = 999f;
         }
     }
@@ -183,22 +183,33 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        Bullet bullet = collider.gameObject.GetComponent<Bullet>();
-        if (bullet != null && isActive)
-        {
-            life = life - 1f;
-            if (life <= 0)
-                KillEnemy();
-            else
-                DamageEnemy(collider.gameObject.GetComponent<Rigidbody2D>().velocity);
-            Destroy(bullet.gameObject);
-        }
+        if (!isActive) return;
 
         Player player = collider.gameObject.GetComponent<Player>();
-        if (player != null && isActive)
+        if (player != null)
         {
-            player.HitPlayer(damage);
+            player.HitPlayer(hitStrength);
         }
+
+        Bullet bullet = collider.gameObject.GetComponent<Bullet>();
+        ForceField forcefield = collider.gameObject.GetComponent<ForceField>();
+        float damage = 0;
+        Vector2 damageVelocity = new Vector2(0, 0);
+        if (bullet != null)
+        {
+            damage = 1f;
+            damageVelocity = collider.gameObject.GetComponent<Rigidbody2D>().velocity;
+            Destroy(bullet.gameObject);
+        }
+        else if (forcefield)
+        {
+            damage = 1f;
+        }
+        life = life - 1f;
+        if (life <= 0)
+            KillEnemy();
+        else
+            DamageEnemy(damageVelocity);
     }
 
     public void KillEnemy()
