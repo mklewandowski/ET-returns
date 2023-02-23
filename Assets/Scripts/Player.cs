@@ -177,6 +177,8 @@ public class Player : MonoBehaviour
                 HandleShootTriple(bulletMovement);
             if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.RearShot] >= 0)
                 HandleShootRear(bulletMovement);
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SideShot] >= 0)
+                HandleShootSide(bulletMovement);
 
             burstNum = burstNum - 1;
             shootTimer = burstNum == 0 ? shootTimerMax : shootTimerBurstMax;
@@ -238,6 +240,48 @@ public class Player : MonoBehaviour
         GameObject bulletRearGO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
         Rigidbody2D bulletRearRigidbody = bulletRearGO.GetComponent<Rigidbody2D>();
         bulletRearRigidbody.velocity = bulletRearMovement;
+    }
+
+    private void HandleShootSide(Vector2 bulletMovement)
+    {
+        if (burstNum < burstNumMax)
+            return;
+        Vector2 bullet1Movement = new Vector2(bulletMovement.x, bulletMovement.y);
+        Vector2 bullet2Movement = new Vector2(bulletMovement.x, bulletMovement.y);
+        if (bulletMovement.x == 0)
+        {
+            bullet1Movement.x = 10f;
+            bullet2Movement.x = -10f;
+            bullet1Movement.y = 0;
+            bullet2Movement.y = 0;
+        }
+        else if (bulletMovement.y == 0)
+        {
+            bullet1Movement.x = 0;
+            bullet2Movement.x = 0;
+            bullet1Movement.y = 10f;
+            bullet2Movement.y = -10f;
+        }
+        else if ((bulletMovement.x < 0 && bulletMovement.y > 0) || bulletMovement.x > 0 && bulletMovement.y < 0)
+        {
+            bullet1Movement.x = 10f;
+            bullet2Movement.x = -10f;
+            bullet1Movement.y = 10f;
+            bullet2Movement.y = -10f;
+        }
+        else
+        {
+            bullet1Movement.x = 10f;
+            bullet2Movement.x = -10f;
+            bullet1Movement.y = -10f;
+            bullet2Movement.y = 10f;
+        }
+        GameObject bullet1GO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+        Rigidbody2D bullet1Rigidbody = bullet1GO.GetComponent<Rigidbody2D>();
+        GameObject bullet2GO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+        Rigidbody2D bullet2Rigidbody = bullet2GO.GetComponent<Rigidbody2D>();
+        bullet1Rigidbody.velocity = bullet1Movement;
+        bullet2Rigidbody.velocity = bullet2Movement;
     }
 
     private void HandleInvincible()
