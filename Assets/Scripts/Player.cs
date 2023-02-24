@@ -198,32 +198,8 @@ public class Player : MonoBehaviour
 
     private void HandleShootTriple(Vector2 bulletMovement)
     {
-        Vector2 bullet1Movement = new Vector2(bulletMovement.x, bulletMovement.y);
-        Vector2 bullet2Movement = new Vector2(bulletMovement.x, bulletMovement.y);
-        if (bulletMovement.x == 0)
-        {
-            bullet1Movement.x = bulletMovement.x + 2f;
-            bullet2Movement.x = bulletMovement.x - 2f;
-        }
-        else if (bulletMovement.y == 0)
-        {
-            bullet1Movement.y = bulletMovement.y + 2f;
-            bullet2Movement.y = bulletMovement.y - 2f;
-        }
-        else if ((bulletMovement.x < 0 && bulletMovement.y > 0) || bulletMovement.x > 0 && bulletMovement.y < 0)
-        {
-            bullet1Movement.x = bulletMovement.x + 2f;
-            bullet2Movement.x = bulletMovement.x - 2f;
-            bullet1Movement.y = bulletMovement.y + 2f;
-            bullet2Movement.y = bulletMovement.y - 2f;
-        }
-        else
-        {
-            bullet1Movement.x = bulletMovement.x + 2f;
-            bullet2Movement.x = bulletMovement.x - 2f;
-            bullet1Movement.y = bulletMovement.y - 2f;
-            bullet2Movement.y = bulletMovement.y + 2f;
-        }
+        Vector2 bullet1Movement = Quaternion.Euler(0, 0, -10f) * bulletMovement;
+        Vector2 bullet2Movement = Quaternion.Euler(0, 0, 10f) * bulletMovement;
         GameObject bullet1GO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
         Rigidbody2D bullet1Rigidbody = bullet1GO.GetComponent<Rigidbody2D>();
         GameObject bullet2GO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
@@ -246,36 +222,8 @@ public class Player : MonoBehaviour
     {
         if (burstNum < burstNumMax)
             return;
-        Vector2 bullet1Movement = new Vector2(bulletMovement.x, bulletMovement.y);
-        Vector2 bullet2Movement = new Vector2(bulletMovement.x, bulletMovement.y);
-        if (bulletMovement.x == 0)
-        {
-            bullet1Movement.x = 10f;
-            bullet2Movement.x = -10f;
-            bullet1Movement.y = 0;
-            bullet2Movement.y = 0;
-        }
-        else if (bulletMovement.y == 0)
-        {
-            bullet1Movement.x = 0;
-            bullet2Movement.x = 0;
-            bullet1Movement.y = 10f;
-            bullet2Movement.y = -10f;
-        }
-        else if ((bulletMovement.x < 0 && bulletMovement.y > 0) || bulletMovement.x > 0 && bulletMovement.y < 0)
-        {
-            bullet1Movement.x = 10f;
-            bullet2Movement.x = -10f;
-            bullet1Movement.y = 10f;
-            bullet2Movement.y = -10f;
-        }
-        else
-        {
-            bullet1Movement.x = 10f;
-            bullet2Movement.x = -10f;
-            bullet1Movement.y = -10f;
-            bullet2Movement.y = 10f;
-        }
+        Vector2 bullet1Movement = Quaternion.Euler(0, 0, -90f) * bulletMovement;
+        Vector2 bullet2Movement = Quaternion.Euler(0, 0, 90f) * bulletMovement;
         GameObject bullet1GO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
         Rigidbody2D bullet1Rigidbody = bullet1GO.GetComponent<Rigidbody2D>();
         GameObject bullet2GO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
