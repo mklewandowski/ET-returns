@@ -75,6 +75,7 @@ public class SceneManager : MonoBehaviour
         Globals.CurrentUpgradeLevels[(int)availableUpgrades[upgradeNum]]++;
         HUDUpgradePanel.SetActive(false);
         Player.GetComponent<Player>().ResetHUDPhone();
+        Player.GetComponent<Player>().UpdateUpgrades();
         Time.timeScale = 1f;
 
     }

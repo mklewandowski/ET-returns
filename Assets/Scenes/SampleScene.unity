@@ -1034,7 +1034,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &410120423
 Transform:
   m_ObjectHideFlags: 0
@@ -2811,6 +2811,7 @@ MonoBehaviour:
   BulletSwirlPrefab: {fileID: 7729169512300866286, guid: 12f0dd88afc122e4fbf792707d1ddb58, type: 3}
   BulletBombPrefab: {fileID: 7471433923009901123, guid: 19273a82df21fbc42986390cd322d822, type: 3}
   BulletContainer: {fileID: 2098476539}
+  ForceField: {fileID: 410120422}
   LifeBar: {fileID: 364796514}
   ExpBar: {fileID: 556872507}
   ExpLevel: {fileID: 1449827230}

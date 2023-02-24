@@ -34,6 +34,8 @@ public class Player : MonoBehaviour
     GameObject BulletBombPrefab;
     [SerializeField]
     GameObject BulletContainer;
+    [SerializeField]
+    GameObject ForceField;
 
     float moveSpeed = 2f;
     Vector2 movementVector = new Vector2(0, 0);
@@ -357,6 +359,12 @@ public class Player : MonoBehaviour
         {
             PhonePieces[x].SetActive(x < currentPhonePieces);
         }
+    }
+
+    public void UpdateUpgrades()
+    {
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.ForceField] > 0)
+            ForceField.SetActive(true);
     }
 
     public void ResetHUDPhone()
