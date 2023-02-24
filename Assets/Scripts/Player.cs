@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
     PlayerOrientation currentPlayerOrientation = PlayerOrientation.Right;
 
     [SerializeField]
+    SceneManager SceneManagerScript;
+    [SerializeField]
     GameObject PlayerGO;
     [SerializeField]
     GameObject GunGO;
@@ -177,15 +179,15 @@ public class Player : MonoBehaviour
             Vector2 bulletMovement = new Vector2(xMovement, yMovement);
             bulletRigidbody.velocity = bulletMovement;
 
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.TripleShot] >= 0)
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.TripleShot] > 0)
                 HandleShootTriple(bulletMovement);
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.RearShot] >= 0)
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.RearShot] > 0)
                 HandleShootRear(bulletMovement);
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SideShot] >= 0)
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SideShot] > 0)
                 HandleShootSide(bulletMovement);
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Swirl] >= 0)
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Swirl] > 0)
                 HandleShootSwirl();
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] >= 0)
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] > 0)
                 HandleShootBomb();
 
             burstNum = burstNum - 1;
@@ -343,11 +345,22 @@ public class Player : MonoBehaviour
         currentPhonePieces++;
         if (currentPhonePieces == maxPhonePieces)
         {
-            currentPhonePieces = 0;
+            SceneManagerScript.ShowUpgradeSelection();
         }
+        UpdateHUDPhone();
+    }
+
+    void UpdateHUDPhone()
+    {
         for (int x = 0; x < PhonePieces.Length; x++)
         {
             PhonePieces[x].SetActive(x < currentPhonePieces);
         }
+    }
+
+    public void ResetHUDPhone()
+    {
+        currentPhonePieces = 0;
+        UpdateHUDPhone();
     }
 }

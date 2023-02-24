@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class SceneManager : MonoBehaviour
 {
@@ -12,6 +14,12 @@ public class SceneManager : MonoBehaviour
     [SerializeField]
     GameObject Player;
 
+    [SerializeField]
+    GameObject HUDUpgradePanel;
+    [SerializeField]
+    TextMeshProUGUI[] HUDUpgradeButtonTexts;
+    List<Globals.UpgradeTypes> availableUpgrades = new List<Globals.UpgradeTypes>();
+
     float spawnTimer = 5f;
     float spawnTimerMax = 5f;
 
@@ -20,6 +28,10 @@ public class SceneManager : MonoBehaviour
     {
         int numUpgrades = System.Enum.GetValues(typeof(Globals.UpgradeTypes)).Length;
         Globals.CurrentUpgradeLevels = new int[numUpgrades];
+        for (int x = 0; x < Globals.CurrentUpgradeLevels.Length; x++)
+        {
+            Globals.CurrentUpgradeLevels[x] = 0;
+        }
         SpawnEnemies(20);
     }
 
@@ -56,5 +68,40 @@ public class SceneManager : MonoBehaviour
                 enemyType = Globals.EnemyTypes.Pac;
             enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyType);
         }
+    }
+
+    public void SelectUpgrade(int upgradeNum)
+    {
+        Globals.CurrentUpgradeLevels[(int)availableUpgrades[upgradeNum]]++;
+        HUDUpgradePanel.SetActive(false);
+        Player.GetComponent<Player>().ResetHUDPhone();
+        Time.timeScale = 1f;
+
+    }
+    public void ShowUpgradeSelection()
+    {
+        availableUpgrades.Clear();
+        for (int x = 0; x < Globals.CurrentUpgradeLevels.Length; x++)
+        {
+            if (Globals.CurrentUpgradeLevels[x] <= Globals.MaxUpgradeLevel)
+                availableUpgrades.Add((Globals.UpgradeTypes)x);
+        }
+
+        for (int x = 0; x < availableUpgrades.Count; x++)
+        {
+            int swapPos = Random.Range(0, availableUpgrades.Count);
+            Globals.UpgradeTypes temp = availableUpgrades[x];
+            availableUpgrades[x] = availableUpgrades[swapPos];
+            availableUpgrades[swapPos] = temp;
+        }
+
+        for (int x = 0; x < HUDUpgradeButtonTexts.Length; x++)
+        {
+            HUDUpgradeButtonTexts[x].text = Globals.UpgradeText[(int)availableUpgrades[x]];
+            HUDUpgradeButtonTexts[x].text = HUDUpgradeButtonTexts[x].text + "\nLvl " + (Globals.CurrentUpgradeLevels[(int)availableUpgrades[x]] + 1);
+        }
+
+        HUDUpgradePanel.SetActive(true);
+        Time.timeScale = 0f;
     }
 }

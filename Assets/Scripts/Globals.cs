@@ -19,8 +19,8 @@ public class Globals
         SideShot,
         TripleShot,
         Bomb,
-        SeekerMissile,
         Swirl,
+        SeekerMissile,
         Invader,
         Ghost,
         Laser,
@@ -37,5 +37,24 @@ public class Globals
         Bomb
     }
 
+    public static string[] UpgradeText = {
+        "Force Field",
+        "Rear Shot",
+        "Side Shot",
+        "Spread Shot",
+        "Kabomb",
+        "Swirl",
+        "Seeker Missile",
+        "Invader",
+        "Ghost",
+        "Laser Beam",
+        "Mech Suit",
+        "Stubborn Gorilla",
+        "Snake",
+        "Attack Bot",
+        "Bug"
+    };
+
     public static int[] CurrentUpgradeLevels;
+    public static int MaxUpgradeLevel = 5;
 }
