@@ -17,8 +17,6 @@ public class BombShockWave : MonoBehaviour
     [SerializeField]
     float Rate = 20f;
 
-    float holdTime = .5f;
-
     // Update is called once per frame
     void Update ()
     {

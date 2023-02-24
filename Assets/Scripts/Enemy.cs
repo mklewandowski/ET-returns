@@ -193,6 +193,7 @@ public class Enemy : MonoBehaviour
 
         Bullet bullet = collider.gameObject.GetComponent<Bullet>();
         ForceField forcefield = collider.gameObject.GetComponent<ForceField>();
+        BombShockWave bombShockWave = collider.gameObject.GetComponent<BombShockWave>();
         float damage = 0;
         Vector2 damageVelocity = new Vector2(0, 0);
         if (bullet != null)
@@ -201,7 +202,7 @@ public class Enemy : MonoBehaviour
             damageVelocity = collider.gameObject.GetComponent<Rigidbody2D>().velocity;
             bullet.HitEnemy();
         }
-        else if (forcefield)
+        else if (forcefield || bombShockWave)
         {
             damage = 1f;
         }
