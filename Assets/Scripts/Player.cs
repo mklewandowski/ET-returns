@@ -29,6 +29,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject BulletSwirlPrefab;
     [SerializeField]
+    GameObject BulletBombPrefab;
+    [SerializeField]
     GameObject BulletContainer;
 
     float moveSpeed = 2f;
@@ -183,6 +185,8 @@ public class Player : MonoBehaviour
                 HandleShootSide(bulletMovement);
             if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Swirl] >= 0)
                 HandleShootSwirl();
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] >= 0)
+                HandleShootBomb();
 
             burstNum = burstNum - 1;
             shootTimer = burstNum == 0 ? shootTimerMax : shootTimerBurstMax;
@@ -240,10 +244,20 @@ public class Player : MonoBehaviour
     {
         if (burstNum < burstNumMax)
             return;
-        Vector2 bulletSwirlMovement = Quaternion.Euler(0, 0, Random.Range(0, 360f)) * new Vector2(3f, 3f);
+        Vector2 bulletMovement = Quaternion.Euler(0, 0, Random.Range(0, 360f)) * new Vector2(3f, 3f);
         GameObject bulletGO = Instantiate(BulletSwirlPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
         Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
-        bulletRigidbody.velocity = bulletSwirlMovement;
+        bulletRigidbody.velocity = bulletMovement;
+    }
+
+    private void HandleShootBomb()
+    {
+        if (burstNum < burstNumMax)
+            return;
+        Vector2 bulletMovement = Quaternion.Euler(0, 0, Random.Range(-25f, 25f)) * new Vector2(0, 5f);
+        GameObject bulletGO = Instantiate(BulletBombPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+        Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
+        bulletRigidbody.velocity = bulletMovement;
     }
 
     private void HandleInvincible()

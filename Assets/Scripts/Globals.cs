@@ -31,5 +31,11 @@ public class Globals
         Centipede
     }
 
+    public enum BulletTypes {
+        Standard,
+        Swirl,
+        Bomb
+    }
+
     public static int[] CurrentUpgradeLevels;
 }

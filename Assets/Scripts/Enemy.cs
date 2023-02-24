@@ -199,7 +199,7 @@ public class Enemy : MonoBehaviour
         {
             damage = 1f;
             damageVelocity = collider.gameObject.GetComponent<Rigidbody2D>().velocity;
-            Destroy(bullet.gameObject);
+            bullet.HitEnemy();
         }
         else if (forcefield)
         {
