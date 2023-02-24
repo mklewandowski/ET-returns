@@ -303,6 +303,7 @@ public class Player : MonoBehaviour
 
     public void KillPlayer()
     {
+        playerRigidbody.velocity = new Vector2(0, 0);
         this.GetComponent<Collider2D>().enabled = false;
         playerAnimator.Play("et-dead");
         isAlive = false;
