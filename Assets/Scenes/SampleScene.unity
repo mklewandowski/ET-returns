@@ -1938,6 +1938,7 @@ MonoBehaviour:
   GunGO: {fileID: 396186076}
   MuzzleGO: {fileID: 1087746640}
   BulletPrefab: {fileID: 5148339097020038030, guid: 6db7e2048956a064b970678d45f772b8, type: 3}
+  BulletSwirlPrefab: {fileID: 7729169512300866286, guid: 12f0dd88afc122e4fbf792707d1ddb58, type: 3}
   BulletContainer: {fileID: 2098476539}
   LifeBar: {fileID: 364796514}
   ExpBar: {fileID: 556872507}
