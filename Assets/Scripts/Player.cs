@@ -36,6 +36,8 @@ public class Player : MonoBehaviour
     GameObject BulletContainer;
     [SerializeField]
     GameObject ForceField;
+    [SerializeField]
+    GameObject Laser;
 
     float moveSpeed = 2f;
     Vector2 movementVector = new Vector2(0, 0);
@@ -54,6 +56,8 @@ public class Player : MonoBehaviour
     int burstNumMax = 4;
     float muzzleFlashTimer = 0f;
     float muzzleFlashTimerMax = .05f;
+    float laserTimer = 0f;
+    float laserTimerMax = .25f;
 
     bool isAlive = true;
     float life = 10f;
@@ -92,6 +96,7 @@ public class Player : MonoBehaviour
         HandleMovement();
         HandleShoot();
         HandleInvincible();
+        HandleLaser();
     }
 
     private void HandleMovement()
@@ -191,6 +196,8 @@ public class Player : MonoBehaviour
                 HandleShootSwirl();
             if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] > 0)
                 HandleShootBomb();
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Laser] > 0)
+                HandleShootLaser();
 
             burstNum = burstNum - 1;
             shootTimer = burstNum == 0 ? shootTimerMax : shootTimerBurstMax;
@@ -262,6 +269,24 @@ public class Player : MonoBehaviour
         GameObject bulletGO = Instantiate(BulletBombPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
         Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
         bulletRigidbody.velocity = bulletMovement;
+    }
+
+    private void HandleShootLaser()
+    {
+        Laser.SetActive(true);
+        laserTimer = laserTimerMax;
+    }
+
+    private void HandleLaser()
+    {
+        if (laserTimer > 0)
+        {
+            laserTimer -= Time.deltaTime;
+            if (laserTimer <= 0)
+            {
+                Laser.SetActive(false);
+            }
+        }
     }
 
     private void HandleInvincible()
