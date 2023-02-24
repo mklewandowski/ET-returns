@@ -24,14 +24,13 @@ public class Debris : MonoBehaviour
     public void Init()
     {
         lifeTimer = Random.Range(.1f, .5f);
-        float randVal = Random.Range(0, 100f);
-        Color newColor = Color.white;
-        if (randVal < 25f)
-            newColor = new Color(255f/255f, 233f/255f, 127f/255f); // light yellow
-        else if (randVal < 50f)
-            newColor = Color.yellow;
-        else if (randVal < 75f)
-            newColor = new Color(255f/255f, 178f/255f, 127f/255f); // light orange
+        Color[] debrisColors = new Color[]
+        {
+            new Color(255f/255f, 0/255f, 0/255f),
+            new Color(251f/255f, 35f/255f, 35f/255f),
+            new Color(251f/255f, 70f/255f, 70f/255f),
+        };
+        Color newColor = debrisColors[Random.Range(0, debrisColors.Length)];
         this.GetComponent<SpriteRenderer>().color = newColor;
         float randomAngle = Random.Range(0f, 360f);
         Vector2 normalizedPos = new Vector2(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle));

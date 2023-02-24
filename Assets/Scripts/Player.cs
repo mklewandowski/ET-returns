@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
     PlayerOrientation currentPlayerOrientation = PlayerOrientation.Right;
 
     [SerializeField]
+    SceneManager SceneManagerScript;
+    [SerializeField]
     GameObject PlayerGO;
     [SerializeField]
     GameObject GunGO;
@@ -27,7 +29,15 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject BulletPrefab;
     [SerializeField]
+    GameObject BulletSwirlPrefab;
+    [SerializeField]
+    GameObject BulletBombPrefab;
+    [SerializeField]
     GameObject BulletContainer;
+    [SerializeField]
+    GameObject ForceField;
+    [SerializeField]
+    GameObject Laser;
 
     float moveSpeed = 2f;
     Vector2 movementVector = new Vector2(0, 0);
@@ -39,13 +49,15 @@ public class Player : MonoBehaviour
     bool isMoving = false;
     Animator playerAnimator;
 
-    float shootTimer = 1f;
+    float shootTimer = 2f;
     float shootTimerBurstMax = .25f;
     float shootTimerMax = 1.5f;
     int burstNum = 4;
-    int burstNumMax = 3;
+    int burstNumMax = 4;
     float muzzleFlashTimer = 0f;
     float muzzleFlashTimerMax = .05f;
+    float laserTimer = 0f;
+    float laserTimerMax = .25f;
 
     bool isAlive = true;
     float life = 10f;
@@ -76,17 +88,21 @@ public class Player : MonoBehaviour
         playerAnimator = PlayerGO.GetComponent<Animator>();
         playerRenderer = PlayerGO.GetComponent<SpriteRenderer>();
         maxExperiences = new float[] {100f, 200f, 300f, 400f, 500f, 600f, 700f, 800f, 900, 1000f};
+
+        if (Globals.DebugMode)
+            ForceField.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        handleMovement();
-        handleShoot();
-        handleInvincible();
+        HandleMovement();
+        HandleShoot();
+        HandleInvincible();
+        HandleLaser();
     }
 
-    private void handleMovement()
+    private void HandleMovement()
     {
         if (!isAlive) return;
         moveLeft = Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
@@ -152,7 +168,7 @@ public class Player : MonoBehaviour
             GunGO.transform.localEulerAngles = new Vector3(0, 0, 315f);
     }
 
-    private void handleShoot()
+    private void HandleShoot()
     {
         if (!isAlive) return;
         shootTimer -= Time.deltaTime;
@@ -170,7 +186,22 @@ public class Player : MonoBehaviour
                 : currentPlayerOrientation == PlayerOrientation.Down || currentPlayerOrientation == PlayerOrientation.DownLeft  || currentPlayerOrientation == PlayerOrientation.DownRight
                     ? -10f
                     : 0;
-            bulletRigidbody.velocity = new Vector2(xMovement, yMovement);
+            Vector2 bulletMovement = new Vector2(xMovement, yMovement);
+            bulletRigidbody.velocity = bulletMovement;
+
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.TripleShot] > 0 || Globals.DebugMode)
+                HandleShootTriple(bulletMovement);
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.RearShot] > 0 || Globals.DebugMode)
+                HandleShootRear(bulletMovement);
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SideShot] > 0 || Globals.DebugMode)
+                HandleShootSide(bulletMovement);
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Swirl] > 0 || Globals.DebugMode)
+                HandleShootSwirl();
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] > 0 || Globals.DebugMode)
+                HandleShootBomb();
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Laser] > 0 || Globals.DebugMode)
+                HandleShootLaser();
+
             burstNum = burstNum - 1;
             shootTimer = burstNum == 0 ? shootTimerMax : shootTimerBurstMax;
             if (burstNum == 0) burstNum = burstNumMax;
@@ -187,7 +218,81 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void handleInvincible()
+    private void HandleShootTriple(Vector2 bulletMovement)
+    {
+        Vector2 bullet1Movement = Quaternion.Euler(0, 0, -10f) * bulletMovement;
+        Vector2 bullet2Movement = Quaternion.Euler(0, 0, 10f) * bulletMovement;
+        GameObject bullet1GO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+        Rigidbody2D bullet1Rigidbody = bullet1GO.GetComponent<Rigidbody2D>();
+        GameObject bullet2GO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+        Rigidbody2D bullet2Rigidbody = bullet2GO.GetComponent<Rigidbody2D>();
+        bullet1Rigidbody.velocity = bullet1Movement;
+        bullet2Rigidbody.velocity = bullet2Movement;
+    }
+
+    private void HandleShootRear(Vector2 bulletMovement)
+    {
+        if (burstNum < burstNumMax)
+            return;
+        Vector2 bulletRearMovement = new Vector2(bulletMovement.x * -1f, bulletMovement.y * -1f);
+        GameObject bulletRearGO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+        Rigidbody2D bulletRearRigidbody = bulletRearGO.GetComponent<Rigidbody2D>();
+        bulletRearRigidbody.velocity = bulletRearMovement;
+    }
+
+    private void HandleShootSide(Vector2 bulletMovement)
+    {
+        if (burstNum < burstNumMax)
+            return;
+        Vector2 bullet1Movement = Quaternion.Euler(0, 0, -90f) * bulletMovement;
+        Vector2 bullet2Movement = Quaternion.Euler(0, 0, 90f) * bulletMovement;
+        GameObject bullet1GO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+        Rigidbody2D bullet1Rigidbody = bullet1GO.GetComponent<Rigidbody2D>();
+        GameObject bullet2GO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+        Rigidbody2D bullet2Rigidbody = bullet2GO.GetComponent<Rigidbody2D>();
+        bullet1Rigidbody.velocity = bullet1Movement;
+        bullet2Rigidbody.velocity = bullet2Movement;
+    }
+
+    private void HandleShootSwirl()
+    {
+        if (burstNum < burstNumMax)
+            return;
+        Vector2 bulletMovement = Quaternion.Euler(0, 0, Random.Range(0, 360f)) * new Vector2(3f, 3f);
+        GameObject bulletGO = Instantiate(BulletSwirlPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+        Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
+        bulletRigidbody.velocity = bulletMovement;
+    }
+
+    private void HandleShootBomb()
+    {
+        if (burstNum < burstNumMax)
+            return;
+        Vector2 bulletMovement = Quaternion.Euler(0, 0, Random.Range(-25f, 25f)) * new Vector2(0, 5f);
+        GameObject bulletGO = Instantiate(BulletBombPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+        Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
+        bulletRigidbody.velocity = bulletMovement;
+    }
+
+    private void HandleShootLaser()
+    {
+        Laser.SetActive(true);
+        laserTimer = laserTimerMax;
+    }
+
+    private void HandleLaser()
+    {
+        if (laserTimer > 0)
+        {
+            laserTimer -= Time.deltaTime;
+            if (laserTimer <= 0)
+            {
+                Laser.SetActive(false);
+            }
+        }
+    }
+
+    private void HandleInvincible()
     {
         if (invincibleTimer > 0)
         {
@@ -228,6 +333,7 @@ public class Player : MonoBehaviour
 
     public void KillPlayer()
     {
+        playerRigidbody.velocity = new Vector2(0, 0);
         this.GetComponent<Collider2D>().enabled = false;
         playerAnimator.Play("et-dead");
         isAlive = false;
@@ -270,11 +376,28 @@ public class Player : MonoBehaviour
         currentPhonePieces++;
         if (currentPhonePieces == maxPhonePieces)
         {
-            currentPhonePieces = 0;
+            SceneManagerScript.ShowUpgradeSelection();
         }
+        UpdateHUDPhone();
+    }
+
+    void UpdateHUDPhone()
+    {
         for (int x = 0; x < PhonePieces.Length; x++)
         {
             PhonePieces[x].SetActive(x < currentPhonePieces);
         }
+    }
+
+    public void UpdateUpgrades()
+    {
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.ForceField] > 0)
+            ForceField.SetActive(true);
+    }
+
+    public void ResetHUDPhone()
+    {
+        currentPhonePieces = 0;
+        UpdateHUDPhone();
     }
 }
