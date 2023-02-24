@@ -88,6 +88,9 @@ public class Player : MonoBehaviour
         playerAnimator = PlayerGO.GetComponent<Animator>();
         playerRenderer = PlayerGO.GetComponent<SpriteRenderer>();
         maxExperiences = new float[] {100f, 200f, 300f, 400f, 500f, 600f, 700f, 800f, 900, 1000f};
+
+        if (Globals.DebugMode)
+            ForceField.SetActive(true);
     }
 
     // Update is called once per frame
@@ -186,17 +189,17 @@ public class Player : MonoBehaviour
             Vector2 bulletMovement = new Vector2(xMovement, yMovement);
             bulletRigidbody.velocity = bulletMovement;
 
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.TripleShot] > 0)
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.TripleShot] > 0 || Globals.DebugMode)
                 HandleShootTriple(bulletMovement);
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.RearShot] > 0)
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.RearShot] > 0 || Globals.DebugMode)
                 HandleShootRear(bulletMovement);
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SideShot] > 0)
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SideShot] > 0 || Globals.DebugMode)
                 HandleShootSide(bulletMovement);
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Swirl] > 0)
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Swirl] > 0 || Globals.DebugMode)
                 HandleShootSwirl();
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] > 0)
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] > 0 || Globals.DebugMode)
                 HandleShootBomb();
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Laser] > 0)
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Laser] > 0 || Globals.DebugMode)
                 HandleShootLaser();
 
             burstNum = burstNum - 1;

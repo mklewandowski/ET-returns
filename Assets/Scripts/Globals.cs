@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Globals
 {
+    public static bool DebugMode = true;
+
     public enum EnemyTypes {
         Robot,
         Qbert,
