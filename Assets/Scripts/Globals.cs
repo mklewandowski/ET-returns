@@ -15,20 +15,20 @@ public class Globals
 
     public enum UpgradeTypes {
         ForceField,
+        TripleShot,
         RearShot,
         SideShot,
-        TripleShot,
         Bomb,
         Swirl,
-        SeekerMissile,
-        Invader,
-        Ghost,
         Laser,
-        RobotSuit,
-        DonkeyKong,
-        Coily,
-        Robot,
-        Centipede
+        // SeekerMissile,
+        // Invader,
+        // Ghost,
+        // RobotSuit,
+        // DonkeyKong,
+        // Coily,
+        // Robot,
+        // Centipede
     }
 
     public enum BulletTypes {
@@ -39,15 +39,15 @@ public class Globals
 
     public static string[] UpgradeText = {
         "Force Field",
+        "Spread Shot",
         "Rear Shot",
         "Side Shot",
-        "Spread Shot",
-        "Kabomb",
+        "Bomb",
         "Swirl",
+        "Laser Beam",
         "Seeker Missile",
         "Invader",
         "Ghost",
-        "Laser Beam",
         "Mech Suit",
         "Stubborn Gorilla",
         "Snake",
