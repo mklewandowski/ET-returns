@@ -205,10 +205,10 @@ public class Enemy : MonoBehaviour
         {
             damage = 1f;
         }
-        life = life - 1f;
+        life = life - damage;
         if (life <= 0)
             KillEnemy();
-        else
+        else if (damage > 0)
             DamageEnemy(damageVelocity);
     }
 
