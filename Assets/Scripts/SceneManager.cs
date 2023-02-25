@@ -110,7 +110,7 @@ public class SceneManager : MonoBehaviour
     public void SelectUpgrade(int upgradeNum)
     {
         Globals.CurrentUpgradeLevels[(int)availableUpgrades[upgradeNum]]++;
-        HUDUpgradePanel.SetActive(false);
+        HUDUpgradePanel.GetComponent<MoveWhenPaused>().MoveDown();
         playerScript.ResetHUDPhone();
         playerScript.UpdateUpgrades();
         Time.timeScale = 1f;
@@ -140,7 +140,7 @@ public class SceneManager : MonoBehaviour
             HUDUpgradeButtonDescTexts[x].text = Globals.UpgradeDescriptionText[(int)availableUpgrades[x]];
         }
 
-        HUDUpgradePanel.SetActive(true);
+        HUDUpgradePanel.GetComponent<MoveWhenPaused>().MoveUp();
         Time.timeScale = 0f;
     }
 
