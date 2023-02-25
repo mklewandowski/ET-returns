@@ -1911,7 +1911,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'HP+1  ATTACK+1  DEFENSE+1  SHOT INTERVAL - .1   '
+  m_text: 'HP+1  ATTACK+1  DEFENSE+1  SHOT INTERVAL-.1   '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 820477dd141385f4e92cdee590f37adb, type: 2}
   m_sharedMaterial: {fileID: 906269662328401386, guid: 820477dd141385f4e92cdee590f37adb, type: 2}
