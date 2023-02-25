@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Globals
 {
-    public static bool DebugMode = true;
+    public static bool DebugMode = false;
 
     public enum EnemyTypes {
         Robot,
@@ -65,12 +65,12 @@ public class Globals
         "Shoots bullets behind player.",
         "Shoots bullets to the sides of player.",
         "Launches bombs that create explosive shockwave.",
-        "Launch powerful swirl attacks in random direction.",
-        "Shoot laser beam from player's eye.",
-        "Drop attack invaders from top of screen.",
-        "Emit ghosts that harm enemies in their path",
-        "Equips mech suit that reduces enemy attack strength",
-        "Launch missiles that attack nearest enemy.",
+        "Launches powerful swirl attacks in random direction.",
+        "Shoots laser beam from player's eye.",
+        "Drops attack invaders from top of screen.",
+        "Emits ghosts that harm enemies in their path.",
+        "Equips mech suit that reduces enemy attack strength.",
+        "Launches missiles that attack nearest enemy.",
         "Summons Donkey Kong to attack enemies.",
         "Summons Coily to attack enemies.",
         "Summons Berzerk Bot to attack enemies.",

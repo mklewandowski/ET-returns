@@ -29,7 +29,11 @@ public class SceneManager : MonoBehaviour
     [SerializeField]
     GameObject HUDUpgradePanel;
     [SerializeField]
-    TextMeshProUGUI[] HUDUpgradeButtonTexts;
+    TextMeshProUGUI[] HUDUpgradeButtonTitleTexts;
+    [SerializeField]
+    TextMeshProUGUI[] HUDUpgradeButtonLvlTexts;
+    [SerializeField]
+    TextMeshProUGUI[] HUDUpgradeButtonDescTexts;
     List<Globals.UpgradeTypes> availableUpgrades = new List<Globals.UpgradeTypes>();
 
     float spawnTimer = 5f;
@@ -129,10 +133,11 @@ public class SceneManager : MonoBehaviour
             availableUpgrades[swapPos] = temp;
         }
 
-        for (int x = 0; x < HUDUpgradeButtonTexts.Length; x++)
+        for (int x = 0; x < HUDUpgradeButtonTitleTexts.Length; x++)
         {
-            HUDUpgradeButtonTexts[x].text = Globals.UpgradeText[(int)availableUpgrades[x]];
-            HUDUpgradeButtonTexts[x].text = HUDUpgradeButtonTexts[x].text + "\nLvl " + (Globals.CurrentUpgradeLevels[(int)availableUpgrades[x]] + 1);
+            HUDUpgradeButtonTitleTexts[x].text = Globals.UpgradeText[(int)availableUpgrades[x]];
+            HUDUpgradeButtonLvlTexts[x].text = "Lvl " + (Globals.CurrentUpgradeLevels[(int)availableUpgrades[x]] + 1);
+            HUDUpgradeButtonDescTexts[x].text = Globals.UpgradeDescriptionText[(int)availableUpgrades[x]];
         }
 
         HUDUpgradePanel.SetActive(true);
