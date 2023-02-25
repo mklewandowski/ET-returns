@@ -19,6 +19,12 @@ public class SceneManager : MonoBehaviour
     RectTransform ExpBar;
     [SerializeField]
     TextMeshProUGUI ExpLevel;
+    [SerializeField]
+    GameObject LevelUpPanel;
+    [SerializeField]
+    TextMeshProUGUI LevelUpStats;
+    float levelupTimer = 0;
+    float levelupTimerMax = 3f;
 
     [SerializeField]
     GameObject HUDUpgradePanel;
@@ -47,11 +53,29 @@ public class SceneManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        HandleEnemyTimer();
+        HandleLevelUpTimer();
+    }
+
+    void HandleEnemyTimer()
+    {
         spawnTimer -= Time.deltaTime;
         if (spawnTimer <= 0)
         {
             spawnTimer = spawnTimerMax;
             SpawnEnemies(10);
+        }
+    }
+
+    void HandleLevelUpTimer()
+    {
+        if (levelupTimer > 0)
+        {
+            levelupTimer -= Time.deltaTime;
+            if (levelupTimer < 0)
+            {
+                LevelUpPanel.GetComponent<MoveNormal>().MoveDown();
+            }
         }
     }
 
@@ -117,20 +141,18 @@ public class SceneManager : MonoBehaviour
 
     public void AddExperience(int expAmount)
     {
-        Debug.Log("here");
         Globals.currentExp += expAmount;
-        Debug.Log(Globals.currentExp);
         int maxExp = Globals.currentLevel < Globals.maxExperiences.Length
             ? Globals.maxExperiences[Globals.currentLevel]
             : Globals.maxExperiences[Globals.maxExperiences.Length - 1];
         Globals.currentExp = Mathf.Min(maxExp, Globals.currentExp);
-        Debug.Log(maxExp);
-        Debug.Log(Globals.currentExp);
         if (Globals.currentExp == maxExp)
         {
             Globals.currentLevel++;
             Globals.currentExp = 0;
             ExpLevel.text = "LVL " + (Globals.currentLevel + 1);
+            LevelUpPanel.GetComponent<MoveNormal>().MoveUp();
+            levelupTimer = levelupTimerMax;
             playerScript.RestoreMaxHealth();
         }
         float maxExpBarWidth = 400f;
