@@ -33,6 +33,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject BulletBombPrefab;
     [SerializeField]
+    GameObject InvaderPrefab;
+    [SerializeField]
     GameObject BulletContainer;
     [SerializeField]
     GameObject ForceField;
@@ -191,6 +193,8 @@ public class Player : MonoBehaviour
                 HandleShootBomb();
             if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Laser] > 0 || Globals.DebugMode)
                 HandleShootLaser();
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Invader] > 0 || Globals.DebugMode)
+                HandleLaunchInvader();
 
             burstNum = burstNum - 1;
             shootTimer = burstNum == 0 ? Globals.currentShootTimerMax : shootTimerBurstMax;
@@ -268,6 +272,14 @@ public class Player : MonoBehaviour
     {
         Laser.SetActive(true);
         laserTimer = laserTimerMax;
+    }
+
+    private void HandleLaunchInvader()
+    {
+        if (burstNum < burstNumMax)
+            return;
+        GameObject invaderGO = Instantiate(InvaderPrefab, new Vector3(this.transform.localPosition.x, this.transform.localPosition.y + 100f, 0), Quaternion.identity, BulletContainer.transform);
+        invaderGO.GetComponent<Invader>().Init(this.transform.localPosition);
     }
 
     private void HandleLaser()

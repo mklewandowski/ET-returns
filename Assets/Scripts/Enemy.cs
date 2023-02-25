@@ -197,7 +197,9 @@ public class Enemy : MonoBehaviour
         Vector2 damageVelocity = new Vector2(0, 0);
         if (bullet != null)
         {
-            damageVelocity = collider.gameObject.GetComponent<Rigidbody2D>().velocity;
+            Rigidbody2D bulletRB = collider.gameObject.GetComponent<Rigidbody2D>();
+            if (bulletRB != null)
+                damageVelocity = collider.gameObject.GetComponent<Rigidbody2D>().velocity;
             bullet.HitEnemy();
         }
         if (attackObject)

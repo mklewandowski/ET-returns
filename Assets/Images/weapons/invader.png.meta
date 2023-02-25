@@ -133,7 +133,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 23
+        y: 24
         width: 16
         height: 8
       alignment: 0
@@ -154,7 +154,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 15
+        y: 16
         width: 16
         height: 8
       alignment: 0
@@ -175,7 +175,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 7
+        y: 8
         width: 16
         height: 8
       alignment: 0
@@ -187,6 +187,27 @@ TextureImporter:
       bones: []
       spriteID: 00dd6af12f579424e9f560d6e1c391e3
       internalID: -1255974694
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: invader_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9fe3e1ae4f48e3f47a49ae988dfefd8e
+      internalID: -1155544150
       vertices: []
       indices: 
       edges: []
@@ -203,6 +224,7 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       invader_1: 1030514426
+      invader_3: -1155544150
       invader_2: -1255974694
       invader_0: 1011507614
   spritePackingTag: 

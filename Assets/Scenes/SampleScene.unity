@@ -3033,6 +3033,7 @@ MonoBehaviour:
   BulletPrefab: {fileID: 5148339097020038030, guid: 6db7e2048956a064b970678d45f772b8, type: 3}
   BulletSwirlPrefab: {fileID: 7729169512300866286, guid: 12f0dd88afc122e4fbf792707d1ddb58, type: 3}
   BulletBombPrefab: {fileID: 7471433923009901123, guid: 19273a82df21fbc42986390cd322d822, type: 3}
+  InvaderPrefab: {fileID: 7366569187751997803, guid: 9d0f53ef5f370114aa9c0d758ad15a10, type: 3}
   BulletContainer: {fileID: 2098476539}
   ForceField: {fileID: 410120422}
   Laser: {fileID: 765183310}
