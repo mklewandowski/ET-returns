@@ -59,4 +59,8 @@ public class Globals
 
     public static int[] CurrentUpgradeLevels;
     public static int MaxUpgradeLevel = 5;
+
+    public static int currentExp = 0;
+    public static int currentLevel = 0;
+    public static int[] maxExperiences;
 }

@@ -2900,8 +2900,6 @@ MonoBehaviour:
   ForceField: {fileID: 410120422}
   Laser: {fileID: 765183310}
   LifeBar: {fileID: 364796514}
-  ExpBar: {fileID: 556872507}
-  ExpLevel: {fileID: 1449827230}
   PhonePieces:
   - {fileID: 537965401}
   - {fileID: 1331340653}
@@ -3522,6 +3520,8 @@ MonoBehaviour:
   EnemyPrefab: {fileID: 6232591748759594092, guid: 28e3236ac2921fb4eae47fc8de6cf408, type: 3}
   EnemyContainer: {fileID: 2043173319}
   Player: {fileID: 971181771}
+  ExpBar: {fileID: 556872507}
+  ExpLevel: {fileID: 1449827230}
   HUDUpgradePanel: {fileID: 616747541}
   HUDUpgradeButtonTexts:
   - {fileID: 241183753}

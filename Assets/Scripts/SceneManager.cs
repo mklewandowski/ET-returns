@@ -15,6 +15,11 @@ public class SceneManager : MonoBehaviour
     GameObject Player;
 
     [SerializeField]
+    RectTransform ExpBar;
+    [SerializeField]
+    TextMeshProUGUI ExpLevel;
+
+    [SerializeField]
     GameObject HUDUpgradePanel;
     [SerializeField]
     TextMeshProUGUI[] HUDUpgradeButtonTexts;
@@ -26,6 +31,7 @@ public class SceneManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Globals.maxExperiences = new int[] {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000};
         int numUpgrades = System.Enum.GetValues(typeof(Globals.UpgradeTypes)).Length;
         Globals.CurrentUpgradeLevels = new int[numUpgrades];
         for (int x = 0; x < Globals.CurrentUpgradeLevels.Length; x++)
@@ -104,5 +110,22 @@ public class SceneManager : MonoBehaviour
 
         HUDUpgradePanel.SetActive(true);
         Time.timeScale = 0f;
+    }
+
+    public void AddExperience(int expAmount)
+    {
+        Globals.currentExp += expAmount;
+        int maxExp = Globals.currentLevel < Globals.maxExperiences.Length
+            ? Globals.maxExperiences[Globals.currentLevel]
+            : Globals.maxExperiences[Globals.maxExperiences.Length - 1];
+        Globals.currentExp = Mathf.Min(maxExp, Globals.currentExp);
+        if (Globals.currentExp == maxExp)
+        {
+            Globals.currentLevel++;
+            Globals.currentExp = 0;
+            ExpLevel.text = "LVL " + (Globals.currentLevel + 1);
+        }
+        float maxExpBarWidth = 400f;
+        ExpBar.sizeDelta = new Vector2 ((float)(Globals.currentExp / maxExp) * maxExpBarWidth, ExpBar.sizeDelta.y);
     }
 }
