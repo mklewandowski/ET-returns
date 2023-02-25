@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 33486762}
   - component: {fileID: 33486763}
   m_Layer: 0
-  m_Name: LifeBarBack
+  m_Name: HealthBarBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -859,7 +859,7 @@ GameObject:
   - component: {fileID: 364796515}
   - component: {fileID: 364796516}
   m_Layer: 0
-  m_Name: LifeBarFront
+  m_Name: HealthBarFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2899,7 +2899,7 @@ MonoBehaviour:
   BulletContainer: {fileID: 2098476539}
   ForceField: {fileID: 410120422}
   Laser: {fileID: 765183310}
-  LifeBar: {fileID: 364796514}
+  HealthBar: {fileID: 364796514}
   PhonePieces:
   - {fileID: 537965401}
   - {fileID: 1331340653}
@@ -3444,7 +3444,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1201198915}
   m_Layer: 0
-  m_Name: LifeBar
+  m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

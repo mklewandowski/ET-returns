@@ -60,13 +60,13 @@ public class Player : MonoBehaviour
     float laserTimerMax = .25f;
 
     bool isAlive = true;
-    float life = 10f;
-    float lifeMax = 10f;
+    float health = 10f;
+    float healthMax = 10f;
     float invincibleTimer = 0f;
     float invincibleTimerMax = 1f;
     private SpriteRenderer playerRenderer;
     [SerializeField]
-    GameObject LifeBar;
+    GameObject HealthBar;
 
     int currentPhonePieces = 0;
     int maxPhonePieces = 3;
@@ -300,25 +300,25 @@ public class Player : MonoBehaviour
     {
         if (invincibleTimer <= 0)
         {
-            life -= damage;
-            UpdateLifeBar();
-            if (life <= 0)
+            health -= damage;
+            UpdateHealthBar();
+            if (health <= 0)
                 KillPlayer();
             else
                 invincibleTimer = invincibleTimerMax;
         }
     }
 
-    void UpdateLifeBar()
+    void UpdateHealthBar()
     {
-        float lifePercent = life / lifeMax;
-        float maxWidth = 40f;
-        float currentWidth = maxWidth * lifePercent;
-        LifeBar.transform.localScale = new Vector3(currentWidth, LifeBar.transform.localScale.y, LifeBar.transform.localScale.z);
+        float healthPercent = health / healthMax;
+        float maxWidth = healthMax * 4;
+        float currentWidth = maxWidth * healthPercent;
+        HealthBar.transform.localScale = new Vector3(currentWidth, HealthBar.transform.localScale.y, HealthBar.transform.localScale.z);
         float startPos = -.2f;
         float extent = .2f;
-        float currentPos = startPos + extent * lifePercent;
-        LifeBar.transform.localPosition = new Vector3(currentPos, LifeBar.transform.localPosition.y, LifeBar.transform.localPosition.z);
+        float currentPos = startPos + extent * healthPercent;
+        HealthBar.transform.localPosition = new Vector3(currentPos, HealthBar.transform.localPosition.y, HealthBar.transform.localPosition.z);
     }
 
     public void KillPlayer()
