@@ -23,8 +23,8 @@ public class SceneManager : MonoBehaviour
     GameObject LevelUpPanel;
     [SerializeField]
     TextMeshProUGUI LevelUpStats;
-    float levelupTimer = 0;
-    float levelupTimerMax = 3f;
+    float levelUpTimer = 0;
+    float levelUpTimerMax = 3f;
 
     [SerializeField]
     GameObject HUDUpgradePanel;
@@ -69,10 +69,10 @@ public class SceneManager : MonoBehaviour
 
     void HandleLevelUpTimer()
     {
-        if (levelupTimer > 0)
+        if (levelUpTimer > 0)
         {
-            levelupTimer -= Time.deltaTime;
-            if (levelupTimer < 0)
+            levelUpTimer -= Time.deltaTime;
+            if (levelUpTimer < 0)
             {
                 LevelUpPanel.GetComponent<MoveNormal>().MoveDown();
             }
@@ -152,7 +152,13 @@ public class SceneManager : MonoBehaviour
             Globals.currentExp = 0;
             ExpLevel.text = "LVL " + (Globals.currentLevel + 1);
             LevelUpPanel.GetComponent<MoveNormal>().MoveUp();
-            levelupTimer = levelupTimerMax;
+            levelUpTimer = levelUpTimerMax;
+
+            Globals.currentAttack += 1;
+            Globals.currentMaxHealth += 1f;
+            Globals.currentDefense += 1;
+            Globals.currentShootTimerMax -= .1f;
+
             playerScript.RestoreMaxHealth();
         }
         float maxExpBarWidth = 400f;

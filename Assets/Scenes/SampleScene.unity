@@ -3036,6 +3036,7 @@ MonoBehaviour:
   ForceField: {fileID: 410120422}
   Laser: {fileID: 765183310}
   HealthBar: {fileID: 364796514}
+  HealthBarBack: {fileID: 33486761}
   PhonePieces:
   - {fileID: 537965401}
   - {fileID: 1331340653}

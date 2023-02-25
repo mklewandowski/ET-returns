@@ -51,7 +51,6 @@ public class Player : MonoBehaviour
 
     float shootTimer = 2f;
     float shootTimerBurstMax = .25f;
-    float shootTimerMax = 1.5f;
     int burstNum = 4;
     int burstNumMax = 4;
     float muzzleFlashTimer = 0f;
@@ -61,12 +60,13 @@ public class Player : MonoBehaviour
 
     bool isAlive = true;
     float health = 10f;
-    float healthMax = 10f;
     float invincibleTimer = 0f;
     float invincibleTimerMax = 1f;
     private SpriteRenderer playerRenderer;
     [SerializeField]
     GameObject HealthBar;
+    [SerializeField]
+    GameObject HealthBarBack;
 
     int currentPhonePieces = 0;
     int maxPhonePieces = 3;
@@ -193,7 +193,7 @@ public class Player : MonoBehaviour
                 HandleShootLaser();
 
             burstNum = burstNum - 1;
-            shootTimer = burstNum == 0 ? shootTimerMax : shootTimerBurstMax;
+            shootTimer = burstNum == 0 ? Globals.currentShootTimerMax : shootTimerBurstMax;
             if (burstNum == 0) burstNum = burstNumMax;
 
             MuzzleGO.SetActive(true);
@@ -311,12 +311,14 @@ public class Player : MonoBehaviour
 
     void UpdateHealthBar()
     {
-        float healthPercent = health / healthMax;
-        float maxWidth = healthMax * 4;
+        float healthPercent = health / Globals.currentMaxHealth;
+        float maxWidth = Globals.currentMaxHealth * 4f;
         float currentWidth = maxWidth * healthPercent;
         HealthBar.transform.localScale = new Vector3(currentWidth, HealthBar.transform.localScale.y, HealthBar.transform.localScale.z);
-        float startPos = -.2f;
-        float extent = .2f;
+        HealthBarBack.transform.localScale = new Vector3(maxWidth, HealthBarBack.transform.localScale.y, HealthBarBack.transform.localScale.z);
+        float healthScale = Globals.currentMaxHealth / Globals.startMaxHealth;
+        float startPos = -.2f * healthScale;
+        float extent = .2f * healthScale;
         float currentPos = startPos + extent * healthPercent;
         HealthBar.transform.localPosition = new Vector3(currentPos, HealthBar.transform.localPosition.y, HealthBar.transform.localPosition.z);
     }
@@ -384,7 +386,7 @@ public class Player : MonoBehaviour
 
     public void RestoreMaxHealth()
     {
-        health = healthMax;
+        health = Globals.currentMaxHealth;
         UpdateHealthBar();
     }
 }
