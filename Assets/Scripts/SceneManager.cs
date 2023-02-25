@@ -13,6 +13,7 @@ public class SceneManager : MonoBehaviour
 
     [SerializeField]
     GameObject Player;
+    Player playerScript;
 
     [SerializeField]
     RectTransform ExpBar;
@@ -39,6 +40,8 @@ public class SceneManager : MonoBehaviour
             Globals.CurrentUpgradeLevels[x] = 0;
         }
         SpawnEnemies(20);
+
+        playerScript = Player.GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -80,8 +83,8 @@ public class SceneManager : MonoBehaviour
     {
         Globals.CurrentUpgradeLevels[(int)availableUpgrades[upgradeNum]]++;
         HUDUpgradePanel.SetActive(false);
-        Player.GetComponent<Player>().ResetHUDPhone();
-        Player.GetComponent<Player>().UpdateUpgrades();
+        playerScript.ResetHUDPhone();
+        playerScript.UpdateUpgrades();
         Time.timeScale = 1f;
 
     }
@@ -114,18 +117,23 @@ public class SceneManager : MonoBehaviour
 
     public void AddExperience(int expAmount)
     {
+        Debug.Log("here");
         Globals.currentExp += expAmount;
+        Debug.Log(Globals.currentExp);
         int maxExp = Globals.currentLevel < Globals.maxExperiences.Length
             ? Globals.maxExperiences[Globals.currentLevel]
             : Globals.maxExperiences[Globals.maxExperiences.Length - 1];
         Globals.currentExp = Mathf.Min(maxExp, Globals.currentExp);
+        Debug.Log(maxExp);
+        Debug.Log(Globals.currentExp);
         if (Globals.currentExp == maxExp)
         {
             Globals.currentLevel++;
             Globals.currentExp = 0;
             ExpLevel.text = "LVL " + (Globals.currentLevel + 1);
+            playerScript.RestoreMaxHealth();
         }
         float maxExpBarWidth = 400f;
-        ExpBar.sizeDelta = new Vector2 ((float)(Globals.currentExp / maxExp) * maxExpBarWidth, ExpBar.sizeDelta.y);
+        ExpBar.sizeDelta = new Vector2 ((float)(Globals.currentExp) / maxExp * maxExpBarWidth, ExpBar.sizeDelta.y);
     }
 }

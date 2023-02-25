@@ -381,4 +381,10 @@ public class Player : MonoBehaviour
         currentPhonePieces = 0;
         UpdateHUDPhone();
     }
+
+    public void RestoreMaxHealth()
+    {
+        health = healthMax;
+        UpdateHealthBar();
+    }
 }
