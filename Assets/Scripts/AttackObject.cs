@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ForceField : MonoBehaviour
+public class AttackObject : MonoBehaviour
 {
-
+    public float Damage = 1f;
 }

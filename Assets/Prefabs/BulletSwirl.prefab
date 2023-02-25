@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 366263705155149004}
   - component: {fileID: 1879809515585156411}
   - component: {fileID: 6428030214657378042}
+  - component: {fileID: 2796331600196713253}
   m_Layer: 0
   m_Name: BulletSwirl
   m_TagString: Untagged
@@ -121,6 +122,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
+  lifeTimer: 3
+  enemyHits: 3
   BombShockWavePrefab: {fileID: 0}
 --- !u!50 &1879809515585156411
 Rigidbody2D:
@@ -169,3 +172,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.08, y: 0.08}
   m_EdgeRadius: 0
+--- !u!114 &2796331600196713253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7729169512300866286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3684bc19e32a8ec4194f58d73f4f3dce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damage: 3

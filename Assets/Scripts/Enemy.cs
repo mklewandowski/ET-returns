@@ -192,20 +192,17 @@ public class Enemy : MonoBehaviour
         }
 
         Bullet bullet = collider.gameObject.GetComponent<Bullet>();
-        ForceField forcefield = collider.gameObject.GetComponent<ForceField>();
-        LaserBeam laserBeam = collider.gameObject.GetComponent<LaserBeam>();
-        BombShockWave bombShockWave = collider.gameObject.GetComponent<BombShockWave>();
+        AttackObject attackObject = collider.gameObject.GetComponent<AttackObject>();
         float damage = 0;
         Vector2 damageVelocity = new Vector2(0, 0);
         if (bullet != null)
         {
-            damage = 1f;
             damageVelocity = collider.gameObject.GetComponent<Rigidbody2D>().velocity;
             bullet.HitEnemy();
         }
-        else if (forcefield || bombShockWave || laserBeam)
+        if (attackObject)
         {
-            damage = 1f;
+            damage = attackObject.Damage;
         }
         life = life - damage;
         if (life <= 0)

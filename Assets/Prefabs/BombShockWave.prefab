@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7809105550465130489}
   - component: {fileID: 196838626201373727}
   - component: {fileID: 196838626201373696}
+  - component: {fileID: 5097605816968616994}
   m_Layer: 0
   m_Name: BombShockWave
   m_TagString: Untagged
@@ -127,3 +128,16 @@ MonoBehaviour:
   GrowTo: 4
   ShrinkTo: 0.1
   Rate: 15
+--- !u!114 &5097605816968616994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7809105550465130495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3684bc19e32a8ec4194f58d73f4f3dce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damage: 1
