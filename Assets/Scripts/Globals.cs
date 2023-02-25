@@ -67,6 +67,7 @@ public class Globals
         "Launches bombs that create explosive shockwave.",
         "Launches powerful swirl attacks in random direction.",
         "Shoots laser beam from player's eye.",
+        "Launches drone that orbits player.",
         "Drops attack invaders from top of screen.",
         "Emits ghosts that harm enemies in their path.",
         "Equips mech suit that reduces enemy attack strength.",
