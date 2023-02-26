@@ -35,11 +35,15 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject InvaderPrefab;
     [SerializeField]
+    GameObject GhostPrefab;
+    [SerializeField]
     GameObject BulletContainer;
     [SerializeField]
     GameObject ForceField;
     [SerializeField]
     GameObject Laser;
+    [SerializeField]
+    GameObject Surround;
 
     float moveSpeed = 2f;
     Vector2 movementVector = new Vector2(0, 0);
@@ -59,6 +63,9 @@ public class Player : MonoBehaviour
     float muzzleFlashTimerMax = .05f;
     float laserTimer = 0f;
     float laserTimerMax = .25f;
+    float surroundTimer = 0f;
+    float surroundTimerOffMax = 4f;
+    float surroundTimerOnMax = 3f; 
 
     bool isAlive = true;
     float health = 10f;
@@ -74,6 +81,9 @@ public class Player : MonoBehaviour
     int maxPhonePieces = 3;
     [SerializeField]
     GameObject[] PhonePieces;
+
+	float controllerLeftStickX; 
+	float controllerLeftStickY;
 
     // Start is called before the first frame update
     void Start()
@@ -92,6 +102,7 @@ public class Player : MonoBehaviour
         HandleShoot();
         HandleInvincible();
         HandleLaser();
+        HandleSurround();
     }
 
     private void HandleMovement()
@@ -101,6 +112,13 @@ public class Player : MonoBehaviour
         moveRight = Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D);
         moveUp = Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
         moveDown = Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S);
+
+        // controllerLeftStickX = Input.GetAxis("Horizontal");
+        // controllerLeftStickY = Input.GetAxis("Vertical");
+		// MyRigidBody.velocity= (new Vector2(controllerLeftStickX*MoveSpeed*1, controllerLeftStickY*MoveSpeed*.8f));
+        // Debug.Log(controllerLeftStickX);
+        // Debug.Log(controllerLeftStickY);
+
         movementVector = new Vector2(0, 0);
 
         if (moveRight)
@@ -195,6 +213,8 @@ public class Player : MonoBehaviour
                 HandleShootLaser();
             if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Invader] > 0 || Globals.DebugMode)
                 HandleLaunchInvader();
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Ghost] > 0 || Globals.DebugMode)
+                HandleLaunchGhost();
 
             burstNum = burstNum - 1;
             shootTimer = burstNum == 0 ? Globals.currentShootTimerMax : shootTimerBurstMax;
@@ -282,6 +302,14 @@ public class Player : MonoBehaviour
         invaderGO.GetComponent<Invader>().Init(this.transform.localPosition);
     }
 
+    private void HandleLaunchGhost()
+    {
+        if (burstNum < burstNumMax)
+            return;
+        GameObject ghostGO = Instantiate(GhostPrefab, new Vector3(this.transform.localPosition.x, this.transform.localPosition.y, 0), Quaternion.identity, BulletContainer.transform);
+        ghostGO.GetComponent<Ghost>().Init(this.transform.localPosition);
+    }
+
     private void HandleLaser()
     {
         if (laserTimer > 0)
@@ -306,6 +334,28 @@ public class Player : MonoBehaviour
             }
             playerRenderer.color = flashOn ? new Color(240f/255f, 165f/255f, 0) : Color.white;
         }
+    }
+
+    private void HandleSurround()
+    {
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Surround] > 0 || Globals.DebugMode)
+        {
+            surroundTimer -= Time.deltaTime;
+            if (surroundTimer <= 0)
+            {
+                if (Surround.activeSelf)
+                {
+                    Surround.SetActive(false);
+                    surroundTimer = surroundTimerOffMax;
+                }
+                else
+                {
+                    Surround.SetActive(true);
+                    surroundTimer = surroundTimerOnMax;
+                }
+            }
+        }
+
     }
 
     public void HitPlayer(float damage)

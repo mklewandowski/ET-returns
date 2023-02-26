@@ -26,7 +26,7 @@ public class Globals
         Surround,
         Invader,
         Ghost,
-        MechSuit,
+        // MechSuit,
         // SeekerMissile,
         // DonkeyKong,
         // Coily,
