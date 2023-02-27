@@ -17,7 +17,7 @@ public class Globals
 
     public enum UpgradeTypes {
         ForceField,
-        TripleShot,
+        SpreadShot,
         RearShot,
         SideShot,
         Bomb,

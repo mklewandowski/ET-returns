@@ -199,7 +199,7 @@ public class Player : MonoBehaviour
             Vector2 bulletMovement = new Vector2(xMovement, yMovement);
             bulletRigidbody.velocity = bulletMovement;
 
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.TripleShot] > 0 || Globals.DebugMode)
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SpreadShot] > 0 || Globals.DebugMode)
                 HandleShootTriple(bulletMovement);
             if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.RearShot] > 0 || Globals.DebugMode)
                 HandleShootRear(bulletMovement);
