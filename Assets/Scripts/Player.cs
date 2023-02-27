@@ -471,7 +471,12 @@ public class Player : MonoBehaviour
     public void UpdateUpgrades()
     {
         if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.ForceField] > 0)
+        {
             ForceField.SetActive(true);
+            int index = (int)Globals.UpgradeTypes.ForceField * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.ForceField] - 1;
+            float scale = Globals.UpgradeLevelAttackSizes[index];
+            ForceField.transform.localScale = new Vector3(scale, scale, 1f);
+        }
     }
 
     public void ResetHUDPhone()
