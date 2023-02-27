@@ -13,11 +13,27 @@ public class SceneManager : MonoBehaviour
 
     [SerializeField]
     GameObject Player;
+    Player playerScript;
+
+    [SerializeField]
+    RectTransform ExpBar;
+    [SerializeField]
+    TextMeshProUGUI ExpLevel;
+    [SerializeField]
+    GameObject LevelUpPanel;
+    [SerializeField]
+    TextMeshProUGUI LevelUpStats;
+    float levelUpTimer = 0;
+    float levelUpTimerMax = 3f;
 
     [SerializeField]
     GameObject HUDUpgradePanel;
     [SerializeField]
-    TextMeshProUGUI[] HUDUpgradeButtonTexts;
+    TextMeshProUGUI[] HUDUpgradeButtonTitleTexts;
+    [SerializeField]
+    TextMeshProUGUI[] HUDUpgradeButtonLvlTexts;
+    [SerializeField]
+    TextMeshProUGUI[] HUDUpgradeButtonDescTexts;
     List<Globals.UpgradeTypes> availableUpgrades = new List<Globals.UpgradeTypes>();
 
     float spawnTimer = 5f;
@@ -26,23 +42,49 @@ public class SceneManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        int numUpgrades = System.Enum.GetValues(typeof(Globals.UpgradeTypes)).Length;
+        Globals.maxExperiences = new int[] {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1200, 1400, 1600, 1800, 2000};
+        Globals.healthPerLevel  = new float[] {0, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1 };
+        Globals.attackPerLevel = new int[] {0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10 };
+        Globals.defensePerLevel = new int[] {0, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10 };
+        Globals.shootTimerDecreasePerLevel = new float[] {0, 0, .1f, 0, 0, .1f, 0, 0, .1f, 0, 0, 0, .1f, 0, 0, 0, .1f };
+        // the last upgrade slot is the HP refill, don't include that since it behaves uniquely
+        int numUpgrades = System.Enum.GetValues(typeof(Globals.UpgradeTypes)).Length - 1;
         Globals.CurrentUpgradeLevels = new int[numUpgrades];
         for (int x = 0; x < Globals.CurrentUpgradeLevels.Length; x++)
         {
             Globals.CurrentUpgradeLevels[x] = 0;
         }
         SpawnEnemies(20);
+
+        playerScript = Player.GetComponent<Player>();
     }
 
     // Update is called once per frame
     void Update()
+    {
+        HandleEnemyTimer();
+        HandleLevelUpTimer();
+    }
+
+    void HandleEnemyTimer()
     {
         spawnTimer -= Time.deltaTime;
         if (spawnTimer <= 0)
         {
             spawnTimer = spawnTimerMax;
             SpawnEnemies(10);
+        }
+    }
+
+    void HandleLevelUpTimer()
+    {
+        if (levelUpTimer > 0)
+        {
+            levelUpTimer -= Time.deltaTime;
+            if (levelUpTimer < 0)
+            {
+                LevelUpPanel.GetComponent<MoveWhenPaused>().MoveDown();
+            }
         }
     }
 
@@ -72,21 +114,43 @@ public class SceneManager : MonoBehaviour
 
     public void SelectUpgrade(int upgradeNum)
     {
-        Globals.CurrentUpgradeLevels[(int)availableUpgrades[upgradeNum]]++;
-        HUDUpgradePanel.SetActive(false);
-        Player.GetComponent<Player>().ResetHUDPhone();
-        Player.GetComponent<Player>().UpdateUpgrades();
+        if (availableUpgrades[upgradeNum] == Globals.UpgradeTypes.RefillHP)
+        {
+            playerScript.RestoreMaxHealth();
+        }
+        else
+        {
+            Globals.CurrentUpgradeLevels[(int)availableUpgrades[upgradeNum]]++;
+        }
+        HUDUpgradePanel.GetComponent<MoveWhenPaused>().MoveDown();
+        playerScript.ResetHUDPhone();
+        playerScript.UpdateUpgrades();
         Time.timeScale = 1f;
 
     }
     public void ShowUpgradeSelection()
     {
         availableUpgrades.Clear();
+        int numUpgrades = 0;
+        int maxUpgrades = 5;
         for (int x = 0; x < Globals.CurrentUpgradeLevels.Length; x++)
         {
-            if (Globals.CurrentUpgradeLevels[x] <= Globals.MaxUpgradeLevel)
+            if (Globals.CurrentUpgradeLevels[x] > 0)
+                numUpgrades++;
+        }
+        for (int x = 0; x < Globals.CurrentUpgradeLevels.Length; x++)
+        {
+            if ((numUpgrades < maxUpgrades && Globals.CurrentUpgradeLevels[x] < Globals.MaxUpgradeLevel) ||
+                (numUpgrades >= maxUpgrades && Globals.CurrentUpgradeLevels[x] < Globals.MaxUpgradeLevel && Globals.CurrentUpgradeLevels[x] > 0))
                 availableUpgrades.Add((Globals.UpgradeTypes)x);
         }
+        int maxSlots = 3;
+        int numHPslots = maxSlots - availableUpgrades.Count;
+        for (int x = 0; x < numHPslots; x++)
+        {
+            availableUpgrades.Add(Globals.UpgradeTypes.RefillHP);
+        }
+
 
         for (int x = 0; x < availableUpgrades.Count; x++)
         {
@@ -96,13 +160,67 @@ public class SceneManager : MonoBehaviour
             availableUpgrades[swapPos] = temp;
         }
 
-        for (int x = 0; x < HUDUpgradeButtonTexts.Length; x++)
+        for (int x = 0; x < HUDUpgradeButtonTitleTexts.Length; x++)
         {
-            HUDUpgradeButtonTexts[x].text = Globals.UpgradeText[(int)availableUpgrades[x]];
-            HUDUpgradeButtonTexts[x].text = HUDUpgradeButtonTexts[x].text + "\nLvl " + (Globals.CurrentUpgradeLevels[(int)availableUpgrades[x]] + 1);
+            HUDUpgradeButtonTitleTexts[x].text = Globals.UpgradeText[(int)availableUpgrades[x]];
+            if (availableUpgrades[x] == Globals.UpgradeTypes.RefillHP)
+            {
+                HUDUpgradeButtonLvlTexts[x].text = "";
+                HUDUpgradeButtonDescTexts[x].text = Globals.UpgradeDescriptionText[(int)availableUpgrades[x] * Globals.MaxLevelsPerUpgrade];
+            }
+            else
+            {
+                HUDUpgradeButtonLvlTexts[x].text = "Lvl " + (Globals.CurrentUpgradeLevels[(int)availableUpgrades[x]] + 1);
+                HUDUpgradeButtonDescTexts[x].text = Globals.UpgradeDescriptionText[(int)availableUpgrades[x] * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)availableUpgrades[x]]];
+            }
         }
 
-        HUDUpgradePanel.SetActive(true);
+        HUDUpgradePanel.GetComponent<MoveWhenPaused>().MoveUp();
+        LevelUpPanel.GetComponent<MoveWhenPaused>().MoveDown();
         Time.timeScale = 0f;
+    }
+
+    public void AddExperience(int expAmount)
+    {
+        Globals.currentExp += expAmount;
+        int maxExp = Globals.currentLevel < Globals.maxExperiences.Length
+            ? Globals.maxExperiences[Globals.currentLevel]
+            : Globals.maxExperiences[Globals.maxExperiences.Length - 1];
+        Globals.currentExp = Mathf.Min(maxExp, Globals.currentExp);
+        if (Globals.currentExp == maxExp)
+        {
+            Globals.currentLevel++;
+            Globals.currentExp = 0;
+            ExpLevel.text = "LVL " + (Globals.currentLevel + 1);
+            string statsText = "";
+            if (Globals.healthPerLevel.Length > Globals.currentLevel && Globals.healthPerLevel[Globals.currentLevel] > 0)
+            {
+                statsText = statsText + ("HP+" + Globals.healthPerLevel[Globals.currentLevel] + " ");
+                Globals.currentMaxHealth += 1f;
+            }
+            if (Globals.attackPerLevel.Length > Globals.currentLevel && Globals.attackPerLevel[Globals.currentLevel] > 0)
+            {
+                statsText = statsText + ("ATTACK+" + Globals.attackPerLevel[Globals.currentLevel] + "% ");
+                Globals.currentAttack = Globals.currentAttack + (Globals.currentAttack * Globals.attackPerLevel[Globals.currentLevel] * .01f);
+            }
+            if (Globals.defensePerLevel.Length > Globals.currentLevel && Globals.defensePerLevel[Globals.currentLevel] > 0)
+            {
+                statsText = statsText + ("DEFENSE+" + Globals.defensePerLevel[Globals.currentLevel] + "% ");
+                Globals.currentDefense = Globals.currentDefense + (Globals.currentDefense * Globals.defensePerLevel[Globals.currentLevel] * .01f);
+            }
+            if (Globals.shootTimerDecreasePerLevel.Length > Globals.currentLevel && Globals.shootTimerDecreasePerLevel[Globals.currentLevel] > 0)
+            {
+                statsText = statsText + ("SHOT INTERVAL-" + Globals.shootTimerDecreasePerLevel[Globals.currentLevel]);
+                Globals.currentShootTimerMax -= Globals.shootTimerDecreasePerLevel[Globals.currentLevel];
+            }
+            LevelUpStats.text = statsText;
+
+            LevelUpPanel.GetComponent<MoveWhenPaused>().MoveUp();
+            levelUpTimer = levelUpTimerMax;
+
+            playerScript.RestoreMaxHealth();
+        }
+        float maxExpBarWidth = 400f;
+        ExpBar.sizeDelta = new Vector2 ((float)(Globals.currentExp) / maxExp * maxExpBarWidth, ExpBar.sizeDelta.y);
     }
 }

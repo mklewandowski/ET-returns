@@ -67,8 +67,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.08f, 0.08f);
             flipWithMovement = true;
-            life = 1f;
-            hitStrength = 1f;
+            life = 1.5f;
+            hitStrength = 2f;
         }
         else if (type == Globals.EnemyTypes.Robot)
         {
@@ -89,8 +89,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(3f, 3f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = true;
-            life = 2f;
-            hitStrength = 2f;
+            life = 4f;
+            hitStrength = 5f;
         }
         else if (type == Globals.EnemyTypes.Pac)
         {
@@ -101,8 +101,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.07f, 0.07f);
             flipWithMovement = true;
-            life = 1f;
-            hitStrength = 1f;
+            life = 2f;
+            hitStrength = 3f;
         }
         else if (type == Globals.EnemyTypes.MsPac)
         {
@@ -113,8 +113,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(3f, 3f, 1f);
             enemyCollider.size = new Vector2(0.09f, 0.09f);
             flipWithMovement = true;
-            life = 2f;
-            hitStrength = 1.5f;
+            life = 3f;
+            hitStrength = 3f;
         }
         else if (type == Globals.EnemyTypes.FBI)
         {
@@ -192,20 +192,19 @@ public class Enemy : MonoBehaviour
         }
 
         Bullet bullet = collider.gameObject.GetComponent<Bullet>();
-        ForceField forcefield = collider.gameObject.GetComponent<ForceField>();
-        LaserBeam laserBeam = collider.gameObject.GetComponent<LaserBeam>();
-        BombShockWave bombShockWave = collider.gameObject.GetComponent<BombShockWave>();
+        AttackObject attackObject = collider.gameObject.GetComponent<AttackObject>();
         float damage = 0;
         Vector2 damageVelocity = new Vector2(0, 0);
         if (bullet != null)
         {
-            damage = 1f;
-            damageVelocity = collider.gameObject.GetComponent<Rigidbody2D>().velocity;
+            Rigidbody2D bulletRB = collider.gameObject.GetComponent<Rigidbody2D>();
+            if (bulletRB != null)
+                damageVelocity = collider.gameObject.GetComponent<Rigidbody2D>().velocity;
             bullet.HitEnemy();
         }
-        else if (forcefield || bombShockWave || laserBeam)
+        if (attackObject)
         {
-            damage = 1f;
+            damage = attackObject.Damage * Globals.currentAttack;
         }
         life = life - damage;
         if (life <= 0)

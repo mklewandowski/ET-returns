@@ -7,7 +7,9 @@ public class Bullet : MonoBehaviour
     [SerializeField]
     Globals.BulletTypes type = Globals.BulletTypes.Standard;
 
+    [SerializeField]
     float lifeTimer = 3f;
+    [SerializeField]
     int enemyHits = 1;
 
     [SerializeField]
@@ -32,6 +34,11 @@ public class Bullet : MonoBehaviour
     public void Init(Globals.BulletTypes newType)
     {
         type = newType;
+    }
+
+    public void SetEnemyHits(int newEnemyHits)
+    {
+        enemyHits = newEnemyHits;
     }
 
     public void HitEnemy()
