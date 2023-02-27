@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
     float muzzleFlashTimer = 0f;
     float muzzleFlashTimerMax = .05f;
     float laserTimer = 0f;
-    float laserTimerMax = .25f;
+    float laserTimerMax = .15f;
     float surroundTimer = 0f;
     float surroundTimerOffMax = 4f;
     float surroundTimerOnMax = 3f;
@@ -290,6 +290,8 @@ public class Player : MonoBehaviour
 
     private void HandleShootLaser()
     {
+        if (burstNum < burstNumMax)
+            return;
         Laser.SetActive(true);
         laserTimer = laserTimerMax;
     }
