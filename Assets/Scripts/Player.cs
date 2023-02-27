@@ -362,7 +362,8 @@ public class Player : MonoBehaviour
     {
         if (invincibleTimer <= 0)
         {
-            health -= damage;
+            float defenseAdjustedDamage = damage / Globals.currentDefense;
+            health -= defenseAdjustedDamage;
             UpdateHealthBar();
             if (health <= 0)
                 KillPlayer();
