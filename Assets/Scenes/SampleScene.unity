@@ -4662,7 +4662,10 @@ MonoBehaviour:
   BulletContainer: {fileID: 2098476539}
   ForceField: {fileID: 410120422}
   Laser: {fileID: 765183310}
-  Surround: {fileID: 326865817}
+  SurroundObjects:
+  - {fileID: 326865817}
+  - {fileID: 1782096304}
+  - {fileID: 865658001}
   HealthBar: {fileID: 364796514}
   HealthBarBack: {fileID: 33486761}
   PhonePieces:

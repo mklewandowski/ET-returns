@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject Laser;
     [SerializeField]
-    GameObject Surround;
+    GameObject[] SurroundObjects;
 
     float moveSpeed = 2f;
     Vector2 movementVector = new Vector2(0, 0);
@@ -57,8 +57,8 @@ public class Player : MonoBehaviour
 
     float shootTimer = 2f;
     float shootTimerBurstMax = .25f;
-    int burstNum = 4;
-    int burstNumMax = 4;
+    int burstNum = 5;
+    int burstNumMax = 5;
     float muzzleFlashTimer = 0f;
     float muzzleFlashTimerMax = .05f;
     float laserTimer = 0f;
@@ -66,6 +66,7 @@ public class Player : MonoBehaviour
     float surroundTimer = 0f;
     float surroundTimerOffMax = 4f;
     float surroundTimerOnMax = 3f;
+    bool surroundOn = false;
 
     bool isAlive = true;
     float health = 20f;
@@ -200,7 +201,7 @@ public class Player : MonoBehaviour
             bulletRigidbody.velocity = bulletMovement;
 
             if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SpreadShot] > 0 || Globals.DebugMode)
-                HandleShootTriple(bulletMovement);
+                HandleShootSpread(bulletMovement);
             if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.RearShot] > 0 || Globals.DebugMode)
                 HandleShootRear(bulletMovement);
             if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SideShot] > 0 || Globals.DebugMode)
@@ -232,21 +233,33 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void HandleShootTriple(Vector2 bulletMovement)
+    private void HandleShootSpread(Vector2 bulletMovement)
     {
-        Vector2 bullet1Movement = Quaternion.Euler(0, 0, -10f) * bulletMovement;
-        Vector2 bullet2Movement = Quaternion.Euler(0, 0, 10f) * bulletMovement;
-        GameObject bullet1GO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
-        Rigidbody2D bullet1Rigidbody = bullet1GO.GetComponent<Rigidbody2D>();
-        GameObject bullet2GO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
-        Rigidbody2D bullet2Rigidbody = bullet2GO.GetComponent<Rigidbody2D>();
-        bullet1Rigidbody.velocity = bullet1Movement;
-        bullet2Rigidbody.velocity = bullet2Movement;
+        int index = (int)Globals.UpgradeTypes.SpreadShot * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SpreadShot] - 1;
+        int spreadShots = Globals.UpgradeLevelBullets[index];
+        MakeBullet(Quaternion.Euler(0, 0, -10f) * bulletMovement);
+        MakeBullet(Quaternion.Euler(0, 0, 10f) * bulletMovement);
+        if (spreadShots >= 4)
+            MakeBullet(Quaternion.Euler(0, 0, 15f) * bulletMovement);
+        if (spreadShots >= 5)
+            MakeBullet(Quaternion.Euler(0, 0, -15f) * bulletMovement);
+        if (spreadShots >= 6)
+            MakeBullet(Quaternion.Euler(0, 0, 20f) * bulletMovement);
+        if (spreadShots >= 7)
+            MakeBullet(Quaternion.Euler(0, 0, -20f) * bulletMovement);
+    }
+
+    private void MakeBullet(Vector2 bulletMovement)
+    {
+        GameObject bulletGO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+        Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
+        bulletRigidbody.velocity = bulletMovement;
     }
 
     private void HandleShootRear(Vector2 bulletMovement)
     {
-        if (burstNum < burstNumMax)
+        int index = (int)Globals.UpgradeTypes.RearShot * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.RearShot] - 1;
+        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
             return;
         Vector2 bulletRearMovement = new Vector2(bulletMovement.x * -1f, bulletMovement.y * -1f);
         GameObject bulletRearGO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
@@ -256,7 +269,8 @@ public class Player : MonoBehaviour
 
     private void HandleShootSide(Vector2 bulletMovement)
     {
-        if (burstNum < burstNumMax)
+        int index = (int)Globals.UpgradeTypes.SideShot * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SideShot] - 1;
+        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
             return;
         Vector2 bullet1Movement = Quaternion.Euler(0, 0, -90f) * bulletMovement;
         Vector2 bullet2Movement = Quaternion.Euler(0, 0, 90f) * bulletMovement;
@@ -270,7 +284,8 @@ public class Player : MonoBehaviour
 
     private void HandleShootSwirl()
     {
-        if (burstNum < burstNumMax)
+        int index = (int)Globals.UpgradeTypes.Swirl * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Swirl] - 1;
+        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
             return;
         Vector2 bulletMovement = Quaternion.Euler(0, 0, Random.Range(0, 360f)) * new Vector2(3f, 3f);
         GameObject bulletGO = Instantiate(BulletSwirlPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
@@ -280,7 +295,8 @@ public class Player : MonoBehaviour
 
     private void HandleShootBomb()
     {
-        if (burstNum < burstNumMax)
+        int index = (int)Globals.UpgradeTypes.Bomb * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] - 1;
+        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
             return;
         Vector2 bulletMovement = Quaternion.Euler(0, 0, Random.Range(-25f, 25f)) * new Vector2(0, 5f);
         GameObject bulletGO = Instantiate(BulletBombPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
@@ -298,7 +314,8 @@ public class Player : MonoBehaviour
 
     private void HandleLaunchInvader()
     {
-        if (burstNum < burstNumMax)
+        int index = (int)Globals.UpgradeTypes.Invader * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Invader] - 1;
+        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
             return;
         GameObject invaderGO = Instantiate(InvaderPrefab, new Vector3(this.transform.localPosition.x, this.transform.localPosition.y + 100f, 0), Quaternion.identity, BulletContainer.transform);
         invaderGO.GetComponent<Invader>().Init(this.transform.localPosition);
@@ -306,7 +323,8 @@ public class Player : MonoBehaviour
 
     private void HandleLaunchGhost()
     {
-        if (burstNum < burstNumMax)
+        int index = (int)Globals.UpgradeTypes.Ghost * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Ghost] - 1;
+        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
             return;
         GameObject ghostGO = Instantiate(GhostPrefab, new Vector3(this.transform.localPosition.x, this.transform.localPosition.y, 0), Quaternion.identity, BulletContainer.transform);
         ghostGO.GetComponent<Ghost>().Init(this.transform.localPosition);
@@ -345,19 +363,31 @@ public class Player : MonoBehaviour
             surroundTimer -= Time.deltaTime;
             if (surroundTimer <= 0)
             {
-                if (Surround.activeSelf)
+                int index = (int)Globals.UpgradeTypes.Surround * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Surround] - 1;
+                int numSurroundObjects = Globals.UpgradeLevelBullets[index];
+                if (surroundOn)
                 {
-                    Surround.SetActive(false);
+                    for (int x = 0; x < SurroundObjects.Length; x++)
+                    {
+                        SurroundObjects[x].SetActive(false);
+                    }
                     surroundTimer = surroundTimerOffMax;
+                    surroundOn = false;
                 }
                 else
                 {
-                    Surround.SetActive(true);
+                    SurroundObjects[0].transform.localPosition = new Vector2(0, 1f);
+                    SurroundObjects[1].transform.localPosition = numSurroundObjects < 3 ? new Vector2(0, -1f) : new Vector2(-.87f, -.5f);
+                    SurroundObjects[2].transform.localPosition = new Vector2(.87f, -.5f);
+                    for (int x = 0; x < SurroundObjects.Length; x++)
+                    {
+                        SurroundObjects[x].SetActive(numSurroundObjects > x);
+                    }
                     surroundTimer = surroundTimerOnMax;
+                    surroundOn = true;
                 }
             }
         }
-
     }
 
     public void HitPlayer(float damage)
