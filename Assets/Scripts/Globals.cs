@@ -48,7 +48,7 @@ public class Globals
         "Bomb",
         "Swirl",
         "Laser Beam",
-        "Surround",
+        "Orbiting Drone",
         "Invader",
         "Ghost",
         "Mech Suit",
@@ -59,17 +59,19 @@ public class Globals
         "Frygar"
     };
 
+    public static int MaxLevelsPerUpgrade = 5;
+
     public static string[] UpgradeDescriptionText = {
-        "Creates an attack force field around the player.",
-        "Converts normal gun into spread shot.",
-        "Shoots bullets behind player.",
-        "Shoots bullets to the sides of player.",
-        "Launches bombs that create explosive shockwave.",
-        "Launches powerful swirl attacks in random direction.",
-        "Shoots laser beam from player's eye.",
-        "Launches drone that orbits player.",
-        "Drops attack invaders from top of screen.",
-        "Emits ghosts that harm enemies in their path.",
+        "Creates an attack force field around the player.", "Increases force field by 10%.", "Increases force field by 10%.", "Increases force field by 10%.", "Increases force field by 10%.",
+        "Converts normal gun into spread shot.", "Adds additional spread bullet.", "Adds additional spread bullet.", "Adds additional spread bullet.", "Adds additional spread bullet.",
+        "Shoots bullets behind player.", "Adds additional rear bullet.", "Adds additional rear bullet.", "Adds additional rear bullet.", "Adds additional rear bullet.",
+        "Shoots bullets to the sides of player.", "Adds additional side bullet.", "Adds additional side bullet.", "Adds additional side bullet.", "Adds additional side bullet.",
+        "Launches bombs that create explosive shockwave.", "Adds additional bomb.", "Adds additional bomb.", "Adds additional bomb.", "Adds additional bomb.",
+        "Launches powerful swirl attacks in random direction.", "Adds additional swirl.", "Adds additional swirl.", "Adds additional swirl.", "Adds additional swirl.",
+        "Shoots laser beam from player's eye.", "Increases laser attack time by 10%.", "Increases laser attack time by 10%.", "Increases laser attack time by 10%.", "Increases laser attack time by 10%.",
+        "Launches drone that orbits player.", "Increases drone orbit time by 10%.", "Adds additional drone.", "Increases drone orbit time by 10%.", "Adds additional drone.",
+        "Drops attack invaders from top of screen.", "Increases number of enemies that invader passes through by 1.", "Adds additional invader.", "Increases number of enemies that invader passes through by 1.", "Adds additional invader.",
+        "Emits ghosts that harm enemies in their path.", "Increases number of enemies that ghost passes through by 1.", "Adds additional ghost.", "Increases number of enemies that ghost passes through by 1.", "Adds additional ghost.",
         "Equips mech suit that reduces enemy attack strength.",
         "Launches missiles that attack nearest enemy.",
         "Summons Donkey Kong to attack enemies.",
