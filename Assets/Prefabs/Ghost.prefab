@@ -141,7 +141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   lifeTimer: 3
-  enemyHits: 4
+  enemyHits: 3
   BombShockWavePrefab: {fileID: 0}
 --- !u!114 &5871507900161143128
 MonoBehaviour:
