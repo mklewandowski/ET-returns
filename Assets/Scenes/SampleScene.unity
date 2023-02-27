@@ -1994,7 +1994,7 @@ GameObject:
   - component: {fileID: 410120424}
   - component: {fileID: 410120425}
   - component: {fileID: 410120426}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Field
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6695,7 +6695,7 @@ GameObject:
   - component: {fileID: 1777323223}
   - component: {fileID: 1777323222}
   - component: {fileID: 1777323224}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Beam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
