@@ -123,9 +123,17 @@ public class SceneManager : MonoBehaviour
     public void ShowUpgradeSelection()
     {
         availableUpgrades.Clear();
+        int numUpgrades = 0;
+        int maxUpgrades = 5;
         for (int x = 0; x < Globals.CurrentUpgradeLevels.Length; x++)
         {
-            if (Globals.CurrentUpgradeLevels[x] <= Globals.MaxUpgradeLevel)
+            if (Globals.CurrentUpgradeLevels[x] > 0)
+                numUpgrades++;
+        }
+        for (int x = 0; x < Globals.CurrentUpgradeLevels.Length; x++)
+        {
+            if ((numUpgrades < maxUpgrades && Globals.CurrentUpgradeLevels[x] < Globals.MaxUpgradeLevel) ||
+                (numUpgrades >= maxUpgrades && Globals.CurrentUpgradeLevels[x] < Globals.MaxUpgradeLevel && Globals.CurrentUpgradeLevels[x] > 0))
                 availableUpgrades.Add((Globals.UpgradeTypes)x);
         }
 
