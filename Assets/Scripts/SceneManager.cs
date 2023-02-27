@@ -83,7 +83,7 @@ public class SceneManager : MonoBehaviour
             levelUpTimer -= Time.deltaTime;
             if (levelUpTimer < 0)
             {
-                LevelUpPanel.GetComponent<MoveNormal>().MoveDown();
+                LevelUpPanel.GetComponent<MoveWhenPaused>().MoveDown();
             }
         }
     }
@@ -176,6 +176,7 @@ public class SceneManager : MonoBehaviour
         }
 
         HUDUpgradePanel.GetComponent<MoveWhenPaused>().MoveUp();
+        LevelUpPanel.GetComponent<MoveWhenPaused>().MoveDown();
         Time.timeScale = 0f;
     }
 
@@ -214,7 +215,7 @@ public class SceneManager : MonoBehaviour
             }
             LevelUpStats.text = statsText;
 
-            LevelUpPanel.GetComponent<MoveNormal>().MoveUp();
+            LevelUpPanel.GetComponent<MoveWhenPaused>().MoveUp();
             levelUpTimer = levelUpTimerMax;
 
             playerScript.RestoreMaxHealth();
