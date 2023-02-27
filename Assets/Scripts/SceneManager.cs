@@ -47,7 +47,8 @@ public class SceneManager : MonoBehaviour
         Globals.attackPerLevel = new int[] {0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10 };
         Globals.defensePerLevel = new int[] {0, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10 };
         Globals.shootTimerDecreasePerLevel = new float[] {0, 0, .1f, 0, 0, .1f, 0, 0, .1f, 0, 0, 0, .1f, 0, 0, 0, .1f };
-        int numUpgrades = System.Enum.GetValues(typeof(Globals.UpgradeTypes)).Length;
+        // the last upgrade slot is the HP refill, don't include that since it behaves uniquely
+        int numUpgrades = System.Enum.GetValues(typeof(Globals.UpgradeTypes)).Length - 1;
         Globals.CurrentUpgradeLevels = new int[numUpgrades];
         for (int x = 0; x < Globals.CurrentUpgradeLevels.Length; x++)
         {
@@ -113,7 +114,14 @@ public class SceneManager : MonoBehaviour
 
     public void SelectUpgrade(int upgradeNum)
     {
-        Globals.CurrentUpgradeLevels[(int)availableUpgrades[upgradeNum]]++;
+        if (availableUpgrades[upgradeNum] == Globals.UpgradeTypes.RefillHP)
+        {
+            playerScript.RestoreMaxHealth();
+        }
+        else
+        {
+            Globals.CurrentUpgradeLevels[(int)availableUpgrades[upgradeNum]]++;
+        }
         HUDUpgradePanel.GetComponent<MoveWhenPaused>().MoveDown();
         playerScript.ResetHUDPhone();
         playerScript.UpdateUpgrades();
@@ -136,6 +144,13 @@ public class SceneManager : MonoBehaviour
                 (numUpgrades >= maxUpgrades && Globals.CurrentUpgradeLevels[x] < Globals.MaxUpgradeLevel && Globals.CurrentUpgradeLevels[x] > 0))
                 availableUpgrades.Add((Globals.UpgradeTypes)x);
         }
+        int maxSlots = 3;
+        int numHPslots = maxSlots - availableUpgrades.Count;
+        for (int x = 0; x < numHPslots; x++)
+        {
+            availableUpgrades.Add(Globals.UpgradeTypes.RefillHP);
+        }
+
 
         for (int x = 0; x < availableUpgrades.Count; x++)
         {
@@ -148,8 +163,16 @@ public class SceneManager : MonoBehaviour
         for (int x = 0; x < HUDUpgradeButtonTitleTexts.Length; x++)
         {
             HUDUpgradeButtonTitleTexts[x].text = Globals.UpgradeText[(int)availableUpgrades[x]];
-            HUDUpgradeButtonLvlTexts[x].text = "Lvl " + (Globals.CurrentUpgradeLevels[(int)availableUpgrades[x]] + 1);
-            HUDUpgradeButtonDescTexts[x].text = Globals.UpgradeDescriptionText[(int)availableUpgrades[x] * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)availableUpgrades[x]]];
+            if (availableUpgrades[x] == Globals.UpgradeTypes.RefillHP)
+            {
+                HUDUpgradeButtonLvlTexts[x].text = "";
+                HUDUpgradeButtonDescTexts[x].text = Globals.UpgradeDescriptionText[(int)availableUpgrades[x] * Globals.MaxLevelsPerUpgrade];
+            }
+            else
+            {
+                HUDUpgradeButtonLvlTexts[x].text = "Lvl " + (Globals.CurrentUpgradeLevels[(int)availableUpgrades[x]] + 1);
+                HUDUpgradeButtonDescTexts[x].text = Globals.UpgradeDescriptionText[(int)availableUpgrades[x] * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)availableUpgrades[x]]];
+            }
         }
 
         HUDUpgradePanel.GetComponent<MoveWhenPaused>().MoveUp();

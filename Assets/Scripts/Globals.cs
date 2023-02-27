@@ -32,6 +32,7 @@ public class Globals
         // Coily,
         // Robot,
         // Frygar
+        RefillHP,
     }
 
     public enum BulletTypes {
@@ -51,12 +52,13 @@ public class Globals
         "Orbiting Drone",
         "Invader",
         "Ghost",
-        "Mech Suit",
-        "Seeker Missile",
-        "Donkey Kong",
-        "Coily",
-        "Berzerk Bot",
-        "Frygar"
+        // "Mech Suit",
+        // "Seeker Missile",
+        // "Donkey Kong",
+        // "Coily",
+        // "Berzerk Bot",
+        // "Frygar"
+        "Refill HP"
     };
 
     public static int MaxLevelsPerUpgrade = 5;
@@ -72,12 +74,13 @@ public class Globals
         "Launches drone that orbits player.", "Increases drone orbit time by 10%.", "Adds additional drone.", "Increases drone orbit time by 10%.", "Adds additional drone.",
         "Drops attack invaders from top of screen.", "Increases number of enemies that invader passes through by 1.", "Adds additional invader.", "Increases number of enemies that invader passes through by 1.", "Adds additional invader.",
         "Emits ghosts that harm enemies in their path.", "Increases number of enemies that ghost passes through by 1.", "Adds additional ghost.", "Increases number of enemies that ghost passes through by 1.", "Adds additional ghost.",
-        "Equips mech suit that reduces enemy attack strength.",
-        "Launches missiles that attack nearest enemy.",
-        "Summons Donkey Kong to attack enemies.",
-        "Summons Coily to attack enemies.",
-        "Summons Berzerk Bot to attack enemies.",
-        "Summons Frygar to attack enemies."
+        // "Equips mech suit that reduces enemy attack strength.",
+        // "Launches missiles that attack nearest enemy.",
+        // "Summons Donkey Kong to attack enemies.",
+        // "Summons Coily to attack enemies.",
+        // "Summons Berzerk Bot to attack enemies.",
+        // "Summons Frygar to attack enemies."
+        "Refill HP meter to maximum amount."
     };
 
     public static int[] UpgradeLevelBullets = {
