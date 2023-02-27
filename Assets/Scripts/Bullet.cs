@@ -36,6 +36,11 @@ public class Bullet : MonoBehaviour
         type = newType;
     }
 
+    public void SetEnemyHits(int newEnemyHits)
+    {
+        enemyHits = newEnemyHits;
+    }
+
     public void HitEnemy()
     {
         enemyHits--;

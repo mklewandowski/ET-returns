@@ -9,6 +9,9 @@ public class Invader : MonoBehaviour
 
     public void Init(Vector3 centerPos)
     {
+        int index = (int)Globals.UpgradeTypes.Invader * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Invader] - 1;
+        int enemyHitsAllowed = Globals.UpgradeLevelEnemyHits[index];
+        this.GetComponent<Bullet>().SetEnemyHits(enemyHitsAllowed);
         this.GetComponent<SpriteRenderer>().sprite = InvaderSprites[Random.Range(0, InvaderSprites.Length)];
         this.transform.localPosition = new Vector2(Random.Range(centerPos.x - 3f, centerPos.x + 3f), centerPos.y + 6f);
     }

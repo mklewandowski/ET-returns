@@ -11,6 +11,9 @@ public class Ghost : MonoBehaviour
 
     public void Init(Vector3 centerPos)
     {
+        int index = (int)Globals.UpgradeTypes.Ghost * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Ghost] - 1;
+        int enemyHitsAllowed = Globals.UpgradeLevelEnemyHits[index];
+        this.GetComponent<Bullet>().SetEnemyHits(enemyHitsAllowed);
         this.GetComponent<SpriteRenderer>().sprite = GhostSprites[Random.Range(0, GhostSprites.Length)];
         ChangeDirection();
     }
@@ -41,6 +44,6 @@ public class Ghost : MonoBehaviour
             direction = new Vector2(0, -3f);
 
         directionChangeTimer = Random.Range(.33f, .66f);
-        
+
     }
 }
