@@ -62,10 +62,8 @@ public class Player : MonoBehaviour
     float muzzleFlashTimer = 0f;
     float muzzleFlashTimerMax = .05f;
     float laserTimer = 0f;
-    float laserTimerMax = .15f;
     float surroundTimer = 0f;
     float surroundTimerOffMax = 4f;
-    float surroundTimerOnMax = 3f;
     bool surroundOn = false;
 
     bool isAlive = true;
@@ -309,6 +307,8 @@ public class Player : MonoBehaviour
         if (burstNum < burstNumMax)
             return;
         Laser.SetActive(true);
+        int index = (int)Globals.UpgradeTypes.Laser * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Laser] - 1;
+        float laserTimerMax = Globals.UpgradeLevelAttackTimes[index];
         laserTimer = laserTimerMax;
     }
 
@@ -383,6 +383,7 @@ public class Player : MonoBehaviour
                     {
                         SurroundObjects[x].SetActive(numSurroundObjects > x);
                     }
+                    float surroundTimerOnMax = Globals.UpgradeLevelAttackTimes[index];
                     surroundTimer = surroundTimerOnMax;
                     surroundOn = true;
                 }
