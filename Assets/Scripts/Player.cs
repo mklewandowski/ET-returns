@@ -65,10 +65,10 @@ public class Player : MonoBehaviour
     float laserTimerMax = .25f;
     float surroundTimer = 0f;
     float surroundTimerOffMax = 4f;
-    float surroundTimerOnMax = 3f; 
+    float surroundTimerOnMax = 3f;
 
     bool isAlive = true;
-    float health = 10f;
+    float health = 20f;
     float invincibleTimer = 0f;
     float invincibleTimerMax = 1f;
     private SpriteRenderer playerRenderer;
@@ -82,7 +82,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject[] PhonePieces;
 
-	float controllerLeftStickX; 
+	float controllerLeftStickX;
 	float controllerLeftStickY;
 
     // Start is called before the first frame update
@@ -374,7 +374,7 @@ public class Player : MonoBehaviour
     void UpdateHealthBar()
     {
         float healthPercent = health / Globals.currentMaxHealth;
-        float maxWidth = Globals.currentMaxHealth * 4f;
+        float maxWidth = Globals.currentMaxHealth * 2f;
         float currentWidth = maxWidth * healthPercent;
         HealthBar.transform.localScale = new Vector3(currentWidth, HealthBar.transform.localScale.y, HealthBar.transform.localScale.z);
         HealthBarBack.transform.localScale = new Vector3(maxWidth, HealthBarBack.transform.localScale.y, HealthBarBack.transform.localScale.z);

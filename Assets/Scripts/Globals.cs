@@ -84,10 +84,14 @@ public class Globals
     public static int currentExp = 0;
     public static int currentLevel = 0;
     public static int[] maxExperiences;
+    public static float[] healthPerLevel;
+    public static int[] attackPerLevel;
+    public static int[] defensePerLevel;
+    public static float[] shootTimerDecreasePerLevel;
 
-    public static float startMaxHealth = 10f;
-    public static int currentAttack = 1;
-    public static float currentMaxHealth = 10f;
-    public static int currentDefense = 0;
+    public static float startMaxHealth = 20f;
+    public static float currentAttack = 1f;
+    public static float currentMaxHealth = 20f;
+    public static float currentDefense = 1f;
     public static float currentShootTimerMax = 2f;
 }

@@ -42,7 +42,11 @@ public class SceneManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Globals.maxExperiences = new int[] {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000};
+        Globals.maxExperiences = new int[] {100, 200, 300, 500, 750, 1000, 1250, 1500, 1750, 2000};
+        Globals.healthPerLevel  = new float[] {0, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1 };
+        Globals.attackPerLevel = new int[] {0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10 };
+        Globals.defensePerLevel = new int[] {0, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10 };
+        Globals.shootTimerDecreasePerLevel = new float[] {0, 0, .1f, 0, 0, .1f, 0, 0, .1f, 0, 0, 0, .1f, 0, 0, 0, .1f };
         int numUpgrades = System.Enum.GetValues(typeof(Globals.UpgradeTypes)).Length;
         Globals.CurrentUpgradeLevels = new int[numUpgrades];
         for (int x = 0; x < Globals.CurrentUpgradeLevels.Length; x++)
@@ -156,13 +160,31 @@ public class SceneManager : MonoBehaviour
             Globals.currentLevel++;
             Globals.currentExp = 0;
             ExpLevel.text = "LVL " + (Globals.currentLevel + 1);
+            string statsText = "";
+            if (Globals.healthPerLevel.Length > Globals.currentLevel && Globals.healthPerLevel[Globals.currentLevel] > 0)
+            {
+                statsText = statsText + ("HP+" + Globals.healthPerLevel[Globals.currentLevel] + " ");
+                Globals.currentMaxHealth += 1f;
+            }
+            if (Globals.attackPerLevel.Length > Globals.currentLevel && Globals.attackPerLevel[Globals.currentLevel] > 0)
+            {
+                statsText = statsText + ("ATTACK+" + Globals.attackPerLevel[Globals.currentLevel] + "% ");
+                Globals.currentAttack = Globals.currentAttack + (Globals.currentAttack * Globals.attackPerLevel[Globals.currentLevel] * .01f);
+            }
+            if (Globals.defensePerLevel.Length > Globals.currentLevel && Globals.defensePerLevel[Globals.currentLevel] > 0)
+            {
+                statsText = statsText + ("DEFENSE+" + Globals.defensePerLevel[Globals.currentLevel] + "% ");
+                Globals.currentDefense = Globals.currentDefense + (Globals.currentDefense * Globals.defensePerLevel[Globals.currentLevel] * .01f);
+            }
+            if (Globals.shootTimerDecreasePerLevel.Length > Globals.currentLevel && Globals.shootTimerDecreasePerLevel[Globals.currentLevel] > 0)
+            {
+                statsText = statsText + ("SHOT INTERVAL-" + Globals.shootTimerDecreasePerLevel[Globals.currentLevel]);
+                Globals.currentShootTimerMax -= Globals.shootTimerDecreasePerLevel[Globals.currentLevel];
+            }
+            LevelUpStats.text = statsText;
+
             LevelUpPanel.GetComponent<MoveNormal>().MoveUp();
             levelUpTimer = levelUpTimerMax;
-
-            Globals.currentAttack += 1;
-            Globals.currentMaxHealth += 1f;
-            Globals.currentDefense += 1;
-            Globals.currentShootTimerMax -= .1f;
 
             playerScript.RestoreMaxHealth();
         }
