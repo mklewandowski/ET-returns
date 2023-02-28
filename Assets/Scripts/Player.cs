@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     PlayerOrientation currentPlayerOrientation = PlayerOrientation.Right;
 
     [SerializeField]
-    SceneManager SceneManagerScript;
+    GameSceneManager GameSceneManagerScript;
     [SerializeField]
     GameObject PlayerGO;
     [SerializeField]
@@ -452,7 +452,7 @@ public class Player : MonoBehaviour
 
     void CollectCandy()
     {
-        SceneManagerScript.AddExperience(20);
+        GameSceneManagerScript.AddExperience(20);
     }
 
     void CollectPhone()
@@ -460,7 +460,7 @@ public class Player : MonoBehaviour
         currentPhonePieces++;
         if (currentPhonePieces == maxPhonePieces)
         {
-            SceneManagerScript.ShowUpgradeSelection();
+            GameSceneManagerScript.ShowUpgradeSelection();
         }
         UpdateHUDPhone();
     }

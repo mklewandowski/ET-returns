@@ -5535,7 +5535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 163fa5edcb4073d48b229547080f2b18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SceneManagerScript: {fileID: 1264012506}
+  GameSceneManagerScript: {fileID: 1264012506}
   PlayerGO: {fileID: 163483946}
   GunGO: {fileID: 396186076}
   MuzzleGO: {fileID: 1087746640}
@@ -6478,7 +6478,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1264012503}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c45be022689aa814793684c161419fc4, type: 3}
+  m_Script: {fileID: 11500000, guid: 509871cf413a40f4e8a0616938c7da87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 6232591748759594092, guid: 28e3236ac2921fb4eae47fc8de6cf408, type: 3}
@@ -9750,7 +9750,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2043173320}
   m_Layer: 0
-  m_Name: Enemies
+  m_Name: EnemyContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
