@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c33cbe2026d60e94b80a1969025dc4e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GrowTo: 4
+  GrowTo: 5
   ShrinkTo: 0.1
   Rate: 15
 --- !u!114 &5097605816968616994
