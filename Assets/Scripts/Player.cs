@@ -432,6 +432,7 @@ public class Player : MonoBehaviour
         isAlive = false;
         GunGO.SetActive(false);
         MuzzleGO.SetActive(false);
+        GameSceneManagerScript.GameOver();
     }
 
     void OnTriggerEnter2D(Collider2D collider)

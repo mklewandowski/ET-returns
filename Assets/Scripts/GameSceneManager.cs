@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class GameSceneManager : MonoBehaviour
 {
+    [SerializeField]
+    FadeManager fadeManager;
     [SerializeField]
     GameObject EnemyPrefab;
     [SerializeField]
@@ -44,6 +47,17 @@ public class GameSceneManager : MonoBehaviour
     float spawnTimer = 5f;
     float spawnTimerMax = 5f;
 
+    float deadTimer = 0f;
+    float deadTimerMax = 4f;
+    bool fadeIn = false;
+    bool fadeOut = false;
+
+    void Awake()
+    {
+        fadeManager.StartFadeIn();
+        fadeIn = true;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -66,6 +80,25 @@ public class GameSceneManager : MonoBehaviour
         HandleEnemyTimer();
         HandleLevelUpTimer();
         HandleInput();
+        HandleFadeOut();
+    }
+
+    void HandleFadeOut()
+    {
+        if (deadTimer > 0)
+        {
+            deadTimer -= Time.deltaTime;
+            if (deadTimer <= 0)
+            {
+                fadeManager.StartFadeOut();
+                fadeOut = true;
+            }
+        }
+        if (fadeOut && fadeManager.FadeComplete())
+        {
+            fadeOut = false;
+            SceneManager.LoadScene("EndScene");
+        }
     }
 
     void HandleInput()
@@ -163,6 +196,7 @@ public class GameSceneManager : MonoBehaviour
         Time.timeScale = 1f;
         Globals.IsPaused = false;
     }
+
     public void ShowUpgradeSelection()
     {
         upgradeHighlightIndex = 0;
@@ -268,5 +302,10 @@ public class GameSceneManager : MonoBehaviour
         }
         float maxExpBarWidth = 400f;
         ExpBar.sizeDelta = new Vector2 ((float)(Globals.currentExp) / maxExp * maxExpBarWidth, ExpBar.sizeDelta.y);
+    }
+
+    public void GameOver()
+    {
+        deadTimer = deadTimerMax;
     }
 }
