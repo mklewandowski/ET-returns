@@ -29,12 +29,16 @@ public class SceneManager : MonoBehaviour
     [SerializeField]
     GameObject HUDUpgradePanel;
     [SerializeField]
+    GameObject[] HUDUpgradeButtonHighlights;
+    [SerializeField]
     TextMeshProUGUI[] HUDUpgradeButtonTitleTexts;
     [SerializeField]
     TextMeshProUGUI[] HUDUpgradeButtonLvlTexts;
     [SerializeField]
     TextMeshProUGUI[] HUDUpgradeButtonDescTexts;
     List<Globals.UpgradeTypes> availableUpgrades = new List<Globals.UpgradeTypes>();
+    int upgradeHighlightIndex = 0;
+    bool stickDown = false;
 
     float spawnTimer = 5f;
     float spawnTimerMax = 5f;
@@ -64,6 +68,40 @@ public class SceneManager : MonoBehaviour
     {
         HandleEnemyTimer();
         HandleLevelUpTimer();
+        HandleInput();
+    }
+
+    void HandleInput()
+    {
+        if (Globals.IsPaused)
+        {
+            if (Input.GetButton("Fire1"))
+                SelectUpgrade(upgradeHighlightIndex);
+
+            float controllerLeftStickX;
+            controllerLeftStickX = Input.GetAxis("Horizontal");
+            bool moveLeft = false;
+            bool moveRight = false;
+            if (controllerLeftStickX > .5f)
+            {
+                if (!stickDown) moveRight = true;
+                stickDown = true;
+            }
+            else if (controllerLeftStickX < -.5f)
+            {
+                if (!stickDown) moveLeft = true;
+                stickDown = true;
+            }
+            else
+            {
+                stickDown = false;
+            }
+            if (moveLeft)
+                upgradeHighlightIndex = Mathf.Max(0, upgradeHighlightIndex - 1);
+            else if (moveRight)
+                upgradeHighlightIndex = Mathf.Min(2, upgradeHighlightIndex + 1);
+            HighlightUpgradeButton();
+        }
     }
 
     void HandleEnemyTimer()
@@ -126,10 +164,12 @@ public class SceneManager : MonoBehaviour
         playerScript.ResetHUDPhone();
         playerScript.UpdateUpgrades();
         Time.timeScale = 1f;
-
+        Globals.IsPaused = false;
     }
     public void ShowUpgradeSelection()
     {
+        upgradeHighlightIndex = 0;
+        HighlightUpgradeButton();
         availableUpgrades.Clear();
         int numUpgrades = 0;
         int maxUpgrades = 5;
@@ -150,7 +190,6 @@ public class SceneManager : MonoBehaviour
         {
             availableUpgrades.Add(Globals.UpgradeTypes.RefillHP);
         }
-
 
         for (int x = 0; x < availableUpgrades.Count; x++)
         {
@@ -178,6 +217,15 @@ public class SceneManager : MonoBehaviour
         HUDUpgradePanel.GetComponent<MoveWhenPaused>().MoveUp();
         LevelUpPanel.GetComponent<MoveWhenPaused>().MoveDown();
         Time.timeScale = 0f;
+        Globals.IsPaused = true;
+    }
+
+    private void HighlightUpgradeButton()
+    {
+        for (int x = 0; x < HUDUpgradeButtonHighlights.Length; x++)
+        {
+            HUDUpgradeButtonHighlights[x].SetActive(x == upgradeHighlightIndex);
+        }
     }
 
     public void AddExperience(int expAmount)

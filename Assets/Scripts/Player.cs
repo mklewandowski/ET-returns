@@ -106,7 +106,7 @@ public class Player : MonoBehaviour
 
     private void HandleMovement()
     {
-        if (!isAlive) return;
+        if (!isAlive || Globals.IsPaused) return;
         moveLeft = Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
         moveRight = Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D);
         moveUp = Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
