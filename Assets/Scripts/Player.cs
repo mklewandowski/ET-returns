@@ -102,6 +102,9 @@ public class Player : MonoBehaviour
         HandleInvincible();
         HandleLaser();
         HandleSurround();
+
+        if (isAlive)
+            Globals.gameTime += Time.deltaTime;
     }
 
     private void HandleMovement()

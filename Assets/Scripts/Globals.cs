@@ -177,6 +177,7 @@ public class Globals
 
     public static int candyCount;
     public static int killCount;
+    public static float gameTime;
 
     public static void ResetGlobals()
     {

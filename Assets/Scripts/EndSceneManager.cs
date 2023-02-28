@@ -15,12 +15,18 @@ public class EndSceneManager : MonoBehaviour
     bool fadeIn = false;
     bool fadeOut = false;
     string sceneToLoad = "TitleScene";
-    string textToType = "SURVIVAL TIME: 3m 23s\n\nEARTHLINGS ELIMINATED: 39\n\nCANDY COLLECTED: 34";
+    string textToType = "";
 
     void Awake()
     {
         fadeManager.StartFadeIn();
         fadeIn = true;
+
+        int timeInSeconds = (int)Globals.gameTime;
+        int min = (int)(timeInSeconds / 60f);
+        int sec = timeInSeconds - (min * 60);
+        string secPadded = sec < 10 ? "0" + sec : sec.ToString();
+        textToType = "SURVIVAL TIME: " + min + "m " + secPadded + "s\n\nEARTHLINGS ELIMINATED: " + Globals.killCount + "\n\nCANDIES COLLECTED: " + Globals.candyCount;
     }
 
     // Update is called once per frame
