@@ -39,6 +39,7 @@ public class SceneManager : MonoBehaviour
     List<Globals.UpgradeTypes> availableUpgrades = new List<Globals.UpgradeTypes>();
     int upgradeHighlightIndex = 0;
     bool stickDown = false;
+    bool controllerAttached = false;
 
     float spawnTimer = 5f;
     float spawnTimerMax = 5f;
@@ -46,6 +47,13 @@ public class SceneManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        string[] controllers = Input.GetJoystickNames();
+        for (int x = 0; x < controllers.Length; x++)
+        {
+            if (controllers[x] != "")
+                controllerAttached = true;
+        }
+
         Globals.maxExperiences = new int[] {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1200, 1400, 1600, 1800, 2000};
         Globals.healthPerLevel  = new float[] {0, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1 };
         Globals.attackPerLevel = new int[] {0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10 };
@@ -73,7 +81,7 @@ public class SceneManager : MonoBehaviour
 
     void HandleInput()
     {
-        if (Globals.IsPaused)
+        if (Globals.IsPaused && controllerAttached)
         {
             if (Input.GetButton("Fire1"))
                 SelectUpgrade(upgradeHighlightIndex);
@@ -132,7 +140,7 @@ public class SceneManager : MonoBehaviour
         {
             float randomAngle = Random.Range(0f, 360f);
             Vector2 normalizedPos = new Vector2(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle));
-            Vector2 scaledNormalizedPos = normalizedPos * Random.Range (7.0f, 9.0f);
+            Vector2 scaledNormalizedPos = normalizedPos * Random.Range (11.0f, 13.0f);
             Vector2 playerPos = Player.transform.localPosition;
             Vector2 enemyPos = new Vector2(playerPos.x + scaledNormalizedPos.x, playerPos.y + scaledNormalizedPos.y);
             GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
@@ -169,7 +177,8 @@ public class SceneManager : MonoBehaviour
     public void ShowUpgradeSelection()
     {
         upgradeHighlightIndex = 0;
-        HighlightUpgradeButton();
+        if (controllerAttached)
+            HighlightUpgradeButton();
         availableUpgrades.Clear();
         int numUpgrades = 0;
         int maxUpgrades = 5;

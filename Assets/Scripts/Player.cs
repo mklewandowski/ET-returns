@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject[] SurroundObjects;
 
-    float moveSpeed = 2f;
+    float moveSpeed = 2.2f;
     Vector2 movementVector = new Vector2(0, 0);
     bool moveLeft;
     bool moveRight;
@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
     bool isAlive = true;
     float health = 20f;
     float invincibleTimer = 0f;
-    float invincibleTimerMax = 1f;
+    float invincibleTimerMax = .75f;
     private SpriteRenderer playerRenderer;
     [SerializeField]
     GameObject HealthBar;

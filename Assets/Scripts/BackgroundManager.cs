@@ -10,8 +10,8 @@ public class BackgroundManager : MonoBehaviour
     [SerializeField]
     GameObject[] Tiles;
 
-    float tileXOffset = 7.6f;
-    float tileYOffset = 11.7f;
+    float tileXOffset = 30.6f;
+    float tileYOffset = 15.6f;
 
     // Update is called once per frame
     void Update()
