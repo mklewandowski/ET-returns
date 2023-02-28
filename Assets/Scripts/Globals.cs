@@ -198,6 +198,7 @@ public class Globals
         currentLevel = 0;
         candyCount = 0;
         killCount = 0;
+        gameTime = 0;
         startMaxHealth = 20f;
         currentAttack = 1f;
         currentMaxHealth = 20f;
