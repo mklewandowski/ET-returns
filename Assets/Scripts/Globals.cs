@@ -174,4 +174,33 @@ public class Globals
     public static float currentMaxHealth = 20f;
     public static float currentDefense = 1f;
     public static float currentShootTimerMax = 2f;
+
+    public static int candyCount;
+    public static int killCount;
+
+    public static void ResetGlobals()
+    {
+        Globals.maxExperiences = new int[] {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1200, 1400, 1600, 1800, 2000};
+        Globals.healthPerLevel  = new float[] {0, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1 };
+        Globals.attackPerLevel = new int[] {0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10 };
+        Globals.defensePerLevel = new int[] {0, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10 };
+        Globals.shootTimerDecreasePerLevel = new float[] {0, 0, .1f, 0, 0, .1f, 0, 0, .1f, 0, 0, 0, .1f, 0, 0, 0, .1f };
+        // the last upgrade slot is the HP refill, don't include that since it behaves uniquely
+        int numUpgrades = System.Enum.GetValues(typeof(Globals.UpgradeTypes)).Length - 1;
+        Globals.CurrentUpgradeLevels = new int[numUpgrades];
+        for (int x = 0; x < Globals.CurrentUpgradeLevels.Length; x++)
+        {
+            Globals.CurrentUpgradeLevels[x] = 0;
+        }
+
+        currentExp = 0;
+        currentLevel = 0;
+        candyCount = 0;
+        killCount = 0;
+        startMaxHealth = 20f;
+        currentAttack = 1f;
+        currentMaxHealth = 20f;
+        currentDefense = 1f;
+        currentShootTimerMax = 2f;
+    }
 }

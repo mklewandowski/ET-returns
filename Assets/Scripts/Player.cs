@@ -453,6 +453,7 @@ public class Player : MonoBehaviour
     void CollectCandy()
     {
         GameSceneManagerScript.AddExperience(20);
+        Globals.candyCount++;
     }
 
     void CollectPhone()

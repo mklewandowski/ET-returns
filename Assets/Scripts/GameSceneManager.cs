@@ -53,19 +53,8 @@ public class GameSceneManager : MonoBehaviour
             if (controllers[x] != "")
                 controllerAttached = true;
         }
+        Globals.ResetGlobals();
 
-        Globals.maxExperiences = new int[] {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1200, 1400, 1600, 1800, 2000};
-        Globals.healthPerLevel  = new float[] {0, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1 };
-        Globals.attackPerLevel = new int[] {0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10 };
-        Globals.defensePerLevel = new int[] {0, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10 };
-        Globals.shootTimerDecreasePerLevel = new float[] {0, 0, .1f, 0, 0, .1f, 0, 0, .1f, 0, 0, 0, .1f, 0, 0, 0, .1f };
-        // the last upgrade slot is the HP refill, don't include that since it behaves uniquely
-        int numUpgrades = System.Enum.GetValues(typeof(Globals.UpgradeTypes)).Length - 1;
-        Globals.CurrentUpgradeLevels = new int[numUpgrades];
-        for (int x = 0; x < Globals.CurrentUpgradeLevels.Length; x++)
-        {
-            Globals.CurrentUpgradeLevels[x] = 0;
-        }
         SpawnEnemies(20);
 
         playerScript = Player.GetComponent<Player>();
