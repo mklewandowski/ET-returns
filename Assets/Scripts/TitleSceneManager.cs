@@ -8,6 +8,8 @@ public class TitleSceneManager : MonoBehaviour
 {
     [SerializeField]
     FadeManager fadeManager;
+    [SerializeField]
+    GameObject animationPanel;
 
     bool fadeIn = false;
     bool fadeOut = false;
@@ -25,11 +27,17 @@ public class TitleSceneManager : MonoBehaviour
         if (fadeIn && fadeManager.FadeComplete())
         {
             fadeIn = false;
+            animationPanel.GetComponent<MoveNormal>().MoveRight();
         }
         if (fadeOut && fadeManager.FadeComplete())
         {
             fadeOut = false;
             SceneManager.LoadScene(sceneToLoad);
+        }
+        if (animationPanel.transform.localPosition.x >= 2000f)
+        {
+            animationPanel.transform.localPosition = new Vector2(-1500f, animationPanel.transform.localPosition.y);
+            animationPanel.GetComponent<MoveNormal>().MoveRight();
         }
     }
 
