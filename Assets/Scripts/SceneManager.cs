@@ -140,7 +140,7 @@ public class SceneManager : MonoBehaviour
         {
             float randomAngle = Random.Range(0f, 360f);
             Vector2 normalizedPos = new Vector2(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle));
-            Vector2 scaledNormalizedPos = normalizedPos * Random.Range (7.0f, 9.0f);
+            Vector2 scaledNormalizedPos = normalizedPos * Random.Range (11.0f, 13.0f);
             Vector2 playerPos = Player.transform.localPosition;
             Vector2 enemyPos = new Vector2(playerPos.x + scaledNormalizedPos.x, playerPos.y + scaledNormalizedPos.y);
             GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
