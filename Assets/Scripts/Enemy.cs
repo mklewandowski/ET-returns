@@ -60,11 +60,11 @@ public class Enemy : MonoBehaviour
         enemyRigidbody.mass = 1f;
         if (type == Globals.EnemyTypes.Yar)
         {
-            moveSpeed = Random.Range(.65f, .75f);
+            moveSpeed = Random.Range(.8f, 1f);
             positionTimerMax = 1f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("yar");
-            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            this.transform.localScale = new Vector3(6f, 6f, 1f);
             enemyCollider.size = new Vector2(0.08f, 0.08f);
             flipWithMovement = true;
             life = 1.5f;
@@ -83,10 +83,10 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Qbert)
         {
-            moveSpeed = Random.Range(.35f, .45f);
+            moveSpeed = Random.Range(.5f, .75f);
             positionTimerMax = .5f;
             enemyAnimator.enabled = false;
-            this.transform.localScale = new Vector3(3f, 3f, 1f);
+            this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = true;
             life = 4f;
@@ -94,11 +94,11 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Pac)
         {
-            moveSpeed = Random.Range(.55f, .65f);
+            moveSpeed = Random.Range(.65f, .85f);
             positionTimerMax = .5f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("pac");
-            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            this.transform.localScale = new Vector3(6f, 6f, 1f);
             enemyCollider.size = new Vector2(0.07f, 0.07f);
             flipWithMovement = true;
             life = 2f;
@@ -106,11 +106,11 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.MsPac)
         {
-            moveSpeed = Random.Range(.55f, .65f);
+            moveSpeed = Random.Range(.65f, .85f);
             positionTimerMax = .5f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("mspac");
-            this.transform.localScale = new Vector3(3f, 3f, 1f);
+            this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.09f, 0.09f);
             flipWithMovement = true;
             life = 3f;
@@ -122,7 +122,7 @@ public class Enemy : MonoBehaviour
             positionTimerMax = 4f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("fbi");
-            this.transform.localScale = new Vector3(3f, 3f, 1f);
+            this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.3f);
             flipWithMovement = true;
             life = 2f;
