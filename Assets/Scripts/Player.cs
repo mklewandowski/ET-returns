@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     PlayerOrientation currentPlayerOrientation = PlayerOrientation.Right;
 
     [SerializeField]
-    SceneManager SceneManagerScript;
+    GameSceneManager GameSceneManagerScript;
     [SerializeField]
     GameObject PlayerGO;
     [SerializeField]
@@ -102,6 +102,9 @@ public class Player : MonoBehaviour
         HandleInvincible();
         HandleLaser();
         HandleSurround();
+
+        if (isAlive)
+            Globals.gameTime += Time.deltaTime;
     }
 
     private void HandleMovement()
@@ -432,6 +435,7 @@ public class Player : MonoBehaviour
         isAlive = false;
         GunGO.SetActive(false);
         MuzzleGO.SetActive(false);
+        GameSceneManagerScript.GameOver();
     }
 
     void OnTriggerEnter2D(Collider2D collider)
@@ -452,7 +456,8 @@ public class Player : MonoBehaviour
 
     void CollectCandy()
     {
-        SceneManagerScript.AddExperience(20);
+        GameSceneManagerScript.AddExperience(20);
+        Globals.candyCount++;
     }
 
     void CollectPhone()
@@ -460,7 +465,7 @@ public class Player : MonoBehaviour
         currentPhonePieces++;
         if (currentPhonePieces == maxPhonePieces)
         {
-            SceneManagerScript.ShowUpgradeSelection();
+            GameSceneManagerScript.ShowUpgradeSelection();
         }
         UpdateHUDPhone();
     }
