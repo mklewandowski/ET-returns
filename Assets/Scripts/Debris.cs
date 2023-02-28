@@ -35,7 +35,7 @@ public class Debris : MonoBehaviour
         float randomAngle = Random.Range(0f, 360f);
         Vector2 normalizedPos = new Vector2(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle));
         Vector2 scaledNormalizedPos = normalizedPos * Random.Range (2.0f, 4.0f);
-        float newScale = Random.Range(1f, 3f);
+        float newScale = Random.Range(2f, 4f);
         this.transform.localScale = new Vector2(newScale, newScale);
         this.GetComponent<Rigidbody2D>().velocity = scaledNormalizedPos;
 
