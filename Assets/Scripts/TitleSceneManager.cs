@@ -15,8 +15,17 @@ public class TitleSceneManager : MonoBehaviour
     bool fadeOut = false;
     string sceneToLoad = "GameScene";
 
+    bool controllerAttached = false;
+
     void Awake()
     {
+        string[] controllers = Input.GetJoystickNames();
+        for (int x = 0; x < controllers.Length; x++)
+        {
+            if (controllers[x] != "")
+                controllerAttached = true;
+        }
+
         fadeManager.StartFadeIn();
         fadeIn = true;
     }
@@ -38,6 +47,17 @@ public class TitleSceneManager : MonoBehaviour
         {
             animationPanel.transform.localPosition = new Vector2(-1500f, animationPanel.transform.localPosition.y);
             animationPanel.GetComponent<MoveNormal>().MoveRight();
+        }
+        HandleInput();
+    }
+
+
+    void HandleInput()
+    {
+        if (controllerAttached)
+        {
+            if (Input.GetButton("Fire1"))
+                SelectStart();
         }
     }
 
