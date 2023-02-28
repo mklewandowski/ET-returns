@@ -106,17 +106,22 @@ public class Player : MonoBehaviour
 
     private void HandleMovement()
     {
-        if (!isAlive) return;
+        if (!isAlive || Globals.IsPaused) return;
         moveLeft = Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
         moveRight = Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D);
         moveUp = Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
         moveDown = Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S);
 
-        // controllerLeftStickX = Input.GetAxis("Horizontal");
-        // controllerLeftStickY = Input.GetAxis("Vertical");
-		// MyRigidBody.velocity= (new Vector2(controllerLeftStickX*MoveSpeed*1, controllerLeftStickY*MoveSpeed*.8f));
-        // Debug.Log(controllerLeftStickX);
-        // Debug.Log(controllerLeftStickY);
+        controllerLeftStickX = Input.GetAxis("Horizontal");
+        controllerLeftStickY = Input.GetAxis("Vertical");
+        if (controllerLeftStickX > .5f)
+            moveRight = true;
+        else if (controllerLeftStickX < -.5f)
+            moveLeft = true;
+        if (controllerLeftStickY > .5f)
+            moveUp = true;
+        else if (controllerLeftStickY < -.5f)
+            moveDown = true;
 
         movementVector = new Vector2(0, 0);
 

@@ -6,6 +6,8 @@ public class Globals
 {
     public static bool DebugMode = false;
 
+    public static bool IsPaused = false;
+
     public enum EnemyTypes {
         Robot,
         Qbert,
