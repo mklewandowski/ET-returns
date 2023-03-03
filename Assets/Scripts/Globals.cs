@@ -17,6 +17,8 @@ public class Globals
         FBI
     }
 
+    public static EnemyTypes[] FastEnemyTypes = {EnemyTypes.Yar, EnemyTypes.Pac, EnemyTypes.MsPac, EnemyTypes.Joust};
+
     public enum UpgradeTypes {
         ForceField,
         SpreadShot,

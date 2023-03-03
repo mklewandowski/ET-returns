@@ -44,6 +44,12 @@ public class GameSceneManager : MonoBehaviour
     bool stickDown = false;
     bool controllerAttached = false;
 
+    int difficultyLevel = 0;
+    float difficultyTimer = 60f;
+    float difficultyTimerMax = 60f;
+
+    int[] fastEnemySpawnRates = { 80, 100, 999, 999 };
+
     float spawnTimer = 5f;
     float spawnTimerMax = 5f;
 
@@ -69,7 +75,7 @@ public class GameSceneManager : MonoBehaviour
         }
         Globals.ResetGlobals();
 
-        SpawnEnemies(20);
+        SpawnEnemies(10 + difficultyLevel * 2);
 
         playerScript = Player.GetComponent<Player>();
     }
@@ -77,28 +83,11 @@ public class GameSceneManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleEnemyTimer();
-        HandleLevelUpTimer();
         HandleInput();
         HandleFadeOut();
-    }
-
-    void HandleFadeOut()
-    {
-        if (deadTimer > 0)
-        {
-            deadTimer -= Time.deltaTime;
-            if (deadTimer <= 0)
-            {
-                fadeManager.StartFadeOut();
-                fadeOut = true;
-            }
-        }
-        if (fadeOut && fadeManager.FadeComplete())
-        {
-            fadeOut = false;
-            SceneManager.LoadScene("EndScene");
-        }
+        HandleDifficultyTimer();
+        HandleEnemyTimer();
+        HandleLevelUpTimer();
     }
 
     void HandleInput()
@@ -131,6 +120,71 @@ public class GameSceneManager : MonoBehaviour
             else if (moveRight)
                 upgradeHighlightIndex = Mathf.Min(2, upgradeHighlightIndex + 1);
             HighlightUpgradeButton();
+        }
+    }
+
+    void HandleFadeOut()
+    {
+        if (deadTimer > 0)
+        {
+            deadTimer -= Time.deltaTime;
+            if (deadTimer <= 0)
+            {
+                fadeManager.StartFadeOut();
+                fadeOut = true;
+            }
+        }
+        if (fadeOut && fadeManager.FadeComplete())
+        {
+            fadeOut = false;
+            SceneManager.LoadScene("EndScene");
+        }
+    }
+
+    void HandleDifficultyTimer()
+    {
+        difficultyTimer -= Time.deltaTime;
+        if (difficultyTimer <= 0)
+        {
+            difficultyTimer = difficultyTimerMax;
+            difficultyLevel++;
+
+            if (difficultyLevel == 1)
+            {
+                fastEnemySpawnRates = new int[] { 50, 100, 999, 999 };
+            }
+            else if (difficultyLevel == 2)
+            {
+                fastEnemySpawnRates = new int[] { 20, 100, 999, 999 };
+            }
+            else if (difficultyLevel == 3)
+            {
+                fastEnemySpawnRates = new int[] { 10, 80, 100, 999 };
+            }
+            else if (difficultyLevel == 4)
+            {
+                fastEnemySpawnRates = new int[] { 5, 55, 100, 999 };
+            }
+            else if (difficultyLevel == 5)
+            {
+                fastEnemySpawnRates = new int[] { 5, 25, 100, 999 };
+            }
+            else if (difficultyLevel == 6)
+            {
+                fastEnemySpawnRates = new int[] { 5, 10, 80, 100 };
+            }
+            else if (difficultyLevel == 7)
+            {
+                fastEnemySpawnRates = new int[] { 5, 10, 60, 100 };
+            }
+            else if (difficultyLevel == 8)
+            {
+                fastEnemySpawnRates = new int[] { 5, 10, 30, 100 };
+            }
+            else if (difficultyLevel == 9)
+            {
+                fastEnemySpawnRates = new int[] { 5, 10, 20, 100 };
+            }
         }
     }
 
@@ -171,13 +225,27 @@ public class GameSceneManager : MonoBehaviour
             if (randVal > 95f)
                 enemyType = Globals.EnemyTypes.FBI;
             else if (randVal > 90f)
-                enemyType = Globals.EnemyTypes.Joust;
-            else if (randVal > 85f)
-                enemyType = Globals.EnemyTypes.MsPac;
-            else if (randVal > 75f)
-                enemyType = Globals.EnemyTypes.Pac;
+                enemyType = Globals.EnemyTypes.Qbert;
+            else
+                enemyType = GetFastEnemyType();
             enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyType);
         }
+    }
+
+    Globals.EnemyTypes GetFastEnemyType()
+    {
+        int randVal = Random.Range(0, 100);
+        int index = 0;
+        int x = 0;
+        bool valid = false;
+        do {
+            index = x;
+            if (randVal < fastEnemySpawnRates[x] && fastEnemySpawnRates[x] <= 100)
+                valid = true;
+            x++;
+        } while (!valid && x < fastEnemySpawnRates.Length);
+        Globals.EnemyTypes fastEnemyType = Globals.FastEnemyTypes[index];
+        return fastEnemyType;
     }
 
     public void SelectUpgrade(int upgradeNum)
