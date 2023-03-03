@@ -9,11 +9,11 @@ public class Globals
     public static bool IsPaused = false;
 
     public enum EnemyTypes {
-        Robot,
-        Qbert,
         Yar,
         Pac,
         MsPac,
+        Joust,
+        Qbert,
         FBI
     }
 

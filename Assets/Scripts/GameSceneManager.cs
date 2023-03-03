@@ -171,7 +171,7 @@ public class GameSceneManager : MonoBehaviour
             if (randVal > 95f)
                 enemyType = Globals.EnemyTypes.FBI;
             else if (randVal > 90f)
-                enemyType = Globals.EnemyTypes.Qbert;
+                enemyType = Globals.EnemyTypes.Joust;
             else if (randVal > 85f)
                 enemyType = Globals.EnemyTypes.MsPac;
             else if (randVal > 75f)

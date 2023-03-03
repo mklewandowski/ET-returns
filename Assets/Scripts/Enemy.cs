@@ -70,16 +70,41 @@ public class Enemy : MonoBehaviour
             life = 1.5f;
             hitStrength = 2f;
         }
-        else if (type == Globals.EnemyTypes.Robot)
+        else if (type == Globals.EnemyTypes.Pac)
         {
-            moveSpeed = Random.Range(.45f, .55f);
+            moveSpeed = Random.Range(1f, 1.2f);
             positionTimerMax = .5f;
-            enemyAnimator.enabled = false;
-            this.transform.localScale = new Vector3(3f, 3f, 1f);
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("pac");
+            this.transform.localScale = new Vector3(6f, 6f, 1f);
+            enemyCollider.size = new Vector2(0.07f, 0.07f);
+            flipWithMovement = true;
+            life = 2f;
+            hitStrength = 2f;
+        }
+        else if (type == Globals.EnemyTypes.MsPac)
+        {
+            moveSpeed = Random.Range(1.2f, 1.4f);
+            positionTimerMax = .5f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("mspac");
+            this.transform.localScale = new Vector3(4f, 4f, 1f);
+            enemyCollider.size = new Vector2(0.09f, 0.09f);
+            flipWithMovement = true;
+            life = 3f;
+            hitStrength = 3f;
+        }
+        else if (type == Globals.EnemyTypes.Joust)
+        {
+            moveSpeed = Random.Range(1.4f, 1.6f);
+            positionTimerMax = .5f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("joust");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.15f);
-            flipWithMovement = false;
-            life = 1f;
-            hitStrength = 1f;
+            flipWithMovement = true;
+            life = 3f;
+            hitStrength = 4f;
         }
         else if (type == Globals.EnemyTypes.Qbert)
         {
@@ -91,30 +116,6 @@ public class Enemy : MonoBehaviour
             flipWithMovement = true;
             life = 4f;
             hitStrength = 5f;
-        }
-        else if (type == Globals.EnemyTypes.Pac)
-        {
-            moveSpeed = Random.Range(.65f, .85f);
-            positionTimerMax = .5f;
-            enemyAnimator.enabled = true;
-            enemyAnimator.Play("pac");
-            this.transform.localScale = new Vector3(6f, 6f, 1f);
-            enemyCollider.size = new Vector2(0.07f, 0.07f);
-            flipWithMovement = true;
-            life = 2f;
-            hitStrength = 3f;
-        }
-        else if (type == Globals.EnemyTypes.MsPac)
-        {
-            moveSpeed = Random.Range(.65f, .85f);
-            positionTimerMax = .5f;
-            enemyAnimator.enabled = true;
-            enemyAnimator.Play("mspac");
-            this.transform.localScale = new Vector3(4f, 4f, 1f);
-            enemyCollider.size = new Vector2(0.09f, 0.09f);
-            flipWithMovement = true;
-            life = 3f;
-            hitStrength = 3f;
         }
         else if (type == Globals.EnemyTypes.FBI)
         {
