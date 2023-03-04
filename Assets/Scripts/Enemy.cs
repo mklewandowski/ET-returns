@@ -76,7 +76,7 @@ public class Enemy : MonoBehaviour
         else if (type == Globals.EnemyTypes.Pac)
         {
             moveSpeed = Random.Range(1f, 1.2f);
-            positionTimerMax = .5f;
+            positionTimerMax = .75f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("pac");
             this.transform.localScale = new Vector3(4f, 4f, 1f);
@@ -112,7 +112,7 @@ public class Enemy : MonoBehaviour
         else if (type == Globals.EnemyTypes.Joust2)
         {
             moveSpeed = Random.Range(1.6f, 1.8f);
-            positionTimerMax = .5f;
+            positionTimerMax = .4f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("joust2");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
@@ -121,16 +121,52 @@ public class Enemy : MonoBehaviour
             life = 6f;
             hitStrength = 6f;
         }
+        else if (type == Globals.EnemyTypes.Frogger)
+        {
+            moveSpeed = Random.Range(.6f, .8f);
+            positionTimerMax = .9f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("frog");
+            this.transform.localScale = new Vector3(6f, 6f, 1f);
+            enemyCollider.size = new Vector2(0.1f, 0.1f);
+            flipWithMovement = true;
+            life = 4f;
+            hitStrength = 4f;
+        }
         else if (type == Globals.EnemyTypes.Qbert)
         {
-            moveSpeed = Random.Range(.5f, .75f);
-            positionTimerMax = .5f;
+            moveSpeed = Random.Range(.8f, 1f);
+            positionTimerMax = .8f;
             enemyAnimator.enabled = false;
             this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = true;
-            life = 4f;
-            hitStrength = 5f;
+            life = 8f;
+            hitStrength = 7f;
+        }
+        else if (type == Globals.EnemyTypes.Kangaroo)
+        {
+            moveSpeed = Random.Range(1f, 1.2f);
+            positionTimerMax = .7f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("kangaroo");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.12f, 0.2f);
+            flipWithMovement = true;
+            life = 12f;
+            hitStrength = 10f;
+        }
+        else if (type == Globals.EnemyTypes.Hero)
+        {
+            moveSpeed = Random.Range(1.2f, 1.4f);
+            positionTimerMax = .6f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("hero");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.12f, 0.2f);
+            flipWithMovement = true;
+            life = 16f;
+            hitStrength = 12f;
         }
         else if (type == Globals.EnemyTypes.FBI)
         {

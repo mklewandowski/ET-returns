@@ -14,7 +14,10 @@ public class Globals
         MsPac,
         Joust,
         Joust2,
+        Frogger,
         Qbert,
+        Kangaroo,
+        Hero,
         FBI
     }
 
