@@ -103,7 +103,19 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = true;
-            life = 3f;
+            life = 4f;
+            hitStrength = 4f;
+        }
+        else if (type == Globals.EnemyTypes.Joust2)
+        {
+            moveSpeed = Random.Range(1.6f, 1.8f);
+            positionTimerMax = .5f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("joust2");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.15f, 0.15f);
+            flipWithMovement = true;
+            life = 6f;
             hitStrength = 4f;
         }
         else if (type == Globals.EnemyTypes.Qbert)

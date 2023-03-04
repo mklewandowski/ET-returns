@@ -13,11 +13,12 @@ public class Globals
         Pac,
         MsPac,
         Joust,
+        Joust2,
         Qbert,
         FBI
     }
 
-    public static EnemyTypes[] FastEnemyTypes = {EnemyTypes.Yar, EnemyTypes.Pac, EnemyTypes.MsPac, EnemyTypes.Joust};
+    public static EnemyTypes[] FastEnemyTypes = {EnemyTypes.Yar, EnemyTypes.Pac, EnemyTypes.MsPac, EnemyTypes.Joust, EnemyTypes.Joust2};
 
     public enum UpgradeTypes {
         ForceField,
