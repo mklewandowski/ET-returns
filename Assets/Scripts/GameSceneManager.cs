@@ -55,7 +55,7 @@ public class GameSceneManager : MonoBehaviour
     int maxSpecialEnemy = 3;
 
     float spawnTimer = 5f;
-    float spawnTimerMax = 5f;
+    float spawnTimerMax = 7f;
 
     float deadTimer = 0f;
     float deadTimerMax = 4f;
@@ -152,6 +152,7 @@ public class GameSceneManager : MonoBehaviour
         {
             difficultyTimer = difficultyTimerMax;
             difficultyLevel++;
+            spawnTimerMax = Mathf.Max(5f, spawnTimerMax - .5f);
 
             if (difficultyLevel == 1)
             {
@@ -254,11 +255,15 @@ public class GameSceneManager : MonoBehaviour
         int specialThisSpawn = 0;
         for (int x = 0; x < num; x++)
         {
-            float randomAngle = Random.Range(0f, 360f);
-            Vector2 normalizedPos = new Vector2(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle));
-            Vector2 scaledNormalizedPos = normalizedPos * Random.Range (11.0f, 13.0f);
+            bool verticalPos = (Random.Range(0, 2) == 0);
+            float xOffset = verticalPos
+                ? Random.Range(-10.5f, 10.5f)
+                : Random.Range(10f, 13f) * (Random.Range(0, 2) == 0 ? -1f : 1f);
+            float yOffset = verticalPos
+                ? Random.Range(6f, 9f) * (Random.Range(0, 2) == 0 ? -1f : 1f)
+                : Random.Range(-6.5f, 6.5f);
             Vector2 playerPos = Player.transform.localPosition;
-            Vector2 enemyPos = new Vector2(playerPos.x + scaledNormalizedPos.x, playerPos.y + scaledNormalizedPos.y);
+            Vector2 enemyPos = new Vector2(playerPos.x + xOffset, playerPos.y + yOffset);
             GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
             Globals.EnemyTypes enemyType = Globals.EnemyTypes.Yar;
             float randVal = Random.Range(0, 100f);
