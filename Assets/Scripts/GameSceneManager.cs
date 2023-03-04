@@ -49,6 +49,9 @@ public class GameSceneManager : MonoBehaviour
     float difficultyTimerMax = 60f;
 
     int[] fastEnemySpawnRates = { 80, 100, 999, 999, 999 };
+    int currentNumFBI = 0;
+    int currentNumScientist = 0;
+    int maxSpecialEnemy = 3;
 
     float spawnTimer = 5f;
     float spawnTimerMax = 5f;
@@ -238,8 +241,11 @@ public class GameSceneManager : MonoBehaviour
             GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
             Globals.EnemyTypes enemyType = Globals.EnemyTypes.Yar;
             float randVal = Random.Range(0, 100f);
-            if (randVal > 95f)
+            if (randVal > 95f && currentNumFBI < maxSpecialEnemy)
+            {
                 enemyType = Globals.EnemyTypes.FBI;
+                currentNumFBI++;
+            }
             else if (randVal > 90f)
                 enemyType = Globals.EnemyTypes.Qbert;
             else
@@ -391,5 +397,10 @@ public class GameSceneManager : MonoBehaviour
     public void GameOver()
     {
         deadTimer = deadTimerMax;
+    }
+
+    public void KillFBI()
+    {
+        currentNumFBI--;
     }
 }

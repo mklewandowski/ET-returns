@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    GameSceneManager GameSceneManagerScript;
+
     bool isActive = true;
     float life = 1f;
     float hitStrength = 1f;
@@ -44,6 +46,7 @@ public class Enemy : MonoBehaviour
 
     void Awake()
     {
+        GameSceneManagerScript = GameObject.Find("SceneManager").GetComponent<GameSceneManager>();
         playerTransform = GameObject.Find("Player").transform;
         debrisContainer = GameObject.Find("DebrisContainer");
         itemContainer = GameObject.Find("ItemContainer");
@@ -242,6 +245,7 @@ public class Enemy : MonoBehaviour
         {
             GameObject phoneGO = Instantiate(PhonePrefab, this.transform.localPosition, Quaternion.identity, itemContainer.transform);
             phoneGO.GetComponent<Phone>().Init();
+            GameSceneManagerScript.KillFBI();
         }
         else if (Random.Range(0, 100f) < 50f)
         {
