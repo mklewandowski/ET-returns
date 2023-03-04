@@ -44,8 +44,19 @@ public class GameSceneManager : MonoBehaviour
     bool stickDown = false;
     bool controllerAttached = false;
 
+    int difficultyLevel = 0;
+    float difficultyTimer = 60f;
+    float difficultyTimerMax = 60f;
+
+    int[] fastEnemySpawnRates = { 80, 100, 999, 999, 999 };
+    int[] strongEnemySpawnRates = { 95, 100, 999, 999, 999 };
+    int currentNumFBI = 0;
+    int currentNumScientist = 0;
+    int maxFBI = 3;
+    int maxScientist = 1;
+
     float spawnTimer = 5f;
-    float spawnTimerMax = 5f;
+    float spawnTimerMax = 7f;
 
     float deadTimer = 0f;
     float deadTimerMax = 4f;
@@ -69,7 +80,7 @@ public class GameSceneManager : MonoBehaviour
         }
         Globals.ResetGlobals();
 
-        SpawnEnemies(20);
+        SpawnEnemies(10 + difficultyLevel * 2);
 
         playerScript = Player.GetComponent<Player>();
     }
@@ -77,28 +88,11 @@ public class GameSceneManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleEnemyTimer();
-        HandleLevelUpTimer();
         HandleInput();
         HandleFadeOut();
-    }
-
-    void HandleFadeOut()
-    {
-        if (deadTimer > 0)
-        {
-            deadTimer -= Time.deltaTime;
-            if (deadTimer <= 0)
-            {
-                fadeManager.StartFadeOut();
-                fadeOut = true;
-            }
-        }
-        if (fadeOut && fadeManager.FadeComplete())
-        {
-            fadeOut = false;
-            SceneManager.LoadScene("EndScene");
-        }
+        HandleDifficultyTimer();
+        HandleEnemyTimer();
+        HandleLevelUpTimer();
     }
 
     void HandleInput()
@@ -134,6 +128,106 @@ public class GameSceneManager : MonoBehaviour
         }
     }
 
+    void HandleFadeOut()
+    {
+        if (deadTimer > 0)
+        {
+            deadTimer -= Time.deltaTime;
+            if (deadTimer <= 0)
+            {
+                fadeManager.StartFadeOut();
+                fadeOut = true;
+            }
+        }
+        if (fadeOut && fadeManager.FadeComplete())
+        {
+            fadeOut = false;
+            SceneManager.LoadScene("EndScene");
+        }
+    }
+
+    void HandleDifficultyTimer()
+    {
+        difficultyTimer -= Time.deltaTime;
+        if (difficultyTimer <= 0)
+        {
+            difficultyTimer = difficultyTimerMax;
+            difficultyLevel++;
+            spawnTimerMax = Mathf.Max(5f, spawnTimerMax - .5f);
+
+            if (difficultyLevel == 1)
+            {
+                fastEnemySpawnRates = new int[] { 50, 100, 999, 999, 999 };
+                strongEnemySpawnRates = new int[] { 80, 100, 999, 999, 999 };
+            }
+            else if (difficultyLevel == 2)
+            {
+                fastEnemySpawnRates = new int[] { 20, 100, 999, 999, 999 };
+                strongEnemySpawnRates = new int[] { 60, 100, 999, 999, 999 };
+            }
+            else if (difficultyLevel == 3)
+            {
+                fastEnemySpawnRates = new int[] { 10, 80, 100, 999, 999 };
+                strongEnemySpawnRates = new int[] { 40, 95, 100, 999, 999 };
+            }
+            else if (difficultyLevel == 4)
+            {
+                fastEnemySpawnRates = new int[] { 5, 55, 100, 999, 999 };
+                strongEnemySpawnRates = new int[] { 20, 95, 100, 999, 999 };
+            }
+            else if (difficultyLevel == 5)
+            {
+                fastEnemySpawnRates = new int[] { 5, 25, 100, 999, 999 };
+                strongEnemySpawnRates = new int[] { 20, 80, 100, 999, 999 };
+            }
+            else if (difficultyLevel == 6)
+            {
+                fastEnemySpawnRates = new int[] { 5, 10, 80, 100, 999 };
+                strongEnemySpawnRates = new int[] { 20, 60, 100, 999, 999 };
+            }
+            else if (difficultyLevel == 7)
+            {
+                fastEnemySpawnRates = new int[] { 5, 10, 60, 100, 999 };
+                strongEnemySpawnRates = new int[] { 20, 40, 95, 100, 999 };
+            }
+            else if (difficultyLevel == 8)
+            {
+                fastEnemySpawnRates = new int[] { 5, 10, 30, 100, 999 };
+                strongEnemySpawnRates = new int[] { 20, 40, 80, 100, 999 };
+            }
+            else if (difficultyLevel == 9)
+            {
+                fastEnemySpawnRates = new int[] { 5, 10, 20, 90, 100 };
+                strongEnemySpawnRates = new int[] { 20, 40, 60, 100, 999 };
+            }
+            else if (difficultyLevel == 10)
+            {
+                fastEnemySpawnRates = new int[] { 5, 10, 20, 70, 100 };
+                strongEnemySpawnRates = new int[] { 15, 30, 45, 95, 100 };
+            }
+            else if (difficultyLevel == 11)
+            {
+                fastEnemySpawnRates = new int[] { 5, 10, 20, 50, 100 };
+                strongEnemySpawnRates = new int[] { 10, 20, 30, 90, 100 };
+            }
+            else if (difficultyLevel == 12)
+            {
+                fastEnemySpawnRates = new int[] { 5, 10, 20, 40, 100 };
+                strongEnemySpawnRates = new int[] { 5, 15, 25, 80, 100 };
+            }
+            else if (difficultyLevel == 13)
+            {
+                fastEnemySpawnRates = new int[] { 5, 10, 20, 30, 100 };
+                strongEnemySpawnRates = new int[] { 5, 10, 20, 60, 100 };
+            }
+            else if (difficultyLevel == 14)
+            {
+                fastEnemySpawnRates = new int[] { 5, 10, 20, 30, 100 };
+                strongEnemySpawnRates = new int[] { 5, 10, 20, 40, 100 };
+            }
+        }
+    }
+
     void HandleEnemyTimer()
     {
         spawnTimer -= Time.deltaTime;
@@ -158,26 +252,75 @@ public class GameSceneManager : MonoBehaviour
 
     void SpawnEnemies(int num)
     {
+        int maxSpecialPerSpawn = difficultyLevel >= 10 ? 1 : 2;
+        int specialThisSpawn = 0;
+        float extraLife = 0;
         for (int x = 0; x < num; x++)
         {
-            float randomAngle = Random.Range(0f, 360f);
-            Vector2 normalizedPos = new Vector2(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle));
-            Vector2 scaledNormalizedPos = normalizedPos * Random.Range (11.0f, 13.0f);
+            bool verticalPos = (Random.Range(0, 2) == 0);
+            float xOffset = verticalPos
+                ? Random.Range(-10.5f, 10.5f)
+                : Random.Range(10f, 13f) * (Random.Range(0, 2) == 0 ? -1f : 1f);
+            float yOffset = verticalPos
+                ? Random.Range(6f, 9f) * (Random.Range(0, 2) == 0 ? -1f : 1f)
+                : Random.Range(-6.5f, 6.5f);
             Vector2 playerPos = Player.transform.localPosition;
-            Vector2 enemyPos = new Vector2(playerPos.x + scaledNormalizedPos.x, playerPos.y + scaledNormalizedPos.y);
+            Vector2 enemyPos = new Vector2(playerPos.x + xOffset, playerPos.y + yOffset);
             GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
             Globals.EnemyTypes enemyType = Globals.EnemyTypes.Yar;
             float randVal = Random.Range(0, 100f);
-            if (randVal > 95f)
+            if (randVal > 95f && currentNumFBI < maxFBI && specialThisSpawn < maxSpecialPerSpawn)
+            {
                 enemyType = Globals.EnemyTypes.FBI;
-            else if (randVal > 90f)
-                enemyType = Globals.EnemyTypes.Qbert;
-            else if (randVal > 85f)
-                enemyType = Globals.EnemyTypes.MsPac;
-            else if (randVal > 75f)
-                enemyType = Globals.EnemyTypes.Pac;
-            enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyType);
+                currentNumFBI++;
+                specialThisSpawn++;
+                extraLife = difficultyLevel * .5f;
+            }
+            else if (randVal > 92f && currentNumScientist < maxScientist && specialThisSpawn < maxSpecialPerSpawn && difficultyLevel > 3)
+            {
+                enemyType = Globals.EnemyTypes.Scientist;
+                currentNumScientist++;
+                specialThisSpawn++;
+                extraLife = difficultyLevel * .4f;
+            }
+            else if (randVal > 82f)
+                enemyType = GetStrongEnemyType();
+            else
+                enemyType = GetFastEnemyType();
+            enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyType, extraLife);
         }
+    }
+
+    Globals.EnemyTypes GetFastEnemyType()
+    {
+        int randVal = Random.Range(0, 100);
+        int index = 0;
+        int x = 0;
+        bool valid = false;
+        do {
+            index = x;
+            if (randVal < fastEnemySpawnRates[x] && fastEnemySpawnRates[x] <= 100)
+                valid = true;
+            x++;
+        } while (!valid && x < fastEnemySpawnRates.Length);
+        Globals.EnemyTypes fastEnemyType = Globals.FastEnemyTypes[index];
+        return fastEnemyType;
+    }
+
+    Globals.EnemyTypes GetStrongEnemyType()
+    {
+        int randVal = Random.Range(0, 100);
+        int index = 0;
+        int x = 0;
+        bool valid = false;
+        do {
+            index = x;
+            if (randVal < strongEnemySpawnRates[x] && strongEnemySpawnRates[x] <= 100)
+                valid = true;
+            x++;
+        } while (!valid && x < strongEnemySpawnRates.Length);
+        Globals.EnemyTypes strongEnemyType = Globals.StrongEnemyTypes[index];
+        return strongEnemyType;
     }
 
     public void SelectUpgrade(int upgradeNum)
@@ -307,5 +450,14 @@ public class GameSceneManager : MonoBehaviour
     public void GameOver()
     {
         deadTimer = deadTimerMax;
+    }
+
+    public void KillFBI()
+    {
+        currentNumFBI--;
+    }
+    public void KillScientist()
+    {
+        currentNumScientist--;
     }
 }

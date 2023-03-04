@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6377fe0bdc0d1dd469bb5c068a55811a
+guid: d9470dc6a88878a43b9fa6de133712f7
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -129,13 +129,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: enemy5_0
+      name: joust_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 7
-        height: 7
+        width: 16
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,20 +143,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9347d11df131c1a478653c9f0ed82211
-      internalID: 1763515217
+      spriteID: 849bda4660e36ea48bcd5f5b4dff942e
+      internalID: 1277541954
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy5_1
+      name: joust_1
       rect:
         serializedVersion: 2
-        x: 7
+        x: 16
         y: 0
-        width: 7
-        height: 7
+        width: 16
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -164,29 +164,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d1fe69eb336c3af4fb65d4235d9e129f
-      internalID: -2046080628
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: enemy5_2
-      rect:
-        serializedVersion: 2
-        x: 14
-        y: 0
-        width: 7
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 934b0e2c7d0acdf46af9a8c08a3a341f
-      internalID: 786333204
+      spriteID: ce7b456d312621a4fba8e02e23286a7c
+      internalID: 1427694430
       vertices: []
       indices: 
       edges: []
@@ -202,9 +181,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      enemy5_2: 786333204
-      enemy5_0: 1763515217
-      enemy5_1: -2046080628
+      joust_0: 1277541954
+      joust_1: 1427694430
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

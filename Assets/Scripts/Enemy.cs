@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    GameSceneManager GameSceneManagerScript;
+
     bool isActive = true;
     float life = 1f;
     float hitStrength = 1f;
@@ -35,6 +37,8 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     GameObject DebrisPrefab;
     GameObject debrisContainer;
+    [SerializeField]
+    GameObject ToxicDebrisPrefab;
 
     [SerializeField]
     GameObject CandyPrefab;
@@ -44,6 +48,7 @@ public class Enemy : MonoBehaviour
 
     void Awake()
     {
+        GameSceneManagerScript = GameObject.Find("SceneManager").GetComponent<GameSceneManager>();
         playerTransform = GameObject.Find("Player").transform;
         debrisContainer = GameObject.Find("DebrisContainer");
         itemContainer = GameObject.Find("ItemContainer");
@@ -53,7 +58,7 @@ public class Enemy : MonoBehaviour
         enemyRenderer = GetComponent<SpriteRenderer>();
     }
 
-    public void ConfigureEnemy(Globals.EnemyTypes newType)
+    public void ConfigureEnemy(Globals.EnemyTypes newType, float extraLife)
     {
         type = newType;
         enemyRenderer.sprite = EnemySprites[(int)type];
@@ -70,55 +75,116 @@ public class Enemy : MonoBehaviour
             life = 1.5f;
             hitStrength = 2f;
         }
-        else if (type == Globals.EnemyTypes.Robot)
-        {
-            moveSpeed = Random.Range(.45f, .55f);
-            positionTimerMax = .5f;
-            enemyAnimator.enabled = false;
-            this.transform.localScale = new Vector3(3f, 3f, 1f);
-            enemyCollider.size = new Vector2(0.15f, 0.15f);
-            flipWithMovement = false;
-            life = 1f;
-            hitStrength = 1f;
-        }
-        else if (type == Globals.EnemyTypes.Qbert)
-        {
-            moveSpeed = Random.Range(.5f, .75f);
-            positionTimerMax = .5f;
-            enemyAnimator.enabled = false;
-            this.transform.localScale = new Vector3(4f, 4f, 1f);
-            enemyCollider.size = new Vector2(0.15f, 0.15f);
-            flipWithMovement = true;
-            life = 4f;
-            hitStrength = 5f;
-        }
         else if (type == Globals.EnemyTypes.Pac)
         {
-            moveSpeed = Random.Range(.65f, .85f);
-            positionTimerMax = .5f;
+            moveSpeed = Random.Range(1f, 1.2f);
+            positionTimerMax = .75f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("pac");
-            this.transform.localScale = new Vector3(6f, 6f, 1f);
-            enemyCollider.size = new Vector2(0.07f, 0.07f);
+            this.transform.localScale = new Vector3(4f, 4f, 1f);
+            enemyCollider.size = new Vector2(0.14f, 0.1f);
             flipWithMovement = true;
             life = 2f;
             hitStrength = 3f;
         }
         else if (type == Globals.EnemyTypes.MsPac)
         {
-            moveSpeed = Random.Range(.65f, .85f);
+            moveSpeed = Random.Range(1.2f, 1.4f);
             positionTimerMax = .5f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("mspac");
             this.transform.localScale = new Vector3(4f, 4f, 1f);
-            enemyCollider.size = new Vector2(0.09f, 0.09f);
+            enemyCollider.size = new Vector2(0.14f, 0.1f);
             flipWithMovement = true;
             life = 3f;
-            hitStrength = 3f;
+            hitStrength = 4f;
+        }
+        else if (type == Globals.EnemyTypes.Joust)
+        {
+            moveSpeed = Random.Range(1.4f, 1.6f);
+            positionTimerMax = .5f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("joust");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.15f, 0.15f);
+            flipWithMovement = true;
+            life = 4f;
+            hitStrength = 5f;
+        }
+        else if (type == Globals.EnemyTypes.Joust2)
+        {
+            moveSpeed = Random.Range(1.6f, 1.8f);
+            positionTimerMax = .4f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("joust2");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.15f, 0.15f);
+            flipWithMovement = true;
+            life = 6f;
+            hitStrength = 6f;
+        }
+        else if (type == Globals.EnemyTypes.Frogger)
+        {
+            moveSpeed = Random.Range(.6f, .8f);
+            positionTimerMax = .9f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("frog");
+            this.transform.localScale = new Vector3(6f, 6f, 1f);
+            enemyCollider.size = new Vector2(0.1f, 0.1f);
+            flipWithMovement = true;
+            life = 4f;
+            hitStrength = 4f;
+        }
+        else if (type == Globals.EnemyTypes.Qbert)
+        {
+            moveSpeed = Random.Range(.8f, 1f);
+            positionTimerMax = .8f;
+            enemyAnimator.enabled = false;
+            this.transform.localScale = new Vector3(4f, 4f, 1f);
+            enemyCollider.size = new Vector2(0.15f, 0.15f);
+            flipWithMovement = true;
+            life = 8f;
+            hitStrength = 8f;
+        }
+        else if (type == Globals.EnemyTypes.Kangaroo)
+        {
+            moveSpeed = Random.Range(1f, 1.2f);
+            positionTimerMax = .7f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("kangaroo");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.12f, 0.2f);
+            flipWithMovement = true;
+            life = 12f;
+            hitStrength = 12f;
+        }
+        else if (type == Globals.EnemyTypes.Hero)
+        {
+            moveSpeed = Random.Range(1.2f, 1.4f);
+            positionTimerMax = .6f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("hero");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.12f, 0.2f);
+            flipWithMovement = true;
+            life = 20f;
+            hitStrength = 12f;
+        }
+        else if (type == Globals.EnemyTypes.Hero2)
+        {
+            moveSpeed = Random.Range(1.4f, 1.6f);
+            positionTimerMax = .4f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("hero2");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.12f, 0.2f);
+            flipWithMovement = true;
+            life = 25f;
+            hitStrength = 15f;
         }
         else if (type == Globals.EnemyTypes.FBI)
         {
-            moveSpeed = Random.Range(1f, 1.5f);
+            moveSpeed = Random.Range(1.75f, 2.25f);
             positionTimerMax = 4f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("fbi");
@@ -126,8 +192,25 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.15f, 0.3f);
             flipWithMovement = true;
             life = 2f;
-            hitStrength = 2f;
+            hitStrength = 4f;
             enemyRigidbody.mass = 999f;
+            int layerIgnoreRaycast = LayerMask.NameToLayer("EnemySpecial");
+            gameObject.layer = layerIgnoreRaycast;
+        }
+        else if (type == Globals.EnemyTypes.Scientist)
+        {
+            moveSpeed = Random.Range(2f, 2.5f);
+            positionTimerMax = 4f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("scientist");
+            this.transform.localScale = new Vector3(4f, 4f, 1f);
+            enemyCollider.size = new Vector2(0.15f, 0.3f);
+            flipWithMovement = true;
+            life = 4f;
+            hitStrength = 4f;
+            enemyRigidbody.mass = 999f;
+            int layerIgnoreRaycast = LayerMask.NameToLayer("EnemySpecial");
+            gameObject.layer = layerIgnoreRaycast;
         }
     }
 
@@ -146,8 +229,8 @@ public class Enemy : MonoBehaviour
             positionTimer -= Time.deltaTime;
             if (positionTimer < 0)
             {
-                Vector3 desiredPosition = type == Globals.EnemyTypes.FBI
-                    ? new Vector3(playerTransform.position.x + 3f * Random.Range(0, 2) == 0 ? -1f : 1f, playerTransform.position.y + 4f * Random.Range(0, 2) == 0 ? -1f : 1f, 0)
+                Vector3 desiredPosition = (type == Globals.EnemyTypes.FBI || type == Globals.EnemyTypes.Scientist)
+                    ? new Vector3(playerTransform.position.x + 6f * (Random.Range(0, 2) == 0 ? -1f : 1f), playerTransform.position.y + 4f * (Random.Range(0, 2) == 0 ? -1f : 1f), 0)
                     : playerTransform.position;
                 movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
                 positionTimer = Random.Range(positionTimerMax - .25f, positionTimerMax + .25f);
@@ -216,6 +299,7 @@ public class Enemy : MonoBehaviour
     public void KillEnemy()
     {
         Globals.killCount++;
+
         // create debris
         int numDebris = Random.Range(8, 10);
         for (int x = 0; x < numDebris; x++)
@@ -224,11 +308,23 @@ public class Enemy : MonoBehaviour
             debrisGO.GetComponent<Debris>().Init();
         }
 
-        // spawn candy
+        // spawn phone or candy or toxic debris
         if (type == Globals.EnemyTypes.FBI)
         {
             GameObject phoneGO = Instantiate(PhonePrefab, this.transform.localPosition, Quaternion.identity, itemContainer.transform);
             phoneGO.GetComponent<Phone>().Init();
+            GameSceneManagerScript.KillFBI();
+        }
+        else if (type == Globals.EnemyTypes.Scientist)
+        {
+            // create toxic debris
+            int numToxicDebris = Random.Range(8, 15);
+            for (int x = 0; x < numToxicDebris; x++)
+            {
+                GameObject toxicDebrisGO = Instantiate(ToxicDebrisPrefab, this.transform.localPosition, Quaternion.identity, debrisContainer.transform);
+                toxicDebrisGO.GetComponent<ToxicDebris>().Init();
+            }
+            GameSceneManagerScript.KillScientist();
         }
         else if (Random.Range(0, 100f) < 50f)
         {

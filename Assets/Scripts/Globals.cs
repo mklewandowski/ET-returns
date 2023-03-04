@@ -9,13 +9,22 @@ public class Globals
     public static bool IsPaused = false;
 
     public enum EnemyTypes {
-        Robot,
-        Qbert,
         Yar,
         Pac,
         MsPac,
-        FBI
+        Joust,
+        Joust2,
+        Frogger,
+        Qbert,
+        Kangaroo,
+        Hero,
+        Hero2,
+        FBI,
+        Scientist
     }
+
+    public static EnemyTypes[] FastEnemyTypes = {EnemyTypes.Yar, EnemyTypes.Pac, EnemyTypes.MsPac, EnemyTypes.Joust, EnemyTypes.Joust2};
+    public static EnemyTypes[] StrongEnemyTypes = {EnemyTypes.Frogger, EnemyTypes.Qbert, EnemyTypes.Kangaroo, EnemyTypes.Hero, EnemyTypes.Hero2};
 
     public enum UpgradeTypes {
         ForceField,
