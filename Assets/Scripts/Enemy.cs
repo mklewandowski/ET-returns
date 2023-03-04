@@ -58,7 +58,7 @@ public class Enemy : MonoBehaviour
         enemyRenderer = GetComponent<SpriteRenderer>();
     }
 
-    public void ConfigureEnemy(Globals.EnemyTypes newType)
+    public void ConfigureEnemy(Globals.EnemyTypes newType, float extraLife)
     {
         type = newType;
         enemyRenderer.sprite = EnemySprites[(int)type];

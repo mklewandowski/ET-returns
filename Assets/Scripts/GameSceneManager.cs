@@ -254,6 +254,7 @@ public class GameSceneManager : MonoBehaviour
     {
         int maxSpecialPerSpawn = difficultyLevel >= 10 ? 1 : 2;
         int specialThisSpawn = 0;
+        float extraLife = 0;
         for (int x = 0; x < num; x++)
         {
             bool verticalPos = (Random.Range(0, 2) == 0);
@@ -273,18 +274,20 @@ public class GameSceneManager : MonoBehaviour
                 enemyType = Globals.EnemyTypes.FBI;
                 currentNumFBI++;
                 specialThisSpawn++;
+                extraLife = difficultyLevel * .5f;
             }
             else if (randVal > 92f && currentNumScientist < maxScientist && specialThisSpawn < maxSpecialPerSpawn && difficultyLevel > 3)
             {
                 enemyType = Globals.EnemyTypes.Scientist;
                 currentNumScientist++;
                 specialThisSpawn++;
+                extraLife = difficultyLevel * .4f;
             }
             else if (randVal > 82f)
                 enemyType = GetStrongEnemyType();
             else
                 enemyType = GetFastEnemyType();
-            enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyType);
+            enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyType, extraLife);
         }
     }
 
