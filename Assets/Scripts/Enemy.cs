@@ -80,7 +80,7 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.07f, 0.07f);
             flipWithMovement = true;
             life = 2f;
-            hitStrength = 2f;
+            hitStrength = 3f;
         }
         else if (type == Globals.EnemyTypes.MsPac)
         {
@@ -92,7 +92,7 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.09f, 0.09f);
             flipWithMovement = true;
             life = 3f;
-            hitStrength = 3f;
+            hitStrength = 4f;
         }
         else if (type == Globals.EnemyTypes.Joust)
         {
@@ -104,7 +104,7 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = true;
             life = 4f;
-            hitStrength = 4f;
+            hitStrength = 5f;
         }
         else if (type == Globals.EnemyTypes.Joust2)
         {
@@ -116,7 +116,7 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = true;
             life = 6f;
-            hitStrength = 4f;
+            hitStrength = 6f;
         }
         else if (type == Globals.EnemyTypes.Qbert)
         {
