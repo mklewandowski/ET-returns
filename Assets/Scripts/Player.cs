@@ -405,6 +405,8 @@ public class Player : MonoBehaviour
         {
             float defenseAdjustedDamage = damage / Globals.currentDefense;
             health -= defenseAdjustedDamage;
+            if (health < 0 )
+                health = 0;
             UpdateHealthBar();
             if (health <= 0)
                 KillPlayer();
