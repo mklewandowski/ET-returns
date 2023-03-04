@@ -245,7 +245,7 @@ public class GameSceneManager : MonoBehaviour
 
     void SpawnEnemies(int num)
     {
-        int maxSpecialPerSpawn = 2;
+        int maxSpecialPerSpawn = difficultyLevel >= 10 ? 1 : 2;
         int specialThisSpawn = 0;
         for (int x = 0; x < num; x++)
         {
