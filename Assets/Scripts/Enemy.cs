@@ -142,7 +142,7 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = true;
             life = 8f;
-            hitStrength = 7f;
+            hitStrength = 8f;
         }
         else if (type == Globals.EnemyTypes.Kangaroo)
         {
@@ -154,7 +154,7 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.12f, 0.2f);
             flipWithMovement = true;
             life = 12f;
-            hitStrength = 10f;
+            hitStrength = 12f;
         }
         else if (type == Globals.EnemyTypes.Hero)
         {
@@ -165,12 +165,24 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.12f, 0.2f);
             flipWithMovement = true;
-            life = 16f;
+            life = 20f;
             hitStrength = 12f;
+        }
+        else if (type == Globals.EnemyTypes.Hero2)
+        {
+            moveSpeed = Random.Range(1.4f, 1.6f);
+            positionTimerMax = .4f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("hero2");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.12f, 0.2f);
+            flipWithMovement = true;
+            life = 25f;
+            hitStrength = 15f;
         }
         else if (type == Globals.EnemyTypes.FBI)
         {
-            moveSpeed = Random.Range(1.4f, 1.8f);
+            moveSpeed = Random.Range(1.75f, 2.25f);
             positionTimerMax = 4f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("fbi");

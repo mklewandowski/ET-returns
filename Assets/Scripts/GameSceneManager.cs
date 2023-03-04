@@ -49,7 +49,7 @@ public class GameSceneManager : MonoBehaviour
     float difficultyTimerMax = 60f;
 
     int[] fastEnemySpawnRates = { 80, 100, 999, 999, 999 };
-    int[] strongEnemySpawnRates = { 95, 100, 999, 999 };
+    int[] strongEnemySpawnRates = { 95, 100, 999, 999, 999 };
     int currentNumFBI = 0;
     int currentNumScientist = 0;
     int maxSpecialEnemy = 3;
@@ -156,67 +156,72 @@ public class GameSceneManager : MonoBehaviour
             if (difficultyLevel == 1)
             {
                 fastEnemySpawnRates = new int[] { 50, 100, 999, 999, 999 };
-                strongEnemySpawnRates = new int[] { 80, 100, 999, 999 };
+                strongEnemySpawnRates = new int[] { 80, 100, 999, 999, 999 };
             }
             else if (difficultyLevel == 2)
             {
                 fastEnemySpawnRates = new int[] { 20, 100, 999, 999, 999 };
-                strongEnemySpawnRates = new int[] { 60, 100, 999, 999 };
+                strongEnemySpawnRates = new int[] { 60, 100, 999, 999, 999 };
             }
             else if (difficultyLevel == 3)
             {
                 fastEnemySpawnRates = new int[] { 10, 80, 100, 999, 999 };
-                strongEnemySpawnRates = new int[] { 40, 95, 100, 999 };
+                strongEnemySpawnRates = new int[] { 40, 95, 100, 999, 999 };
             }
             else if (difficultyLevel == 4)
             {
                 fastEnemySpawnRates = new int[] { 5, 55, 100, 999, 999 };
-                strongEnemySpawnRates = new int[] { 20, 95, 100, 999 };
+                strongEnemySpawnRates = new int[] { 20, 95, 100, 999, 999 };
             }
             else if (difficultyLevel == 5)
             {
                 fastEnemySpawnRates = new int[] { 5, 25, 100, 999, 999 };
-                strongEnemySpawnRates = new int[] { 20, 80, 100, 999 };
+                strongEnemySpawnRates = new int[] { 20, 80, 100, 999, 999 };
             }
             else if (difficultyLevel == 6)
             {
                 fastEnemySpawnRates = new int[] { 5, 10, 80, 100, 999 };
-                strongEnemySpawnRates = new int[] { 20, 60, 100, 999 };
+                strongEnemySpawnRates = new int[] { 20, 60, 100, 999, 999 };
             }
             else if (difficultyLevel == 7)
             {
                 fastEnemySpawnRates = new int[] { 5, 10, 60, 100, 999 };
-                strongEnemySpawnRates = new int[] { 20, 40, 95, 100 };
+                strongEnemySpawnRates = new int[] { 20, 40, 95, 100, 999 };
             }
             else if (difficultyLevel == 8)
             {
                 fastEnemySpawnRates = new int[] { 5, 10, 30, 100, 999 };
-                strongEnemySpawnRates = new int[] { 20, 40, 80, 100 };
+                strongEnemySpawnRates = new int[] { 20, 40, 80, 100, 999 };
             }
             else if (difficultyLevel == 9)
             {
                 fastEnemySpawnRates = new int[] { 5, 10, 20, 90, 100 };
-                strongEnemySpawnRates = new int[] { 20, 40, 60, 100 };
+                strongEnemySpawnRates = new int[] { 20, 40, 60, 100, 999 };
             }
             else if (difficultyLevel == 10)
             {
                 fastEnemySpawnRates = new int[] { 5, 10, 20, 70, 100 };
-                strongEnemySpawnRates = new int[] { 15, 30, 45, 100 };
+                strongEnemySpawnRates = new int[] { 15, 30, 45, 95, 100 };
             }
             else if (difficultyLevel == 11)
             {
                 fastEnemySpawnRates = new int[] { 5, 10, 20, 50, 100 };
-                strongEnemySpawnRates = new int[] { 10, 20, 30, 100 };
+                strongEnemySpawnRates = new int[] { 10, 20, 30, 90, 100 };
             }
             else if (difficultyLevel == 12)
             {
                 fastEnemySpawnRates = new int[] { 5, 10, 20, 40, 100 };
-                strongEnemySpawnRates = new int[] { 5, 15, 25, 100 };
+                strongEnemySpawnRates = new int[] { 5, 15, 25, 80, 100 };
             }
             else if (difficultyLevel == 13)
             {
                 fastEnemySpawnRates = new int[] { 5, 10, 20, 30, 100 };
-                strongEnemySpawnRates = new int[] { 5, 10, 20, 100 };
+                strongEnemySpawnRates = new int[] { 5, 10, 20, 60, 100 };
+            }
+            else if (difficultyLevel == 14)
+            {
+                fastEnemySpawnRates = new int[] { 5, 10, 20, 30, 100 };
+                strongEnemySpawnRates = new int[] { 5, 10, 20, 40, 100 };
             }
         }
     }
