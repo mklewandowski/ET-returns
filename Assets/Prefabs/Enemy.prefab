@@ -150,7 +150,7 @@ MonoBehaviour:
   type: 0
   EnemySprites:
   - {fileID: 1169755782, guid: 40f18e32d89d3444c8ba6183a9131bc3, type: 3}
-  - {fileID: 1763515217, guid: 6377fe0bdc0d1dd469bb5c068a55811a, type: 3}
+  - {fileID: -1072581382, guid: 6377fe0bdc0d1dd469bb5c068a55811a, type: 3}
   - {fileID: -321455076, guid: 6e8722eec164a2045b36c9bf292d1b24, type: 3}
   - {fileID: 1277541954, guid: d9470dc6a88878a43b9fa6de133712f7, type: 3}
   - {fileID: -1787416195, guid: 5798ad6956a8be24085202d0e77d9efc, type: 3}

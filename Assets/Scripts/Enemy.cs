@@ -79,8 +79,8 @@ public class Enemy : MonoBehaviour
             positionTimerMax = .5f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("pac");
-            this.transform.localScale = new Vector3(6f, 6f, 1f);
-            enemyCollider.size = new Vector2(0.07f, 0.07f);
+            this.transform.localScale = new Vector3(4f, 4f, 1f);
+            enemyCollider.size = new Vector2(0.14f, 0.1f);
             flipWithMovement = true;
             life = 2f;
             hitStrength = 3f;
@@ -92,7 +92,7 @@ public class Enemy : MonoBehaviour
             enemyAnimator.enabled = true;
             enemyAnimator.Play("mspac");
             this.transform.localScale = new Vector3(4f, 4f, 1f);
-            enemyCollider.size = new Vector2(0.09f, 0.09f);
+            enemyCollider.size = new Vector2(0.14f, 0.1f);
             flipWithMovement = true;
             life = 3f;
             hitStrength = 4f;
@@ -169,8 +169,6 @@ public class Enemy : MonoBehaviour
                     : playerTransform.position;
                 movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
                 positionTimer = Random.Range(positionTimerMax - .25f, positionTimerMax + .25f);
-                if (type == Globals.EnemyTypes.FBI)
-                    Debug.Log(desiredPosition);
             }
         }
         if (flipWithMovement)
