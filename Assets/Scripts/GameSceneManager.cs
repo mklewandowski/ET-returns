@@ -52,7 +52,8 @@ public class GameSceneManager : MonoBehaviour
     int[] strongEnemySpawnRates = { 95, 100, 999, 999, 999 };
     int currentNumFBI = 0;
     int currentNumScientist = 0;
-    int maxSpecialEnemy = 3;
+    int maxFBI = 3;
+    int maxScientist = 1;
 
     float spawnTimer = 5f;
     float spawnTimerMax = 7f;
@@ -267,13 +268,19 @@ public class GameSceneManager : MonoBehaviour
             GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
             Globals.EnemyTypes enemyType = Globals.EnemyTypes.Yar;
             float randVal = Random.Range(0, 100f);
-            if (randVal > 95f && currentNumFBI < maxSpecialEnemy && specialThisSpawn < maxSpecialPerSpawn)
+            if (randVal > 95f && currentNumFBI < maxFBI && specialThisSpawn < maxSpecialPerSpawn)
             {
                 enemyType = Globals.EnemyTypes.FBI;
                 currentNumFBI++;
                 specialThisSpawn++;
             }
-            else if (randVal > 85f)
+            else if (randVal > 92f && currentNumScientist < maxScientist && specialThisSpawn < maxSpecialPerSpawn && difficultyLevel > 3)
+            {
+                enemyType = Globals.EnemyTypes.Scientist;
+                currentNumScientist++;
+                specialThisSpawn++;
+            }
+            else if (randVal > 82f)
                 enemyType = GetStrongEnemyType();
             else
                 enemyType = GetFastEnemyType();
@@ -445,5 +452,9 @@ public class GameSceneManager : MonoBehaviour
     public void KillFBI()
     {
         currentNumFBI--;
+    }
+    public void KillScientist()
+    {
+        currentNumScientist--;
     }
 }

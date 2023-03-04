@@ -37,6 +37,8 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     GameObject DebrisPrefab;
     GameObject debrisContainer;
+    [SerializeField]
+    GameObject ToxicDebrisPrefab;
 
     [SerializeField]
     GameObject CandyPrefab;
@@ -195,6 +197,21 @@ public class Enemy : MonoBehaviour
             int layerIgnoreRaycast = LayerMask.NameToLayer("EnemySpecial");
             gameObject.layer = layerIgnoreRaycast;
         }
+        else if (type == Globals.EnemyTypes.Scientist)
+        {
+            moveSpeed = Random.Range(2f, 2.5f);
+            positionTimerMax = 4f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("scientist");
+            this.transform.localScale = new Vector3(4f, 4f, 1f);
+            enemyCollider.size = new Vector2(0.15f, 0.3f);
+            flipWithMovement = true;
+            life = 4f;
+            hitStrength = 4f;
+            enemyRigidbody.mass = 999f;
+            int layerIgnoreRaycast = LayerMask.NameToLayer("EnemySpecial");
+            gameObject.layer = layerIgnoreRaycast;
+        }
     }
 
     // Update is called once per frame
@@ -212,7 +229,7 @@ public class Enemy : MonoBehaviour
             positionTimer -= Time.deltaTime;
             if (positionTimer < 0)
             {
-                Vector3 desiredPosition = type == Globals.EnemyTypes.FBI
+                Vector3 desiredPosition = (type == Globals.EnemyTypes.FBI || type == Globals.EnemyTypes.Scientist)
                     ? new Vector3(playerTransform.position.x + 6f * (Random.Range(0, 2) == 0 ? -1f : 1f), playerTransform.position.y + 4f * (Random.Range(0, 2) == 0 ? -1f : 1f), 0)
                     : playerTransform.position;
                 movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
@@ -291,12 +308,23 @@ public class Enemy : MonoBehaviour
             debrisGO.GetComponent<Debris>().Init();
         }
 
-        // spawn phone or candy
+        // spawn phone or candy or toxic debris
         if (type == Globals.EnemyTypes.FBI)
         {
             GameObject phoneGO = Instantiate(PhonePrefab, this.transform.localPosition, Quaternion.identity, itemContainer.transform);
             phoneGO.GetComponent<Phone>().Init();
             GameSceneManagerScript.KillFBI();
+        }
+        else if (type == Globals.EnemyTypes.Scientist)
+        {
+            // create toxic debris
+            int numToxicDebris = Random.Range(8, 15);
+            for (int x = 0; x < numToxicDebris; x++)
+            {
+                GameObject toxicDebrisGO = Instantiate(ToxicDebrisPrefab, this.transform.localPosition, Quaternion.identity, debrisContainer.transform);
+                toxicDebrisGO.GetComponent<ToxicDebris>().Init();
+            }
+            GameSceneManagerScript.KillScientist();
         }
         else if (Random.Range(0, 100f) < 50f)
         {
