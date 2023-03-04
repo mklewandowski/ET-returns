@@ -134,7 +134,7 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.FBI)
         {
-            moveSpeed = Random.Range(1f, 1.5f);
+            moveSpeed = Random.Range(1.4f, 1.8f);
             positionTimerMax = 4f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("fbi");
@@ -142,8 +142,10 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.15f, 0.3f);
             flipWithMovement = true;
             life = 2f;
-            hitStrength = 2f;
+            hitStrength = 4f;
             enemyRigidbody.mass = 999f;
+            int layerIgnoreRaycast = LayerMask.NameToLayer("EnemySpecial");
+            gameObject.layer = layerIgnoreRaycast;
         }
     }
 
@@ -163,10 +165,12 @@ public class Enemy : MonoBehaviour
             if (positionTimer < 0)
             {
                 Vector3 desiredPosition = type == Globals.EnemyTypes.FBI
-                    ? new Vector3(playerTransform.position.x + 3f * Random.Range(0, 2) == 0 ? -1f : 1f, playerTransform.position.y + 4f * Random.Range(0, 2) == 0 ? -1f : 1f, 0)
+                    ? new Vector3(playerTransform.position.x + 6f * (Random.Range(0, 2) == 0 ? -1f : 1f), playerTransform.position.y + 4f * (Random.Range(0, 2) == 0 ? -1f : 1f), 0)
                     : playerTransform.position;
                 movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
                 positionTimer = Random.Range(positionTimerMax - .25f, positionTimerMax + .25f);
+                if (type == Globals.EnemyTypes.FBI)
+                    Debug.Log(desiredPosition);
             }
         }
         if (flipWithMovement)
@@ -232,6 +236,7 @@ public class Enemy : MonoBehaviour
     public void KillEnemy()
     {
         Globals.killCount++;
+
         // create debris
         int numDebris = Random.Range(8, 10);
         for (int x = 0; x < numDebris; x++)
@@ -240,7 +245,7 @@ public class Enemy : MonoBehaviour
             debrisGO.GetComponent<Debris>().Init();
         }
 
-        // spawn candy
+        // spawn phone or candy
         if (type == Globals.EnemyTypes.FBI)
         {
             GameObject phoneGO = Instantiate(PhonePrefab, this.transform.localPosition, Quaternion.identity, itemContainer.transform);
