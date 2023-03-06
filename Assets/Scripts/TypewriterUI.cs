@@ -5,7 +5,7 @@ using TMPro;
 
 public class TypewriterUI : MonoBehaviour
 {
-    //AudioManager audioManager;
+    AudioManager audioManager;
 
     TextMeshProUGUI HUDText;
 
@@ -19,7 +19,7 @@ public class TypewriterUI : MonoBehaviour
     void Start()
     {
         GameObject am = GameObject.Find("AudioManager");
-        //audioManager = am.GetComponent<AudioManager>();
+        audioManager = am.GetComponent<AudioManager>();
         HUDText = this.GetComponent<TextMeshProUGUI>();
     }
 
@@ -44,7 +44,7 @@ public class TypewriterUI : MonoBehaviour
             clickTimer -= Time.deltaTime;
             if (clickTimer <= 0)
             {
-                //audioManager.PlayClickSound();
+                audioManager.PlayClickSound();
                 clickTimer = clickTimerMax;
             }
         }

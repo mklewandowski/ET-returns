@@ -6,6 +6,10 @@ public class Globals
 {
     public static bool DebugMode = false;
 
+    // audio and music
+    public static bool AudioOn = true;
+    public static bool MusicOn = true;
+
     public static bool IsPaused = false;
 
     public enum EnemyTypes {

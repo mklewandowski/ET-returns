@@ -6,6 +6,8 @@ using TMPro;
 
 public class Player : MonoBehaviour
 {
+    AudioManager audioManager;
+
     enum PlayerOrientation {
         Up,
         UpRight,
@@ -56,7 +58,7 @@ public class Player : MonoBehaviour
     Animator playerAnimator;
 
     float shootTimer = 2f;
-    float shootTimerBurstMax = .25f;
+    float shootTimerBurstMax = .2f;
     int burstNum = 5;
     int burstNumMax = 5;
     float muzzleFlashTimer = 0f;
@@ -87,6 +89,10 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameObject am = GameObject.Find("AudioManager");
+        if (am)
+            audioManager = am.GetComponent<AudioManager>();
+
         playerRigidbody = GetComponent<Rigidbody2D>();
         playerAnimator = PlayerGO.GetComponent<Animator>();
         playerRenderer = PlayerGO.GetComponent<SpriteRenderer>();
@@ -191,6 +197,7 @@ public class Player : MonoBehaviour
         shootTimer -= Time.deltaTime;
         if (shootTimer < 0)
         {
+            audioManager.PlayPlayerShootSound();
             GameObject bulletGO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
             Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
             float xMovement = currentPlayerOrientation == PlayerOrientation.Right || currentPlayerOrientation == PlayerOrientation.UpRight || currentPlayerOrientation == PlayerOrientation.DownRight
@@ -403,6 +410,7 @@ public class Player : MonoBehaviour
     {
         if (invincibleTimer <= 0)
         {
+            audioManager.PlayPlayerHitSound();
             float defenseAdjustedDamage = damage / Globals.currentDefense;
             health -= defenseAdjustedDamage;
             if (health < 0 )
@@ -431,6 +439,7 @@ public class Player : MonoBehaviour
 
     public void KillPlayer()
     {
+        audioManager.PlayPlayerDieSound();
         playerRigidbody.velocity = new Vector2(0, 0);
         this.GetComponent<Collider2D>().enabled = false;
         playerAnimator.Play("et-dead");
@@ -458,12 +467,14 @@ public class Player : MonoBehaviour
 
     void CollectCandy()
     {
+        audioManager.PlayCollectCandySound();
         GameSceneManagerScript.AddExperience(20);
         Globals.candyCount++;
     }
 
     void CollectPhone()
     {
+        audioManager.PlayCollectPhoneSound();
         currentPhonePieces++;
         if (currentPhonePieces == maxPhonePieces)
         {

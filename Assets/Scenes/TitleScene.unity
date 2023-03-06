@@ -1151,6 +1151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb48a3679df40e14ca8c274c7504ce10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AudioManagerPrefab: {fileID: 8388956219249298800, guid: bdd74ac2ced41c644a1ecab20eff63f5, type: 3}
   fadeManager: {fileID: 1898727555}
   animationPanel: {fileID: 591943697}
 --- !u!1 &1344522326

@@ -7,6 +7,11 @@ using TMPro;
 
 public class GameSceneManager : MonoBehaviour
 {
+    AudioManager audioManager;
+
+    [SerializeField]
+    GameObject AudioManagerPrefab;
+
     [SerializeField]
     FadeManager fadeManager;
     [SerializeField]
@@ -65,6 +70,17 @@ public class GameSceneManager : MonoBehaviour
 
     void Awake()
     {
+        Application.targetFrameRate = 60;
+        GameObject am = GameObject.Find("AudioManager");
+        if (am)
+            audioManager = am.GetComponent<AudioManager>();
+        else
+        {
+            GameObject ami = Instantiate(AudioManagerPrefab);
+            ami.name = "AudioManager";
+            audioManager = ami.GetComponent<AudioManager>();
+        }
+
         fadeManager.StartFadeIn();
         fadeIn = true;
     }
@@ -120,10 +136,13 @@ public class GameSceneManager : MonoBehaviour
             {
                 stickDown = false;
             }
+            int previousUpgradeHighlightIndex = upgradeHighlightIndex;
             if (moveLeft)
                 upgradeHighlightIndex = Mathf.Max(0, upgradeHighlightIndex - 1);
             else if (moveRight)
                 upgradeHighlightIndex = Mathf.Min(2, upgradeHighlightIndex + 1);
+            if (previousUpgradeHighlightIndex != upgradeHighlightIndex)
+                audioManager.PlayMenuSound();
             HighlightUpgradeButton();
         }
     }
@@ -325,6 +344,7 @@ public class GameSceneManager : MonoBehaviour
 
     public void SelectUpgrade(int upgradeNum)
     {
+        audioManager.PlayButtonSound();
         if (availableUpgrades[upgradeNum] == Globals.UpgradeTypes.RefillHP)
         {
             playerScript.RestoreMaxHealth();
@@ -389,6 +409,7 @@ public class GameSceneManager : MonoBehaviour
             }
         }
 
+        audioManager.PlayPhoneDialSound();
         HUDUpgradePanel.GetComponent<MoveWhenPaused>().MoveUp();
         LevelUpPanel.GetComponent<MoveWhenPaused>().MoveDown();
         Time.timeScale = 0f;
@@ -442,6 +463,8 @@ public class GameSceneManager : MonoBehaviour
             levelUpTimer = levelUpTimerMax;
 
             playerScript.RestoreMaxHealth();
+
+            audioManager.PlayLevelUpSound();
         }
         float maxExpBarWidth = 400f;
         ExpBar.sizeDelta = new Vector2 ((float)(Globals.currentExp) / maxExp * maxExpBarWidth, ExpBar.sizeDelta.y);

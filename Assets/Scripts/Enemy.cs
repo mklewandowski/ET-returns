@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    AudioManager audioManager;
     GameSceneManager GameSceneManagerScript;
 
     bool isActive = true;
@@ -56,6 +57,13 @@ public class Enemy : MonoBehaviour
         enemyCollider = GetComponent<BoxCollider2D>();
         enemyRigidbody = GetComponent<Rigidbody2D>();
         enemyRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    void Start()
+    {
+        GameObject am = GameObject.Find("AudioManager");
+        if (am)
+            audioManager = am.GetComponent<AudioManager>();
     }
 
     public void ConfigureEnemy(Globals.EnemyTypes newType, float extraLife)
@@ -287,6 +295,7 @@ public class Enemy : MonoBehaviour
         }
         if (attackObject)
         {
+            audioManager.PlayEnemyHitSound();
             damage = attackObject.Damage * Globals.currentAttack;
         }
         life = life - damage;
