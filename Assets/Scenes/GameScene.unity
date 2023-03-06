@@ -6572,6 +6572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 509871cf413a40f4e8a0616938c7da87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AudioManagerPrefab: {fileID: 8388956219249298800, guid: bdd74ac2ced41c644a1ecab20eff63f5, type: 3}
   fadeManager: {fileID: 960945946}
   EnemyPrefab: {fileID: 6232591748759594092, guid: 28e3236ac2921fb4eae47fc8de6cf408, type: 3}
   EnemyContainer: {fileID: 2043173319}

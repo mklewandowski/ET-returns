@@ -956,6 +956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5de2ab75604c8204db6843944ae345d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AudioManagerPrefab: {fileID: 8388956219249298800, guid: bdd74ac2ced41c644a1ecab20eff63f5, type: 3}
   fadeManager: {fileID: 1898727555}
   StatsText: {fileID: 2068552527}
 --- !u!1 &1417713496
