@@ -7,6 +7,11 @@ using TMPro;
 
 public class EndSceneManager : MonoBehaviour
 {
+    AudioManager audioManager;
+
+    [SerializeField]
+    GameObject AudioManagerPrefab;
+
     [SerializeField]
     FadeManager fadeManager;
     [SerializeField]
@@ -21,6 +26,17 @@ public class EndSceneManager : MonoBehaviour
 
     void Awake()
     {
+        Application.targetFrameRate = 60;
+        GameObject am = GameObject.Find("AudioManager");
+        if (am)
+            audioManager = am.GetComponent<AudioManager>();
+        else
+        {
+            GameObject ami = Instantiate(AudioManagerPrefab);
+            ami.name = "AudioManager";
+            audioManager = ami.GetComponent<AudioManager>();
+        }
+
         string[] controllers = Input.GetJoystickNames();
         for (int x = 0; x < controllers.Length; x++)
         {
@@ -66,6 +82,8 @@ public class EndSceneManager : MonoBehaviour
 
     public void SelectStart()
     {
+        if (fadeOut) return;
+        audioManager.PlayButtonSound();
         fadeManager.StartFadeOut();
         fadeOut = true;
     }
