@@ -31,6 +31,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject BulletPrefab;
     [SerializeField]
+    GameObject BulletArrowPrefab;
+    [SerializeField]
+    GameObject BulletDartPrefab;
+    [SerializeField]
     GameObject BulletSwirlPrefab;
     [SerializeField]
     GameObject BulletBombPrefab;
@@ -275,9 +279,11 @@ public class Player : MonoBehaviour
         if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
             return;
         Vector2 bulletRearMovement = new Vector2(bulletMovement.x * -1f, bulletMovement.y * -1f);
-        GameObject bulletRearGO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+        GameObject bulletRearGO = Instantiate(BulletDartPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
         Rigidbody2D bulletRearRigidbody = bulletRearGO.GetComponent<Rigidbody2D>();
         bulletRearRigidbody.velocity = bulletRearMovement;
+        float bulletAngle = Vector2.SignedAngle(new Vector2(1f, 0), bulletRearMovement);
+        bulletRearGO.transform.localEulerAngles = new Vector3(0, 0, bulletAngle);
     }
 
     private void HandleShootSide(Vector2 bulletMovement)
@@ -287,12 +293,16 @@ public class Player : MonoBehaviour
             return;
         Vector2 bullet1Movement = Quaternion.Euler(0, 0, -90f) * bulletMovement;
         Vector2 bullet2Movement = Quaternion.Euler(0, 0, 90f) * bulletMovement;
-        GameObject bullet1GO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+        GameObject bullet1GO = Instantiate(BulletArrowPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
         Rigidbody2D bullet1Rigidbody = bullet1GO.GetComponent<Rigidbody2D>();
-        GameObject bullet2GO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+        GameObject bullet2GO = Instantiate(BulletArrowPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
         Rigidbody2D bullet2Rigidbody = bullet2GO.GetComponent<Rigidbody2D>();
         bullet1Rigidbody.velocity = bullet1Movement;
         bullet2Rigidbody.velocity = bullet2Movement;
+        float bullet1Angle = Vector2.SignedAngle(new Vector2(1f, 0), bullet1Movement);
+        float bullet2Angle = Vector2.SignedAngle(new Vector2(1f, 0), bullet2Movement);
+        bullet1GO.transform.localEulerAngles = new Vector3(0, 0, bullet1Angle);
+        bullet2GO.transform.localEulerAngles = new Vector3(0, 0, bullet2Angle);
     }
 
     private void HandleShootSwirl()
