@@ -173,6 +173,7 @@ public class Globals
 
     public static int[] CurrentUpgradeLevels;
     public static int MaxUpgradeLevel = 5;
+    public static List<UpgradeTypes> CurrentUpgradeTypes = new List<Globals.UpgradeTypes>();
 
     public static int currentExp = 0;
     public static int currentLevel = 0;
@@ -206,6 +207,7 @@ public class Globals
         {
             Globals.CurrentUpgradeLevels[x] = 0;
         }
+        CurrentUpgradeTypes.Clear();
 
         currentExp = 0;
         currentLevel = 0;

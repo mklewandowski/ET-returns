@@ -33,6 +33,10 @@ public class GameSceneManager : MonoBehaviour
     TextMeshProUGUI LevelUpStats;
     float levelUpTimer = 0;
     float levelUpTimerMax = 3f;
+    [SerializeField]
+    GameObject[] HUDUpgradeDisplays;
+    [SerializeField]
+    Sprite[] UpgradeSprites;
 
     [SerializeField]
     GameObject HUDUpgradePanel;
@@ -351,6 +355,14 @@ public class GameSceneManager : MonoBehaviour
         }
         else
         {
+            if (Globals.CurrentUpgradeLevels[(int)availableUpgrades[upgradeNum]] == 0)
+            {
+                int numUpgrades = Globals.CurrentUpgradeTypes.Count;
+                HUDUpgradeDisplays[numUpgrades].SetActive(true);
+                HUDUpgradeDisplays[numUpgrades].GetComponent<Image>().sprite =  UpgradeSprites[(int)availableUpgrades[upgradeNum]];
+                Globals.CurrentUpgradeTypes.Add(availableUpgrades[upgradeNum]);
+
+            }
             Globals.CurrentUpgradeLevels[(int)availableUpgrades[upgradeNum]]++;
         }
         HUDUpgradePanel.GetComponent<MoveWhenPaused>().MoveDown();
