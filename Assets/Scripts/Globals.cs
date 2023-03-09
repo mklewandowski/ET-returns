@@ -48,6 +48,7 @@ public class Globals
         Bees,
         Boomerang,
         Pit,
+        Attack,
         // DonkeyKong,
         // Coily,
         // Robot,
@@ -79,6 +80,7 @@ public class Globals
         "Killer Bees",
         "Boomerang",
         "Pit Trap",
+        "Attack Boost",
         // "Donkey Kong",
         // "Coily",
         // "Berzerk Bot",
@@ -106,6 +108,7 @@ public class Globals
         "Summon killer bees from side of screen.", "Increase bee attack range by 20%.", "Increases number of enemies that bees pass through by 1.", "Adds second bee swarm.", "Increase bee attack range by 20%.",
         "Shoots boomerang to the side of player.", "Increases boomerang attack range by 10%.", "Increases boomerang attack range by 10%.", "Adds additional boomerang.", "Increases boomerang attack range by 10%.",
         "Place pit trap behind player.", "Increase pit trap attack time by 10%.", "Increase pit trap size by 10%.", "Increase pit trap attack time by 10%.", "Increase pit trap size by 10%.",
+        "Increase player attack by 20%.", "Increase player attack by 20%.", "Increase player attack by 20%.", "Increase player attack by 20%.", "Increase player attack by 20%.",
         // "Summons Donkey Kong to attack enemies.",
         // "Summons Coily to attack enemies.",
         // "Summons Berzerk Bot to attack enemies.",
@@ -137,6 +140,7 @@ public class Globals
         1,1,1,2,2,
         1,1,1,2,2,
         1,1,1,1,1,
+        0,0,0,0,0,
     };
     public static float[] UpgradeLevelAttackTimes = {
         0,0,0,0,0,
@@ -161,6 +165,7 @@ public class Globals
         .5f, .5f, .55f, .55f, .6f,
         1f, 1.2f, 1.2f, 1.2f, 1.45f,
         1f, 1.1f, 1.1f, 1.2f, 1.2f,
+        0,0,0,0,0,
     };
     public static float[] UpgradeLevelAttackSizes = {
         1f,1.1f,1.2f,1.33f,1.46f,
@@ -186,6 +191,7 @@ public class Globals
         0,0,0,0,0,
         0,0,0,0,0,
         1f,1f,1.1f,1.1f,1.2f,
+        0,0,0,0,0,
     };
     public static int[] UpgradeLevelEnemyHits = {
         1,1,1,1,1,
@@ -211,6 +217,7 @@ public class Globals
         3,3,4,4,4,
         1,1,1,1,1,
         1,1,1,1,1,
+        0,0,0,0,0,
     };
 
     public static int[] CurrentUpgradeLevels;

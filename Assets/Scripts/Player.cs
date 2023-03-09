@@ -521,6 +521,11 @@ public class Player : MonoBehaviour
             int defenseLevel = Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Defense];
             Globals.currentDefense = Globals.currentDefense + (defenseLevel * .2f);
         }
+        else if (upgradeType == Globals.UpgradeTypes.Attack && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Attack] > 0)
+        {
+            int attackLevel = Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Attack];
+            Globals.currentAttack = Globals.currentAttack + (attackLevel * .2f);
+        }
     }
 
     public void ResetHUDPhone()
