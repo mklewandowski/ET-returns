@@ -502,7 +502,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void UpdateUpgrades()
+    public void UpdateUpgrades(Globals.UpgradeTypes upgradeType)
     {
         if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.ForceField] > 0)
         {
@@ -511,10 +511,15 @@ public class Player : MonoBehaviour
             float scale = Globals.UpgradeLevelAttackSizes[index];
             ForceField.transform.localScale = new Vector3(scale, scale, 1f);
         }
-        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Speed] > 0)
+        if (upgradeType == Globals.UpgradeTypes.Speed && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Speed] > 0)
         {
             int speedLevel = Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Speed];
-            moveSpeed = moveSpeedInitial * (1f + (speedLevel * .1f));
+            moveSpeed = moveSpeedInitial + (speedLevel * .22f);
+        }
+        else if (upgradeType == Globals.UpgradeTypes.Defense && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Defense] > 0)
+        {
+            int defenseLevel = Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Defense];
+            Globals.currentDefense = Globals.currentDefense + (defenseLevel * .2f);
         }
     }
 

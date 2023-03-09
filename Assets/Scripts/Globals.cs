@@ -99,7 +99,7 @@ public class Globals
         "Launches drone that orbits player.", "Increases drone orbit time by 10%.", "Adds additional drone.", "Increases drone orbit time by 10%.", "Adds additional drone.",
         "Drops attack invaders from top of screen.", "Increases number of enemies that invader passes through by 1.", "Adds additional invader.", "Increases number of enemies that invader passes through by 1.", "Adds additional invader.",
         "Emits ghosts that harm enemies in their path.", "Increases number of enemies that ghost passes through by 1.", "Adds additional ghost.", "Increases number of enemies that ghost passes through by 1.", "Adds additional ghost.",
-        "Increase player defense by 10%.", "Increase player defense by 10%.", "Increase player defense by 10%.", "Increase player defense by 10%.", "Increase player defense by 10%.",
+        "Increase player defense by 20%.", "Increase player defense by 20%.", "Increase player defense by 20%.", "Increase player defense by 20%.", "Increase player defense by 20%.",
         "Increase player speed by 10%.", "Increase player speed by 10%.", "Increase player speed by 10%.", "Increase player speed by 10%.", "Increase player speed by 10%.",
         "Launches seeker star that attack nearest enemy.", "Adds additional seeker star.", "Adds additional seeker star.", "Adds additional seeker star.", "Adds additional seeker star.",
         "Launch tornado that damages and pushes back enemies.", "Increases tornado attack range by 10%.", "Increases tornado strength by 10%.", "Increases tornado attack range by 10%.", "Increases tornado strength by 10%.",
@@ -239,7 +239,7 @@ public class Globals
     {
         Globals.maxExperiences = new int[] {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1200, 1400, 1600, 1800, 2000};
         Globals.healthPerLevel  = new float[] {0, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1 };
-        Globals.attackPerLevel = new int[] {0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10 };
+        Globals.attackPerLevel = new int[] {0, 10, 10, 10, 0, 10, 0, 10, 10, 10, 0, 10, 0, 10, 10, 10, 0, 10, 0, 10, 10, 10, 0, 10, 0, 10, 10, 10, 0, 10 };
         Globals.defensePerLevel = new int[] {0, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10 };
         Globals.shootTimerDecreasePerLevel = new float[] {0, 0, .1f, 0, 0, .1f, 0, 0, .1f, 0, 0, 0, .1f, 0, 0, 0, .1f };
         // the last upgrade slot is the HP refill, don't include that since it behaves uniquely
