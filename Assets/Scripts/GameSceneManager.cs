@@ -48,6 +48,8 @@ public class GameSceneManager : MonoBehaviour
     TextMeshProUGUI[] HUDUpgradeButtonLvlTexts;
     [SerializeField]
     TextMeshProUGUI[] HUDUpgradeButtonDescTexts;
+    [SerializeField]
+    Image[] HUDUpgradeButtonIcons;
     List<Globals.UpgradeTypes> availableUpgrades = new List<Globals.UpgradeTypes>();
     int upgradeHighlightIndex = 0;
     bool stickDown = false;
@@ -413,11 +415,13 @@ public class GameSceneManager : MonoBehaviour
             {
                 HUDUpgradeButtonLvlTexts[x].text = "";
                 HUDUpgradeButtonDescTexts[x].text = Globals.UpgradeDescriptionText[(int)availableUpgrades[x] * Globals.MaxLevelsPerUpgrade];
+                HUDUpgradeButtonIcons[x].sprite = UpgradeSprites[UpgradeSprites.Length - 1];
             }
             else
             {
                 HUDUpgradeButtonLvlTexts[x].text = "Lvl " + (Globals.CurrentUpgradeLevels[(int)availableUpgrades[x]] + 1);
                 HUDUpgradeButtonDescTexts[x].text = Globals.UpgradeDescriptionText[(int)availableUpgrades[x] * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)availableUpgrades[x]]];
+                HUDUpgradeButtonIcons[x].sprite = UpgradeSprites[(int)availableUpgrades[x]];
             }
         }
 
