@@ -52,6 +52,7 @@ public class Player : MonoBehaviour
     GameObject[] SurroundObjects;
 
     float moveSpeed = 2.2f;
+    float moveSpeedInitial = 2.2f;
     Vector2 movementVector = new Vector2(0, 0);
     bool moveLeft;
     bool moveRight;
@@ -510,6 +511,11 @@ public class Player : MonoBehaviour
             float scale = Globals.UpgradeLevelAttackSizes[index];
             ForceField.transform.localScale = new Vector3(scale, scale, 1f);
         }
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Speed] > 0)
+        {
+            int speedLevel = Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Speed];
+            moveSpeed = moveSpeedInitial * (1f + (speedLevel * .1f));
+        }
     }
 
     public void ResetHUDPhone()
@@ -522,5 +528,10 @@ public class Player : MonoBehaviour
     {
         health = Globals.currentMaxHealth;
         UpdateHealthBar();
+    }
+
+    public void AdjustMoveSpeed(float multiplier)
+    {
+        moveSpeed = moveSpeed * multiplier;
     }
 }
