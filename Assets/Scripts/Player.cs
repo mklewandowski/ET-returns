@@ -39,6 +39,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject BulletBombPrefab;
     [SerializeField]
+    GameObject BoomerangPrefab;
+    [SerializeField]
     GameObject InvaderPrefab;
     [SerializeField]
     GameObject GhostPrefab;
@@ -238,6 +240,8 @@ public class Player : MonoBehaviour
                 HandleLaunchGhost();
             if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] > 0 || Globals.DebugMode)
                 HandleLaunchBees();
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Boomerang] > 0 || Globals.DebugMode)
+                HandleShootBoomerang(bulletMovement);
 
             burstNum = burstNum - 1;
             shootTimer = burstNum == 0 ? Globals.currentShootTimerMax : shootTimerBurstMax;
@@ -308,6 +312,17 @@ public class Player : MonoBehaviour
         float bullet2Angle = Vector2.SignedAngle(new Vector2(1f, 0), bullet2Movement);
         bullet1GO.transform.localEulerAngles = new Vector3(0, 0, bullet1Angle);
         bullet2GO.transform.localEulerAngles = new Vector3(0, 0, bullet2Angle);
+    }
+
+    private void HandleShootBoomerang(Vector2 bulletMovement)
+    {
+        int index = (int)Globals.UpgradeTypes.Boomerang * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Boomerang] - 1;
+        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
+            return;
+        Vector2 boomerangMovement = Quaternion.Euler(0, 0, burstNum == burstNumMax ? 80f : -80f) * new Vector3(bulletMovement.x * .75f, bulletMovement.y * .75f);
+        GameObject boomerangGO = Instantiate(BoomerangPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+        Rigidbody2D boomerangRigidbody = boomerangGO.GetComponent<Rigidbody2D>();
+        boomerangRigidbody.velocity = boomerangMovement;
     }
 
     private void HandleShootSwirl()
