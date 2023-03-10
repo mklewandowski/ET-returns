@@ -33,6 +33,10 @@ public class GameSceneManager : MonoBehaviour
     TextMeshProUGUI LevelUpStats;
     float levelUpTimer = 0;
     float levelUpTimerMax = 3f;
+    [SerializeField]
+    GameObject[] HUDUpgradeDisplays;
+    [SerializeField]
+    Sprite[] UpgradeSprites;
 
     [SerializeField]
     GameObject HUDUpgradePanel;
@@ -44,6 +48,8 @@ public class GameSceneManager : MonoBehaviour
     TextMeshProUGUI[] HUDUpgradeButtonLvlTexts;
     [SerializeField]
     TextMeshProUGUI[] HUDUpgradeButtonDescTexts;
+    [SerializeField]
+    Image[] HUDUpgradeButtonIcons;
     List<Globals.UpgradeTypes> availableUpgrades = new List<Globals.UpgradeTypes>();
     int upgradeHighlightIndex = 0;
     bool stickDown = false;
@@ -351,11 +357,19 @@ public class GameSceneManager : MonoBehaviour
         }
         else
         {
+            if (Globals.CurrentUpgradeLevels[(int)availableUpgrades[upgradeNum]] == 0)
+            {
+                int numUpgrades = Globals.CurrentUpgradeTypes.Count;
+                HUDUpgradeDisplays[numUpgrades].SetActive(true);
+                HUDUpgradeDisplays[numUpgrades].GetComponent<Image>().sprite =  UpgradeSprites[(int)availableUpgrades[upgradeNum]];
+                Globals.CurrentUpgradeTypes.Add(availableUpgrades[upgradeNum]);
+
+            }
             Globals.CurrentUpgradeLevels[(int)availableUpgrades[upgradeNum]]++;
         }
         HUDUpgradePanel.GetComponent<MoveWhenPaused>().MoveDown();
         playerScript.ResetHUDPhone();
-        playerScript.UpdateUpgrades();
+        playerScript.UpdateUpgrades(availableUpgrades[upgradeNum]);
         Time.timeScale = 1f;
         Globals.IsPaused = false;
     }
@@ -367,7 +381,7 @@ public class GameSceneManager : MonoBehaviour
             HighlightUpgradeButton();
         availableUpgrades.Clear();
         int numUpgrades = 0;
-        int maxUpgrades = 5;
+        int maxUpgrades = 6;
         for (int x = 0; x < Globals.CurrentUpgradeLevels.Length; x++)
         {
             if (Globals.CurrentUpgradeLevels[x] > 0)
@@ -401,11 +415,13 @@ public class GameSceneManager : MonoBehaviour
             {
                 HUDUpgradeButtonLvlTexts[x].text = "";
                 HUDUpgradeButtonDescTexts[x].text = Globals.UpgradeDescriptionText[(int)availableUpgrades[x] * Globals.MaxLevelsPerUpgrade];
+                HUDUpgradeButtonIcons[x].sprite = UpgradeSprites[UpgradeSprites.Length - 1];
             }
             else
             {
                 HUDUpgradeButtonLvlTexts[x].text = "Lvl " + (Globals.CurrentUpgradeLevels[(int)availableUpgrades[x]] + 1);
                 HUDUpgradeButtonDescTexts[x].text = Globals.UpgradeDescriptionText[(int)availableUpgrades[x] * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)availableUpgrades[x]]];
+                HUDUpgradeButtonIcons[x].sprite = UpgradeSprites[(int)availableUpgrades[x]];
             }
         }
 
@@ -445,12 +461,12 @@ public class GameSceneManager : MonoBehaviour
             if (Globals.attackPerLevel.Length > Globals.currentLevel && Globals.attackPerLevel[Globals.currentLevel] > 0)
             {
                 statsText = statsText + ("ATTACK+" + Globals.attackPerLevel[Globals.currentLevel] + "% ");
-                Globals.currentAttack = Globals.currentAttack + (Globals.currentAttack * Globals.attackPerLevel[Globals.currentLevel] * .01f);
+                Globals.currentAttack = Globals.currentAttack + (Globals.attackPerLevel[Globals.currentLevel] * .01f);
             }
             if (Globals.defensePerLevel.Length > Globals.currentLevel && Globals.defensePerLevel[Globals.currentLevel] > 0)
             {
                 statsText = statsText + ("DEFENSE+" + Globals.defensePerLevel[Globals.currentLevel] + "% ");
-                Globals.currentDefense = Globals.currentDefense + (Globals.currentDefense * Globals.defensePerLevel[Globals.currentLevel] * .01f);
+                Globals.currentDefense = Globals.currentDefense + (Globals.defensePerLevel[Globals.currentLevel] * .01f);
             }
             if (Globals.shootTimerDecreasePerLevel.Length > Globals.currentLevel && Globals.shootTimerDecreasePerLevel[Globals.currentLevel] > 0)
             {
