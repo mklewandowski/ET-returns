@@ -23,7 +23,6 @@ public class Boomerang : MonoBehaviour
     {
         int index = (int)Globals.UpgradeTypes.Boomerang * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Boomerang] - 1;
         float movementTimerMax = Globals.UpgradeLevelAttackTimes[index];
-        Debug.Log(movementTimerMax);
         movementTimer = movementTimerMax;
     }
 

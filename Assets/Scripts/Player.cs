@@ -47,6 +47,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject BeesPrefab;
     [SerializeField]
+    GameObject PitPrefab;
+    [SerializeField]
     GameObject BulletContainer;
     [SerializeField]
     GameObject ForceField;
@@ -242,6 +244,8 @@ public class Player : MonoBehaviour
                 HandleLaunchBees();
             if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Boomerang] > 0 || Globals.DebugMode)
                 HandleShootBoomerang(bulletMovement);
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] > 0 || Globals.DebugMode)
+                HandleCreatePit(bulletMovement);
 
             burstNum = burstNum - 1;
             shootTimer = burstNum == 0 ? Globals.currentShootTimerMax : shootTimerBurstMax;
@@ -382,6 +386,17 @@ public class Player : MonoBehaviour
             return;
         GameObject beesGO = Instantiate(BeesPrefab, new Vector3(this.transform.localPosition.x, this.transform.localPosition.y + 100f, 0), Quaternion.identity, BulletContainer.transform);
         beesGO.GetComponent<Bees>().Init(this.transform.localPosition, burstNum == burstNumMax);
+    }
+
+    private void HandleCreatePit(Vector2 bulletMovement)
+    {
+        int index = (int)Globals.UpgradeTypes.Pit * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] - 1;
+        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
+            return;
+        GameObject pitGO = Instantiate(PitPrefab,
+            new Vector3(this.transform.localPosition.x + bulletMovement.x * -.075f, this.transform.localPosition.y + bulletMovement.y * -.075f, 0),
+            Quaternion.identity,
+            BulletContainer.transform);
     }
 
     private void HandleLaser()

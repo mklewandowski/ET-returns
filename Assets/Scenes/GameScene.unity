@@ -5981,6 +5981,7 @@ MonoBehaviour:
   InvaderPrefab: {fileID: 7366569187751997803, guid: 9d0f53ef5f370114aa9c0d758ad15a10, type: 3}
   GhostPrefab: {fileID: 7366569187751997803, guid: 43343f8b0598f4cb7b63f74106a7d94e, type: 3}
   BeesPrefab: {fileID: 7729169512300866286, guid: 6c1c06db810948a43a01bce8e193a830, type: 3}
+  PitPrefab: {fileID: 7809105550465130495, guid: 042b88e38928304459a1622226477701, type: 3}
   BulletContainer: {fileID: 2098476539}
   ForceField: {fileID: 410120422}
   Laser: {fileID: 765183310}

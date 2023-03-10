@@ -107,7 +107,7 @@ public class Globals
         "Launch tornado that damages and pushes back enemies.", "Increases tornado attack range by 10%.", "Increases tornado strength by 10%.", "Increases tornado attack range by 10%.", "Increases tornado strength by 10%.",
         "Summon killer bees from side of screen.", "Increase bee attack range by 20%.", "Increases number of enemies that bees pass through by 1.", "Adds second bee swarm.", "Increase bee attack range by 20%.",
         "Shoots boomerang to the side of player.", "Increases boomerang attack range by 20%.", "Increases boomerang attack range by 20%.", "Adds additional boomerang.", "Increases boomerang attack range by 20%.",
-        "Place pit trap behind player.", "Increase pit trap attack time by 10%.", "Increase pit trap size by 10%.", "Increase pit trap attack time by 10%.", "Increase pit trap size by 10%.",
+        "Place pit trap behind player.", "Increase pit trap attack time by 10%.", "Increase pit trap size by 25%.", "Increase pit trap attack time by 10%.", "Increase pit trap size by 25%.",
         "Increase player attack by 20%.", "Increase player attack by 20%.", "Increase player attack by 20%.", "Increase player attack by 20%.", "Increase player attack by 20%.",
         // "Summons Donkey Kong to attack enemies.",
         // "Summons Coily to attack enemies.",
@@ -173,7 +173,7 @@ public class Globals
         0,0,0,0,0,
         0,0,0,0,0,
         0,0,0,0,0,
-        1f,1f,1.1f,1.1f,1.2f,
+        1f,1f,1.25f,1.25f,1.5f,
         0,0,0,0,0,
     };
     public static int[] UpgradeLevelEnemyHits = {
@@ -233,7 +233,7 @@ public class Globals
         {
             Globals.CurrentUpgradeLevels[x] = 0;
         }
-        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Boomerang] = 1;
+        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] = 5;
         // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] = 1;
         CurrentUpgradeTypes.Clear();
 
