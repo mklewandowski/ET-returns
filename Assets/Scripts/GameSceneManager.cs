@@ -381,7 +381,7 @@ public class GameSceneManager : MonoBehaviour
             HighlightUpgradeButton();
         availableUpgrades.Clear();
         int numUpgrades = 0;
-        int maxUpgrades = 5;
+        int maxUpgrades = 6;
         for (int x = 0; x < Globals.CurrentUpgradeLevels.Length; x++)
         {
             if (Globals.CurrentUpgradeLevels[x] > 0)
