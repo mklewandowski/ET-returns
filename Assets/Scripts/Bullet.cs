@@ -41,6 +41,11 @@ public class Bullet : MonoBehaviour
         enemyHits = newEnemyHits;
     }
 
+    public void SetLifeTimer(float newLifeTimer)
+    {
+        lifeTimer = newLifeTimer;
+    }
+
     public void HitEnemy()
     {
         enemyHits--;

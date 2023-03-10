@@ -43,6 +43,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject GhostPrefab;
     [SerializeField]
+    GameObject BeesPrefab;
+    [SerializeField]
     GameObject BulletContainer;
     [SerializeField]
     GameObject ForceField;
@@ -234,6 +236,8 @@ public class Player : MonoBehaviour
                 HandleLaunchInvader();
             if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Ghost] > 0 || Globals.DebugMode)
                 HandleLaunchGhost();
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] > 0 || Globals.DebugMode)
+                HandleLaunchBees();
 
             burstNum = burstNum - 1;
             shootTimer = burstNum == 0 ? Globals.currentShootTimerMax : shootTimerBurstMax;
@@ -354,6 +358,15 @@ public class Player : MonoBehaviour
             return;
         GameObject ghostGO = Instantiate(GhostPrefab, new Vector3(this.transform.localPosition.x, this.transform.localPosition.y, 0), Quaternion.identity, BulletContainer.transform);
         ghostGO.GetComponent<Ghost>().Init(this.transform.localPosition);
+    }
+
+    private void HandleLaunchBees()
+    {
+        int index = (int)Globals.UpgradeTypes.Bees * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] - 1;
+        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
+            return;
+        GameObject beesGO = Instantiate(BeesPrefab, new Vector3(this.transform.localPosition.x, this.transform.localPosition.y + 100f, 0), Quaternion.identity, BulletContainer.transform);
+        beesGO.GetComponent<Bees>().Init(this.transform.localPosition, burstNum == burstNumMax);
     }
 
     private void HandleLaser()
