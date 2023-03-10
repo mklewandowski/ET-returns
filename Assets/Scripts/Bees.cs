@@ -14,7 +14,7 @@ public class Bees : MonoBehaviour
         this.GetComponent<Bullet>().SetEnemyHits(enemyHitsAllowed);
         float enemyLifeTimerAllowed = Globals.UpgradeLevelAttackTimes[index];
         this.GetComponent<Bullet>().SetLifeTimer(enemyLifeTimerAllowed);
-        this.transform.localPosition = new Vector2(startPosIsLeft ? -9.5f : 9.5f, Random.Range(centerPos.y - 3f, centerPos.y + 3f));
+        this.transform.localPosition = new Vector2(centerPos.x + (startPosIsLeft ? -9.5f : 9.5f), Random.Range(centerPos.y - 3f, centerPos.y + 3f));
     }
 
     void Update()
