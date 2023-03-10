@@ -104,7 +104,7 @@ public class Globals
         "Increase player defense by 20%.", "Increase player defense by 20%.", "Increase player defense by 20%.", "Increase player defense by 20%.", "Increase player defense by 20%.",
         "Increase player speed by 10%.", "Increase player speed by 10%.", "Increase player speed by 10%.", "Increase player speed by 10%.", "Increase player speed by 10%.",
         "Launches seeker star that attack nearest enemy.", "Adds additional seeker star.", "Adds additional seeker star.", "Adds additional seeker star.", "Adds additional seeker star.",
-        "Launch tornado that damages and pushes back enemies.", "Increases tornado attack range by 10%.", "Increases tornado strength by 10%.", "Increases tornado attack range by 10%.", "Increases tornado strength by 10%.",
+        "Launch tornado that damages enemies.", "Increases tornado attack range by 10%.", "Increases tornado attack range by 10%.", "Increases tornado attack range by 10%.", "Increases tornado attack range by 10%.",
         "Summon killer bees from side of screen.", "Increase bee attack range by 20%.", "Increases number of enemies that bees pass through by 1.", "Adds second bee swarm.", "Increase bee attack range by 20%.",
         "Shoots boomerang to the side of player.", "Increases boomerang attack range by 20%.", "Increases boomerang attack range by 20%.", "Adds additional boomerang.", "Increases boomerang attack range by 20%.",
         "Place pit trap behind player.", "Increase pit trap attack time by 10%.", "Increase pit trap size by 25%.", "Increase pit trap attack time by 10%.", "Increase pit trap size by 25%.",
@@ -150,7 +150,7 @@ public class Globals
         0,0,0,0,0,
         0,0,0,0,0,
         0,0,0,0,0,
-        .5f, .5f, .55f, .55f, .6f,
+        .5f, .55f, .6f, .6f, .7f,
         1.2f, 1.5f, 1.5f, 1.5f, 1.75f,
         .25f, .3f, .35f, .35f, .4f,
         1f, 1.1f, 1.1f, 1.2f, 1.2f,
@@ -190,7 +190,7 @@ public class Globals
         0,0,0,0,0,
         0,0,0,0,0,
         1,1,1,1,1,
-        1,1,1,1,1,
+        6,6,6,6,6,
         3,3,4,4,4,
         1,1,1,1,1,
         1,1,1,1,1,
@@ -233,7 +233,7 @@ public class Globals
         {
             Globals.CurrentUpgradeLevels[x] = 0;
         }
-        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] = 5;
+        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Tornado] = 5;
         // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] = 1;
         CurrentUpgradeTypes.Clear();
 
