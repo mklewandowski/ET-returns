@@ -43,6 +43,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject BoomerangPrefab;
     [SerializeField]
+    GameObject BulletSeekerPrefab;
+    [SerializeField]
     GameObject InvaderPrefab;
     [SerializeField]
     GameObject GhostPrefab;
@@ -250,6 +252,8 @@ public class Player : MonoBehaviour
                 HandleCreatePit(bulletMovement);
             if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Tornado] > 0 || Globals.DebugMode)
                 HandleShootTornado(bulletMovement);
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SeekerMissile] > 0 || Globals.DebugMode)
+                HandleShootSeekerMissile();
 
             burstNum = burstNum - 1;
             shootTimer = burstNum == 0 ? Globals.currentShootTimerMax : shootTimerBurstMax;
@@ -412,6 +416,14 @@ public class Player : MonoBehaviour
         bulletGO.GetComponent<Bullet>().SetLifeTimer(Globals.UpgradeLevelAttackTimes[index]);
         Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
         bulletRigidbody.velocity = new Vector2(bulletMovement.x * .4f, bulletMovement.y * .4f);
+    }
+
+    private void HandleShootSeekerMissile()
+    {
+        int index = (int)Globals.UpgradeTypes.SeekerMissile * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SeekerMissile] - 1;
+        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
+            return;
+        GameObject bulletGO = Instantiate(BulletSeekerPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
     }
 
     private void HandleLaser()
