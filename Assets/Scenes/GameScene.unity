@@ -5979,6 +5979,7 @@ MonoBehaviour:
   BulletTornadoPrefab: {fileID: 7729169512300866286, guid: 261f1b4ac67064344988ffae6ef24a49, type: 3}
   BulletBombPrefab: {fileID: 7471433923009901123, guid: 19273a82df21fbc42986390cd322d822, type: 3}
   BoomerangPrefab: {fileID: 5148339097020038030, guid: 7fa9e891c0806344cbd831a540bf2f42, type: 3}
+  BulletSeekerPrefab: {fileID: 5148339097020038030, guid: 0c138dbb9bc28e44387807b66feca10e, type: 3}
   InvaderPrefab: {fileID: 7366569187751997803, guid: 9d0f53ef5f370114aa9c0d758ad15a10, type: 3}
   GhostPrefab: {fileID: 7366569187751997803, guid: 43343f8b0598f4cb7b63f74106a7d94e, type: 3}
   BeesPrefab: {fileID: 7729169512300866286, guid: 6c1c06db810948a43a01bce8e193a830, type: 3}
