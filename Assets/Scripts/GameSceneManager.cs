@@ -20,6 +20,15 @@ public class GameSceneManager : MonoBehaviour
     GameObject EnemyContainer;
 
     [SerializeField]
+    Transform topTanksTransform;
+    [SerializeField]
+    Transform bottomTanksTransform;
+    [SerializeField]
+    Transform leftTanksTransform;
+    [SerializeField]
+    Transform rightTanksTransform;
+
+    [SerializeField]
     GameObject Player;
     Player playerScript;
 
@@ -105,6 +114,11 @@ public class GameSceneManager : MonoBehaviour
         SpawnEnemies(10 + difficultyLevel * 2);
 
         playerScript = Player.GetComponent<Player>();
+
+        // bottomTanksTransform.gameObject.GetComponent<MoveNormal>().MoveUp();
+        // topTanksTransform.gameObject.GetComponent<MoveNormal>().MoveDown();
+        // leftTanksTransform.gameObject.GetComponent<MoveNormal>().MoveRight();
+        // rightTanksTransform.gameObject.GetComponent<MoveNormal>().MoveLeft();
     }
 
     // Update is called once per frame
@@ -290,6 +304,10 @@ public class GameSceneManager : MonoBehaviour
                 ? Random.Range(6f, 9f) * (Random.Range(0, 2) == 0 ? -1f : 1f)
                 : Random.Range(-6.5f, 6.5f);
             Vector2 playerPos = Player.transform.localPosition;
+            if ((playerPos.x + xOffset) < (leftTanksTransform.position.x + 1f) || (playerPos.x + xOffset) > (rightTanksTransform.position.x - 1f))
+                xOffset = xOffset * -1f;
+            if ((playerPos.y + yOffset) < (bottomTanksTransform.position.y + 1f) || (playerPos.y + yOffset) > (topTanksTransform.position.y - 1f))
+                yOffset = yOffset * -1f;
             Vector2 enemyPos = new Vector2(playerPos.x + xOffset, playerPos.y + yOffset);
             GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
             Globals.EnemyTypes enemyType = Globals.EnemyTypes.Yar;
