@@ -329,6 +329,9 @@ public class GameSceneManager : MonoBehaviour
 
     void SpawnEnemy(Globals.EnemyTypes enemyType, float extraLife)
     {
+        Debug.Log(Globals.currrentNumEnemies);
+        if (Globals.currrentNumEnemies >= Globals.maxEnemies)
+            return;
         bool verticalPos = (Random.Range(0, 2) == 0);
         float xOffset = verticalPos
             ? Random.Range(-10.5f, 10.5f)
@@ -344,6 +347,7 @@ public class GameSceneManager : MonoBehaviour
         Vector2 enemyPos = new Vector2(playerPos.x + xOffset, playerPos.y + yOffset);
         GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
         enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyType, extraLife);
+        Globals.currrentNumEnemies++;
     }
 
     Globals.EnemyTypes GetFastEnemyType()

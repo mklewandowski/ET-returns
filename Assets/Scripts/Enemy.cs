@@ -308,6 +308,7 @@ public class Enemy : MonoBehaviour
     public void KillEnemy()
     {
         Globals.killCount++;
+        Globals.currrentNumEnemies--;
 
         // create debris
         int numDebris = Random.Range(8, 10);
