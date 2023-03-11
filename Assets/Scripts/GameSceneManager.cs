@@ -68,6 +68,25 @@ public class GameSceneManager : MonoBehaviour
     float difficultyTimer = 60f;
     float difficultyTimerMax = 60f;
 
+    public enum TankMovementPatterns {
+        VerticalIn,
+        VerticalOut,
+        HorizontalIn,
+        HorizontalOut,
+        None
+    }
+    TankMovementPatterns[] difficultyTankMovement = {
+        TankMovementPatterns.None,
+        TankMovementPatterns.VerticalIn,
+        TankMovementPatterns.VerticalOut,
+        TankMovementPatterns.HorizontalIn,
+        TankMovementPatterns.HorizontalOut,
+        TankMovementPatterns.VerticalIn,
+        TankMovementPatterns.VerticalOut,
+        TankMovementPatterns.HorizontalIn,
+        TankMovementPatterns.HorizontalOut,
+    };
+
     int[] fastEnemySpawnRates = { 80, 100, 999, 999, 999 };
     int[] strongEnemySpawnRates = { 95, 100, 999, 999, 999 };
     int currentNumFBI = 0;
@@ -114,11 +133,6 @@ public class GameSceneManager : MonoBehaviour
         SpawnEnemies(10, true);
 
         playerScript = Player.GetComponent<Player>();
-
-        // bottomTanksTransform.gameObject.GetComponent<MoveNormal>().MoveUp();
-        // topTanksTransform.gameObject.GetComponent<MoveNormal>().MoveDown();
-        // leftTanksTransform.gameObject.GetComponent<MoveNormal>().MoveRight();
-        // rightTanksTransform.gameObject.GetComponent<MoveNormal>().MoveLeft();
     }
 
     // Update is called once per frame
@@ -264,6 +278,31 @@ public class GameSceneManager : MonoBehaviour
                 fastEnemySpawnRates = new int[] { 5, 10, 20, 30, 100 };
                 strongEnemySpawnRates = new int[] { 5, 10, 20, 40, 100 };
             }
+
+            if (difficultyLevel < difficultyTankMovement.Length)
+            {
+                TankMovementPatterns pattern = difficultyTankMovement[difficultyLevel];
+                if (pattern == TankMovementPatterns.VerticalIn)
+                {
+                    bottomTanksTransform.gameObject.GetComponent<MoveNormal>().MoveUp();
+                    topTanksTransform.gameObject.GetComponent<MoveNormal>().MoveDown();
+                }
+                else if (pattern == TankMovementPatterns.VerticalOut)
+                {
+                    bottomTanksTransform.gameObject.GetComponent<MoveNormal>().MoveDown();
+                    topTanksTransform.gameObject.GetComponent<MoveNormal>().MoveUp();
+                }
+                else if (pattern == TankMovementPatterns.HorizontalIn)
+                {
+                    leftTanksTransform.gameObject.GetComponent<MoveNormal>().MoveRight();
+                    rightTanksTransform.gameObject.GetComponent<MoveNormal>().MoveLeft();
+                }
+                else if (pattern == TankMovementPatterns.HorizontalOut)
+                {
+                    leftTanksTransform.gameObject.GetComponent<MoveNormal>().MoveLeft();
+                    rightTanksTransform.gameObject.GetComponent<MoveNormal>().MoveRight();
+                }
+            }
         }
     }
 
@@ -329,21 +368,31 @@ public class GameSceneManager : MonoBehaviour
 
     void SpawnEnemy(Globals.EnemyTypes enemyType, float extraLife)
     {
-        Debug.Log(Globals.currrentNumEnemies);
+        // Debug.Log(Globals.currrentNumEnemies);
         if (Globals.currrentNumEnemies >= Globals.maxEnemies)
             return;
         bool verticalPos = (Random.Range(0, 2) == 0);
+        float xRangeMax = Mathf.Min((rightTanksTransform.position.x - leftTanksTransform.position.x - 2f) * .5f, 13f);
+        float yRangeMax = Mathf.Min((topTanksTransform.position.y - bottomTanksTransform.position.y - 2f) * .5f, 9f);
         float xOffset = verticalPos
             ? Random.Range(-10.5f, 10.5f)
-            : Random.Range(10f, 13f) * (Random.Range(0, 2) == 0 ? -1f : 1f);
+            : Random.Range(10f, xRangeMax) * (Random.Range(0, 2) == 0 ? -1f : 1f);
         float yOffset = verticalPos
-            ? Random.Range(6f, 9f) * (Random.Range(0, 2) == 0 ? -1f : 1f)
+            ? Random.Range(6f, yRangeMax) * (Random.Range(0, 2) == 0 ? -1f : 1f)
             : Random.Range(-6.5f, 6.5f);
         Vector2 playerPos = Player.transform.localPosition;
-        if ((playerPos.x + xOffset) < (leftTanksTransform.position.x + 1f) || (playerPos.x + xOffset) > (rightTanksTransform.position.x - 1f))
+        float minX = leftTanksTransform.position.x + 1f;
+        float maxX = rightTanksTransform.position.x - 1f;
+        float minY = bottomTanksTransform.position.y + 1f;
+        float maxY = topTanksTransform.position.y - 1f;
+        if ((playerPos.x + xOffset) < minX || (playerPos.x + xOffset) > maxX)
+        {
             xOffset = xOffset * -1f;
-        if ((playerPos.y + yOffset) < (bottomTanksTransform.position.y + 1f) || (playerPos.y + yOffset) > (topTanksTransform.position.y - 1f))
+        }
+        if ((playerPos.y + yOffset) < minY || (playerPos.y + yOffset) > maxY)
+        {
             yOffset = yOffset * -1f;
+        }
         Vector2 enemyPos = new Vector2(playerPos.x + xOffset, playerPos.y + yOffset);
         GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
         enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyType, extraLife);

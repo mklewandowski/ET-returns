@@ -61663,7 +61663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0513281251b534742af033cc7ccb5c23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movingUpEndPos: {x: 0, y: -7}
+  movingUpEndPos: {x: 0, y: -7.5}
   movingDownEndPos: {x: 0, y: -18.6}
   movingLeftEndPos: {x: 0, y: 0}
   movingRightEndPos: {x: 0, y: 0}
@@ -122360,7 +122360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movingUpEndPos: {x: 0, y: 18.6}
-  movingDownEndPos: {x: 0, y: 7}
+  movingDownEndPos: {x: 0, y: 7.5}
   movingLeftEndPos: {x: 0, y: 0}
   movingRightEndPos: {x: 0, y: 0}
   movingUpVelocity: 0.5
