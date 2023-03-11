@@ -111,7 +111,7 @@ public class GameSceneManager : MonoBehaviour
         }
         Globals.ResetGlobals();
 
-        SpawnEnemies(10 + difficultyLevel * 2);
+        SpawnEnemies(10, true);
 
         playerScript = Player.GetComponent<Player>();
 
@@ -273,7 +273,7 @@ public class GameSceneManager : MonoBehaviour
         if (spawnTimer <= 0)
         {
             spawnTimer = spawnTimerMax;
-            SpawnEnemies(10);
+            SpawnEnemies(10 + difficultyLevel * 2, false);
         }
     }
 
@@ -289,33 +289,21 @@ public class GameSceneManager : MonoBehaviour
         }
     }
 
-    void SpawnEnemies(int num)
+    void SpawnEnemies(int num, bool FBIrequired)
     {
+        int numFBIthisSpawn = 0;
         int maxSpecialPerSpawn = difficultyLevel >= 10 ? 1 : 2;
         int specialThisSpawn = 0;
         float extraLife = 0;
         for (int x = 0; x < num; x++)
         {
-            bool verticalPos = (Random.Range(0, 2) == 0);
-            float xOffset = verticalPos
-                ? Random.Range(-10.5f, 10.5f)
-                : Random.Range(10f, 13f) * (Random.Range(0, 2) == 0 ? -1f : 1f);
-            float yOffset = verticalPos
-                ? Random.Range(6f, 9f) * (Random.Range(0, 2) == 0 ? -1f : 1f)
-                : Random.Range(-6.5f, 6.5f);
-            Vector2 playerPos = Player.transform.localPosition;
-            if ((playerPos.x + xOffset) < (leftTanksTransform.position.x + 1f) || (playerPos.x + xOffset) > (rightTanksTransform.position.x - 1f))
-                xOffset = xOffset * -1f;
-            if ((playerPos.y + yOffset) < (bottomTanksTransform.position.y + 1f) || (playerPos.y + yOffset) > (topTanksTransform.position.y - 1f))
-                yOffset = yOffset * -1f;
-            Vector2 enemyPos = new Vector2(playerPos.x + xOffset, playerPos.y + yOffset);
-            GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
             Globals.EnemyTypes enemyType = Globals.EnemyTypes.Yar;
             float randVal = Random.Range(0, 100f);
             if (randVal > 95f && currentNumFBI < maxFBI && specialThisSpawn < maxSpecialPerSpawn)
             {
                 enemyType = Globals.EnemyTypes.FBI;
                 currentNumFBI++;
+                numFBIthisSpawn++;
                 specialThisSpawn++;
                 extraLife = difficultyLevel * .5f;
             }
@@ -330,8 +318,32 @@ public class GameSceneManager : MonoBehaviour
                 enemyType = GetStrongEnemyType();
             else
                 enemyType = GetFastEnemyType();
-            enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyType, extraLife);
+            SpawnEnemy(enemyType, extraLife);
         }
+
+        if (FBIrequired && numFBIthisSpawn == 0)
+        {
+            SpawnEnemy(Globals.EnemyTypes.FBI, difficultyLevel * .5f);
+        }
+    }
+
+    void SpawnEnemy(Globals.EnemyTypes enemyType, float extraLife)
+    {
+        bool verticalPos = (Random.Range(0, 2) == 0);
+        float xOffset = verticalPos
+            ? Random.Range(-10.5f, 10.5f)
+            : Random.Range(10f, 13f) * (Random.Range(0, 2) == 0 ? -1f : 1f);
+        float yOffset = verticalPos
+            ? Random.Range(6f, 9f) * (Random.Range(0, 2) == 0 ? -1f : 1f)
+            : Random.Range(-6.5f, 6.5f);
+        Vector2 playerPos = Player.transform.localPosition;
+        if ((playerPos.x + xOffset) < (leftTanksTransform.position.x + 1f) || (playerPos.x + xOffset) > (rightTanksTransform.position.x - 1f))
+            xOffset = xOffset * -1f;
+        if ((playerPos.y + yOffset) < (bottomTanksTransform.position.y + 1f) || (playerPos.y + yOffset) > (topTanksTransform.position.y - 1f))
+            yOffset = yOffset * -1f;
+        Vector2 enemyPos = new Vector2(playerPos.x + xOffset, playerPos.y + yOffset);
+        GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
+        enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyType, extraLife);
     }
 
     Globals.EnemyTypes GetFastEnemyType()
