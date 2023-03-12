@@ -23,8 +23,9 @@ public class Globals
         Kangaroo,
         Hero,
         Hero2,
+        Dig,
         FBI,
-        Scientist
+        Scientist,
     }
 
     public static EnemyTypes[] FastEnemyTypes = {EnemyTypes.Yar, EnemyTypes.Pac, EnemyTypes.MsPac, EnemyTypes.Joust, EnemyTypes.Joust2};

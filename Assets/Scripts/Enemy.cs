@@ -47,6 +47,8 @@ public class Enemy : MonoBehaviour
     GameObject PhonePrefab;
     GameObject itemContainer;
 
+    float pauseBeforeAction = 2f;
+
     void Awake()
     {
         GameSceneManagerScript = GameObject.Find("SceneManager").GetComponent<GameSceneManager>();
@@ -71,6 +73,7 @@ public class Enemy : MonoBehaviour
         type = newType;
         enemyRenderer.sprite = EnemySprites[(int)type];
         enemyRigidbody.mass = 1f;
+        pauseBeforeAction = 0f;
         if (type == Globals.EnemyTypes.Yar)
         {
             moveSpeed = Random.Range(.8f, 1f);
@@ -142,6 +145,19 @@ public class Enemy : MonoBehaviour
             flipWithMovement = true;
             life = 4f;
             hitStrength = 4f;
+        }
+        else if (type == Globals.EnemyTypes.Dig)
+        {
+            moveSpeed = Random.Range(.6f, .8f);
+            positionTimerMax = .9f;
+            enemyAnimator.enabled = false;
+            this.transform.localScale = new Vector3(.1f, .1f, 1f);
+            enemyCollider.size = new Vector2(0.1f, 0.1f);
+            flipWithMovement = true;
+            life = 6f;
+            hitStrength = 6f;
+            pauseBeforeAction = 2f;
+            this.GetComponent<GrowAndShrink>().StartEffect();
         }
         else if (type == Globals.EnemyTypes.Qbert)
         {
@@ -232,6 +248,11 @@ public class Enemy : MonoBehaviour
 
     private void handleMovement()
     {
+        if (pauseBeforeAction > 0)
+        {
+            pauseBeforeAction -= Time.deltaTime;
+            return;
+        }
         if (positionTimer > 0)
         {
             positionTimer -= Time.deltaTime;

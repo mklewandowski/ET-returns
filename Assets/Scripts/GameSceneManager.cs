@@ -68,24 +68,14 @@ public class GameSceneManager : MonoBehaviour
     float difficultyTimer = 60f;
     float difficultyTimerMax = 60f;
 
-    public enum TankMovementPatterns {
-        VerticalIn,
-        VerticalOut,
-        HorizontalIn,
-        HorizontalOut,
+    enum EnemySpecialAttackPatterns {
+        VerticalMove,
+        HorizontalMove,
+        Digs,
+        Planes,
         None
     }
-    TankMovementPatterns[] difficultyTankMovement = {
-        TankMovementPatterns.None,
-        TankMovementPatterns.VerticalIn,
-        TankMovementPatterns.VerticalOut,
-        TankMovementPatterns.HorizontalIn,
-        TankMovementPatterns.HorizontalOut,
-        TankMovementPatterns.VerticalIn,
-        TankMovementPatterns.VerticalOut,
-        TankMovementPatterns.HorizontalIn,
-        TankMovementPatterns.HorizontalOut,
-    };
+    EnemySpecialAttackPatterns currentEnemySpecialAttack = EnemySpecialAttackPatterns.None;
 
     int[] fastEnemySpawnRates = { 80, 100, 999, 999, 999 };
     int[] strongEnemySpawnRates = { 95, 100, 999, 999, 999 };
@@ -96,6 +86,8 @@ public class GameSceneManager : MonoBehaviour
 
     float spawnTimer = 5f;
     float spawnTimerMax = 7f;
+    int digSpawnsRemaining = 0;
+    float tankReturnTimer = 0;
 
     float deadTimer = 0f;
     float deadTimerMax = 4f;
@@ -278,29 +270,28 @@ public class GameSceneManager : MonoBehaviour
                 fastEnemySpawnRates = new int[] { 5, 10, 20, 30, 100 };
                 strongEnemySpawnRates = new int[] { 5, 10, 20, 40, 100 };
             }
-
-            if (difficultyLevel < difficultyTankMovement.Length)
+            // check if it is time for an enemy special attack
+            if (difficultyLevel % 3 == 0)
             {
-                TankMovementPatterns pattern = difficultyTankMovement[difficultyLevel];
-                if (pattern == TankMovementPatterns.VerticalIn)
+                EnemySpecialAttackPatterns specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Planes);
+                if (specialNum == EnemySpecialAttackPatterns.VerticalMove)
                 {
                     bottomTanksTransform.gameObject.GetComponent<MoveNormal>().MoveUp();
                     topTanksTransform.gameObject.GetComponent<MoveNormal>().MoveDown();
+                    tankReturnTimer = Random.Range(20f, 40f);
                 }
-                else if (pattern == TankMovementPatterns.VerticalOut)
-                {
-                    bottomTanksTransform.gameObject.GetComponent<MoveNormal>().MoveDown();
-                    topTanksTransform.gameObject.GetComponent<MoveNormal>().MoveUp();
-                }
-                else if (pattern == TankMovementPatterns.HorizontalIn)
+                else if (specialNum == EnemySpecialAttackPatterns.HorizontalMove)
                 {
                     leftTanksTransform.gameObject.GetComponent<MoveNormal>().MoveRight();
                     rightTanksTransform.gameObject.GetComponent<MoveNormal>().MoveLeft();
                 }
-                else if (pattern == TankMovementPatterns.HorizontalOut)
+                else if (specialNum == EnemySpecialAttackPatterns.Digs)
                 {
-                    leftTanksTransform.gameObject.GetComponent<MoveNormal>().MoveLeft();
-                    rightTanksTransform.gameObject.GetComponent<MoveNormal>().MoveRight();
+                    digSpawnsRemaining = Random.Range(3, 6);
+                }
+                else if (specialNum == EnemySpecialAttackPatterns.Planes)
+                {
+
                 }
             }
         }
@@ -313,6 +304,18 @@ public class GameSceneManager : MonoBehaviour
         {
             spawnTimer = spawnTimerMax;
             SpawnEnemies(10 + difficultyLevel * 2, false);
+        }
+
+        if (tankReturnTimer > 0)
+        {
+            tankReturnTimer -= Time.deltaTime;
+            if (tankReturnTimer <= 0)
+            {
+                bottomTanksTransform.gameObject.GetComponent<MoveNormal>().MoveDown();
+                topTanksTransform.gameObject.GetComponent<MoveNormal>().MoveUp();
+                leftTanksTransform.gameObject.GetComponent<MoveNormal>().MoveLeft();
+                rightTanksTransform.gameObject.GetComponent<MoveNormal>().MoveRight();
+            }
         }
     }
 
@@ -364,6 +367,12 @@ public class GameSceneManager : MonoBehaviour
         {
             SpawnEnemy(Globals.EnemyTypes.FBI, difficultyLevel * .5f);
         }
+
+        if (digSpawnsRemaining > 0)
+        {
+            digSpawnsRemaining--;
+            SpawnDigs();
+        }
     }
 
     void SpawnEnemy(Globals.EnemyTypes enemyType, float extraLife)
@@ -397,6 +406,27 @@ public class GameSceneManager : MonoBehaviour
         GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
         enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyType, extraLife);
         Globals.currrentNumEnemies++;
+    }
+
+    void SpawnDigs()
+    {
+        float extraLife = difficultyLevel * .5f;
+        int numDigs = 15;
+        Vector2 playerPos = Player.transform.localPosition;
+        float minX = leftTanksTransform.position.x + 1f;
+        float maxX = rightTanksTransform.position.x - 1f;
+        float minY = bottomTanksTransform.position.y + 1f;
+        float maxY = topTanksTransform.position.y - 1f;
+        for (int x = 0; x < numDigs; x++)
+        {
+            Vector2 enemyRadialVector = Quaternion.Euler(0, 0, x * 24f) * new Vector2(3f, 3f);
+            Vector2 enemyPos = playerPos + enemyRadialVector;
+            if (enemyPos.x < maxX && enemyPos.x > minX && enemyPos.y < maxY && enemyPos.y > minY)
+            {
+                GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
+                enemyGO.GetComponent<Enemy>().ConfigureEnemy(Globals.EnemyTypes.Dig, extraLife);
+            }
+        }
     }
 
     Globals.EnemyTypes GetFastEnemyType()
