@@ -18,7 +18,7 @@ public class TitleSceneManager : MonoBehaviour
 
     bool fadeIn = false;
     bool fadeOut = false;
-    string sceneToLoad = "GameScene";
+    string sceneToLoad = "SelectScene";
 
     bool controllerAttached = false;
 

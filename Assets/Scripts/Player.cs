@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject GunGO;
     [SerializeField]
+    Sprite[] GunSprites;
+    [SerializeField]
     GameObject MuzzleGO;
     [SerializeField]
     GameObject BulletPrefab;
@@ -113,6 +115,10 @@ public class Player : MonoBehaviour
         playerRenderer = PlayerGO.GetComponent<SpriteRenderer>();
         if (Globals.DebugMode)
             ForceField.SetActive(true);
+
+        playerAnimator.Play("et-idle" + Globals.AnimationSuffixes[(int)Globals.currentPlayerType]);
+        SpriteRenderer gunSpriteRenderer = GunGO.GetComponent<SpriteRenderer>();
+        gunSpriteRenderer.sprite = GunSprites[(int)Globals.currentPlayerType];
     }
 
     // Update is called once per frame
@@ -169,12 +175,12 @@ public class Player : MonoBehaviour
         if ((movementVector.x != 0 || movementVector.y != 0) && !isMoving)
         {
             isMoving = true;
-            playerAnimator.Play("et-walk");
+            playerAnimator.Play("et-walk" + Globals.AnimationSuffixes[(int)Globals.currentPlayerType]);
         }
         else if (movementVector.x == 0 && movementVector.y == 0 && isMoving)
         {
             isMoving = false;
-            playerAnimator.Play("et-idle");
+            playerAnimator.Play("et-idle" + Globals.AnimationSuffixes[(int)Globals.currentPlayerType]);
         }
 
         if (moveRight && !moveUp && !moveDown)
