@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6232591748759594095}
   - component: {fileID: 6232591748759594083}
   - component: {fileID: 6232591748759594082}
+  - component: {fileID: 4665281913154049914}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6232591748759594092}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.24581724, y: 2.84, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -159,6 +160,8 @@ MonoBehaviour:
   - {fileID: 1946138529, guid: d4d8445379448614bb7b809bdf069f48, type: 3}
   - {fileID: -1744058617, guid: 9021b70991a08ed45aea69f8e37a5f11, type: 3}
   - {fileID: -1730664376, guid: aa7ca84dff05c134584e0d03fe10ae4c, type: 3}
+  - {fileID: 21300000, guid: 074391732b2008d4eb277078f626201e, type: 3}
+  - {fileID: 21300000, guid: acdd61df35506f84fa17ab7b93610319, type: 3}
   - {fileID: -462392754, guid: f2b2929274aeb374b9293ef04b1af26c, type: 3}
   - {fileID: -83080630, guid: 8364174679a7de947bfdc145a200ab89, type: 3}
   DebrisPrefab: {fileID: 4395591764634758786, guid: 6884334da442b4c4296f325b9b896c61, type: 3}
@@ -185,3 +188,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &4665281913154049914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6232591748759594092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8efafc7f3e8a3b24599ac7778f0f2cc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GrowTo: 6
+  ShrinkTo: 5
+  Rate: 15
+  JuiceTime: 0

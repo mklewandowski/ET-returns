@@ -23,6 +23,7 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D enemyRigidbody;
     float moveSpeed = .5f;
     Vector2 movementVector = new Vector2(0, 0);
+    bool allowImpactVelocity = true;
     Vector2 impactVector = new Vector2(0, 0);
     float impactTimer = 0f;
     float impactTimerMax = .1f;
@@ -35,6 +36,9 @@ public class Enemy : MonoBehaviour
     float flashTimer = 0f;
     float flashTimerMax = .15f;
 
+    float lifeTimer = 0f;
+    bool useLifeTimer = false;
+
     [SerializeField]
     GameObject DebrisPrefab;
     GameObject debrisContainer;
@@ -46,6 +50,8 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     GameObject PhonePrefab;
     GameObject itemContainer;
+
+    float pauseBeforeAction = 2f;
 
     void Awake()
     {
@@ -71,6 +77,9 @@ public class Enemy : MonoBehaviour
         type = newType;
         enemyRenderer.sprite = EnemySprites[(int)type];
         enemyRigidbody.mass = 1f;
+        pauseBeforeAction = 0f;
+        useLifeTimer = false;
+        allowImpactVelocity = true;
         if (type == Globals.EnemyTypes.Yar)
         {
             moveSpeed = Random.Range(.8f, 1f);
@@ -143,6 +152,19 @@ public class Enemy : MonoBehaviour
             life = 4f;
             hitStrength = 4f;
         }
+        else if (type == Globals.EnemyTypes.Dig)
+        {
+            moveSpeed = Random.Range(.6f, .8f);
+            positionTimerMax = .9f;
+            enemyAnimator.enabled = false;
+            this.transform.localScale = new Vector3(.1f, .1f, 1f);
+            enemyCollider.size = new Vector2(0.1f, 0.1f);
+            flipWithMovement = true;
+            life = 6f;
+            hitStrength = 6f;
+            pauseBeforeAction = 2f;
+            this.GetComponent<GrowAndShrink>().StartEffect();
+        }
         else if (type == Globals.EnemyTypes.Qbert)
         {
             moveSpeed = Random.Range(.8f, 1f);
@@ -190,6 +212,22 @@ public class Enemy : MonoBehaviour
             life = 25f;
             hitStrength = 15f;
         }
+        else if (type == Globals.EnemyTypes.Plane)
+        {
+            moveSpeed = Random.Range(.6f, .8f);
+            enemyAnimator.enabled = false;
+            this.transform.localScale = new Vector3(.1f, .1f, 1f);
+            enemyCollider.size = new Vector2(0.1f, 0.1f);
+            life = 4f;
+            hitStrength = 4f;
+            pauseBeforeAction = 2f;
+            this.GetComponent<GrowAndShrink>().StartEffect();
+            int collisionLayer = LayerMask.NameToLayer("EnemyPlane");
+            gameObject.layer = collisionLayer;
+            useLifeTimer = true;
+            lifeTimer = 15f;
+            allowImpactVelocity = false;
+        }
         else if (type == Globals.EnemyTypes.FBI)
         {
             moveSpeed = Random.Range(1.75f, 2.25f);
@@ -202,8 +240,8 @@ public class Enemy : MonoBehaviour
             life = 2f;
             hitStrength = 4f;
             enemyRigidbody.mass = 999f;
-            int layerIgnoreRaycast = LayerMask.NameToLayer("EnemySpecial");
-            gameObject.layer = layerIgnoreRaycast;
+            int collisionLayer = LayerMask.NameToLayer("EnemySpecial");
+            gameObject.layer = collisionLayer;
         }
         else if (type == Globals.EnemyTypes.Scientist)
         {
@@ -217,8 +255,8 @@ public class Enemy : MonoBehaviour
             life = 4f;
             hitStrength = 4f;
             enemyRigidbody.mass = 999f;
-            int layerIgnoreRaycast = LayerMask.NameToLayer("EnemySpecial");
-            gameObject.layer = layerIgnoreRaycast;
+            int collisionLayer = LayerMask.NameToLayer("EnemySpecial");
+            gameObject.layer = collisionLayer;
         }
     }
 
@@ -228,19 +266,32 @@ public class Enemy : MonoBehaviour
         handleMovement();
         handleFlash();
         handleImpact();
+        handleLifeTimer();
     }
 
     private void handleMovement()
     {
+        if (pauseBeforeAction > 0)
+        {
+            pauseBeforeAction -= Time.deltaTime;
+            return;
+        }
         if (positionTimer > 0)
         {
             positionTimer -= Time.deltaTime;
             if (positionTimer < 0)
             {
-                Vector3 desiredPosition = (type == Globals.EnemyTypes.FBI || type == Globals.EnemyTypes.Scientist)
-                    ? new Vector3(playerTransform.position.x + 6f * (Random.Range(0, 2) == 0 ? -1f : 1f), playerTransform.position.y + 4f * (Random.Range(0, 2) == 0 ? -1f : 1f), 0)
-                    : playerTransform.position;
-                movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
+                if (type == Globals.EnemyTypes.Plane)
+                {
+                    movementVector = new Vector2(5f, 0);
+                }
+                else
+                {
+                    Vector3 desiredPosition = (type == Globals.EnemyTypes.FBI || type == Globals.EnemyTypes.Scientist)
+                        ? new Vector3(playerTransform.position.x + 6f * (Random.Range(0, 2) == 0 ? -1f : 1f), playerTransform.position.y + 4f * (Random.Range(0, 2) == 0 ? -1f : 1f), 0)
+                        : playerTransform.position;
+                    movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
+                }
                 positionTimer = Random.Range(positionTimerMax - .25f, positionTimerMax + .25f);
             }
         }
@@ -269,6 +320,17 @@ public class Enemy : MonoBehaviour
         if (impactTimer > 0)
         {
             impactTimer -= Time.deltaTime;
+        }
+    }
+
+    private void handleLifeTimer()
+    {
+        if (!useLifeTimer)
+            return;
+        lifeTimer -= Time.deltaTime;
+        if (lifeTimer < 0)
+        {
+            Destroy(this.gameObject);
         }
     }
 
@@ -308,6 +370,7 @@ public class Enemy : MonoBehaviour
     public void KillEnemy()
     {
         Globals.killCount++;
+        Globals.currrentNumEnemies--;
 
         // create debris
         int numDebris = Random.Range(8, 10);
@@ -350,7 +413,10 @@ public class Enemy : MonoBehaviour
     {
         enemyRenderer.color = new Color(87f/255f, 87f/255f, 87f/255f);
         flashTimer = flashTimerMax;
-        impactVector = new Vector2(impactVelocity.x * .5f, impactVelocity.y * .5f);
-        impactTimer = impactTimerMax;
+        if (allowImpactVelocity)
+        {
+            impactVector = new Vector2(impactVelocity.x * .5f, impactVelocity.y * .5f);
+            impactTimer = impactTimerMax;
+        }
     }
 }

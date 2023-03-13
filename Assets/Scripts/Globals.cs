@@ -23,8 +23,10 @@ public class Globals
         Kangaroo,
         Hero,
         Hero2,
+        Dig,
+        Plane,
         FBI,
-        Scientist
+        Scientist,
     }
 
     public static EnemyTypes[] FastEnemyTypes = {EnemyTypes.Yar, EnemyTypes.Pac, EnemyTypes.MsPac, EnemyTypes.Joust, EnemyTypes.Joust2};
@@ -214,6 +216,8 @@ public class Globals
     public static float currentMaxHealth = 20f;
     public static float currentDefense = 1f;
     public static float currentShootTimerMax = 2f;
+    public static int currrentNumEnemies = 0;
+    public static int maxEnemies = 250;
 
     public static int candyCount;
     public static int killCount;
@@ -247,5 +251,6 @@ public class Globals
         currentMaxHealth = 20f;
         currentDefense = 1f;
         currentShootTimerMax = 2f;
+        currrentNumEnemies = 0;
     }
 }

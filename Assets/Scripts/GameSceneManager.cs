@@ -20,6 +20,15 @@ public class GameSceneManager : MonoBehaviour
     GameObject EnemyContainer;
 
     [SerializeField]
+    Transform topTanksTransform;
+    [SerializeField]
+    Transform bottomTanksTransform;
+    [SerializeField]
+    Transform leftTanksTransform;
+    [SerializeField]
+    Transform rightTanksTransform;
+
+    [SerializeField]
     GameObject Player;
     Player playerScript;
 
@@ -59,6 +68,15 @@ public class GameSceneManager : MonoBehaviour
     float difficultyTimer = 60f;
     float difficultyTimerMax = 60f;
 
+    enum EnemySpecialAttackPatterns {
+        VerticalMove,
+        HorizontalMove,
+        Digs,
+        Planes,
+        None
+    }
+    EnemySpecialAttackPatterns currentEnemySpecialAttack = EnemySpecialAttackPatterns.None;
+
     int[] fastEnemySpawnRates = { 80, 100, 999, 999, 999 };
     int[] strongEnemySpawnRates = { 95, 100, 999, 999, 999 };
     int currentNumFBI = 0;
@@ -68,6 +86,9 @@ public class GameSceneManager : MonoBehaviour
 
     float spawnTimer = 5f;
     float spawnTimerMax = 7f;
+    int digSpawnsRemaining = 0;
+    int planeSpawnsRemaining = 0;
+    float tankReturnTimer = 0;
 
     float deadTimer = 0f;
     float deadTimerMax = 4f;
@@ -102,7 +123,7 @@ public class GameSceneManager : MonoBehaviour
         }
         Globals.ResetGlobals();
 
-        SpawnEnemies(10 + difficultyLevel * 2);
+        SpawnEnemies(10, true);
 
         playerScript = Player.GetComponent<Player>();
     }
@@ -250,6 +271,30 @@ public class GameSceneManager : MonoBehaviour
                 fastEnemySpawnRates = new int[] { 5, 10, 20, 30, 100 };
                 strongEnemySpawnRates = new int[] { 5, 10, 20, 40, 100 };
             }
+            // check if it is time for an enemy special attack
+            if (difficultyLevel % 3 == 0)
+            {
+                EnemySpecialAttackPatterns specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Planes);
+                if (specialNum == EnemySpecialAttackPatterns.VerticalMove)
+                {
+                    bottomTanksTransform.gameObject.GetComponent<MoveNormal>().MoveUp();
+                    topTanksTransform.gameObject.GetComponent<MoveNormal>().MoveDown();
+                    tankReturnTimer = Random.Range(20f, 40f);
+                }
+                else if (specialNum == EnemySpecialAttackPatterns.HorizontalMove)
+                {
+                    leftTanksTransform.gameObject.GetComponent<MoveNormal>().MoveRight();
+                    rightTanksTransform.gameObject.GetComponent<MoveNormal>().MoveLeft();
+                }
+                else if (specialNum == EnemySpecialAttackPatterns.Digs)
+                {
+                    digSpawnsRemaining = Random.Range(2, 5);
+                }
+                else if (specialNum == EnemySpecialAttackPatterns.Planes)
+                {
+                    planeSpawnsRemaining = Random.Range(2, 5);
+                }
+            }
         }
     }
 
@@ -259,7 +304,19 @@ public class GameSceneManager : MonoBehaviour
         if (spawnTimer <= 0)
         {
             spawnTimer = spawnTimerMax;
-            SpawnEnemies(10);
+            SpawnEnemies(10 + difficultyLevel * 2, false);
+        }
+
+        if (tankReturnTimer > 0)
+        {
+            tankReturnTimer -= Time.deltaTime;
+            if (tankReturnTimer <= 0)
+            {
+                bottomTanksTransform.gameObject.GetComponent<MoveNormal>().MoveDown();
+                topTanksTransform.gameObject.GetComponent<MoveNormal>().MoveUp();
+                leftTanksTransform.gameObject.GetComponent<MoveNormal>().MoveLeft();
+                rightTanksTransform.gameObject.GetComponent<MoveNormal>().MoveRight();
+            }
         }
     }
 
@@ -275,29 +332,21 @@ public class GameSceneManager : MonoBehaviour
         }
     }
 
-    void SpawnEnemies(int num)
+    void SpawnEnemies(int num, bool FBIrequired)
     {
+        int numFBIthisSpawn = 0;
         int maxSpecialPerSpawn = difficultyLevel >= 10 ? 1 : 2;
         int specialThisSpawn = 0;
         float extraLife = 0;
         for (int x = 0; x < num; x++)
         {
-            bool verticalPos = (Random.Range(0, 2) == 0);
-            float xOffset = verticalPos
-                ? Random.Range(-10.5f, 10.5f)
-                : Random.Range(10f, 13f) * (Random.Range(0, 2) == 0 ? -1f : 1f);
-            float yOffset = verticalPos
-                ? Random.Range(6f, 9f) * (Random.Range(0, 2) == 0 ? -1f : 1f)
-                : Random.Range(-6.5f, 6.5f);
-            Vector2 playerPos = Player.transform.localPosition;
-            Vector2 enemyPos = new Vector2(playerPos.x + xOffset, playerPos.y + yOffset);
-            GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
             Globals.EnemyTypes enemyType = Globals.EnemyTypes.Yar;
             float randVal = Random.Range(0, 100f);
             if (randVal > 95f && currentNumFBI < maxFBI && specialThisSpawn < maxSpecialPerSpawn)
             {
                 enemyType = Globals.EnemyTypes.FBI;
                 currentNumFBI++;
+                numFBIthisSpawn++;
                 specialThisSpawn++;
                 extraLife = difficultyLevel * .5f;
             }
@@ -312,7 +361,96 @@ public class GameSceneManager : MonoBehaviour
                 enemyType = GetStrongEnemyType();
             else
                 enemyType = GetFastEnemyType();
-            enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyType, extraLife);
+            SpawnEnemy(enemyType, extraLife);
+        }
+
+        if (FBIrequired && numFBIthisSpawn == 0)
+        {
+            SpawnEnemy(Globals.EnemyTypes.FBI, difficultyLevel * .5f);
+        }
+
+        if (digSpawnsRemaining > 0)
+        {
+            digSpawnsRemaining--;
+            SpawnDigs();
+        }
+        if (planeSpawnsRemaining > 0)
+        {
+            planeSpawnsRemaining--;
+            SpawnPlanes();
+        }
+    }
+
+    void SpawnEnemy(Globals.EnemyTypes enemyType, float extraLife)
+    {
+        // Debug.Log(Globals.currrentNumEnemies);
+        if (Globals.currrentNumEnemies >= Globals.maxEnemies)
+            return;
+        bool verticalPos = (Random.Range(0, 2) == 0);
+        float xRangeMax = Mathf.Min((rightTanksTransform.position.x - leftTanksTransform.position.x - 2f) * .5f, 13f);
+        float yRangeMax = Mathf.Min((topTanksTransform.position.y - bottomTanksTransform.position.y - 2f) * .5f, 9f);
+        float xOffset = verticalPos
+            ? Random.Range(-10.5f, 10.5f)
+            : Random.Range(10f, xRangeMax) * (Random.Range(0, 2) == 0 ? -1f : 1f);
+        float yOffset = verticalPos
+            ? Random.Range(6f, yRangeMax) * (Random.Range(0, 2) == 0 ? -1f : 1f)
+            : Random.Range(-6.5f, 6.5f);
+        Vector2 playerPos = Player.transform.localPosition;
+        float minX = leftTanksTransform.position.x + 1f;
+        float maxX = rightTanksTransform.position.x - 1f;
+        float minY = bottomTanksTransform.position.y + 1f;
+        float maxY = topTanksTransform.position.y - 1f;
+        if ((playerPos.x + xOffset) < minX || (playerPos.x + xOffset) > maxX)
+        {
+            xOffset = xOffset * -1f;
+        }
+        if ((playerPos.y + yOffset) < minY || (playerPos.y + yOffset) > maxY)
+        {
+            yOffset = yOffset * -1f;
+        }
+        Vector2 enemyPos = new Vector2(playerPos.x + xOffset, playerPos.y + yOffset);
+        GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
+        enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyType, extraLife);
+        Globals.currrentNumEnemies++;
+    }
+
+    void SpawnDigs()
+    {
+        float extraLife = difficultyLevel * .5f;
+        int numDigs = 15;
+        Vector2 playerPos = Player.transform.localPosition;
+        float minX = leftTanksTransform.position.x + 1f;
+        float maxX = rightTanksTransform.position.x - 1f;
+        float minY = bottomTanksTransform.position.y + 1f;
+        float maxY = topTanksTransform.position.y - 1f;
+        for (int x = 0; x < numDigs; x++)
+        {
+            Vector2 enemyRadialVector = Quaternion.Euler(0, 0, x * 24f) * new Vector2(3f, 3f);
+            Vector2 enemyPos = playerPos + enemyRadialVector;
+            if (enemyPos.x < maxX && enemyPos.x > minX && enemyPos.y < maxY && enemyPos.y > minY)
+            {
+                GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
+                enemyGO.GetComponent<Enemy>().ConfigureEnemy(Globals.EnemyTypes.Dig, extraLife);
+            }
+        }
+    }
+
+    void SpawnPlanes()
+    {
+        float extraLife = difficultyLevel * .5f;
+        int numRows = 5;
+        int numCols = 3;
+        Vector2 playerPos = Player.transform.localPosition;
+        float startX = playerPos.x - 6f;
+        float startY = playerPos.y - 4f;
+        for (int x = 0; x < numCols; x++)
+        {
+            for (int y = 0; y < numRows; y++)
+            {
+                Vector2 enemyPos = new Vector2(startX + x * -2.5f, startY + y * 2f);
+                GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
+                enemyGO.GetComponent<Enemy>().ConfigureEnemy(Globals.EnemyTypes.Plane, extraLife);
+            }
         }
     }
 

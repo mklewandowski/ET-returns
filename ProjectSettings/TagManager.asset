@@ -15,9 +15,9 @@ TagManager:
   - Weapon
   - Enemy
   - EnemySpecial
-  - 
-  - 
-  - 
+  - PlayerSolid
+  - EnemySolid
+  - EnemyPlane
   - 
   - 
   - 
