@@ -87,6 +87,7 @@ public class GameSceneManager : MonoBehaviour
     float spawnTimer = 5f;
     float spawnTimerMax = 7f;
     int digSpawnsRemaining = 0;
+    int planeSpawnsRemaining = 0;
     float tankReturnTimer = 0;
 
     float deadTimer = 0f;
@@ -287,11 +288,11 @@ public class GameSceneManager : MonoBehaviour
                 }
                 else if (specialNum == EnemySpecialAttackPatterns.Digs)
                 {
-                    digSpawnsRemaining = Random.Range(3, 6);
+                    digSpawnsRemaining = Random.Range(2, 5);
                 }
                 else if (specialNum == EnemySpecialAttackPatterns.Planes)
                 {
-
+                    planeSpawnsRemaining = Random.Range(2, 5);
                 }
             }
         }
@@ -373,6 +374,11 @@ public class GameSceneManager : MonoBehaviour
             digSpawnsRemaining--;
             SpawnDigs();
         }
+        if (planeSpawnsRemaining > 0)
+        {
+            planeSpawnsRemaining--;
+            SpawnPlanes();
+        }
     }
 
     void SpawnEnemy(Globals.EnemyTypes enemyType, float extraLife)
@@ -425,6 +431,25 @@ public class GameSceneManager : MonoBehaviour
             {
                 GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
                 enemyGO.GetComponent<Enemy>().ConfigureEnemy(Globals.EnemyTypes.Dig, extraLife);
+            }
+        }
+    }
+
+    void SpawnPlanes()
+    {
+        float extraLife = difficultyLevel * .5f;
+        int numRows = 5;
+        int numCols = 3;
+        Vector2 playerPos = Player.transform.localPosition;
+        float startX = playerPos.x - 6f;
+        float startY = playerPos.y - 4f;
+        for (int x = 0; x < numCols; x++)
+        {
+            for (int y = 0; y < numRows; y++)
+            {
+                Vector2 enemyPos = new Vector2(startX + x * -2.5f, startY + y * 2f);
+                GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
+                enemyGO.GetComponent<Enemy>().ConfigureEnemy(Globals.EnemyTypes.Plane, extraLife);
             }
         }
     }

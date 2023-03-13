@@ -24,6 +24,7 @@ public class Globals
         Hero,
         Hero2,
         Dig,
+        Plane,
         FBI,
         Scientist,
     }
