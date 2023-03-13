@@ -36,6 +36,18 @@ public class Globals
         "Smurf E.T."
     };
 
+    public static string[] AnimationSuffixes = {
+        "",
+        "-2600",
+        "-ninja",
+        "-goth",
+        "-punk",
+        "-toxic",
+        "-super",
+        "-rad",
+        "-smurf"
+    };
+
     public static PlayerTypes currentPlayerType = PlayerTypes.Cinema;
 
     public enum EnemyTypes {
