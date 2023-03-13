@@ -274,7 +274,7 @@ public class GameSceneManager : MonoBehaviour
             // check if it is time for an enemy special attack
             if ((difficultyLevel <= 8 && difficultyLevel % 2 == 0) || difficultyLevel > 8)
             {
-                EnemySpecialAttackPatterns specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Planes);
+                EnemySpecialAttackPatterns specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.None);
                 if (specialNum == EnemySpecialAttackPatterns.VerticalMove)
                 {
                     bottomTanksTransform.gameObject.GetComponent<MoveNormal>().MoveUp();
