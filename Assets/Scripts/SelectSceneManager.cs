@@ -33,6 +33,8 @@ public class SelectSceneManager : MonoBehaviour
 
     bool controllerAttached = false;
 
+	bool stickDown = false;
+
     void Awake()
     {
         Application.targetFrameRate = 60;
@@ -79,6 +81,29 @@ public class SelectSceneManager : MonoBehaviour
             if (Input.GetButton("Fire1"))
                 SelectStart();
         }
+
+        bool moveLeft = false;
+        bool moveRight = false;
+        float controllerLeftStickX;
+        controllerLeftStickX = Input.GetAxis("Horizontal");
+        if (controllerLeftStickX > .5f)
+        {
+            if (!stickDown) moveRight = true;
+            stickDown = true;
+        }
+        else if (controllerLeftStickX < -.5f)
+        {
+            if (!stickDown) moveLeft = true;
+            stickDown = true;
+        }
+        else
+        {
+            stickDown = false;
+        }
+        if (moveLeft)
+            SelectPrevious();
+        else if (moveRight)
+            SelectNext();
     }
 
     public void SelectStart()
