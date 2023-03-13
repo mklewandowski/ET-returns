@@ -272,7 +272,7 @@ public class GameSceneManager : MonoBehaviour
                 strongEnemySpawnRates = new int[] { 5, 10, 20, 40, 100 };
             }
             // check if it is time for an enemy special attack
-            if (difficultyLevel % 3 == 0)
+            if ((difficultyLevel <= 8 && difficultyLevel % 2 == 0) || difficultyLevel > 8)
             {
                 EnemySpecialAttackPatterns specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Planes);
                 if (specialNum == EnemySpecialAttackPatterns.VerticalMove)
@@ -285,6 +285,7 @@ public class GameSceneManager : MonoBehaviour
                 {
                     leftTanksTransform.gameObject.GetComponent<MoveNormal>().MoveRight();
                     rightTanksTransform.gameObject.GetComponent<MoveNormal>().MoveLeft();
+                    tankReturnTimer = Random.Range(20f, 40f);
                 }
                 else if (specialNum == EnemySpecialAttackPatterns.Digs)
                 {
@@ -335,7 +336,7 @@ public class GameSceneManager : MonoBehaviour
     void SpawnEnemies(int num, bool FBIrequired)
     {
         int numFBIthisSpawn = 0;
-        int maxSpecialPerSpawn = difficultyLevel >= 10 ? 1 : 2;
+        int maxSpecialPerSpawn = difficultyLevel >= 8 ? Random.Range(0, 2) : 2;
         int specialThisSpawn = 0;
         float extraLife = 0;
         for (int x = 0; x < num; x++)
