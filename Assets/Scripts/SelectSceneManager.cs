@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
-public class TitleSceneManager : MonoBehaviour
+public class SelectSceneManager : MonoBehaviour
 {
     AudioManager audioManager;
 
@@ -13,12 +14,22 @@ public class TitleSceneManager : MonoBehaviour
 
     [SerializeField]
     FadeManager fadeManager;
+
     [SerializeField]
-    GameObject animationPanel;
+    Image ETimage;
+    [SerializeField]
+    Image ETgun;
+    [SerializeField]
+    TextMeshProUGUI ETname;
+
+    [SerializeField]
+    Sprite[] ETsprites;
+    [SerializeField]
+    Sprite[] ETgunSprites;
 
     bool fadeIn = false;
     bool fadeOut = false;
-    string sceneToLoad = "SelectScene";
+    string sceneToLoad = "GameScene";
 
     bool controllerAttached = false;
 
@@ -52,21 +63,14 @@ public class TitleSceneManager : MonoBehaviour
         if (fadeIn && fadeManager.FadeComplete())
         {
             fadeIn = false;
-            animationPanel.GetComponent<MoveNormal>().MoveRight();
         }
         if (fadeOut && fadeManager.FadeComplete())
         {
             fadeOut = false;
             SceneManager.LoadScene(sceneToLoad);
         }
-        if (animationPanel.transform.localPosition.x >= 2000f)
-        {
-            animationPanel.transform.localPosition = new Vector2(-1500f, animationPanel.transform.localPosition.y);
-            animationPanel.GetComponent<MoveNormal>().MoveRight();
-        }
         HandleInput();
     }
-
 
     void HandleInput()
     {
@@ -83,5 +87,39 @@ public class TitleSceneManager : MonoBehaviour
         audioManager.PlayButtonSound();
         fadeManager.StartFadeOut();
         fadeOut = true;
+    }
+
+    public void SelectNext()
+    {
+        if (fadeOut) return;
+        audioManager.PlayButtonSound();
+        int index = (int)Globals.currentPlayerType;
+        index++;
+        int numPlayerTypes = System.Enum.GetValues(typeof(Globals.PlayerTypes)).Length;
+        if (index >= numPlayerTypes)
+            index = 0;
+        Globals.currentPlayerType = (Globals.PlayerTypes)index;
+        UpdateET();
+    }
+
+    public void SelectPrevious()
+    {
+        if (fadeOut) return;
+        audioManager.PlayButtonSound();
+        int index = (int)Globals.currentPlayerType;
+        index--;
+        int numPlayerTypes = System.Enum.GetValues(typeof(Globals.PlayerTypes)).Length;
+        if (index < 0)
+            index = numPlayerTypes - 1;
+        Globals.currentPlayerType = (Globals.PlayerTypes)index;
+        UpdateET();
+    }
+
+    void UpdateET()
+    {
+        int index = (int)Globals.currentPlayerType;
+        ETimage.sprite = ETsprites[index];
+        ETgun.sprite = ETgunSprites[index];
+        ETname.text = Globals.PlayerNames[index];
     }
 }
