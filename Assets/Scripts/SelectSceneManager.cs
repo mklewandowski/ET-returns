@@ -57,6 +57,7 @@ public class SelectSceneManager : MonoBehaviour
 
         fadeManager.StartFadeIn();
         fadeIn = true;
+        UpdateET();
     }
 
     // Update is called once per frame
