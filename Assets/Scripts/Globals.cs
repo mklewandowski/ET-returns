@@ -12,6 +12,32 @@ public class Globals
 
     public static bool IsPaused = false;
 
+    public enum PlayerTypes {
+        Cinema,
+        Atari2600,
+        Ninja,
+        Goth,
+        Punk,
+        Toxic,
+        Super,
+        RadStyle,
+        Smurf
+    }
+
+    public static string[] PlayerNames = {
+        "Movie E.T.",
+        "2600 E.T.",
+        "Ninja E.T.",
+        "Goth E.T.",
+        "Punk E.T.",
+        "Toxic E.T.",
+        "Super E.T.",
+        "Rad Style E.T.",
+        "Smurf E.T."
+    };
+
+    public static PlayerTypes currentPlayerType = PlayerTypes.Cinema;
+
     public enum EnemyTypes {
         Yar,
         Pac,
