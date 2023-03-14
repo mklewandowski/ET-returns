@@ -42,6 +42,8 @@ public class TitleSceneManager : MonoBehaviour
                 controllerAttached = true;
         }
 
+        Globals.LoadPlayerTypeUnlockStatesFromPlayerPrefs();
+
         fadeManager.StartFadeIn();
         fadeIn = true;
     }

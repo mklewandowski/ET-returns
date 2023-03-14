@@ -21,6 +21,10 @@ public class SelectSceneManager : MonoBehaviour
     Image ETgun;
     [SerializeField]
     TextMeshProUGUI ETname;
+    [SerializeField]
+    TextMeshProUGUI UnlockText;
+    [SerializeField]
+    GameObject SelectButton;
 
     [SerializeField]
     Sprite[] ETsprites;
@@ -147,5 +151,16 @@ public class SelectSceneManager : MonoBehaviour
         ETimage.sprite = ETsprites[index];
         ETgun.sprite = ETgunSprites[index];
         ETname.text = Globals.PlayerNames[index];
+
+        if (Globals.PlayerTypeUnlockStates[index] == 1)
+        {
+            UnlockText.text = "";
+            SelectButton.SetActive(true);
+        }
+        else
+        {
+            UnlockText.text = "LOCKED\n" + Globals.PlayerUnlockTexts[index];
+            SelectButton.SetActive(false);
+        }
     }
 }

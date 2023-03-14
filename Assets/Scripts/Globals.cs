@@ -38,6 +38,19 @@ public class Globals
         "Incredible E.T."
     };
 
+    public static string[] PlayerUnlockTexts = {
+        "",
+        "Complete 1 mission",
+        "Complete 1 mission",
+        "Complete 1 mission",
+        "Complete 1 mission",
+        "Complete 1 mission",
+        "Complete 1 mission",
+        "Complete 1 mission",
+        "Complete 1 mission",
+        "Complete 1 mission"
+    };
+
     public static string[] AnimationSuffixes = {
         "",
         "-2600",
@@ -52,6 +65,8 @@ public class Globals
     };
 
     public static PlayerTypes currentPlayerType = PlayerTypes.Cinema;
+    public static int MaxPlayerTypes = 10;
+    public static int[] PlayerTypeUnlockStates = new int[MaxPlayerTypes];
 
     public enum EnemyTypes {
         Yar,
@@ -264,6 +279,44 @@ public class Globals
     public static int killCount;
     public static float gameTime;
 
+    public const string PlayerTypeUnlockPlayerPrefsKey = "PlayerType";
+    public static void LoadPlayerTypeUnlockStatesFromPlayerPrefs()
+    {
+        for (int x = 0; x < MaxPlayerTypes; x++)
+        {
+            int unlock = LoadIntFromPlayerPrefs(PlayerTypeUnlockPlayerPrefsKey + x.ToString());
+            PlayerTypeUnlockStates[x] = unlock;
+            PlayerTypeUnlockStates[x] = 1; // WTD WTD WTD remove
+        }
+        PlayerTypeUnlockStates[0] = 1;
+    }
+
+    public static void UnlockPlayerType(int playerTypeNum)
+    {
+        PlayerTypeUnlockStates[playerTypeNum] = 1;
+        SaveIntToPlayerPrefs(PlayerTypeUnlockPlayerPrefsKey + playerTypeNum.ToString(), 1);
+    }
+
+    public static void SaveIntToPlayerPrefs(string key, int val)
+    {
+        PlayerPrefs.SetInt(key, val);
+    }
+    public static int LoadIntFromPlayerPrefs(string key, int defaultVal = 0)
+    {
+        int val = PlayerPrefs.GetInt(key, defaultVal);
+        return val;
+    }
+
+    public static void SaveFloatToPlayerPrefs(string key, float val)
+    {
+        PlayerPrefs.SetFloat(key, val);
+    }
+    public static float LoadFloatFromPlayerPrefs(string key)
+    {
+        float val = PlayerPrefs.GetFloat(key, 0f);
+        return val;
+    }
+
     public static void ResetGlobals()
     {
         Globals.maxExperiences = new int[] {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1200, 1400, 1600, 1800, 2000};
@@ -294,4 +347,5 @@ public class Globals
         currentShootTimerMax = 2f;
         currrentNumEnemies = 0;
     }
+
 }
