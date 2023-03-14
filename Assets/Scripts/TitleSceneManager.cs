@@ -77,6 +77,8 @@ public class TitleSceneManager : MonoBehaviour
             if (Input.GetButton("Fire1"))
                 SelectStart();
         }
+        if (Input.GetKeyDown("space"))
+            SelectStart();
     }
 
     public void SelectStart()
