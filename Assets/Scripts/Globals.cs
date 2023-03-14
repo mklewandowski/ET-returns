@@ -21,7 +21,8 @@ public class Globals
         Toxic,
         Super,
         RadStyle,
-        Smurf
+        Smurf,
+        Hulk
     }
 
     public static string[] PlayerNames = {
@@ -33,7 +34,8 @@ public class Globals
         "Toxic E.T.",
         "Super E.T.",
         "Rad Style E.T.",
-        "Smurf E.T."
+        "Smurf E.T.",
+        "Incredible E.T."
     };
 
     public static string[] AnimationSuffixes = {
@@ -45,7 +47,8 @@ public class Globals
         "-toxic",
         "-super",
         "-rad",
-        "-smurf"
+        "-smurf",
+        "-hulk"
     };
 
     public static PlayerTypes currentPlayerType = PlayerTypes.Cinema;
