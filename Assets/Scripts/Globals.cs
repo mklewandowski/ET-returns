@@ -22,7 +22,12 @@ public class Globals
         Super,
         RadStyle,
         Smurf,
-        Hulk
+        Hulk,
+        Pac,
+        Sailor,
+        Pitfall,
+        Mario,
+        Luigi,
     }
 
     public static string[] PlayerNames = {
@@ -35,7 +40,12 @@ public class Globals
         "Super E.T.",
         "Rad Style E.T.",
         "Smurf E.T.",
-        "Incredible E.T."
+        "Incredible E.T.",
+        "Pac E.T.",
+        "Sailor E.T.",
+        "Jungle E.T.",
+        "Mario E.T.",
+        "Luigi E.T.",
     };
 
     public static string[] PlayerUnlockTexts = {
@@ -48,7 +58,12 @@ public class Globals
         "Complete 1 mission",
         "Complete 1 mission",
         "Complete 1 mission",
-        "Complete 1 mission"
+        "Complete 1 mission",
+        "Complete 1 mission",
+        "Complete 1 mission",
+        "Complete 1 mission",
+        "Complete 1 mission",
+        "Complete 1 mission",
     };
 
     public static string[] AnimationSuffixes = {
@@ -61,7 +76,12 @@ public class Globals
         "-super",
         "-rad",
         "-smurf",
-        "-hulk"
+        "-hulk",
+        "-pac",
+        "-sailor",
+        "-jungle",
+        "-mario",
+        "-luigi",
     };
 
     public static PlayerTypes currentPlayerType = PlayerTypes.Cinema;

@@ -1327,6 +1327,11 @@ MonoBehaviour:
   - {fileID: -536658730, guid: c0d786e5a8ac2534f8f6ef4e62f610d4, type: 3}
   - {fileID: -1452687433, guid: 049a3d2bd48f69d4cba8e62b326f2d08, type: 3}
   - {fileID: 811507550, guid: 55479d59fbb24024a9fc844e673dd3d0, type: 3}
+  - {fileID: -1045809513, guid: 1277e14424c3c2340863a66d7bde718c, type: 3}
+  - {fileID: 891085896, guid: e9a723df5927b6e409602733eac22770, type: 3}
+  - {fileID: -1063106275, guid: ca7244b4af1b68f498c270002bf378a4, type: 3}
+  - {fileID: 388311631, guid: 0380465dd9a2a7f47a7313ced4a92797, type: 3}
+  - {fileID: 1176099657, guid: cc79e9fb181359a48a4656cfc464c9b2, type: 3}
   ETgunSprites:
   - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
   - {fileID: 21300000, guid: 81ea442cc72fbaf46a84ec2732cf2d77, type: 3}
@@ -1338,6 +1343,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
   - {fileID: 21300000, guid: 3a3d525ce9d324a4eb566cf2f8918bc3, type: 3}
   - {fileID: 21300000, guid: afaa7a71409166242a167b6835b51d3c, type: 3}
+  - {fileID: 21300000, guid: 34f135bc16e27f7449e7bb0d32acc4ac, type: 3}
+  - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
+  - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
+  - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
+  - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
 --- !u!1 &1316022234
 GameObject:
   m_ObjectHideFlags: 0
