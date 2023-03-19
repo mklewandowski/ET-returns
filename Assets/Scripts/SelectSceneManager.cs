@@ -21,6 +21,10 @@ public class SelectSceneManager : MonoBehaviour
     Image ETgun;
     [SerializeField]
     TextMeshProUGUI ETname;
+    [SerializeField]
+    TextMeshProUGUI UnlockText;
+    [SerializeField]
+    GameObject SelectButton;
 
     [SerializeField]
     Sprite[] ETsprites;
@@ -77,30 +81,37 @@ public class SelectSceneManager : MonoBehaviour
 
     void HandleInput()
     {
-        if (controllerAttached)
-        {
-            if (Input.GetButton("Fire1"))
-                SelectStart();
-        }
-
         bool moveLeft = false;
         bool moveRight = false;
-        float controllerLeftStickX;
-        controllerLeftStickX = Input.GetAxis("Horizontal");
-        if (controllerLeftStickX > .5f)
+        if (controllerAttached)
         {
-            if (!stickDown) moveRight = true;
-            stickDown = true;
+            if (Input.GetButton("Fire1") && SelectButton.activeSelf)
+                SelectStart();
+
+            float controllerLeftStickX;
+            controllerLeftStickX = Input.GetAxis("Horizontal");
+            if (controllerLeftStickX > .5f)
+            {
+                if (!stickDown) moveRight = true;
+                stickDown = true;
+            }
+            else if (controllerLeftStickX < -.5f)
+            {
+                if (!stickDown) moveLeft = true;
+                stickDown = true;
+            }
+            else
+            {
+                stickDown = false;
+            }
         }
-        else if (controllerLeftStickX < -.5f)
-        {
-            if (!stickDown) moveLeft = true;
-            stickDown = true;
-        }
-        else
-        {
-            stickDown = false;
-        }
+        if (Input.GetKeyDown("space") && SelectButton.activeSelf)
+            SelectStart();
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown("a"))
+            moveLeft = true;
+        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown("d"))
+            moveRight = true;
+
         if (moveLeft)
             SelectPrevious();
         else if (moveRight)
@@ -147,5 +158,16 @@ public class SelectSceneManager : MonoBehaviour
         ETimage.sprite = ETsprites[index];
         ETgun.sprite = ETgunSprites[index];
         ETname.text = Globals.PlayerNames[index];
+
+        if (Globals.PlayerTypeUnlockStates[index] == 1)
+        {
+            UnlockText.text = "";
+            SelectButton.SetActive(true);
+        }
+        else
+        {
+            UnlockText.text = "LOCKED\n" + Globals.PlayerUnlockTexts[index];
+            SelectButton.SetActive(false);
+        }
     }
 }
