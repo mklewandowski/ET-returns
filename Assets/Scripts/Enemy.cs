@@ -125,7 +125,7 @@ public class Enemy : MonoBehaviour
             enemyAnimator.enabled = true;
             enemyAnimator.Play("bear");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
-            enemyCollider.size = new Vector2(0.14f, 0.1f);
+            enemyCollider.size = new Vector2(0.12f, 0.12f);
             flipWithMovement = true;
             life = 6f;
             hitStrength = 6f;
@@ -163,7 +163,7 @@ public class Enemy : MonoBehaviour
             enemyAnimator.enabled = true;
             enemyAnimator.Play("moon");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
-            enemyCollider.size = new Vector2(0.15f, 0.15f);
+            enemyCollider.size = new Vector2(0.3f, 0.07f);
             flipWithMovement = true;
             life = 7f;
             hitStrength = 5f;
@@ -236,7 +236,7 @@ public class Enemy : MonoBehaviour
             enemyAnimator.enabled = true;
             enemyAnimator.Play("indy");
             this.transform.localScale = new Vector3(8f, 8f, 1f);
-            enemyCollider.size = new Vector2(0.12f, 0.2f);
+            enemyCollider.size = new Vector2(0.05f, 0.1f);
             flipWithMovement = true;
             life = 30f;
             hitStrength = 18f;
