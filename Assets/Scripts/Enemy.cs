@@ -80,10 +80,12 @@ public class Enemy : MonoBehaviour
         pauseBeforeAction = 0f;
         useLifeTimer = false;
         allowImpactVelocity = true;
+
+        // FAST
         if (type == Globals.EnemyTypes.Yar)
         {
-            moveSpeed = Random.Range(.8f, 1f);
-            positionTimerMax = 1f;
+            moveSpeed = Random.Range(.9f, 1.2f);
+            positionTimerMax = .75f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("yar");
             this.transform.localScale = new Vector3(6f, 6f, 1f);
@@ -94,77 +96,92 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Pac)
         {
-            moveSpeed = Random.Range(1f, 1.2f);
+            moveSpeed = Random.Range(1.2f, 1.5f);
             positionTimerMax = .75f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("pac");
             this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.14f, 0.1f);
             flipWithMovement = true;
-            life = 2f;
+            life = 3f;
             hitStrength = 3f;
         }
         else if (type == Globals.EnemyTypes.MsPac)
         {
-            moveSpeed = Random.Range(1.2f, 1.4f);
+            moveSpeed = Random.Range(1.5f, 1.8f);
             positionTimerMax = .5f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("mspac");
             this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.14f, 0.1f);
             flipWithMovement = true;
-            life = 3f;
+            life = 4f;
             hitStrength = 4f;
         }
-        else if (type == Globals.EnemyTypes.Joust)
+        else if (type == Globals.EnemyTypes.Bear)
         {
-            moveSpeed = Random.Range(1.4f, 1.6f);
-            positionTimerMax = .5f;
-            enemyAnimator.enabled = true;
-            enemyAnimator.Play("joust");
-            this.transform.localScale = new Vector3(5f, 5f, 1f);
-            enemyCollider.size = new Vector2(0.15f, 0.15f);
-            flipWithMovement = true;
-            life = 4f;
-            hitStrength = 5f;
-        }
-        else if (type == Globals.EnemyTypes.Joust2)
-        {
-            moveSpeed = Random.Range(1.6f, 1.8f);
+            moveSpeed = Random.Range(1.8f, 2.1f);
             positionTimerMax = .4f;
             enemyAnimator.enabled = true;
-            enemyAnimator.Play("joust2");
+            enemyAnimator.Play("bear");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
-            enemyCollider.size = new Vector2(0.15f, 0.15f);
+            enemyCollider.size = new Vector2(0.14f, 0.1f);
             flipWithMovement = true;
             life = 6f;
             hitStrength = 6f;
         }
+
+        // SURROUND
         else if (type == Globals.EnemyTypes.Frogger)
         {
             moveSpeed = Random.Range(.6f, .8f);
-            positionTimerMax = .9f;
+            positionTimerMax = 1f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("frog");
             this.transform.localScale = new Vector3(6f, 6f, 1f);
             enemyCollider.size = new Vector2(0.1f, 0.1f);
             flipWithMovement = true;
-            life = 4f;
+            life = 3f;
+            hitStrength = 3f;
+        }
+        else if (type == Globals.EnemyTypes.Joust)
+        {
+            moveSpeed = Random.Range(1.0f, 1.3f);
+            positionTimerMax = .9f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("joust");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.15f, 0.15f);
+            flipWithMovement = true;
+            life = 5f;
             hitStrength = 4f;
         }
-        else if (type == Globals.EnemyTypes.Dig)
+        else if (type == Globals.EnemyTypes.Moon)
         {
-            moveSpeed = Random.Range(.6f, .8f);
-            positionTimerMax = .9f;
-            enemyAnimator.enabled = false;
-            this.transform.localScale = new Vector3(.1f, .1f, 1f);
-            enemyCollider.size = new Vector2(0.1f, 0.1f);
+            moveSpeed = Random.Range(1.3f, 1.6f);
+            positionTimerMax = .8f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("moon");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = true;
-            life = 6f;
-            hitStrength = 6f;
-            pauseBeforeAction = 2f;
-            this.GetComponent<GrowAndShrink>().StartEffect();
+            life = 7f;
+            hitStrength = 5f;
         }
+        else if (type == Globals.EnemyTypes.Joust2)
+        {
+            moveSpeed = Random.Range(1.6f, 1.8f);
+            positionTimerMax = .7f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("joust2");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.15f, 0.15f);
+            flipWithMovement = true;
+            life = 9f;
+            hitStrength = 6f;
+        }
+
+        // STRONG
         else if (type == Globals.EnemyTypes.Qbert)
         {
             moveSpeed = Random.Range(.8f, 1f);
@@ -211,6 +228,33 @@ public class Enemy : MonoBehaviour
             flipWithMovement = true;
             life = 25f;
             hitStrength = 15f;
+        }
+        else if (type == Globals.EnemyTypes.Indy)
+        {
+            moveSpeed = Random.Range(1.6f, 1.8f);
+            positionTimerMax = .4f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("indy");
+            this.transform.localScale = new Vector3(8f, 8f, 1f);
+            enemyCollider.size = new Vector2(0.12f, 0.2f);
+            flipWithMovement = true;
+            life = 30f;
+            hitStrength = 18f;
+        }
+
+        // SPECIAL
+        else if (type == Globals.EnemyTypes.Dig)
+        {
+            moveSpeed = Random.Range(.6f, .8f);
+            positionTimerMax = .9f;
+            enemyAnimator.enabled = false;
+            this.transform.localScale = new Vector3(.1f, .1f, 1f);
+            enemyCollider.size = new Vector2(0.1f, 0.1f);
+            flipWithMovement = true;
+            life = 6f;
+            hitStrength = 6f;
+            pauseBeforeAction = 2f;
+            this.GetComponent<GrowAndShrink>().StartEffect();
         }
         else if (type == Globals.EnemyTypes.Plane)
         {
