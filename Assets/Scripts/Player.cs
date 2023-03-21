@@ -63,8 +63,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject[] SurroundObjects;
 
-    float moveSpeed = 2.2f;
-    float moveSpeedInitial = 2.2f;
+    float moveSpeed = 2.4f;
+    float moveSpeedInitial = 2.4f;
     Vector2 movementVector = new Vector2(0, 0);
     bool moveLeft;
     bool moveRight;
