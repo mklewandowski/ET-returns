@@ -98,23 +98,28 @@ public class Globals
         MsPac,
         Joust,
         Joust2,
+        Yar2,
+
         Frogger,
+        Indy,
+        Pengo,
+
         Qbert,
         Kangaroo,
+        Bear,
         Hero,
         Hero2,
-        Moon,
-        Indy,
-        Bear,
+
         Dig,
         Plane,
+        Moon,
         FBI,
         Scientist,
     }
 
-    public static EnemyTypes[] FastEnemyTypes = {EnemyTypes.Yar, EnemyTypes.Pac, EnemyTypes.MsPac, EnemyTypes.Bear};
-    public static EnemyTypes[] StrongEnemyTypes = {EnemyTypes.Qbert, EnemyTypes.Kangaroo, EnemyTypes.Hero, EnemyTypes.Hero2, EnemyTypes.Indy};
-    public static EnemyTypes[] SurroundEnemyTypes = {EnemyTypes.Frogger, EnemyTypes.Joust, EnemyTypes.Moon, EnemyTypes.Joust2};
+    public static EnemyTypes[] FastEnemyTypes = {EnemyTypes.Yar, EnemyTypes.Pac, EnemyTypes.MsPac, EnemyTypes.Bear, EnemyTypes.Joust, EnemyTypes.Joust2, EnemyTypes.Yar2};
+    public static EnemyTypes[] StrongEnemyTypes = {EnemyTypes.Qbert, EnemyTypes.Kangaroo, EnemyTypes.Bear, EnemyTypes.Hero, EnemyTypes.Hero2};
+    public static EnemyTypes[] SurroundEnemyTypes = {EnemyTypes.Frogger, EnemyTypes.Indy, EnemyTypes.Pengo};
 
     public enum UpgradeTypes {
         ForceField,

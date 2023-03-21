@@ -118,18 +118,44 @@ public class Enemy : MonoBehaviour
             life = 4f;
             hitStrength = 4f;
         }
-        else if (type == Globals.EnemyTypes.Bear)
+        else if (type == Globals.EnemyTypes.Joust)
         {
             moveSpeed = Random.Range(1.8f, 2.1f);
             positionTimerMax = .4f;
             enemyAnimator.enabled = true;
-            enemyAnimator.Play("bear");
+            enemyAnimator.Play("joust");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
-            enemyCollider.size = new Vector2(0.12f, 0.12f);
+            enemyCollider.size = new Vector2(0.15f, 0.15f);
+            flipWithMovement = true;
+            life = 5f;
+            hitStrength = 5f;
+        }
+        else if (type == Globals.EnemyTypes.Joust2)
+        {
+            moveSpeed = Random.Range(1.9f, 2.2f);
+            positionTimerMax = .3f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("joust2");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = true;
             life = 6f;
             hitStrength = 6f;
         }
+
+        if (type == Globals.EnemyTypes.Yar2)
+        {
+            moveSpeed = Random.Range(2.3f, 2.5f);
+            positionTimerMax = .75f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("yar");
+            this.transform.localScale = new Vector3(6f, 6f, 1f);
+            enemyCollider.size = new Vector2(0.08f, 0.08f);
+            flipWithMovement = true;
+            life = 4f;
+            hitStrength = 4f;
+        }
+
 
         // SURROUND
         else if (type == Globals.EnemyTypes.Frogger)
@@ -144,42 +170,31 @@ public class Enemy : MonoBehaviour
             life = 3f;
             hitStrength = 3f;
         }
-        else if (type == Globals.EnemyTypes.Joust)
+        else if (type == Globals.EnemyTypes.Indy)
         {
-            moveSpeed = Random.Range(1.0f, 1.3f);
-            positionTimerMax = .9f;
+            moveSpeed = Random.Range(1.6f, 1.8f);
+            positionTimerMax = .4f;
             enemyAnimator.enabled = true;
-            enemyAnimator.Play("joust");
-            this.transform.localScale = new Vector3(5f, 5f, 1f);
-            enemyCollider.size = new Vector2(0.15f, 0.15f);
+            enemyAnimator.Play("indy");
+            this.transform.localScale = new Vector3(8f, 8f, 1f);
+            enemyCollider.size = new Vector2(0.05f, 0.1f);
             flipWithMovement = true;
-            life = 5f;
-            hitStrength = 4f;
+            life = 6f;
+            hitStrength = 6f;
         }
-        else if (type == Globals.EnemyTypes.Moon)
+        else if (type == Globals.EnemyTypes.Pengo)
         {
             moveSpeed = Random.Range(1.3f, 1.6f);
             positionTimerMax = .8f;
             enemyAnimator.enabled = true;
-            enemyAnimator.Play("moon");
-            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyAnimator.Play("pengo");
+            this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.3f, 0.07f);
             flipWithMovement = true;
-            life = 7f;
-            hitStrength = 5f;
+            life = 12f;
+            hitStrength = 12f;
         }
-        else if (type == Globals.EnemyTypes.Joust2)
-        {
-            moveSpeed = Random.Range(1.6f, 1.8f);
-            positionTimerMax = .7f;
-            enemyAnimator.enabled = true;
-            enemyAnimator.Play("joust2");
-            this.transform.localScale = new Vector3(5f, 5f, 1f);
-            enemyCollider.size = new Vector2(0.15f, 0.15f);
-            flipWithMovement = true;
-            life = 9f;
-            hitStrength = 6f;
-        }
+
 
         // STRONG
         else if (type == Globals.EnemyTypes.Qbert)
@@ -205,6 +220,18 @@ public class Enemy : MonoBehaviour
             life = 12f;
             hitStrength = 12f;
         }
+        else if (type == Globals.EnemyTypes.Bear)
+        {
+            moveSpeed = Random.Range(1.8f, 2.1f);
+            positionTimerMax = .4f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("bear");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.12f, 0.12f);
+            flipWithMovement = true;
+            life = 15f;
+            hitStrength = 15f;
+        }
         else if (type == Globals.EnemyTypes.Hero)
         {
             moveSpeed = Random.Range(1.2f, 1.4f);
@@ -215,7 +242,7 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.12f, 0.2f);
             flipWithMovement = true;
             life = 20f;
-            hitStrength = 12f;
+            hitStrength = 15f;
         }
         else if (type == Globals.EnemyTypes.Hero2)
         {
@@ -229,18 +256,7 @@ public class Enemy : MonoBehaviour
             life = 25f;
             hitStrength = 15f;
         }
-        else if (type == Globals.EnemyTypes.Indy)
-        {
-            moveSpeed = Random.Range(1.6f, 1.8f);
-            positionTimerMax = .4f;
-            enemyAnimator.enabled = true;
-            enemyAnimator.Play("indy");
-            this.transform.localScale = new Vector3(8f, 8f, 1f);
-            enemyCollider.size = new Vector2(0.05f, 0.1f);
-            flipWithMovement = true;
-            life = 30f;
-            hitStrength = 18f;
-        }
+
 
         // SPECIAL
         else if (type == Globals.EnemyTypes.Dig)
@@ -264,6 +280,23 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.1f, 0.1f);
             life = 4f;
             hitStrength = 4f;
+            pauseBeforeAction = 2f;
+            this.GetComponent<GrowAndShrink>().StartEffect();
+            int collisionLayer = LayerMask.NameToLayer("EnemyPlane");
+            gameObject.layer = collisionLayer;
+            useLifeTimer = true;
+            lifeTimer = 15f;
+            allowImpactVelocity = false;
+        }
+        else if (type == Globals.EnemyTypes.Moon)
+        {
+            moveSpeed = Random.Range(1.3f, 1.6f);
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("moon");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.3f, 0.07f);
+            life = 7f;
+            hitStrength = 5f;
             pauseBeforeAction = 2f;
             this.GetComponent<GrowAndShrink>().StartEffect();
             int collisionLayer = LayerMask.NameToLayer("EnemyPlane");
