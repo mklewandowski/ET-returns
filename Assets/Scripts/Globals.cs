@@ -28,6 +28,7 @@ public class Globals
         Pitfall,
         Mario,
         Luigi,
+        Koolaid
     }
 
     public static string[] PlayerNames = {
@@ -46,10 +47,12 @@ public class Globals
         "Jungle E.T.",
         "Mario E.T.",
         "Luigi E.T.",
+        "Kool E.T.",
     };
 
     public static string[] PlayerUnlockTexts = {
         "",
+        "Complete 1 mission",
         "Complete 1 mission",
         "Complete 1 mission",
         "Complete 1 mission",
@@ -82,10 +85,11 @@ public class Globals
         "-jungle",
         "-mario",
         "-luigi",
+        "-kool",
     };
 
     public static PlayerTypes currentPlayerType = PlayerTypes.Cinema;
-    public static int MaxPlayerTypes = 10;
+    public static int MaxPlayerTypes = 16;
     public static int[] PlayerTypeUnlockStates = new int[MaxPlayerTypes];
 
     public enum EnemyTypes {
