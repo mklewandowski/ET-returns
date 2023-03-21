@@ -306,7 +306,7 @@ public class Globals
     public static float currentDefense = 1f;
     public static float currentShootTimerMax = 2f;
     public static int currrentNumEnemies = 0;
-    public static int maxEnemies = 250;
+    public static int maxEnemies = 200;
 
     public static int candyCount;
     public static int killCount;
