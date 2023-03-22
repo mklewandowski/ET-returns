@@ -22,7 +22,13 @@ public class Globals
         Super,
         RadStyle,
         Smurf,
-        Hulk
+        Hulk,
+        Pac,
+        Sailor,
+        Pitfall,
+        Mario,
+        Luigi,
+        Koolaid
     }
 
     public static string[] PlayerNames = {
@@ -35,7 +41,13 @@ public class Globals
         "Super E.T.",
         "Rad Style E.T.",
         "Smurf E.T.",
-        "Incredible E.T."
+        "Incredible E.T.",
+        "Pac E.T.",
+        "Sailor E.T.",
+        "Jungle E.T.",
+        "Mario E.T.",
+        "Luigi E.T.",
+        "Kool E.T.",
     };
 
     public static string[] PlayerUnlockTexts = {
@@ -48,7 +60,13 @@ public class Globals
         "Complete 1 mission",
         "Complete 1 mission",
         "Complete 1 mission",
-        "Complete 1 mission"
+        "Complete 1 mission",
+        "Complete 1 mission",
+        "Complete 1 mission",
+        "Complete 1 mission",
+        "Complete 1 mission",
+        "Complete 1 mission",
+        "Complete 1 mission",
     };
 
     public static string[] AnimationSuffixes = {
@@ -61,11 +79,17 @@ public class Globals
         "-super",
         "-rad",
         "-smurf",
-        "-hulk"
+        "-hulk",
+        "-pac",
+        "-sailor",
+        "-jungle",
+        "-mario",
+        "-luigi",
+        "-kool",
     };
 
     public static PlayerTypes currentPlayerType = PlayerTypes.Cinema;
-    public static int MaxPlayerTypes = 10;
+    public static int MaxPlayerTypes = 16;
     public static int[] PlayerTypeUnlockStates = new int[MaxPlayerTypes];
 
     public enum EnemyTypes {
@@ -74,19 +98,28 @@ public class Globals
         MsPac,
         Joust,
         Joust2,
+        Yar2,
+
         Frogger,
+        Indy,
+        Pengo,
+
         Qbert,
         Kangaroo,
+        Bear,
         Hero,
         Hero2,
+
         Dig,
         Plane,
+        Moon,
         FBI,
         Scientist,
     }
 
-    public static EnemyTypes[] FastEnemyTypes = {EnemyTypes.Yar, EnemyTypes.Pac, EnemyTypes.MsPac, EnemyTypes.Joust, EnemyTypes.Joust2};
-    public static EnemyTypes[] StrongEnemyTypes = {EnemyTypes.Frogger, EnemyTypes.Qbert, EnemyTypes.Kangaroo, EnemyTypes.Hero, EnemyTypes.Hero2};
+    public static EnemyTypes[] FastEnemyTypes = {EnemyTypes.Yar, EnemyTypes.Pac, EnemyTypes.MsPac, EnemyTypes.Bear, EnemyTypes.Joust, EnemyTypes.Joust2, EnemyTypes.Yar2};
+    public static EnemyTypes[] StrongEnemyTypes = {EnemyTypes.Qbert, EnemyTypes.Kangaroo, EnemyTypes.Bear, EnemyTypes.Hero, EnemyTypes.Hero2};
+    public static EnemyTypes[] SurroundEnemyTypes = {EnemyTypes.Frogger, EnemyTypes.Indy, EnemyTypes.Pengo};
 
     public enum UpgradeTypes {
         ForceField,
@@ -273,7 +306,7 @@ public class Globals
     public static float currentDefense = 1f;
     public static float currentShootTimerMax = 2f;
     public static int currrentNumEnemies = 0;
-    public static int maxEnemies = 250;
+    public static int maxEnemies = 200;
 
     public static int candyCount;
     public static int killCount;
