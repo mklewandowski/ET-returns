@@ -113,6 +113,7 @@ public class GameSceneManager : MonoBehaviour
     int currentNumScientist = 0;
     int maxFBI = 3;
     int maxScientist = 1;
+    int numSpawns = 0;
 
     float spawnTimer = 5f;
     float spawnTimerMax = 7f;
@@ -287,7 +288,7 @@ public class GameSceneManager : MonoBehaviour
         if (spawnTimer <= 0)
         {
             spawnTimer = spawnTimerMax;
-            SpawnEnemies(10 + difficultyLevel * 2, false);
+            SpawnEnemies(10 + (int)((float)difficultyLevel * 1.5f), (numSpawns == 0 || numSpawns == 1 || numSpawns == 2));
         }
 
         if (tankReturnTimer > 0)
@@ -317,8 +318,9 @@ public class GameSceneManager : MonoBehaviour
 
     void SpawnEnemies(int num, bool FBIrequired)
     {
+        numSpawns++;
         int numFBIthisSpawn = 0;
-        int maxSpecialPerSpawn = difficultyLevel >= 8 ? Random.Range(0, 2) : 2;
+        int maxSpecialPerSpawn = difficultyLevel >= 6 ? Random.Range(0, 2) : 2;
         int specialThisSpawn = 0;
         float extraLife = 0;
         for (int x = 0; x < num; x++)
