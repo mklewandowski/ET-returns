@@ -169,6 +169,7 @@ MonoBehaviour:
   - {fileID: 2130783941, guid: 083670e281439d949bddd95079139b8e, type: 3}
   - {fileID: -462392754, guid: f2b2929274aeb374b9293ef04b1af26c, type: 3}
   - {fileID: -83080630, guid: 8364174679a7de947bfdc145a200ab89, type: 3}
+  FlashMaterial: {fileID: 2100000, guid: 5a5709c4c6be05344ad5fcd750b857fb, type: 2}
   DebrisPrefab: {fileID: 4395591764634758786, guid: 6884334da442b4c4296f325b9b896c61, type: 3}
   ToxicDebrisPrefab: {fileID: 5148339097020038030, guid: 0ca1291124edc3f4d8db6c3370877a62, type: 3}
   CandyPrefab: {fileID: 2789390833255965416, guid: 49350f0dc1443174ba4820f99ba21979, type: 3}

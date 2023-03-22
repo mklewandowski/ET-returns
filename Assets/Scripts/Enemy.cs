@@ -33,8 +33,11 @@ public class Enemy : MonoBehaviour
     float positionTimer = .1f;
     float positionTimerMax = .5f;
 
+    [SerializeField]
+    Material FlashMaterial;
+    Material enemyMaterial;
     float flashTimer = 0f;
-    float flashTimerMax = .15f;
+    float flashTimerMax = .10f;
 
     float lifeTimer = 0f;
     bool useLifeTimer = false;
@@ -71,6 +74,7 @@ public class Enemy : MonoBehaviour
         enemyCollider = GetComponent<BoxCollider2D>();
         enemyRigidbody = GetComponent<Rigidbody2D>();
         enemyRenderer = GetComponent<SpriteRenderer>();
+        enemyMaterial = enemyRenderer.material;
     }
 
     void Start()
@@ -411,7 +415,7 @@ public class Enemy : MonoBehaviour
             flashTimer -= Time.deltaTime;
             if (flashTimer < 0)
             {
-                enemyRenderer.color = Color.white;
+                enemyRenderer.material = enemyMaterial;
             }
         }
     }
@@ -512,7 +516,7 @@ public class Enemy : MonoBehaviour
 
     void DamageEnemy(Vector2 impactVelocity)
     {
-        enemyRenderer.color = new Color(87f/255f, 87f/255f, 87f/255f);
+        enemyRenderer.material = FlashMaterial;
         flashTimer = flashTimerMax;
         if (allowImpactVelocity)
         {
