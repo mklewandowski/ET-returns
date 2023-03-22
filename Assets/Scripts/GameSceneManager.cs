@@ -77,6 +77,32 @@ public class GameSceneManager : MonoBehaviour
     }
     EnemySpecialAttackPatterns currentEnemySpecialAttack = EnemySpecialAttackPatterns.None;
 
+    // D: 00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12
+    // T:  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12
+
+    //1R: 80, 60, 40, 20, 10, 10, 10, 10, 10, 10, 10, 10, 10
+    //2R: 20, 40, 60, 80, 60, 40, 20, 10, 10, 10, 10, 10, 10
+    //3R   0,  0,  0, 10, 20, 40, 60, 80, 60, 40, 20, 20, 20
+    //4R   0,  0,  0,  0,  0,  0, 10, 20, 40, 60, 80, 80, 80,
+
+    int[] enemyFastOneSpawnRates = {100, 80, 60, 40, 20, 10, 10, 10, 10, 10, 10, 10, 10, 0};
+    int[] enemyFastTwoSpawnRates =   {0, 20, 40, 60, 80, 60, 40, 20, 10, 10, 10, 10, 10, 10, 10, 10, 0};
+    int[] enemyFastThreeSpawnRates = {0,  0,  0,  0, 10, 20, 40, 60, 80, 60, 40, 20, 20, 20, 20, 20, 20};
+    int[] enemyFastFourSpawnRates =  {0,  0,  0,  0,  0,  0,  0, 10, 20, 40, 60, 80, 60, 40, 30};
+    int[] enemyFastFiveSpawnRates =  {0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 20, 40, 60, 80, 60, 40};
+    int[] enemyFastSixSpawnRates =   {0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 20, 40, 60, 80, 60};
+    int[] enemyFastSevenSpawnRates = {0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 20, 40, 60, 80};
+
+    int[] enemyStrongOneSpawnRates = {100, 100, 80, 60, 40, 20, 20, 10, 10, 10, 10, 10, 10, 10, 10, 0};
+    int[] enemyStrongTwoSpawnRates =   {0,  0,  20, 40, 60, 80, 80, 60, 40, 20, 10, 10, 10, 10, 10, 10, 10, 10, 0};
+    int[] enemyStrongThreeSpawnRates = {0,  0,  0,  0,  0,  10, 20, 40, 60, 80, 80, 60, 40, 20, 10};
+    int[] enemyStrongFourSpawnRates =  {0,  0,  0,  0,  0,  0,  0,  0,  10, 20, 40, 60, 80, 80, 60, 40};
+    int[] enemyStrongFiveSpawnRates =  {0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  10, 20, 40, 60, 80};
+
+    int[] enemySurroundOneSpawnRates = {100, 100, 100, 80, 60, 40, 20, 20, 10};
+    int[] enemySurroundTwoSpawnRates =   {0,   0,   0, 20, 40, 60, 80, 60, 60, 40, 30};
+    int[] enemySurroundThreeSpawnRates = {0,   0,   0,  0,  0,  0,  0, 0,  10, 20, 40, 60, 80};
+
     int[] fastEnemySpawnRates = { 100, 100, 100, 100, 100, 100, 100 };
     int[] strongEnemySpawnRates = { 100, 100, 100, 100, 100 };
     int[] surroundEnemySpawnRates = { 100, 100, 100 };
@@ -205,32 +231,6 @@ public class GameSceneManager : MonoBehaviour
             difficultyLevel++;
             spawnTimerMax = Mathf.Max(5f, spawnTimerMax - .5f);
 
-            // D: 00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12
-            // T:  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12
-
-            //1R: 80, 60, 40, 20, 10, 10, 10, 10, 10, 10, 10, 10, 10
-            //2R: 20, 40, 60, 80, 60, 40, 20, 10, 10, 10, 10, 10, 10
-            //3R   0,  0,  0, 10, 20, 40, 60, 80, 60, 40, 20, 20, 20
-            //4R   0,  0,  0,  0,  0,  0, 10, 20, 40, 60, 80, 80, 80,
-
-            int[] enemyFastOneSpawnRates = {100, 80, 60, 40, 20, 10, 10, 10, 10, 10, 10, 10, 10, 0};
-            int[] enemyFastTwoSpawnRates =   {0, 20, 40, 60, 80, 60, 40, 20, 10, 10, 10, 10, 10, 10, 10, 10, 0};
-            int[] enemyFastThreeSpawnRates = {0,  0,  0,  0, 10, 20, 40, 60, 80, 60, 40, 20, 20, 20, 20, 20, 20};
-            int[] enemyFastFourSpawnRates =  {0,  0,  0,  0,  0,  0,  0, 10, 20, 40, 60, 80, 60, 40};
-            int[] enemyFastFiveSpawnRates =  {0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 20, 40, 60, 80, 60, 40};
-            int[] enemyFastSixSpawnRates =   {0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 20, 40, 60, 80, 60};
-            int[] enemyFastSevenSpawnRates = {0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 20, 40, 60, 80};
-
-            int[] enemyStrongOneSpawnRates = {100, 100, 80, 60, 40, 20, 20, 10, 10, 10, 10, 10, 10, 10, 10, 0};
-            int[] enemyStrongTwoSpawnRates =   {0,  0,  20, 40, 60, 80, 80, 60, 40, 20, 10, 10, 10, 10, 10, 10, 10, 10, 0};
-            int[] enemyStrongThreeSpawnRates = {0,  0,  0,  0,  0,  10, 20, 40, 60, 80, 80, 60, 40, 20, 10};
-            int[] enemyStrongFourSpawnRates =  {0,  0,  0,  0,  0,  0,  0,  0,  10, 20, 40, 60, 80, 80, 60, 40};
-            int[] enemyStrongFiveSpawnRates =  {0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  10, 20, 40, 60, 80};
-
-            int[] enemySurroundOneSpawnRates = {100, 100, 100, 80, 60, 40, 20, 20, 10};
-            int[] enemySurroundTwoSpawnRates =   {0,   0,   0, 20, 40, 60, 80, 60, 60, 40, 30};
-            int[] enemySurroundThreeSpawnRates = {0,   0,   0,  0,  0,  0,  0, 0,  10, 20, 40, 60, 80};
-
             fastEnemySpawnRates[0] = difficultyLevel < enemyFastOneSpawnRates.Length ? enemyFastOneSpawnRates[difficultyLevel] : enemyFastOneSpawnRates[enemyFastOneSpawnRates.Length - 1];
             fastEnemySpawnRates[1] = fastEnemySpawnRates[0] + (difficultyLevel < enemyFastTwoSpawnRates.Length ? enemyFastTwoSpawnRates[difficultyLevel] : enemyFastTwoSpawnRates[enemyFastTwoSpawnRates.Length - 1]);
             fastEnemySpawnRates[2] = fastEnemySpawnRates[1] + (difficultyLevel < enemyFastThreeSpawnRates.Length ? enemyFastThreeSpawnRates[difficultyLevel] : enemyFastThreeSpawnRates[enemyFastThreeSpawnRates.Length - 1]);
@@ -248,7 +248,6 @@ public class GameSceneManager : MonoBehaviour
             surroundEnemySpawnRates[0] = difficultyLevel < enemySurroundOneSpawnRates.Length ? enemySurroundOneSpawnRates[difficultyLevel] : enemySurroundOneSpawnRates[enemySurroundOneSpawnRates.Length - 1];
             surroundEnemySpawnRates[1] = surroundEnemySpawnRates[0] + (difficultyLevel < enemySurroundTwoSpawnRates.Length ? enemySurroundTwoSpawnRates[difficultyLevel] : enemySurroundTwoSpawnRates[enemySurroundTwoSpawnRates.Length - 1]);
             surroundEnemySpawnRates[2] = surroundEnemySpawnRates[1] + (difficultyLevel < enemySurroundThreeSpawnRates.Length ? enemySurroundThreeSpawnRates[difficultyLevel] : enemySurroundThreeSpawnRates[enemySurroundThreeSpawnRates.Length - 1]);
-
 
             currentSurroundEnemyMaxSpawn = surroundEnemySpawnRates[surroundEnemySpawnRates.Length - 1];
             currentStrongEnemyMaxSpawn = strongEnemySpawnRates[strongEnemySpawnRates.Length - 1];
@@ -272,11 +271,11 @@ public class GameSceneManager : MonoBehaviour
                 }
                 else if (specialNum == EnemySpecialAttackPatterns.Digs)
                 {
-                    digSpawnsRemaining = Random.Range(2, 5);
+                    digSpawnsRemaining = Random.Range(Mathf.Min(difficultyLevel, 2), Mathf.Min(difficultyLevel, 5));
                 }
                 else if (specialNum == EnemySpecialAttackPatterns.Planes)
                 {
-                    planeSpawnsRemaining = Random.Range(2, 5);
+                    planeSpawnsRemaining = Random.Range(Mathf.Min(difficultyLevel, 2), Mathf.Min(difficultyLevel, 5));
                 }
             }
         }

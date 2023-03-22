@@ -22,9 +22,9 @@ public class Enemy : MonoBehaviour
     private BoxCollider2D enemyCollider;
     private Rigidbody2D enemyRigidbody;
     float moveSpeed = .5f;
-    Vector2 movementVector = new Vector2(0, 0);
+    Vector3 movementVector = new Vector3(0, 0, 0);
     bool allowImpactVelocity = true;
-    Vector2 impactVector = new Vector2(0, 0);
+    Vector3 impactVector = new Vector3(0, 0, 0);
     float impactTimer = 0f;
     float impactTimerMax = .1f;
     bool flipWithMovement = false;
@@ -53,6 +53,14 @@ public class Enemy : MonoBehaviour
 
     float pauseBeforeAction = 2f;
 
+    enum AttackPattern {
+        Direct,
+        Angle,
+        Alternate
+    }
+    AttackPattern attackPattern = AttackPattern.Direct;
+    bool target = false;
+
     void Awake()
     {
         GameSceneManagerScript = GameObject.Find("SceneManager").GetComponent<GameSceneManager>();
@@ -80,6 +88,7 @@ public class Enemy : MonoBehaviour
         pauseBeforeAction = 0f;
         useLifeTimer = false;
         allowImpactVelocity = true;
+        attackPattern = AttackPattern.Direct;
 
         // FAST
         if (type == Globals.EnemyTypes.Yar)
@@ -156,12 +165,11 @@ public class Enemy : MonoBehaviour
             hitStrength = 4f;
         }
 
-
         // SURROUND
         else if (type == Globals.EnemyTypes.Frogger)
         {
             moveSpeed = Random.Range(.6f, .8f);
-            positionTimerMax = 1f;
+            positionTimerMax = 2f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("frog");
             this.transform.localScale = new Vector3(6f, 6f, 1f);
@@ -169,80 +177,86 @@ public class Enemy : MonoBehaviour
             flipWithMovement = true;
             life = 3f;
             hitStrength = 3f;
+            attackPattern = AttackPattern.Angle;
         }
         else if (type == Globals.EnemyTypes.Indy)
         {
             moveSpeed = Random.Range(1.6f, 1.8f);
-            positionTimerMax = .4f;
+            positionTimerMax = 2f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("indy");
             this.transform.localScale = new Vector3(8f, 8f, 1f);
             enemyCollider.size = new Vector2(0.05f, 0.1f);
             flipWithMovement = true;
             life = 6f;
-            hitStrength = 6f;
+            hitStrength = 4f;
+            attackPattern = AttackPattern.Angle;
         }
         else if (type == Globals.EnemyTypes.Pengo)
         {
             moveSpeed = Random.Range(1.3f, 1.6f);
-            positionTimerMax = .8f;
+            positionTimerMax = 2f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("pengo");
             this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.3f, 0.07f);
             flipWithMovement = true;
             life = 12f;
-            hitStrength = 12f;
+            hitStrength = 6f;
+            attackPattern = AttackPattern.Angle;
         }
-
 
         // STRONG
         else if (type == Globals.EnemyTypes.Qbert)
         {
             moveSpeed = Random.Range(.8f, 1f);
-            positionTimerMax = .8f;
+            positionTimerMax = 1f;
+            attackPattern = AttackPattern.Alternate;
             enemyAnimator.enabled = false;
             this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = true;
-            life = 8f;
-            hitStrength = 8f;
+            life = 6f;
+            hitStrength = 6f;
         }
         else if (type == Globals.EnemyTypes.Kangaroo)
         {
             moveSpeed = Random.Range(1f, 1.2f);
-            positionTimerMax = .7f;
+            positionTimerMax = .9f;
+            attackPattern = AttackPattern.Alternate;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("kangaroo");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.12f, 0.2f);
             flipWithMovement = true;
-            life = 12f;
-            hitStrength = 12f;
+            life = 10f;
+            hitStrength = 8f;
         }
         else if (type == Globals.EnemyTypes.Bear)
         {
             moveSpeed = Random.Range(1.8f, 2.1f);
-            positionTimerMax = .4f;
+            positionTimerMax = .7f;
+            attackPattern = AttackPattern.Alternate;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("bear");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.12f, 0.12f);
             flipWithMovement = true;
-            life = 15f;
-            hitStrength = 15f;
+            life = 12f;
+            hitStrength = 10f;
         }
         else if (type == Globals.EnemyTypes.Hero)
         {
             moveSpeed = Random.Range(1.2f, 1.4f);
             positionTimerMax = .6f;
+            attackPattern = AttackPattern.Alternate;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("hero");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.12f, 0.2f);
             flipWithMovement = true;
-            life = 20f;
-            hitStrength = 15f;
+            life = 15f;
+            hitStrength = 12f;
         }
         else if (type == Globals.EnemyTypes.Hero2)
         {
@@ -253,10 +267,9 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.12f, 0.2f);
             flipWithMovement = true;
-            life = 25f;
-            hitStrength = 15f;
+            life = 20f;
+            hitStrength = 14f;
         }
-
 
         // SPECIAL
         else if (type == Globals.EnemyTypes.Dig)
@@ -360,14 +373,25 @@ public class Enemy : MonoBehaviour
             {
                 if (type == Globals.EnemyTypes.Plane)
                 {
-                    movementVector = new Vector2(5f, 0);
+                    movementVector = new Vector3(5f, 0, 0);
                 }
                 else
                 {
                     Vector3 desiredPosition = (type == Globals.EnemyTypes.FBI || type == Globals.EnemyTypes.Scientist)
                         ? new Vector3(playerTransform.position.x + 6f * (Random.Range(0, 2) == 0 ? -1f : 1f), playerTransform.position.y + 4f * (Random.Range(0, 2) == 0 ? -1f : 1f), 0)
                         : playerTransform.position;
+
                     movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
+                    if (attackPattern == AttackPattern.Angle)
+                    {
+                        movementVector = Quaternion.Euler(0, 0, Random.Range (50f, 50f)) * movementVector;
+                    }
+                    else if (attackPattern == AttackPattern.Alternate)
+                    {
+                        target = !target;
+                        if (!target)
+                            movementVector = Quaternion.Euler(0, 0, Random.Range (50f, 50f)) * movementVector;
+                    }
                 }
                 positionTimer = Random.Range(positionTimerMax - .25f, positionTimerMax + .25f);
             }
@@ -492,7 +516,7 @@ public class Enemy : MonoBehaviour
         flashTimer = flashTimerMax;
         if (allowImpactVelocity)
         {
-            impactVector = new Vector2(impactVelocity.x * .5f, impactVelocity.y * .5f);
+            impactVector = new Vector3(impactVelocity.x * .5f, impactVelocity.y * .5f, 0);
             impactTimer = impactTimerMax;
         }
     }
