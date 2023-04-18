@@ -90,4 +90,8 @@ public class MoveNormal : MonoBehaviour
     {
         currentMoveState = MoveState.MoveRight;
     }
+    public void StopMove()
+    {
+        currentMoveState = MoveState.None;
+    }
 }
