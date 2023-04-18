@@ -15,6 +15,13 @@ public class TitleSceneManager : MonoBehaviour
     FadeManager fadeManager;
     [SerializeField]
     GameObject animationPanel;
+    [SerializeField]
+    GameObject[] tutorialPanels;
+    int currTutorial = 0;
+    float tutorialGapTimer = 0f;
+    float tutorialGapTimerMax = 2f;
+    float showTutorialTimer = 0f;
+    float showTutorialTimerMax = 4f;
 
     bool fadeIn = false;
     bool fadeOut = false;
@@ -61,12 +68,45 @@ public class TitleSceneManager : MonoBehaviour
             fadeOut = false;
             SceneManager.LoadScene(sceneToLoad);
         }
-        if (animationPanel.transform.localPosition.x >= 2000f)
+        if (animationPanel.transform.localPosition.x >= 1600f)
         {
             animationPanel.transform.localPosition = new Vector2(-1500f, animationPanel.transform.localPosition.y);
-            animationPanel.GetComponent<MoveNormal>().MoveRight();
+            animationPanel.GetComponent<MoveNormal>().StopMove();
+            currTutorial = 0;
+            tutorialPanels[currTutorial].GetComponent<MoveNormal>().MoveUp();
+            tutorialGapTimer = tutorialGapTimerMax;
+        }
+        if (tutorialGapTimer > 0)
+        {
+            tutorialGapTimer -= Time.deltaTime;
+            if (tutorialGapTimer <= 0)
+            {
+                currTutorial++;
+                if (currTutorial >= tutorialPanels.Length)
+                {
+                    showTutorialTimer = showTutorialTimerMax;
+                }
+                else
+                {
+                    tutorialPanels[currTutorial].GetComponent<MoveNormal>().MoveUp();
+                    tutorialGapTimer = tutorialGapTimerMax;
+                }
+            }
+        }
+        if (showTutorialTimer > 0)
+        {
+            showTutorialTimer -= Time.deltaTime;
+            if (showTutorialTimer <= 0)
+            {
+                animationPanel.GetComponent<MoveNormal>().MoveRight();
+                foreach (GameObject tutorial in tutorialPanels)
+                {
+                    tutorial.GetComponent<MoveNormal>().MoveDown();
+                }
+            }
         }
         HandleInput();
+
     }
 
 
