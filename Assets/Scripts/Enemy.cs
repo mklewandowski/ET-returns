@@ -84,7 +84,7 @@ public class Enemy : MonoBehaviour
             audioManager = am.GetComponent<AudioManager>();
     }
 
-    public void ConfigureEnemy(Globals.EnemyTypes newType, float extraLife)
+    public void ConfigureEnemy(Globals.EnemyTypes newType, float extraLife, bool flip)
     {
         type = newType;
         enemyRenderer.sprite = EnemySprites[(int)type];
@@ -304,13 +304,14 @@ public class Enemy : MonoBehaviour
             useLifeTimer = true;
             lifeTimer = 15f;
             allowImpactVelocity = false;
+            movementVector = new Vector3(5f, 0, 0);
         }
         else if (type == Globals.EnemyTypes.Moon)
         {
             moveSpeed = Random.Range(1.3f, 1.6f);
             enemyAnimator.enabled = true;
             enemyAnimator.Play("moon");
-            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            this.transform.localScale = new Vector3(.1f, .1f, 1f);
             enemyCollider.size = new Vector2(0.3f, 0.07f);
             life = 7f;
             hitStrength = 5f;
@@ -321,6 +322,11 @@ public class Enemy : MonoBehaviour
             useLifeTimer = true;
             lifeTimer = 15f;
             allowImpactVelocity = false;
+            movementVector = new Vector3(flip ? -5.5f : 5.5f, 0, 0);
+            if (flip)
+            {
+                this.transform.localEulerAngles = new Vector3(0, 180f, 0);
+            }
         }
         else if (type == Globals.EnemyTypes.FBI)
         {
@@ -375,11 +381,7 @@ public class Enemy : MonoBehaviour
             positionTimer -= Time.deltaTime;
             if (positionTimer < 0)
             {
-                if (type == Globals.EnemyTypes.Plane)
-                {
-                    movementVector = new Vector3(5f, 0, 0);
-                }
-                else
+                if (type != Globals.EnemyTypes.Moon && type != Globals.EnemyTypes.Plane)
                 {
                     Vector3 desiredPosition = (type == Globals.EnemyTypes.FBI || type == Globals.EnemyTypes.Scientist)
                         ? new Vector3(playerTransform.position.x + 6f * (Random.Range(0, 2) == 0 ? -1f : 1f), playerTransform.position.y + 4f * (Random.Range(0, 2) == 0 ? -1f : 1f), 0)

@@ -67,12 +67,15 @@ public class GameSceneManager : MonoBehaviour
     int difficultyLevel = 0;
     float difficultyTimer = 60f;
     float difficultyTimerMax = 60f;
+    float specialAttackTimer = 90f;
+    float specialAttackTimerMax = 120f;
 
     enum EnemySpecialAttackPatterns {
         VerticalMove,
         HorizontalMove,
         Digs,
         Planes,
+        Rovers,
         None
     }
     EnemySpecialAttackPatterns currentEnemySpecialAttack = EnemySpecialAttackPatterns.None;
@@ -119,6 +122,7 @@ public class GameSceneManager : MonoBehaviour
     float spawnTimerMax = 7f;
     int digSpawnsRemaining = 0;
     int planeSpawnsRemaining = 0;
+    int roverSpawnsRemaining = 0;
     float tankReturnTimer = 0;
 
     float deadTimer = 0f;
@@ -165,7 +169,8 @@ public class GameSceneManager : MonoBehaviour
         HandleInput();
         HandleFadeOut();
         HandleDifficultyTimer();
-        HandleEnemyTimer();
+        HandleSpecialAttackTimer();
+        HandleEnemySpawnTimer();
         HandleLevelUpTimer();
     }
 
@@ -253,36 +258,46 @@ public class GameSceneManager : MonoBehaviour
             currentSurroundEnemyMaxSpawn = surroundEnemySpawnRates[surroundEnemySpawnRates.Length - 1];
             currentStrongEnemyMaxSpawn = strongEnemySpawnRates[strongEnemySpawnRates.Length - 1];
             currentFastEnemyMaxSpawn = fastEnemySpawnRates[fastEnemySpawnRates.Length - 1];
+        }
+    }
 
-            // check if it is time for an enemy special attack
-            if ((difficultyLevel <= 8 && difficultyLevel % 2 == 0) || difficultyLevel > 8)
+    void HandleSpecialAttackTimer()
+    {
+        specialAttackTimer -= Time.deltaTime;
+        if (specialAttackTimer <= 0)
+        {
+            specialAttackTimer = specialAttackTimerMax;
+ 
+            EnemySpecialAttackPatterns specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.None);
+            specialNum = EnemySpecialAttackPatterns.Rovers;
+            if (specialNum == EnemySpecialAttackPatterns.VerticalMove)
             {
-                EnemySpecialAttackPatterns specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.None);
-                if (specialNum == EnemySpecialAttackPatterns.VerticalMove)
-                {
-                    bottomTanksTransform.gameObject.GetComponent<MoveNormal>().MoveUp();
-                    topTanksTransform.gameObject.GetComponent<MoveNormal>().MoveDown();
-                    tankReturnTimer = Random.Range(20f, 40f);
-                }
-                else if (specialNum == EnemySpecialAttackPatterns.HorizontalMove)
-                {
-                    leftTanksTransform.gameObject.GetComponent<MoveNormal>().MoveRight();
-                    rightTanksTransform.gameObject.GetComponent<MoveNormal>().MoveLeft();
-                    tankReturnTimer = Random.Range(20f, 40f);
-                }
-                else if (specialNum == EnemySpecialAttackPatterns.Digs)
-                {
-                    digSpawnsRemaining = Random.Range(Mathf.Min(difficultyLevel, 2), Mathf.Min(difficultyLevel, 5));
-                }
-                else if (specialNum == EnemySpecialAttackPatterns.Planes)
-                {
-                    planeSpawnsRemaining = Random.Range(Mathf.Min(difficultyLevel, 2), Mathf.Min(difficultyLevel, 5));
-                }
+                bottomTanksTransform.gameObject.GetComponent<MoveNormal>().MoveUp();
+                topTanksTransform.gameObject.GetComponent<MoveNormal>().MoveDown();
+                tankReturnTimer = Random.Range(20f, 40f);
+            }
+            else if (specialNum == EnemySpecialAttackPatterns.HorizontalMove)
+            {
+                leftTanksTransform.gameObject.GetComponent<MoveNormal>().MoveRight();
+                rightTanksTransform.gameObject.GetComponent<MoveNormal>().MoveLeft();
+                tankReturnTimer = Random.Range(20f, 40f);
+            }
+            else if (specialNum == EnemySpecialAttackPatterns.Digs)
+            {
+                digSpawnsRemaining = Random.Range(Mathf.Min(difficultyLevel, 2), Mathf.Min(difficultyLevel, 5));
+            }
+            else if (specialNum == EnemySpecialAttackPatterns.Planes)
+            {
+                planeSpawnsRemaining = Random.Range(Mathf.Min(difficultyLevel, 2), Mathf.Min(difficultyLevel, 5));
+            }
+            else if (specialNum == EnemySpecialAttackPatterns.Rovers)
+            {
+                roverSpawnsRemaining = Random.Range(Mathf.Min(difficultyLevel, 2), Mathf.Min(difficultyLevel, 5));
             }
         }
     }
 
-    void HandleEnemyTimer()
+    void HandleEnemySpawnTimer()
     {
         spawnTimer -= Time.deltaTime;
         if (spawnTimer <= 0)
@@ -290,7 +305,7 @@ public class GameSceneManager : MonoBehaviour
             spawnTimer = spawnTimerMax;
             SpawnEnemies(10 + (int)((float)difficultyLevel * 1.5f), (numSpawns == 0 || numSpawns == 1 || numSpawns == 2));
         }
-
+        // WTD WTD WTD move this
         if (tankReturnTimer > 0)
         {
             tankReturnTimer -= Time.deltaTime;
@@ -366,6 +381,11 @@ public class GameSceneManager : MonoBehaviour
             planeSpawnsRemaining--;
             SpawnPlanes();
         }
+        if (roverSpawnsRemaining > 0)
+        {
+            roverSpawnsRemaining--;
+            SpawnRovers();
+        }
     }
 
     void SpawnEnemy(Globals.EnemyTypes enemyType, float extraLife)
@@ -397,7 +417,7 @@ public class GameSceneManager : MonoBehaviour
         }
         Vector2 enemyPos = new Vector2(playerPos.x + xOffset, playerPos.y + yOffset);
         GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
-        enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyType, extraLife);
+        enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyType, extraLife, false);
         Globals.currrentNumEnemies++;
     }
 
@@ -417,7 +437,7 @@ public class GameSceneManager : MonoBehaviour
             if (enemyPos.x < maxX && enemyPos.x > minX && enemyPos.y < maxY && enemyPos.y > minY)
             {
                 GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
-                enemyGO.GetComponent<Enemy>().ConfigureEnemy(Globals.EnemyTypes.Dig, extraLife);
+                enemyGO.GetComponent<Enemy>().ConfigureEnemy(Globals.EnemyTypes.Dig, extraLife, false);
             }
         }
     }
@@ -436,7 +456,37 @@ public class GameSceneManager : MonoBehaviour
             {
                 Vector2 enemyPos = new Vector2(startX + x * -2.5f, startY + y * 2f);
                 GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
-                enemyGO.GetComponent<Enemy>().ConfigureEnemy(Globals.EnemyTypes.Plane, extraLife);
+                enemyGO.GetComponent<Enemy>().ConfigureEnemy(Globals.EnemyTypes.Plane, extraLife, false);
+            }
+        }
+    }
+
+    void SpawnRovers()
+    {
+        float extraLife = difficultyLevel * .5f;
+        int numRows = 5;
+        int numCols = 2;
+        Vector2 playerPos = Player.transform.localPosition;
+        float startX = playerPos.x - 6f;
+        float startY = playerPos.y - 4f;
+        for (int x = 0; x < numCols; x++)
+        {
+            for (int y = 0; y < numRows; y++)
+            {
+                Vector2 enemyPos = new Vector2(startX + x * -4.5f, startY + y * 2f);
+                GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
+                enemyGO.GetComponent<Enemy>().ConfigureEnemy(Globals.EnemyTypes.Moon, extraLife, false);
+            }
+        }
+        startX = playerPos.x + 6f;
+        startY = playerPos.y - 5f;
+        for (int x = 0; x < numCols; x++)
+        {
+            for (int y = 0; y < numRows; y++)
+            {
+                Vector2 enemyPos = new Vector2(startX + x * 4.5f, startY + y * 2f);
+                GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
+                enemyGO.GetComponent<Enemy>().ConfigureEnemy(Globals.EnemyTypes.Moon, extraLife, true);
             }
         }
     }
