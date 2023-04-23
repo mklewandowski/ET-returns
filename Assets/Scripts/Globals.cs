@@ -115,6 +115,13 @@ public class Globals
         Moon,
         FBI,
         Scientist,
+
+        PacBoss,
+        PopeyeBoss,
+        MarioBoss,
+        LuigiBoss,
+        HarryBoss,
+        KoolBoss,
     }
 
     public static EnemyTypes[] FastEnemyTypes = {EnemyTypes.Yar, EnemyTypes.Pac, EnemyTypes.MsPac, EnemyTypes.Bear, EnemyTypes.Joust, EnemyTypes.Joust2, EnemyTypes.Yar2};

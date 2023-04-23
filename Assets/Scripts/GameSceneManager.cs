@@ -125,6 +125,8 @@ public class GameSceneManager : MonoBehaviour
     int roverSpawnsRemaining = 0;
     float tankReturnTimer = 0;
 
+    Globals.EnemyTypes currentBossType = Globals.EnemyTypes.PacBoss;
+
     float deadTimer = 0f;
     float deadTimerMax = 4f;
     bool fadeIn = false;
@@ -157,6 +159,8 @@ public class GameSceneManager : MonoBehaviour
                 controllerAttached = true;
         }
         Globals.ResetGlobals();
+
+        currentBossType = (Globals.EnemyTypes)Random.Range((int)Globals.EnemyTypes.PacBoss, (int)Globals.EnemyTypes.KoolBoss + 1);
 
         SpawnEnemies(10, true);
 
@@ -395,6 +399,7 @@ public class GameSceneManager : MonoBehaviour
             roverSpawnsRemaining--;
             SpawnRovers();
         }
+                StartBoss();
     }
 
     void SpawnEnemy(Globals.EnemyTypes enemyType, float extraLife)
@@ -428,6 +433,25 @@ public class GameSceneManager : MonoBehaviour
         GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
         enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyType, extraLife, false);
         Globals.currrentNumEnemies++;
+    }
+
+    void StartBoss()
+    {
+        // TODO
+        // announce boss
+        // bring in boundaries
+        // do I need to remove some enemies?
+        // set boss timer
+        // spawn and place boss
+        currentBossType = Globals.EnemyTypes.PacBoss;
+        if (numSpawns == 1)
+        {
+            SpawnEnemy(currentBossType, 0);
+            bottomTanksTransform.gameObject.GetComponent<MoveNormal>().MoveUp();
+            topTanksTransform.gameObject.GetComponent<MoveNormal>().MoveDown();
+            leftTanksTransform.gameObject.GetComponent<MoveNormal>().MoveRight();
+            rightTanksTransform.gameObject.GetComponent<MoveNormal>().MoveLeft();
+        }
     }
 
     void SpawnDigs()

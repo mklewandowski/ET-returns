@@ -358,6 +358,20 @@ public class Enemy : MonoBehaviour
             int collisionLayer = LayerMask.NameToLayer("EnemySpecial");
             gameObject.layer = collisionLayer;
         }
+
+        // BOSS
+        else if (type == Globals.EnemyTypes.PacBoss)
+        {
+            moveSpeed = .5f;
+            positionTimerMax = 4f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("pac");
+            this.transform.localScale = new Vector3(15f, 15f, 1f);
+            enemyCollider.size = new Vector2(0.14f, 0.1f);
+            flipWithMovement = true;
+            life = 100f;
+            hitStrength = 3f;
+        }
     }
 
     // Update is called once per frame
