@@ -68,7 +68,7 @@ public class GameSceneManager : MonoBehaviour
     float difficultyTimer = 60f;
     float difficultyTimerMax = 60f;
     float specialAttackTimer = 90f;
-    float specialAttackTimerMax = 120f;
+    float specialAttackTimerMax = 60f;
 
     enum EnemySpecialAttackPatterns {
         VerticalMove,
@@ -170,6 +170,7 @@ public class GameSceneManager : MonoBehaviour
         HandleFadeOut();
         HandleDifficultyTimer();
         HandleSpecialAttackTimer();
+        HandleTankTimer();
         HandleEnemySpawnTimer();
         HandleLevelUpTimer();
     }
@@ -267,9 +268,14 @@ public class GameSceneManager : MonoBehaviour
         if (specialAttackTimer <= 0)
         {
             specialAttackTimer = specialAttackTimerMax;
- 
-            EnemySpecialAttackPatterns specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.None);
-            specialNum = EnemySpecialAttackPatterns.Rovers;
+            EnemySpecialAttackPatterns specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Digs);
+            if (difficultyLevel > 3)
+                specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Planes);
+            else if (difficultyLevel > 5)
+                specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Rovers);
+            else if (difficultyLevel > 7)
+                specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.None);
+
             if (specialNum == EnemySpecialAttackPatterns.VerticalMove)
             {
                 bottomTanksTransform.gameObject.GetComponent<MoveNormal>().MoveUp();
@@ -297,15 +303,8 @@ public class GameSceneManager : MonoBehaviour
         }
     }
 
-    void HandleEnemySpawnTimer()
+    void HandleTankTimer()
     {
-        spawnTimer -= Time.deltaTime;
-        if (spawnTimer <= 0)
-        {
-            spawnTimer = spawnTimerMax;
-            SpawnEnemies(10 + (int)((float)difficultyLevel * 1.5f), (numSpawns == 0 || numSpawns == 1 || numSpawns == 2));
-        }
-        // WTD WTD WTD move this
         if (tankReturnTimer > 0)
         {
             tankReturnTimer -= Time.deltaTime;
@@ -316,6 +315,16 @@ public class GameSceneManager : MonoBehaviour
                 leftTanksTransform.gameObject.GetComponent<MoveNormal>().MoveLeft();
                 rightTanksTransform.gameObject.GetComponent<MoveNormal>().MoveRight();
             }
+        }    
+    }
+
+    void HandleEnemySpawnTimer()
+    {
+        spawnTimer -= Time.deltaTime;
+        if (spawnTimer <= 0)
+        {
+            spawnTimer = spawnTimerMax;
+            SpawnEnemies(10 + (int)((float)difficultyLevel * 1.5f), (numSpawns == 0 || numSpawns == 1 || numSpawns == 2));
         }
     }
 
