@@ -70,6 +70,14 @@ public class GameSceneManager : MonoBehaviour
     float specialAttackTimer = 90f;
     float specialAttackTimerMax = 60f;
 
+    // CANDY
+    [SerializeField]
+    GameObject ItemContainer;
+    List<Candy> candyPool = new List<Candy>();
+    int maxCandy = 100;
+    [SerializeField]
+    GameObject CandyPrefab;
+
     enum EnemySpecialAttackPatterns {
         VerticalMove,
         HorizontalMove,
@@ -144,9 +152,30 @@ public class GameSceneManager : MonoBehaviour
             ami.name = "AudioManager";
             audioManager = ami.GetComponent<AudioManager>();
         }
+        CreateCandyPool();
 
         fadeManager.StartFadeIn();
         fadeIn = true;
+    }
+
+    void CreateCandyPool()
+    {
+        for (int x = 0; x < maxCandy; x++)
+        {
+            GameObject candyGO = Instantiate(CandyPrefab, this.transform.localPosition, Quaternion.identity, ItemContainer.transform);
+            candyPool.Add(candyGO.GetComponent<Candy>());
+        }
+    }
+    public void ActivateCandyFromPool(Vector3 candyPos)
+    {
+        for (int x = 0; x < candyPool.Count; x++)
+        {
+            if (!candyPool[x].IsActive())
+            {
+                candyPool[x].Activate(candyPos);
+                break;
+            }
+        }
     }
 
     // Start is called before the first frame update
@@ -319,7 +348,7 @@ public class GameSceneManager : MonoBehaviour
                 leftTanksTransform.gameObject.GetComponent<MoveNormal>().MoveLeft();
                 rightTanksTransform.gameObject.GetComponent<MoveNormal>().MoveRight();
             }
-        }    
+        }
     }
 
     void HandleEnemySpawnTimer()
@@ -399,7 +428,6 @@ public class GameSceneManager : MonoBehaviour
             roverSpawnsRemaining--;
             SpawnRovers();
         }
-                StartBoss();
     }
 
     void SpawnEnemy(Globals.EnemyTypes enemyType, float extraLife)

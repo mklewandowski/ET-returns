@@ -49,8 +49,6 @@ public class Enemy : MonoBehaviour
     GameObject ToxicDebrisPrefab;
 
     [SerializeField]
-    GameObject CandyPrefab;
-    [SerializeField]
     GameObject PhonePrefab;
     GameObject itemContainer;
 
@@ -521,8 +519,7 @@ public class Enemy : MonoBehaviour
         }
         else if (Random.Range(0, 100f) < 50f)
         {
-            GameObject candyGO = Instantiate(CandyPrefab, this.transform.localPosition, Quaternion.identity, itemContainer.transform);
-            candyGO.GetComponent<Candy>().Init();
+            GameSceneManagerScript.ActivateCandyFromPool(this.transform.localPosition);
         }
 
         this.GetComponent<Collider2D>().enabled = false;

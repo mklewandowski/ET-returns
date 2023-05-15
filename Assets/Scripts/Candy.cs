@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Candy : MonoBehaviour
 {
-    public void Init()
+    bool isActive = false;
+
+    public void Activate(Vector3 candyPos)
     {
         Color[] candyColors = new Color[]
         {
@@ -14,5 +16,19 @@ public class Candy : MonoBehaviour
         };
         Color newColor = candyColors[Random.Range(0, candyColors.Length)];
         this.GetComponent<SpriteRenderer>().color = newColor;
+        this.transform.localPosition = candyPos;
+        isActive = true;
+        this.gameObject.SetActive(true);
+    }
+
+    public void DeActivate()
+    {
+        isActive = false;
+        this.gameObject.SetActive(false);
+    }
+
+    public bool IsActive()
+    {
+        return isActive;
     }
 }

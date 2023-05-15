@@ -542,7 +542,7 @@ public class Player : MonoBehaviour
         if (candy != null && isAlive)
         {
             CollectCandy();
-            Destroy(candy.gameObject);
+            candy.DeActivate();
         }
         Phone phone = collider.gameObject.GetComponent<Phone>();
         if (phone != null && isAlive)
