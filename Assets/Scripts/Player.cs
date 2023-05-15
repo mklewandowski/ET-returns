@@ -340,17 +340,19 @@ public class Player : MonoBehaviour
     private void HandleShootSpread(Vector2 bulletMovement)
     {
         int index = (int)Globals.UpgradeTypes.SpreadShot * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SpreadShot] - 1;
-        int spreadShots = Globals.UpgradeLevelBullets[index];
+        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
+            return;
         MakeBullet(Quaternion.Euler(0, 0, -10f) * bulletMovement);
         MakeBullet(Quaternion.Euler(0, 0, 10f) * bulletMovement);
-        if (spreadShots >= 4)
-            MakeBullet(Quaternion.Euler(0, 0, 15f) * bulletMovement);
-        if (spreadShots >= 5)
-            MakeBullet(Quaternion.Euler(0, 0, -15f) * bulletMovement);
-        if (spreadShots >= 6)
-            MakeBullet(Quaternion.Euler(0, 0, 20f) * bulletMovement);
-        if (spreadShots >= 7)
-            MakeBullet(Quaternion.Euler(0, 0, -20f) * bulletMovement);
+        // these are not in use now, but could be used later
+        // if (spreadShots >= 4)
+        //     MakeBullet(Quaternion.Euler(0, 0, 15f) * bulletMovement);
+        // if (spreadShots >= 5)
+        //     MakeBullet(Quaternion.Euler(0, 0, -15f) * bulletMovement);
+        // if (spreadShots >= 6)
+        //     MakeBullet(Quaternion.Euler(0, 0, 20f) * bulletMovement);
+        // if (spreadShots >= 7)
+        //     MakeBullet(Quaternion.Euler(0, 0, -20f) * bulletMovement);
     }
 
     private void MakeBullet(Vector2 bulletMovement)

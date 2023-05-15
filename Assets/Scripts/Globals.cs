@@ -190,7 +190,7 @@ public class Globals
 
     public static string[] UpgradeDescriptionText = {
         "Creates an attack force field around the player.", "Increases force field by 10%.", "Increases force field by 10%.", "Increases force field by 10%.", "Increases force field by 10%.",
-        "Converts normal gun into spread shot.", "Adds additional spread bullet.", "Adds additional spread bullet.", "Adds additional spread bullet.", "Adds additional spread bullet.",
+        "Converts normal gun into spread shot.", "Adds additional round of spread shot.", "Adds additional round of spread shot.", "Adds additional round of spread shot.", "Adds additional round of spread shot.",
         "Shoots bullets behind player.", "Adds additional rear bullet.", "Adds additional rear bullet.", "Adds additional rear bullet.", "Adds additional rear bullet.",
         "Shoots bullets to the sides of player.", "Adds additional side bullet.", "Adds additional side bullet.", "Adds additional side bullet.", "Adds additional side bullet.",
         "Launches bombs that create explosive shockwave.", "Adds additional bomb.", "Adds additional bomb.", "Adds additional bomb.", "Adds additional bomb.",
@@ -216,7 +216,7 @@ public class Globals
 
     public static int[] UpgradeLevelBullets = {
         0,0,0,0,0,
-        3,4,5,6,7,
+        1,2,3,4,5,
         1,2,3,4,5,
         1,2,3,4,5,
         1,2,3,4,5,
