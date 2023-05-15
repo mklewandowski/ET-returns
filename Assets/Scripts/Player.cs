@@ -74,7 +74,8 @@ public class Player : MonoBehaviour
     bool isMoving = false;
     Animator playerAnimator;
 
-    float shootTimer = 2f;
+    float shootTimer = 1f;
+    float shootTimerMax = 1.5f;
     float shootTimerBurstMax = .2f;
     int burstNum = 5;
     int burstNumMax = 5;
@@ -84,6 +85,18 @@ public class Player : MonoBehaviour
     float surroundTimer = 0f;
     float surroundTimerOffMax = 4f;
     bool surroundOn = false;
+
+    float special1Timer = 1f;
+    float special1TimerMax = 2f;
+    int special1BurstNum = 5;
+
+    float special2Timer = 1f;
+    float special2TimerMax = 2.3f;
+    int special2BurstNum = 5;
+
+    float special3Timer = 1f;
+    float special3TimerMax = 2.6f;
+    int special3BurstNum = 5;
 
     bool isAlive = true;
     float health = 20f;
@@ -126,6 +139,9 @@ public class Player : MonoBehaviour
     {
         HandleMovement();
         HandleShoot();
+        HandleSpecial1();
+        HandleSpecial2();
+        HandleSpecial3();
         HandleInvincible();
         HandleLaser();
         HandleSurround();
@@ -221,48 +237,19 @@ public class Player : MonoBehaviour
             audioManager.PlayPlayerShootSound();
             GameObject bulletGO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
             Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
-            float xMovement = currentPlayerOrientation == PlayerOrientation.Right || currentPlayerOrientation == PlayerOrientation.UpRight || currentPlayerOrientation == PlayerOrientation.DownRight
-                ? 10f
-                : currentPlayerOrientation == PlayerOrientation.Left || currentPlayerOrientation == PlayerOrientation.DownLeft || currentPlayerOrientation == PlayerOrientation.UpLeft
-                    ? -10f
-                    : 0;
-            float yMovement = currentPlayerOrientation == PlayerOrientation.Up || currentPlayerOrientation == PlayerOrientation.UpRight || currentPlayerOrientation == PlayerOrientation.UpLeft
-                ? 10f
-                : currentPlayerOrientation == PlayerOrientation.Down || currentPlayerOrientation == PlayerOrientation.DownLeft  || currentPlayerOrientation == PlayerOrientation.DownRight
-                    ? -10f
-                    : 0;
-            Vector2 bulletMovement = new Vector2(xMovement, yMovement);
+            Vector2 bulletMovement = GetBulletMovement();
             bulletRigidbody.velocity = bulletMovement;
-
             if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SpreadShot] > 0 || Globals.DebugMode)
                 HandleShootSpread(bulletMovement);
             if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.RearShot] > 0 || Globals.DebugMode)
                 HandleShootRear(bulletMovement);
             if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SideShot] > 0 || Globals.DebugMode)
                 HandleShootSide(bulletMovement);
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Swirl] > 0 || Globals.DebugMode)
-                HandleShootSwirl();
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] > 0 || Globals.DebugMode)
-                HandleShootBomb();
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Laser] > 0 || Globals.DebugMode)
-                HandleShootLaser();
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Invader] > 0 || Globals.DebugMode)
-                HandleLaunchInvader();
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Ghost] > 0 || Globals.DebugMode)
-                HandleLaunchGhost();
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] > 0 || Globals.DebugMode)
-                HandleLaunchBees();
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Boomerang] > 0 || Globals.DebugMode)
-                HandleShootBoomerang(bulletMovement);
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] > 0 || Globals.DebugMode)
-                HandleCreatePit(bulletMovement);
             if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Tornado] > 0 || Globals.DebugMode)
                 HandleShootTornado(bulletMovement);
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SeekerMissile] > 0 || Globals.DebugMode)
-                HandleShootSeekerMissile();
 
             burstNum = burstNum - 1;
-            shootTimer = burstNum == 0 ? Globals.currentShootTimerMax : shootTimerBurstMax;
+            shootTimer = burstNum == 0 ? shootTimerMax : shootTimerBurstMax;
             if (burstNum == 0) burstNum = burstNumMax;
 
             MuzzleGO.SetActive(true);
@@ -275,6 +262,79 @@ public class Player : MonoBehaviour
             if (muzzleFlashTimer < 0)
                 MuzzleGO.SetActive(false);
         }
+    }
+    private void HandleSpecial1()
+    {
+        if (!isAlive) return;
+        special1Timer -= Time.deltaTime;
+        if (special1Timer < 0)
+        {
+            Vector2 bulletMovement = GetBulletMovement();
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Laser] > 0 || Globals.DebugMode)
+                HandleShootLaser();
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Boomerang] > 0 || Globals.DebugMode)
+                HandleShootBoomerang(bulletMovement);
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] > 0 || Globals.DebugMode)
+                HandleCreatePit(bulletMovement);
+
+            special1BurstNum = special1BurstNum - 1;
+            special1Timer = special1BurstNum == 0 ? special1TimerMax : shootTimerBurstMax;
+            if (special1BurstNum == 0) special1BurstNum = burstNumMax;
+        }
+    }
+    private void HandleSpecial2()
+    {
+        if (!isAlive) return;
+        special2Timer -= Time.deltaTime;
+        if (special2Timer < 0)
+        {
+            Vector2 bulletMovement = GetBulletMovement();
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Invader] > 0 || Globals.DebugMode)
+                HandleLaunchInvader();
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Ghost] > 0 || Globals.DebugMode)
+                HandleLaunchGhost();
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] > 0 || Globals.DebugMode)
+                HandleLaunchBees();
+
+            special2BurstNum = special2BurstNum - 1;
+            special2Timer = special2BurstNum == 0 ? special2TimerMax : shootTimerBurstMax;
+            if (special2BurstNum == 0) special2BurstNum = burstNumMax;
+        }
+    }
+    private void HandleSpecial3()
+    {
+        if (!isAlive) return;
+        special3Timer -= Time.deltaTime;
+        if (special3Timer < 0)
+        {
+            Vector2 bulletMovement = GetBulletMovement();
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Swirl] > 0 || Globals.DebugMode)
+                HandleShootSwirl();
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] > 0 || Globals.DebugMode)
+                HandleShootBomb();
+            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SeekerMissile] > 0 || Globals.DebugMode)
+                HandleShootSeekerMissile();
+
+            special3BurstNum = special3BurstNum - 1;
+            special3Timer = special3BurstNum == 0 ? special3TimerMax : shootTimerBurstMax;
+            if (special3BurstNum == 0) special3BurstNum = burstNumMax;
+        }
+    }
+
+    Vector2 GetBulletMovement()
+    {
+        float xMovement = currentPlayerOrientation == PlayerOrientation.Right || currentPlayerOrientation == PlayerOrientation.UpRight || currentPlayerOrientation == PlayerOrientation.DownRight
+            ? 10f
+            : currentPlayerOrientation == PlayerOrientation.Left || currentPlayerOrientation == PlayerOrientation.DownLeft || currentPlayerOrientation == PlayerOrientation.UpLeft
+                ? -10f
+                : 0;
+        float yMovement = currentPlayerOrientation == PlayerOrientation.Up || currentPlayerOrientation == PlayerOrientation.UpRight || currentPlayerOrientation == PlayerOrientation.UpLeft
+            ? 10f
+            : currentPlayerOrientation == PlayerOrientation.Down || currentPlayerOrientation == PlayerOrientation.DownLeft  || currentPlayerOrientation == PlayerOrientation.DownRight
+                ? -10f
+                : 0;
+        Vector2 bulletMovement = new Vector2(xMovement, yMovement);
+        return bulletMovement;
     }
 
     private void HandleShootSpread(Vector2 bulletMovement)
