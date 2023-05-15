@@ -4,19 +4,31 @@ using UnityEngine;
 
 public class Phone : MonoBehaviour
 {
+    bool isActive = false;
+
     [SerializeField]
     Sprite[] PhoneSprites;
 
-    private SpriteRenderer phoneRenderer;
+    [SerializeField]
+    SpriteRenderer phoneRenderer;
 
-    void Awake()
-    {
-        phoneRenderer = GetComponent<SpriteRenderer>();
-    }
-
-    public void Init()
+    public void Activate(Vector3 pos)
     {
         int randVal = Random.Range(0, PhoneSprites.Length);
         phoneRenderer.sprite = PhoneSprites[randVal];
+        this.transform.localPosition = pos;
+        isActive = true;
+        this.gameObject.SetActive(true);
+    }
+
+    public void DeActivate()
+    {
+        isActive = false;
+        this.gameObject.SetActive(false);
+    }
+
+    public bool IsActive()
+    {
+        return isActive;
     }
 }

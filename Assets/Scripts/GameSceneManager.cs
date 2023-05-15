@@ -73,10 +73,12 @@ public class GameSceneManager : MonoBehaviour
     // CANDY
     [SerializeField]
     GameObject ItemContainer;
-    List<Candy> candyPool = new List<Candy>();
-    int maxCandy = 100;
+    Candy[] candyPool = new Candy[100];
     [SerializeField]
     GameObject CandyPrefab;
+    Phone[] phonePool = new Phone[10];
+    [SerializeField]
+    GameObject PhonePrefab;
 
     enum EnemySpecialAttackPatterns {
         VerticalMove,
@@ -153,6 +155,7 @@ public class GameSceneManager : MonoBehaviour
             audioManager = ami.GetComponent<AudioManager>();
         }
         CreateCandyPool();
+        CreatePhonePool();
 
         fadeManager.StartFadeIn();
         fadeIn = true;
@@ -160,19 +163,38 @@ public class GameSceneManager : MonoBehaviour
 
     void CreateCandyPool()
     {
-        for (int x = 0; x < maxCandy; x++)
+        for (int x = 0; x < candyPool.Length; x++)
         {
             GameObject candyGO = Instantiate(CandyPrefab, this.transform.localPosition, Quaternion.identity, ItemContainer.transform);
-            candyPool.Add(candyGO.GetComponent<Candy>());
+            candyPool[x] = candyGO.GetComponent<Candy>();
         }
     }
     public void ActivateCandyFromPool(Vector3 candyPos)
     {
-        for (int x = 0; x < candyPool.Count; x++)
+        for (int x = 0; x < candyPool.Length; x++)
         {
             if (!candyPool[x].IsActive())
             {
                 candyPool[x].Activate(candyPos);
+                break;
+            }
+        }
+    }
+    void CreatePhonePool()
+    {
+        for (int x = 0; x < phonePool.Length; x++)
+        {
+            GameObject phoneGO = Instantiate(PhonePrefab, this.transform.localPosition, Quaternion.identity, ItemContainer.transform);
+            phonePool[x] = phoneGO.GetComponent<Phone>();
+        }
+    }
+    public void ActivatePhoneFromPool(Vector3 phonePos)
+    {
+        for (int x = 0; x < phonePool.Length; x++)
+        {
+            if (!phonePool[x].IsActive())
+            {
+                phonePool[x].Activate(phonePos);
                 break;
             }
         }

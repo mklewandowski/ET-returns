@@ -48,10 +48,6 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     GameObject ToxicDebrisPrefab;
 
-    [SerializeField]
-    GameObject PhonePrefab;
-    GameObject itemContainer;
-
     float pauseBeforeAction = 2f;
 
     enum AttackPattern {
@@ -67,7 +63,6 @@ public class Enemy : MonoBehaviour
         GameSceneManagerScript = GameObject.Find("SceneManager").GetComponent<GameSceneManager>();
         playerTransform = GameObject.Find("Player").transform;
         debrisContainer = GameObject.Find("DebrisContainer");
-        itemContainer = GameObject.Find("ItemContainer");
         enemyAnimator = GetComponent<Animator>();
         enemyCollider = GetComponent<BoxCollider2D>();
         enemyRigidbody = GetComponent<Rigidbody2D>();
@@ -502,8 +497,7 @@ public class Enemy : MonoBehaviour
         // spawn phone or candy or toxic debris
         if (type == Globals.EnemyTypes.FBI)
         {
-            GameObject phoneGO = Instantiate(PhonePrefab, this.transform.localPosition, Quaternion.identity, itemContainer.transform);
-            phoneGO.GetComponent<Phone>().Init();
+            GameSceneManagerScript.ActivatePhoneFromPool(this.transform.localPosition);
             GameSceneManagerScript.KillFBI();
         }
         else if (type == Globals.EnemyTypes.Scientist)

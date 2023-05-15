@@ -6,7 +6,7 @@ public class Candy : MonoBehaviour
 {
     bool isActive = false;
 
-    public void Activate(Vector3 candyPos)
+    public void Activate(Vector3 pos)
     {
         Color[] candyColors = new Color[]
         {
@@ -16,7 +16,7 @@ public class Candy : MonoBehaviour
         };
         Color newColor = candyColors[Random.Range(0, candyColors.Length)];
         this.GetComponent<SpriteRenderer>().color = newColor;
-        this.transform.localPosition = candyPos;
+        this.transform.localPosition = pos;
         isActive = true;
         this.gameObject.SetActive(true);
     }
