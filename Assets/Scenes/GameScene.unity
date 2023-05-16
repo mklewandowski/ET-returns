@@ -78073,6 +78073,7 @@ MonoBehaviour:
   - {fileID: 60664587}
   ItemContainer: {fileID: 1121603906}
   CandyPrefab: {fileID: 2789390833255965416, guid: 49350f0dc1443174ba4820f99ba21979, type: 3}
+  PhonePrefab: {fileID: 2789390833255965416, guid: 396c665cfb2423e488e62eabcfc48b6a, type: 3}
 --- !u!114 &1264012507
 MonoBehaviour:
   m_ObjectHideFlags: 0
