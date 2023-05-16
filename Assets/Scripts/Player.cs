@@ -429,7 +429,7 @@ public class Player : MonoBehaviour
 
     private void HandleShootLaser(int burstInterval)
     {
-        if (burstInterval == 0)
+        if (burstInterval > 0)
             return;
         Laser.SetActive(true);
         int index = (int)Globals.UpgradeTypes.Laser * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Laser] - 1;
