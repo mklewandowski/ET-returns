@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4083482264499641521}
   - component: {fileID: 5764639699549949690}
   m_Layer: 0
-  m_Name: Excalim
+  m_Name: Exclaim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
