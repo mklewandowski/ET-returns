@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    bool isActive = false;
+
     AudioManager audioManager;
     GameSceneManager GameSceneManagerScript;
 
-    bool isActive = true;
     float life = 1f;
     float hitStrength = 1f;
 
@@ -58,8 +59,11 @@ public class Enemy : MonoBehaviour
     AttackPattern attackPattern = AttackPattern.Direct;
     bool target = false;
 
-    void Awake()
+    public void Init()
     {
+        GameObject am = GameObject.Find("AudioManager");
+        if (am)
+            audioManager = am.GetComponent<AudioManager>();
         GameSceneManagerScript = GameObject.Find("SceneManager").GetComponent<GameSceneManager>();
         playerTransform = GameObject.Find("Player").transform;
         debrisContainer = GameObject.Find("DebrisContainer");
@@ -70,15 +74,22 @@ public class Enemy : MonoBehaviour
         enemyMaterial = enemyRenderer.material;
     }
 
-    void Start()
+    public void DeActivate()
     {
-        GameObject am = GameObject.Find("AudioManager");
-        if (am)
-            audioManager = am.GetComponent<AudioManager>();
+        isActive = false;
+        this.gameObject.SetActive(false);
     }
 
-    public void ConfigureEnemy(Globals.EnemyTypes newType, float extraLife, bool flip)
+    public bool IsActive()
     {
+        return isActive;
+    }
+
+    public void ConfigureEnemy(Vector3 pos, Globals.EnemyTypes newType, float extraLife, bool flip)
+    {
+        this.transform.localPosition = pos;
+        enemyRenderer.enabled = false;
+        enemyAnimator.enabled = false;
         type = newType;
         enemyRenderer.sprite = EnemySprites[(int)type];
         enemyRigidbody.mass = 1f;
@@ -86,6 +97,10 @@ public class Enemy : MonoBehaviour
         useLifeTimer = false;
         allowImpactVelocity = true;
         attackPattern = AttackPattern.Direct;
+        this.gameObject.SetActive(true);
+
+        int defaultCollisionLayer = LayerMask.NameToLayer("Enemy");
+        gameObject.layer = defaultCollisionLayer;
 
         // FAST
         if (type == Globals.EnemyTypes.Yar)
@@ -149,12 +164,12 @@ public class Enemy : MonoBehaviour
             hitStrength = 6f;
         }
 
-        if (type == Globals.EnemyTypes.Yar2)
+        else if (type == Globals.EnemyTypes.Yar2)
         {
             moveSpeed = Random.Range(2.3f, 2.5f);
             positionTimerMax = .75f;
             enemyAnimator.enabled = true;
-            enemyAnimator.Play("yar");
+            enemyAnimator.Play("yar2");
             this.transform.localScale = new Vector3(6f, 6f, 1f);
             enemyCollider.size = new Vector2(0.08f, 0.08f);
             flipWithMovement = true;
@@ -365,6 +380,9 @@ public class Enemy : MonoBehaviour
             life = 100f;
             hitStrength = 3f;
         }
+        enemyCollider.enabled = true;
+        enemyRenderer.enabled = true;
+        isActive = true;
     }
 
     // Update is called once per frame
@@ -444,7 +462,7 @@ public class Enemy : MonoBehaviour
         lifeTimer -= Time.deltaTime;
         if (lifeTimer < 0)
         {
-            Destroy(this.gameObject);
+            DeActivate();
         }
     }
 
@@ -516,9 +534,8 @@ public class Enemy : MonoBehaviour
             GameSceneManagerScript.ActivateCandyFromPool(this.transform.localPosition);
         }
 
-        this.GetComponent<Collider2D>().enabled = false;
-        isActive = false;
-        Destroy(this.gameObject);
+        enemyCollider.enabled = false;
+        DeActivate();
     }
 
     void DamageEnemy(Vector2 impactVelocity)

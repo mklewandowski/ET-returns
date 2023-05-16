@@ -14,19 +14,6 @@ public class GameSceneManager : MonoBehaviour
 
     [SerializeField]
     FadeManager fadeManager;
-    [SerializeField]
-    GameObject EnemyPrefab;
-    [SerializeField]
-    GameObject EnemyContainer;
-
-    [SerializeField]
-    Transform topTanksTransform;
-    [SerializeField]
-    Transform bottomTanksTransform;
-    [SerializeField]
-    Transform leftTanksTransform;
-    [SerializeField]
-    Transform rightTanksTransform;
 
     [SerializeField]
     GameObject Player;
@@ -79,6 +66,23 @@ public class GameSceneManager : MonoBehaviour
     Phone[] phonePool = new Phone[10];
     [SerializeField]
     GameObject PhonePrefab;
+
+    // ENEMIES
+    Enemy[] enemyPool = new Enemy[200];
+    [SerializeField]
+    GameObject EnemyPrefab;
+    [SerializeField]
+    GameObject EnemyContainer;
+
+    [SerializeField]
+    Transform topTanksTransform;
+    [SerializeField]
+    Transform bottomTanksTransform;
+    [SerializeField]
+    Transform leftTanksTransform;
+    [SerializeField]
+    Transform rightTanksTransform;
+
 
     enum EnemySpecialAttackPatterns {
         VerticalMove,
@@ -156,6 +160,7 @@ public class GameSceneManager : MonoBehaviour
         }
         CreateCandyPool();
         CreatePhonePool();
+        CreateEnemyPool();
 
         fadeManager.StartFadeIn();
         fadeIn = true;
@@ -195,6 +200,26 @@ public class GameSceneManager : MonoBehaviour
             if (!phonePool[x].IsActive())
             {
                 phonePool[x].Activate(phonePos);
+                break;
+            }
+        }
+    }
+    void CreateEnemyPool()
+    {
+        for (int x = 0; x < enemyPool.Length; x++)
+        {
+            GameObject enemyGO = Instantiate(EnemyPrefab, this.transform.localPosition, Quaternion.identity, EnemyContainer.transform);
+            enemyPool[x] = enemyGO.GetComponent<Enemy>();
+            enemyPool[x].Init();
+        }
+    }
+    public void ActivateEnemyFromPool(Vector3 enemyPos, Globals.EnemyTypes enemyType, float extraLife, bool flip)
+    {
+        for (int x = 0; x < enemyPool.Length; x++)
+        {
+            if (!enemyPool[x].IsActive())
+            {
+                enemyPool[x].ConfigureEnemy(enemyPos, enemyType, extraLife, flip);
                 break;
             }
         }
@@ -480,8 +505,7 @@ public class GameSceneManager : MonoBehaviour
             yOffset = yOffset * -1f;
         }
         Vector2 enemyPos = new Vector2(playerPos.x + xOffset, playerPos.y + yOffset);
-        GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
-        enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyType, extraLife, false);
+        ActivateEnemyFromPool(enemyPos, enemyType, extraLife, false);
         Globals.currrentNumEnemies++;
     }
 
@@ -520,7 +544,7 @@ public class GameSceneManager : MonoBehaviour
             if (enemyPos.x < maxX && enemyPos.x > minX && enemyPos.y < maxY && enemyPos.y > minY)
             {
                 GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
-                enemyGO.GetComponent<Enemy>().ConfigureEnemy(Globals.EnemyTypes.Dig, extraLife, false);
+                enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyPos, Globals.EnemyTypes.Dig, extraLife, false);
             }
         }
     }
@@ -539,7 +563,7 @@ public class GameSceneManager : MonoBehaviour
             {
                 Vector2 enemyPos = new Vector2(startX + x * -2.5f, startY + y * 2f);
                 GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
-                enemyGO.GetComponent<Enemy>().ConfigureEnemy(Globals.EnemyTypes.Plane, extraLife, false);
+                enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyPos, Globals.EnemyTypes.Plane, extraLife, false);
             }
         }
     }
@@ -558,7 +582,7 @@ public class GameSceneManager : MonoBehaviour
             {
                 Vector2 enemyPos = new Vector2(startX + x * -4.5f, startY + y * 2f);
                 GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
-                enemyGO.GetComponent<Enemy>().ConfigureEnemy(Globals.EnemyTypes.Moon, extraLife, false);
+                enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyPos, Globals.EnemyTypes.Moon, extraLife, false);
             }
         }
         startX = playerPos.x + 6f;
@@ -569,7 +593,7 @@ public class GameSceneManager : MonoBehaviour
             {
                 Vector2 enemyPos = new Vector2(startX + x * 4.5f, startY + y * 2f);
                 GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
-                enemyGO.GetComponent<Enemy>().ConfigureEnemy(Globals.EnemyTypes.Moon, extraLife, true);
+                enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyPos, Globals.EnemyTypes.Moon, extraLife, true);
             }
         }
     }
