@@ -54,7 +54,7 @@ public class GameSceneManager : MonoBehaviour
     int difficultyLevel = 0;
     float difficultyTimer = 60f;
     float difficultyTimerMax = 60f;
-    float specialAttackTimer = 5f;
+    float specialAttackTimer = 90f;
     float specialAttackTimerMax = 60f;
 
     // CANDY
