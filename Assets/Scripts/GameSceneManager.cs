@@ -54,7 +54,7 @@ public class GameSceneManager : MonoBehaviour
     int difficultyLevel = 0;
     float difficultyTimer = 60f;
     float difficultyTimerMax = 60f;
-    float specialAttackTimer = 90f;
+    float specialAttackTimer = 5f;
     float specialAttackTimerMax = 60f;
 
     // CANDY
@@ -69,6 +69,10 @@ public class GameSceneManager : MonoBehaviour
 
     // ENEMIES
     Enemy[] enemyPool = new Enemy[200];
+    Enemy[] enemyDigPool = new Enemy[45];
+    Enemy[] enemyFBIPool = new Enemy[3];
+    Enemy[] enemyScientistPool = new Enemy[1];
+    Enemy[] enemyVehiclePool = new Enemy[60];
     [SerializeField]
     GameObject EnemyPrefab;
     [SerializeField]
@@ -82,7 +86,6 @@ public class GameSceneManager : MonoBehaviour
     Transform leftTanksTransform;
     [SerializeField]
     Transform rightTanksTransform;
-
 
     enum EnemySpecialAttackPatterns {
         VerticalMove,
@@ -126,10 +129,6 @@ public class GameSceneManager : MonoBehaviour
     int currentFastEnemyMaxSpawn = 100;
     int currentStrongEnemyMaxSpawn = 100;
     int currentSurroundEnemyMaxSpawn = 100;
-    int currentNumFBI = 0;
-    int currentNumScientist = 0;
-    int maxFBI = 3;
-    int maxScientist = 1;
     int numSpawns = 0;
 
     float spawnTimer = 5f;
@@ -212,14 +211,48 @@ public class GameSceneManager : MonoBehaviour
             enemyPool[x] = enemyGO.GetComponent<Enemy>();
             enemyPool[x].Init();
         }
+        for (int x = 0; x < enemyDigPool.Length; x++)
+        {
+            GameObject enemyGO = Instantiate(EnemyPrefab, this.transform.localPosition, Quaternion.identity, EnemyContainer.transform);
+            enemyDigPool[x] = enemyGO.GetComponent<Enemy>();
+            enemyDigPool[x].Init();
+        }
+        for (int x = 0; x < enemyFBIPool.Length; x++)
+        {
+            GameObject enemyGO = Instantiate(EnemyPrefab, this.transform.localPosition, Quaternion.identity, EnemyContainer.transform);
+            enemyFBIPool[x] = enemyGO.GetComponent<Enemy>();
+            enemyFBIPool[x].Init();
+        }
+        for (int x = 0; x < enemyScientistPool.Length; x++)
+        {
+            GameObject enemyGO = Instantiate(EnemyPrefab, this.transform.localPosition, Quaternion.identity, EnemyContainer.transform);
+            enemyScientistPool[x] = enemyGO.GetComponent<Enemy>();
+            enemyScientistPool[x].Init();
+        }
+        for (int x = 0; x < enemyVehiclePool.Length; x++)
+        {
+            GameObject enemyGO = Instantiate(EnemyPrefab, this.transform.localPosition, Quaternion.identity, EnemyContainer.transform);
+            enemyVehiclePool[x] = enemyGO.GetComponent<Enemy>();
+            enemyVehiclePool[x].Init();
+        }
     }
     public void ActivateEnemyFromPool(Vector3 enemyPos, Globals.EnemyTypes enemyType, float extraLife, bool flip)
     {
-        for (int x = 0; x < enemyPool.Length; x++)
+        Enemy[] pool = enemyPool;
+        if (enemyType == Globals.EnemyTypes.FBI)
+            pool = enemyFBIPool;
+        else if (enemyType == Globals.EnemyTypes.Scientist)
+            pool = enemyScientistPool;
+        else if (enemyType == Globals.EnemyTypes.Dig)
+            pool = enemyDigPool;
+        else if (enemyType == Globals.EnemyTypes.Moon || enemyType == Globals.EnemyTypes.Plane)
+            pool = enemyVehiclePool;
+
+        for (int x = 0; x < pool.Length; x++)
         {
-            if (!enemyPool[x].IsActive())
+            if (!pool[x].IsActive())
             {
-                enemyPool[x].ConfigureEnemy(enemyPos, enemyType, extraLife, flip);
+                pool[x].ConfigureEnemy(enemyPos, enemyType, extraLife, flip);
                 break;
             }
         }
@@ -370,7 +403,7 @@ public class GameSceneManager : MonoBehaviour
             }
             else if (specialNum == EnemySpecialAttackPatterns.Digs)
             {
-                digSpawnsRemaining = Random.Range(Mathf.Min(difficultyLevel, 2), Mathf.Min(difficultyLevel, 5));
+                digSpawnsRemaining = Random.Range(Mathf.Min(difficultyLevel, 2), Mathf.Min(difficultyLevel, 4));
             }
             else if (specialNum == EnemySpecialAttackPatterns.Planes)
             {
@@ -431,18 +464,16 @@ public class GameSceneManager : MonoBehaviour
         {
             Globals.EnemyTypes enemyType = Globals.EnemyTypes.Yar;
             float randVal = Random.Range(0, 100f);
-            if (randVal > 96f && currentNumFBI < maxFBI && specialThisSpawn < maxSpecialPerSpawn)
+            if (randVal > 96f && specialThisSpawn < maxSpecialPerSpawn)
             {
                 enemyType = Globals.EnemyTypes.FBI;
-                currentNumFBI++;
                 numFBIthisSpawn++;
                 specialThisSpawn++;
                 extraLife = difficultyLevel * .5f;
             }
-            else if (randVal > 94f && currentNumScientist < maxScientist && specialThisSpawn < maxSpecialPerSpawn && difficultyLevel > 3)
+            else if (randVal > 94f && specialThisSpawn < maxSpecialPerSpawn && difficultyLevel > 3)
             {
                 enemyType = Globals.EnemyTypes.Scientist;
-                currentNumScientist++;
                 specialThisSpawn++;
                 extraLife = difficultyLevel * .4f;
             }
@@ -543,8 +574,7 @@ public class GameSceneManager : MonoBehaviour
             Vector2 enemyPos = playerPos + enemyRadialVector;
             if (enemyPos.x < maxX && enemyPos.x > minX && enemyPos.y < maxY && enemyPos.y > minY)
             {
-                GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
-                enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyPos, Globals.EnemyTypes.Dig, extraLife, false);
+                ActivateEnemyFromPool(enemyPos, Globals.EnemyTypes.Dig, extraLife, false);
             }
         }
     }
@@ -562,8 +592,7 @@ public class GameSceneManager : MonoBehaviour
             for (int y = 0; y < numRows; y++)
             {
                 Vector2 enemyPos = new Vector2(startX + x * -2.5f, startY + y * 2f);
-                GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
-                enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyPos, Globals.EnemyTypes.Plane, extraLife, false);
+                ActivateEnemyFromPool(enemyPos, Globals.EnemyTypes.Plane, extraLife, false);
             }
         }
     }
@@ -581,8 +610,7 @@ public class GameSceneManager : MonoBehaviour
             for (int y = 0; y < numRows; y++)
             {
                 Vector2 enemyPos = new Vector2(startX + x * -4.5f, startY + y * 2f);
-                GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
-                enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyPos, Globals.EnemyTypes.Moon, extraLife, false);
+                ActivateEnemyFromPool(enemyPos, Globals.EnemyTypes.Moon, extraLife, false);
             }
         }
         startX = playerPos.x + 6f;
@@ -592,8 +620,7 @@ public class GameSceneManager : MonoBehaviour
             for (int y = 0; y < numRows; y++)
             {
                 Vector2 enemyPos = new Vector2(startX + x * 4.5f, startY + y * 2f);
-                GameObject enemyGO = Instantiate(EnemyPrefab, enemyPos, Quaternion.identity, EnemyContainer.transform);
-                enemyGO.GetComponent<Enemy>().ConfigureEnemy(enemyPos, Globals.EnemyTypes.Moon, extraLife, true);
+                ActivateEnemyFromPool(enemyPos, Globals.EnemyTypes.Moon, extraLife, true);
             }
         }
     }
@@ -755,14 +782,5 @@ public class GameSceneManager : MonoBehaviour
     public void GameOver()
     {
         deadTimer = deadTimerMax;
-    }
-
-    public void KillFBI()
-    {
-        currentNumFBI--;
-    }
-    public void KillScientist()
-    {
-        currentNumScientist--;
     }
 }

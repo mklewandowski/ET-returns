@@ -516,7 +516,6 @@ public class Enemy : MonoBehaviour
         if (type == Globals.EnemyTypes.FBI)
         {
             GameSceneManagerScript.ActivatePhoneFromPool(this.transform.localPosition);
-            GameSceneManagerScript.KillFBI();
         }
         else if (type == Globals.EnemyTypes.Scientist)
         {
@@ -527,7 +526,6 @@ public class Enemy : MonoBehaviour
                 GameObject toxicDebrisGO = Instantiate(ToxicDebrisPrefab, this.transform.localPosition, Quaternion.identity, debrisContainer.transform);
                 toxicDebrisGO.GetComponent<ToxicDebris>().Init();
             }
-            GameSceneManagerScript.KillScientist();
         }
         else if (Random.Range(0, 100f) < 50f)
         {
