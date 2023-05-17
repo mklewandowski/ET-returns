@@ -271,7 +271,8 @@ public class GameSceneManager : MonoBehaviour
 
         currentBossType = (Globals.EnemyTypes)Random.Range((int)Globals.EnemyTypes.PacBoss, (int)Globals.EnemyTypes.KoolBoss + 1);
 
-        SpawnEnemies(10, true);
+        SpawnEnemies(10);
+        SpawnFBI();
 
         playerScript = Player.GetComponent<Player>();
     }
@@ -437,7 +438,8 @@ public class GameSceneManager : MonoBehaviour
         if (spawnTimer <= 0)
         {
             spawnTimer = spawnTimerMax;
-            SpawnEnemies(10 + (int)((float)difficultyLevel * 1.5f), (numSpawns == 0 || numSpawns == 1 || numSpawns == 2));
+            SpawnEnemies(10 + (int)((float)difficultyLevel * 1.5f));
+            SpawnFBI();
         }
     }
 
@@ -453,28 +455,23 @@ public class GameSceneManager : MonoBehaviour
         }
     }
 
-    void SpawnEnemies(int num, bool FBIrequired)
+    void SpawnFBI()
+    {
+        float extraLife = difficultyLevel * .5f;
+        SpawnEnemy(Globals.EnemyTypes.FBI, extraLife);
+    }
+
+    void SpawnEnemies(int num)
     {
         numSpawns++;
-        int numFBIthisSpawn = 0;
-        int maxSpecialPerSpawn = difficultyLevel >= 6 ? Random.Range(0, 2) : 2;
-        int specialThisSpawn = 0;
         float extraLife = 0;
         for (int x = 0; x < num; x++)
         {
             Globals.EnemyTypes enemyType = Globals.EnemyTypes.Yar;
             float randVal = Random.Range(0, 100f);
-            if (randVal > 96f && specialThisSpawn < maxSpecialPerSpawn)
-            {
-                enemyType = Globals.EnemyTypes.FBI;
-                numFBIthisSpawn++;
-                specialThisSpawn++;
-                extraLife = difficultyLevel * .5f;
-            }
-            else if (randVal > 94f && specialThisSpawn < maxSpecialPerSpawn && difficultyLevel > 3)
+            if (randVal > 98f && difficultyLevel > 3)
             {
                 enemyType = Globals.EnemyTypes.Scientist;
-                specialThisSpawn++;
                 extraLife = difficultyLevel * .4f;
             }
             else if (randVal > 84f)
@@ -485,12 +482,6 @@ public class GameSceneManager : MonoBehaviour
                 enemyType = GetEnemyType(currentFastEnemyMaxSpawn, fastEnemySpawnRates, Globals.FastEnemyTypes);
             SpawnEnemy(enemyType, extraLife);
         }
-
-        if (FBIrequired && numFBIthisSpawn == 0)
-        {
-            SpawnEnemy(Globals.EnemyTypes.FBI, difficultyLevel * .5f);
-        }
-
         if (digSpawnsRemaining > 0)
         {
             digSpawnsRemaining--;
