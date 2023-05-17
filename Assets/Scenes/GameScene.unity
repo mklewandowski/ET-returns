@@ -78035,14 +78035,12 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b7a19eded58931b489c6c1b98546d54e, type: 3}
   - {fileID: 21300000, guid: ef296fbf65b525e44b1c389f8672c034, type: 3}
   - {fileID: 21300000, guid: fdbd2d18b005e974b8a2091d35a662c1, type: 3}
-  - {fileID: 21300000, guid: b5b4e405d2b6c1a498b3cf4ae0acc0fd, type: 3}
   - {fileID: 21300000, guid: 197d21193fbbaae41921da37cfe2a853, type: 3}
   - {fileID: 21300000, guid: 513d3ea39c989ec4b834c0a91f404476, type: 3}
   - {fileID: 21300000, guid: 4f3880ef95c83aa4f99624b98860a26f, type: 3}
   - {fileID: 21300000, guid: 8e5afb75ae3631840958fe4e65f9cbf3, type: 3}
   - {fileID: 21300000, guid: e3f268db9a9181d40bba0f25a2f90069, type: 3}
   - {fileID: 21300000, guid: cc7fe9f3b19a8b345a6fedbcfae26a7b, type: 3}
-  - {fileID: 21300000, guid: e32f213515ef22c44a9f9d8456d57f9b, type: 3}
   - {fileID: 21300000, guid: 77975b0e2bd158e4aa88716a70aba890, type: 3}
   HUDUpgradePanel: {fileID: 616747541}
   HUDUpgradeButtonHighlights:
