@@ -628,16 +628,16 @@ public class Player : MonoBehaviour
             int speedLevel = Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Speed];
             moveSpeed = moveSpeedInitial + (speedLevel * .22f);
         }
-        else if (upgradeType == Globals.UpgradeTypes.Defense && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Defense] > 0)
-        {
-            int defenseLevel = Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Defense];
-            Globals.currentDefense = Globals.currentDefense + (defenseLevel * .2f);
-        }
-        else if (upgradeType == Globals.UpgradeTypes.Attack && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Attack] > 0)
-        {
-            int attackLevel = Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Attack];
-            Globals.currentAttack = Globals.currentAttack + (attackLevel * .2f);
-        }
+        // else if (upgradeType == Globals.UpgradeTypes.Defense && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Defense] > 0)
+        // {
+        //     int defenseLevel = Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Defense];
+        //     Globals.currentDefense = Globals.currentDefense + (defenseLevel * .2f);
+        // }
+        // else if (upgradeType == Globals.UpgradeTypes.Attack && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Attack] > 0)
+        // {
+        //     int attackLevel = Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Attack];
+        //     Globals.currentAttack = Globals.currentAttack + (attackLevel * .2f);
+        // }
     }
 
     public void ResetHUDPhone()
