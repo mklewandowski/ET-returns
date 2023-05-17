@@ -80,7 +80,7 @@ public class Player : MonoBehaviour
     int burstNum = 5;
     int burstNumMax = 5;
     float muzzleFlashTimer = 0f;
-    float muzzleFlashTimerMax = .05f;
+    float muzzleFlashTimerMax = .075f;
     float laserTimer = 0f;
     float surroundTimer = 0f;
     float surroundTimerOffMax = 4f;
