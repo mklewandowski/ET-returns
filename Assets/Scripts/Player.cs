@@ -543,7 +543,7 @@ public class Player : MonoBehaviour
         if (invincibleTimer <= 0)
         {
             audioManager.PlayPlayerHitSound();
-            float defenseAdjustedDamage = damage / Globals.currentDefense;
+            float defenseAdjustedDamage = Mathf.Max(1f, damage - Globals.currentDefense);
             health -= defenseAdjustedDamage;
             if (health < 0 )
                 health = 0;
