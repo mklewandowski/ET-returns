@@ -48,6 +48,10 @@ MonoBehaviour:
   MenuSound: {fileID: 8300000, guid: 290d37d488a156e4db644b756222976f, type: 3}
   ButtonSound: {fileID: 8300000, guid: 26ccd5f47ca84ea44882ac911c7bdf9e, type: 3}
   PlayerShootSound: {fileID: 8300000, guid: 9a45e19ababffb4468cb8484e1c43189, type: 3}
+  PlayerShoot2Sound: {fileID: 8300000, guid: 1f2da0487e3164848914d2ae5cba95f4, type: 3}
+  PlayerBeeSound: {fileID: 8300000, guid: 1a1249b666c90e340a94eb64936604cf, type: 3}
+  PlayerLaserSound: {fileID: 8300000, guid: 379f8c38e7005e14584bee0c5996fcba, type: 3}
+  ExplodeSound: {fileID: 8300000, guid: 6e3185329f45f034b973804da6758ca9, type: 3}
   EnemyHitSound: {fileID: 8300000, guid: 4ac31a7a2adf5ad4b921cf3171222ad2, type: 3}
   PlayerHitSound: {fileID: 8300000, guid: 23e627b7a25d68f4ab665fa8581da182, type: 3}
   PlayerDieSound: {fileID: 8300000, guid: 91ae90323e1f2654e8426f34556f8585, type: 3}

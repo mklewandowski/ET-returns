@@ -361,6 +361,7 @@ public class Player : MonoBehaviour
 
     private void HandleShootBoomerang(Vector2 bulletMovement)
     {
+        audioManager.PlayPlayerShoot2Sound();
         int index = (int)Globals.UpgradeTypes.Boomerang * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Boomerang] - 1;
         int numShots = Globals.UpgradeLevelBullets[index];
         for (int x = 0; x < numShots; x++)
@@ -374,6 +375,7 @@ public class Player : MonoBehaviour
 
     private void HandleShootSwirl()
     {
+        audioManager.PlayPlayerShoot2Sound();
         int index = (int)Globals.UpgradeTypes.Swirl * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Swirl] - 1;
         int numShots = Globals.UpgradeLevelBullets[index];
         for (int x = 0; x < numShots; x++)
@@ -387,6 +389,7 @@ public class Player : MonoBehaviour
 
     private void HandleShootBomb()
     {
+        audioManager.PlayPlayerShoot2Sound();
         int index = (int)Globals.UpgradeTypes.Bomb * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] - 1;
         int numShots = Globals.UpgradeLevelBullets[index];
         for (int x = 0; x < numShots; x++)
@@ -400,6 +403,7 @@ public class Player : MonoBehaviour
 
     private void HandleShootLaser()
     {
+        audioManager.PlayPlayerLaserSound();
         Laser.SetActive(true);
         int index = (int)Globals.UpgradeTypes.Laser * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Laser] - 1;
         float laserTimerMax = Globals.UpgradeLevelAttackTimes[index];
@@ -408,6 +412,7 @@ public class Player : MonoBehaviour
 
     private void HandleLaunchInvader()
     {
+        audioManager.PlayPlayerShoot2Sound();
         int index = (int)Globals.UpgradeTypes.Invader * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Invader] - 1;
         int numShots = Globals.UpgradeLevelBullets[index];
         for (int x = 0; x < numShots; x++)
@@ -419,6 +424,7 @@ public class Player : MonoBehaviour
 
     private void HandleLaunchGhost()
     {
+        audioManager.PlayPlayerShoot2Sound();
         int index = (int)Globals.UpgradeTypes.Ghost * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Ghost] - 1;
         int numShots = Globals.UpgradeLevelBullets[index];
         for (int x = 0; x < numShots; x++)
@@ -430,6 +436,7 @@ public class Player : MonoBehaviour
 
     private void HandleLaunchBees()
     {
+        audioManager.PlayPlayerBeeSound();
         int index = (int)Globals.UpgradeTypes.Bees * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] - 1;
         int numShots = Globals.UpgradeLevelBullets[index];
         for (int x = 0; x < numShots; x++)
@@ -441,6 +448,7 @@ public class Player : MonoBehaviour
 
     private void HandleCreatePit(Vector2 bulletMovement)
     {
+        audioManager.PlayPlayerShoot2Sound();
         GameObject pitGO = Instantiate(PitPrefab,
             new Vector3(this.transform.localPosition.x + bulletMovement.x * -.075f, this.transform.localPosition.y + bulletMovement.y * -.075f, 0),
             Quaternion.identity,
@@ -449,6 +457,7 @@ public class Player : MonoBehaviour
 
     private void HandleShootTornado(Vector2 bulletMovement)
     {
+        audioManager.PlayPlayerShoot2Sound();
         int index = (int)Globals.UpgradeTypes.Tornado * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Tornado] - 1;
         int numShots = Globals.UpgradeLevelBullets[index];
         for (int x = 0; x < numShots; x++)

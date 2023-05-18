@@ -16,6 +16,18 @@ public class AudioManager : MonoBehaviour
     AudioClip PlayerShootSound;
 
     [SerializeField]
+    AudioClip PlayerShoot2Sound;
+
+    [SerializeField]
+    AudioClip PlayerBeeSound;
+
+    [SerializeField]
+    AudioClip PlayerLaserSound;
+
+    [SerializeField]
+    AudioClip ExplodeSound;
+
+    [SerializeField]
     AudioClip EnemyHitSound;
 
     [SerializeField]
@@ -113,6 +125,30 @@ public class AudioManager : MonoBehaviour
     {
         if (Globals.AudioOn)
             audioSource.PlayOneShot(PhoneDialSound, .5f);
+    }
+
+    public void PlayPlayerShoot2Sound()
+    {
+        if (Globals.AudioOn)
+            audioSource.PlayOneShot(PlayerShoot2Sound, .75f);
+    }
+
+    public void PlayPlayerBeeSound()
+    {
+        if (Globals.AudioOn)
+            audioSource.PlayOneShot(PlayerBeeSound, .75f);
+    }
+
+    public void PlayPlayerLaserSound()
+    {
+        if (Globals.AudioOn)
+            audioSource.PlayOneShot(PlayerLaserSound, .5f);
+    }
+
+    public void PlayExplodeSound()
+    {
+        if (Globals.AudioOn)
+            audioSource.PlayOneShot(ExplodeSound, .75f);
     }
 
     public void PlayClickSound()
