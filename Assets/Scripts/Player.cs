@@ -544,7 +544,7 @@ public class Player : MonoBehaviour
         {
             audioManager.PlayPlayerHitSound();
             int defenseAdjustment = (int)(Mathf.Round((float)(Globals.currentDefense) / 2f));
-            float defenseAdjustedDamage = Mathf.Max(1, defenseAdjustment);
+            float defenseAdjustedDamage = Mathf.Max(1, damage - defenseAdjustment);
             health -= defenseAdjustedDamage;
             if (health < 0 )
                 health = 0;
