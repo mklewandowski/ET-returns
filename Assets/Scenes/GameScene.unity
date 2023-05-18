@@ -6587,6 +6587,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &99070332
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 99070333}
+  m_Layer: 0
+  m_Name: HitNoticeContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &99070333
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99070332}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 634200340}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &99501726
 GameObject:
   m_ObjectHideFlags: 0
@@ -9424,6 +9455,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!212 &163483949
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -19914,7 +19946,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3684bc19e32a8ec4194f58d73f4f3dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 1
+  NormalDamageMin: 1
+  NormalDamageMax: 2
+  StrongDamageMin: 2
+  StrongDamageMax: 4
+  CriticalDamageMin: 3
+  CriticalDamageMax: 5
 --- !u!1 &326869535
 GameObject:
   m_ObjectHideFlags: 0
@@ -25674,7 +25711,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3684bc19e32a8ec4194f58d73f4f3dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 1
+  NormalDamageMin: 1
+  NormalDamageMax: 2
+  StrongDamageMin: 2
+  StrongDamageMax: 4
+  CriticalDamageMin: 3
+  CriticalDamageMax: 5
 --- !u!1 &414321177
 GameObject:
   m_ObjectHideFlags: 0
@@ -40634,6 +40676,7 @@ Transform:
   - {fileID: 1121603907}
   - {fileID: 2043173320}
   - {fileID: 1188524196}
+  - {fileID: 99070333}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -53764,7 +53807,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3684bc19e32a8ec4194f58d73f4f3dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 1
+  NormalDamageMin: 1
+  NormalDamageMax: 2
+  StrongDamageMin: 2
+  StrongDamageMax: 4
+  CriticalDamageMin: 3
+  CriticalDamageMax: 5
 --- !u!114 &865658005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78011,12 +78059,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AudioManagerPrefab: {fileID: 8388956219249298800, guid: bdd74ac2ced41c644a1ecab20eff63f5, type: 3}
   fadeManager: {fileID: 960945946}
-  EnemyPrefab: {fileID: 6232591748759594092, guid: 28e3236ac2921fb4eae47fc8de6cf408, type: 3}
-  EnemyContainer: {fileID: 2043173319}
-  topTanksTransform: {fileID: 2030575553}
-  bottomTanksTransform: {fileID: 991500745}
-  leftTanksTransform: {fileID: 336981428}
-  rightTanksTransform: {fileID: 1307576641}
   Player: {fileID: 971181771}
   ExpBar: {fileID: 556872507}
   ExpLevel: {fileID: 1449827230}
@@ -78040,13 +78082,13 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b7a19eded58931b489c6c1b98546d54e, type: 3}
   - {fileID: 21300000, guid: ef296fbf65b525e44b1c389f8672c034, type: 3}
   - {fileID: 21300000, guid: fdbd2d18b005e974b8a2091d35a662c1, type: 3}
-  - {fileID: 21300000, guid: b5b4e405d2b6c1a498b3cf4ae0acc0fd, type: 3}
   - {fileID: 21300000, guid: 197d21193fbbaae41921da37cfe2a853, type: 3}
   - {fileID: 21300000, guid: 513d3ea39c989ec4b834c0a91f404476, type: 3}
   - {fileID: 21300000, guid: 4f3880ef95c83aa4f99624b98860a26f, type: 3}
   - {fileID: 21300000, guid: 8e5afb75ae3631840958fe4e65f9cbf3, type: 3}
   - {fileID: 21300000, guid: e3f268db9a9181d40bba0f25a2f90069, type: 3}
   - {fileID: 21300000, guid: cc7fe9f3b19a8b345a6fedbcfae26a7b, type: 3}
+  - {fileID: 21300000, guid: b5b4e405d2b6c1a498b3cf4ae0acc0fd, type: 3}
   - {fileID: 21300000, guid: e32f213515ef22c44a9f9d8456d57f9b, type: 3}
   - {fileID: 21300000, guid: 77975b0e2bd158e4aa88716a70aba890, type: 3}
   HUDUpgradePanel: {fileID: 616747541}
@@ -78070,6 +78112,17 @@ MonoBehaviour:
   - {fileID: 554699600}
   - {fileID: 998967086}
   - {fileID: 60664587}
+  ItemContainer: {fileID: 1121603906}
+  CandyPrefab: {fileID: 2789390833255965416, guid: 49350f0dc1443174ba4820f99ba21979, type: 3}
+  PhonePrefab: {fileID: 2789390833255965416, guid: 396c665cfb2423e488e62eabcfc48b6a, type: 3}
+  HitNoticeContainer: {fileID: 99070332}
+  HitNoticePrefab: {fileID: 6880596710173919726, guid: 0080981dfbaf7ed43aabda6fc661154d, type: 3}
+  EnemyPrefab: {fileID: 6232591748759594092, guid: 28e3236ac2921fb4eae47fc8de6cf408, type: 3}
+  EnemyContainer: {fileID: 2043173319}
+  topTanksTransform: {fileID: 2030575553}
+  bottomTanksTransform: {fileID: 991500745}
+  leftTanksTransform: {fileID: 336981428}
+  rightTanksTransform: {fileID: 1307576641}
 --- !u!114 &1264012507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107006,7 +107059,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3684bc19e32a8ec4194f58d73f4f3dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 1
+  NormalDamageMin: 1
+  NormalDamageMax: 3
+  StrongDamageMin: 2
+  StrongDamageMax: 5
+  CriticalDamageMin: 3
+  CriticalDamageMax: 8
 --- !u!1 &1779207957
 GameObject:
   m_ObjectHideFlags: 0
@@ -107332,7 +107390,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3684bc19e32a8ec4194f58d73f4f3dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 1
+  NormalDamageMin: 1
+  NormalDamageMax: 2
+  StrongDamageMin: 2
+  StrongDamageMax: 4
+  CriticalDamageMin: 3
+  CriticalDamageMax: 5
 --- !u!114 &1782096308
 MonoBehaviour:
   m_ObjectHideFlags: 0

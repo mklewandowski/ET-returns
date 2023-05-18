@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    bool isActive = false;
+
     AudioManager audioManager;
     GameSceneManager GameSceneManagerScript;
 
-    bool isActive = true;
-    float life = 1f;
-    float hitStrength = 1f;
+    int life = 1;
+    int hitStrength = 1;
 
     [SerializeField]
     Globals.EnemyTypes type = Globals.EnemyTypes.Yar;
@@ -48,12 +49,6 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     GameObject ToxicDebrisPrefab;
 
-    [SerializeField]
-    GameObject CandyPrefab;
-    [SerializeField]
-    GameObject PhonePrefab;
-    GameObject itemContainer;
-
     float pauseBeforeAction = 2f;
 
     enum AttackPattern {
@@ -64,12 +59,14 @@ public class Enemy : MonoBehaviour
     AttackPattern attackPattern = AttackPattern.Direct;
     bool target = false;
 
-    void Awake()
+    public void Init()
     {
+        GameObject am = GameObject.Find("AudioManager");
+        if (am)
+            audioManager = am.GetComponent<AudioManager>();
         GameSceneManagerScript = GameObject.Find("SceneManager").GetComponent<GameSceneManager>();
         playerTransform = GameObject.Find("Player").transform;
         debrisContainer = GameObject.Find("DebrisContainer");
-        itemContainer = GameObject.Find("ItemContainer");
         enemyAnimator = GetComponent<Animator>();
         enemyCollider = GetComponent<BoxCollider2D>();
         enemyRigidbody = GetComponent<Rigidbody2D>();
@@ -77,15 +74,22 @@ public class Enemy : MonoBehaviour
         enemyMaterial = enemyRenderer.material;
     }
 
-    void Start()
+    public void DeActivate()
     {
-        GameObject am = GameObject.Find("AudioManager");
-        if (am)
-            audioManager = am.GetComponent<AudioManager>();
+        isActive = false;
+        this.gameObject.SetActive(false);
     }
 
-    public void ConfigureEnemy(Globals.EnemyTypes newType, float extraLife)
+    public bool IsActive()
     {
+        return isActive;
+    }
+
+    public void ConfigureEnemy(Vector3 pos, Globals.EnemyTypes newType, int extraLife, bool flip)
+    {
+        this.transform.localPosition = pos;
+        enemyRenderer.enabled = false;
+        enemyAnimator.enabled = false;
         type = newType;
         enemyRenderer.sprite = EnemySprites[(int)type];
         enemyRigidbody.mass = 1f;
@@ -93,6 +97,10 @@ public class Enemy : MonoBehaviour
         useLifeTimer = false;
         allowImpactVelocity = true;
         attackPattern = AttackPattern.Direct;
+        this.gameObject.SetActive(true);
+
+        int defaultCollisionLayer = LayerMask.NameToLayer("Enemy");
+        gameObject.layer = defaultCollisionLayer;
 
         // FAST
         if (type == Globals.EnemyTypes.Yar)
@@ -104,8 +112,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(6f, 6f, 1f);
             enemyCollider.size = new Vector2(0.08f, 0.08f);
             flipWithMovement = true;
-            life = 1.5f;
-            hitStrength = 2f;
+            life = 2;
+            hitStrength = 2;
         }
         else if (type == Globals.EnemyTypes.Pac)
         {
@@ -116,8 +124,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.14f, 0.1f);
             flipWithMovement = true;
-            life = 3f;
-            hitStrength = 3f;
+            life = 4;
+            hitStrength = 4;
         }
         else if (type == Globals.EnemyTypes.MsPac)
         {
@@ -128,8 +136,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.14f, 0.1f);
             flipWithMovement = true;
-            life = 4f;
-            hitStrength = 4f;
+            life = 6;
+            hitStrength = 5;
         }
         else if (type == Globals.EnemyTypes.Joust)
         {
@@ -140,8 +148,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = true;
-            life = 5f;
-            hitStrength = 5f;
+            life = 8;
+            hitStrength = 7;
         }
         else if (type == Globals.EnemyTypes.Joust2)
         {
@@ -152,21 +160,21 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = true;
-            life = 6f;
-            hitStrength = 6f;
+            life = 10;
+            hitStrength = 10;
         }
 
-        if (type == Globals.EnemyTypes.Yar2)
+        else if (type == Globals.EnemyTypes.Yar2)
         {
             moveSpeed = Random.Range(2.3f, 2.5f);
             positionTimerMax = .75f;
             enemyAnimator.enabled = true;
-            enemyAnimator.Play("yar");
+            enemyAnimator.Play("yar2");
             this.transform.localScale = new Vector3(6f, 6f, 1f);
             enemyCollider.size = new Vector2(0.08f, 0.08f);
             flipWithMovement = true;
-            life = 4f;
-            hitStrength = 4f;
+            life = 10;
+            hitStrength = 12;
         }
 
         // SURROUND
@@ -179,8 +187,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(6f, 6f, 1f);
             enemyCollider.size = new Vector2(0.1f, 0.1f);
             flipWithMovement = true;
-            life = 3f;
-            hitStrength = 3f;
+            life = 5;
+            hitStrength = 5;
             attackPattern = AttackPattern.Angle;
         }
         else if (type == Globals.EnemyTypes.Indy)
@@ -192,8 +200,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(8f, 8f, 1f);
             enemyCollider.size = new Vector2(0.05f, 0.1f);
             flipWithMovement = true;
-            life = 6f;
-            hitStrength = 4f;
+            life = 10;
+            hitStrength = 8;
             attackPattern = AttackPattern.Angle;
         }
         else if (type == Globals.EnemyTypes.Pengo)
@@ -205,8 +213,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.3f, 0.07f);
             flipWithMovement = true;
-            life = 12f;
-            hitStrength = 6f;
+            life = 20;
+            hitStrength = 12;
             attackPattern = AttackPattern.Angle;
         }
 
@@ -220,8 +228,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = true;
-            life = 6f;
-            hitStrength = 6f;
+            life = 10;
+            hitStrength = 8;
         }
         else if (type == Globals.EnemyTypes.Kangaroo)
         {
@@ -233,8 +241,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.12f, 0.2f);
             flipWithMovement = true;
-            life = 10f;
-            hitStrength = 8f;
+            life = 20;
+            hitStrength = 12;
         }
         else if (type == Globals.EnemyTypes.Bear)
         {
@@ -246,8 +254,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.12f, 0.12f);
             flipWithMovement = true;
-            life = 12f;
-            hitStrength = 10f;
+            life = 28;
+            hitStrength = 14;
         }
         else if (type == Globals.EnemyTypes.Hero)
         {
@@ -259,8 +267,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.12f, 0.2f);
             flipWithMovement = true;
-            life = 15f;
-            hitStrength = 12f;
+            life = 36;
+            hitStrength = 16;
         }
         else if (type == Globals.EnemyTypes.Hero2)
         {
@@ -271,8 +279,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.12f, 0.2f);
             flipWithMovement = true;
-            life = 20f;
-            hitStrength = 14f;
+            life = 40;
+            hitStrength = 18;
         }
 
         // SPECIAL
@@ -284,8 +292,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(.1f, .1f, 1f);
             enemyCollider.size = new Vector2(0.1f, 0.1f);
             flipWithMovement = true;
-            life = 6f;
-            hitStrength = 6f;
+            life = 6;
+            hitStrength = 6;
             pauseBeforeAction = 2f;
             this.GetComponent<GrowAndShrink>().StartEffect();
         }
@@ -295,8 +303,8 @@ public class Enemy : MonoBehaviour
             enemyAnimator.enabled = false;
             this.transform.localScale = new Vector3(.1f, .1f, 1f);
             enemyCollider.size = new Vector2(0.1f, 0.1f);
-            life = 4f;
-            hitStrength = 4f;
+            life = 8;
+            hitStrength = 10;
             pauseBeforeAction = 2f;
             this.GetComponent<GrowAndShrink>().StartEffect();
             int collisionLayer = LayerMask.NameToLayer("EnemyPlane");
@@ -304,16 +312,17 @@ public class Enemy : MonoBehaviour
             useLifeTimer = true;
             lifeTimer = 15f;
             allowImpactVelocity = false;
+            movementVector = new Vector3(5f, 0, 0);
         }
         else if (type == Globals.EnemyTypes.Moon)
         {
             moveSpeed = Random.Range(1.3f, 1.6f);
             enemyAnimator.enabled = true;
             enemyAnimator.Play("moon");
-            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            this.transform.localScale = new Vector3(.1f, .1f, 1f);
             enemyCollider.size = new Vector2(0.3f, 0.07f);
-            life = 7f;
-            hitStrength = 5f;
+            life = 10;
+            hitStrength = 15;
             pauseBeforeAction = 2f;
             this.GetComponent<GrowAndShrink>().StartEffect();
             int collisionLayer = LayerMask.NameToLayer("EnemyPlane");
@@ -321,6 +330,11 @@ public class Enemy : MonoBehaviour
             useLifeTimer = true;
             lifeTimer = 15f;
             allowImpactVelocity = false;
+            movementVector = new Vector3(flip ? -5.5f : 5.5f, 0, 0);
+            if (flip)
+            {
+                this.transform.localEulerAngles = new Vector3(0, 180f, 0);
+            }
         }
         else if (type == Globals.EnemyTypes.FBI)
         {
@@ -331,8 +345,8 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.3f);
             flipWithMovement = true;
-            life = 2f;
-            hitStrength = 4f;
+            life = 2;
+            hitStrength = 5;
             enemyRigidbody.mass = 999f;
             int collisionLayer = LayerMask.NameToLayer("EnemySpecial");
             gameObject.layer = collisionLayer;
@@ -346,12 +360,30 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.3f);
             flipWithMovement = true;
-            life = 4f;
-            hitStrength = 4f;
+            life = 5;
+            hitStrength = 10;
             enemyRigidbody.mass = 999f;
             int collisionLayer = LayerMask.NameToLayer("EnemySpecial");
             gameObject.layer = collisionLayer;
         }
+
+        // BOSS
+        else if (type == Globals.EnemyTypes.PacBoss)
+        {
+            moveSpeed = .5f;
+            positionTimerMax = 4f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("pac");
+            this.transform.localScale = new Vector3(15f, 15f, 1f);
+            enemyCollider.size = new Vector2(0.14f, 0.1f);
+            flipWithMovement = true;
+            life = 100;
+            hitStrength = 10;
+        }
+        life = life + extraLife;
+        enemyCollider.enabled = true;
+        enemyRenderer.enabled = true;
+        isActive = true;
     }
 
     // Update is called once per frame
@@ -375,11 +407,7 @@ public class Enemy : MonoBehaviour
             positionTimer -= Time.deltaTime;
             if (positionTimer < 0)
             {
-                if (type == Globals.EnemyTypes.Plane)
-                {
-                    movementVector = new Vector3(5f, 0, 0);
-                }
-                else
+                if (type != Globals.EnemyTypes.Moon && type != Globals.EnemyTypes.Plane)
                 {
                     Vector3 desiredPosition = (type == Globals.EnemyTypes.FBI || type == Globals.EnemyTypes.Scientist)
                         ? new Vector3(playerTransform.position.x + 6f * (Random.Range(0, 2) == 0 ? -1f : 1f), playerTransform.position.y + 4f * (Random.Range(0, 2) == 0 ? -1f : 1f), 0)
@@ -435,7 +463,7 @@ public class Enemy : MonoBehaviour
         lifeTimer -= Time.deltaTime;
         if (lifeTimer < 0)
         {
-            Destroy(this.gameObject);
+            DeActivate();
         }
     }
 
@@ -451,7 +479,7 @@ public class Enemy : MonoBehaviour
 
         Bullet bullet = collider.gameObject.GetComponent<Bullet>();
         AttackObject attackObject = collider.gameObject.GetComponent<AttackObject>();
-        float damage = 0;
+        int damage = 0;
         Vector2 damageVelocity = new Vector2(0, 0);
         if (bullet != null)
         {
@@ -463,9 +491,19 @@ public class Enemy : MonoBehaviour
         if (attackObject)
         {
             audioManager.PlayEnemyHitSound();
-            damage = attackObject.Damage * Globals.currentAttack;
+            float currentAttackPercent = (float)Globals.currentAttack / (float)Globals.maxAttack;
+            float randVal = Random.Range(0, 100f);
+            if (randVal < 75f)
+                damage = (int)Mathf.Round(attackObject.NormalDamageMin + (attackObject.NormalDamageMax - attackObject.NormalDamageMin) * currentAttackPercent);
+            else if (randVal < 95f)
+                damage = (int)Mathf.Round(attackObject.StrongDamageMin + (attackObject.StrongDamageMax - attackObject.StrongDamageMin) * currentAttackPercent);
+            else
+                damage = (int)Mathf.Round(attackObject.CriticalDamageMin + (attackObject.CriticalDamageMax - attackObject.CriticalDamageMin) * currentAttackPercent);
         }
         life = life - damage;
+        if (damage > 0)
+            GameSceneManagerScript.ActivateHitNoticeFromPool(this.gameObject.transform.position, damage);
+
         if (life <= 0)
             KillEnemy();
         else if (damage > 0)
@@ -488,9 +526,7 @@ public class Enemy : MonoBehaviour
         // spawn phone or candy or toxic debris
         if (type == Globals.EnemyTypes.FBI)
         {
-            GameObject phoneGO = Instantiate(PhonePrefab, this.transform.localPosition, Quaternion.identity, itemContainer.transform);
-            phoneGO.GetComponent<Phone>().Init();
-            GameSceneManagerScript.KillFBI();
+            GameSceneManagerScript.ActivatePhoneFromPool(this.transform.localPosition);
         }
         else if (type == Globals.EnemyTypes.Scientist)
         {
@@ -501,17 +537,14 @@ public class Enemy : MonoBehaviour
                 GameObject toxicDebrisGO = Instantiate(ToxicDebrisPrefab, this.transform.localPosition, Quaternion.identity, debrisContainer.transform);
                 toxicDebrisGO.GetComponent<ToxicDebris>().Init();
             }
-            GameSceneManagerScript.KillScientist();
         }
         else if (Random.Range(0, 100f) < 50f)
         {
-            GameObject candyGO = Instantiate(CandyPrefab, this.transform.localPosition, Quaternion.identity, itemContainer.transform);
-            candyGO.GetComponent<Candy>().Init();
+            GameSceneManagerScript.ActivateCandyFromPool(this.transform.localPosition);
         }
 
-        this.GetComponent<Collider2D>().enabled = false;
-        isActive = false;
-        Destroy(this.gameObject);
+        enemyCollider.enabled = false;
+        DeActivate();
     }
 
     void DamageEnemy(Vector2 impactVelocity)

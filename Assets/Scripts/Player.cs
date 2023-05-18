@@ -74,12 +74,35 @@ public class Player : MonoBehaviour
     bool isMoving = false;
     Animator playerAnimator;
 
-    float shootTimer = 2f;
-    float shootTimerBurstMax = .2f;
+    public enum ShootType {
+        Gun,
+        Bomb,
+        Swirl,
+        Laser,
+        Invader,
+        Ghost,
+        SeekerMissile,
+        Tornado,
+        Bees,
+        Boomerang,
+        Pit,
+        None
+    }
+
+    ShootType[] shootTypes = {
+        ShootType.Gun, ShootType.Gun, ShootType.Gun, ShootType.Gun, ShootType.Gun,
+        ShootType.Bomb, ShootType.Swirl, ShootType.Laser, ShootType.Invader, ShootType.Ghost, ShootType.None,
+        ShootType.Gun, ShootType.Gun, ShootType.Gun, ShootType.Gun, ShootType.Gun,
+        ShootType.None, ShootType.Tornado, ShootType.Bees, ShootType.Boomerang, ShootType.Pit, ShootType.None
+    };
+    int shootIndex = 0;
+
+    float shootTimer = 1f;
+    float shootTimerMax = .2f;
     int burstNum = 5;
     int burstNumMax = 5;
     float muzzleFlashTimer = 0f;
-    float muzzleFlashTimerMax = .05f;
+    float muzzleFlashTimerMax = .075f;
     float laserTimer = 0f;
     float surroundTimer = 0f;
     float surroundTimerOffMax = 4f;
@@ -129,7 +152,6 @@ public class Player : MonoBehaviour
         HandleInvincible();
         HandleLaser();
         HandleSurround();
-
         if (isAlive)
             Globals.gameTime += Time.deltaTime;
     }
@@ -218,55 +240,51 @@ public class Player : MonoBehaviour
         shootTimer -= Time.deltaTime;
         if (shootTimer < 0)
         {
-            audioManager.PlayPlayerShootSound();
-            GameObject bulletGO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
-            Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
-            float xMovement = currentPlayerOrientation == PlayerOrientation.Right || currentPlayerOrientation == PlayerOrientation.UpRight || currentPlayerOrientation == PlayerOrientation.DownRight
-                ? 10f
-                : currentPlayerOrientation == PlayerOrientation.Left || currentPlayerOrientation == PlayerOrientation.DownLeft || currentPlayerOrientation == PlayerOrientation.UpLeft
-                    ? -10f
-                    : 0;
-            float yMovement = currentPlayerOrientation == PlayerOrientation.Up || currentPlayerOrientation == PlayerOrientation.UpRight || currentPlayerOrientation == PlayerOrientation.UpLeft
-                ? 10f
-                : currentPlayerOrientation == PlayerOrientation.Down || currentPlayerOrientation == PlayerOrientation.DownLeft  || currentPlayerOrientation == PlayerOrientation.DownRight
-                    ? -10f
-                    : 0;
-            Vector2 bulletMovement = new Vector2(xMovement, yMovement);
-            bulletRigidbody.velocity = bulletMovement;
+            ShootType shootType = shootTypes[shootIndex];
+            Vector2 bulletMovement = GetBulletMovement();
+            if (shootType == ShootType.Gun)
+            {
+                audioManager.PlayPlayerShootSound();
+                GameObject bulletGO = Instantiate(BulletPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+                Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
+                bulletRigidbody.velocity = bulletMovement;
+                if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SpreadShot] > 0 || Globals.DebugMode)
+                    HandleShootSpread(bulletMovement, (burstNumMax - burstNum));
+                if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.RearShot] > 0 || Globals.DebugMode)
+                    HandleShootRear(bulletMovement, (burstNumMax - burstNum));
+                if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SideShot] > 0 || Globals.DebugMode)
+                    HandleShootSide(bulletMovement, (burstNumMax - burstNum));
+                if ((shootIndex > 10 && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SeekerMissile] > 0) || Globals.DebugMode)
+                    HandleShootSeekerMissile((burstNumMax - burstNum));
+                MuzzleGO.SetActive(true);
+                muzzleFlashTimer = muzzleFlashTimerMax;
 
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SpreadShot] > 0 || Globals.DebugMode)
-                HandleShootSpread(bulletMovement);
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.RearShot] > 0 || Globals.DebugMode)
-                HandleShootRear(bulletMovement);
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SideShot] > 0 || Globals.DebugMode)
-                HandleShootSide(bulletMovement);
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Swirl] > 0 || Globals.DebugMode)
-                HandleShootSwirl();
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] > 0 || Globals.DebugMode)
+                burstNum = burstNum - 1;
+                if (burstNum == 0) burstNum = burstNumMax;
+            }
+            else if (shootType == ShootType.Bomb && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] > 0 || Globals.DebugMode)
                 HandleShootBomb();
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Laser] > 0 || Globals.DebugMode)
+            else if (shootType == ShootType.Swirl && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Swirl] > 0 || Globals.DebugMode)
+                HandleShootSwirl();
+            else if (shootType == ShootType.Laser && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Laser] > 0 || Globals.DebugMode)
                 HandleShootLaser();
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Invader] > 0 || Globals.DebugMode)
+            else if (shootType == ShootType.Invader && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Invader] > 0 || Globals.DebugMode)
                 HandleLaunchInvader();
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Ghost] > 0 || Globals.DebugMode)
+            else if (shootType == ShootType.Ghost && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Ghost] > 0 || Globals.DebugMode)
                 HandleLaunchGhost();
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] > 0 || Globals.DebugMode)
-                HandleLaunchBees();
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Boomerang] > 0 || Globals.DebugMode)
-                HandleShootBoomerang(bulletMovement);
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] > 0 || Globals.DebugMode)
-                HandleCreatePit(bulletMovement);
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Tornado] > 0 || Globals.DebugMode)
+            else if (shootType == ShootType.Tornado && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Tornado] > 0 || Globals.DebugMode)
                 HandleShootTornado(bulletMovement);
-            if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SeekerMissile] > 0 || Globals.DebugMode)
-                HandleShootSeekerMissile();
+            else if (shootType == ShootType.Bees && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] > 0 || Globals.DebugMode)
+                HandleLaunchBees();
+            else if (shootType == ShootType.Boomerang && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Boomerang] > 0 || Globals.DebugMode)
+                HandleShootBoomerang(bulletMovement);
+            else if (shootType == ShootType.Pit && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] > 0 || Globals.DebugMode)
+                HandleCreatePit(bulletMovement);
 
-            burstNum = burstNum - 1;
-            shootTimer = burstNum == 0 ? Globals.currentShootTimerMax : shootTimerBurstMax;
-            if (burstNum == 0) burstNum = burstNumMax;
-
-            MuzzleGO.SetActive(true);
-            muzzleFlashTimer = muzzleFlashTimerMax;
+            shootTimer = shootTimerMax;
+            shootIndex++;
+            if (shootIndex >= shootTypes.Length)
+                shootIndex = 0;
         }
 
         if (muzzleFlashTimer > 0)
@@ -277,20 +295,29 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void HandleShootSpread(Vector2 bulletMovement)
+    Vector2 GetBulletMovement()
+    {
+        float xMovement = currentPlayerOrientation == PlayerOrientation.Right || currentPlayerOrientation == PlayerOrientation.UpRight || currentPlayerOrientation == PlayerOrientation.DownRight
+            ? 10f
+            : currentPlayerOrientation == PlayerOrientation.Left || currentPlayerOrientation == PlayerOrientation.DownLeft || currentPlayerOrientation == PlayerOrientation.UpLeft
+                ? -10f
+                : 0;
+        float yMovement = currentPlayerOrientation == PlayerOrientation.Up || currentPlayerOrientation == PlayerOrientation.UpRight || currentPlayerOrientation == PlayerOrientation.UpLeft
+            ? 10f
+            : currentPlayerOrientation == PlayerOrientation.Down || currentPlayerOrientation == PlayerOrientation.DownLeft  || currentPlayerOrientation == PlayerOrientation.DownRight
+                ? -10f
+                : 0;
+        Vector2 bulletMovement = new Vector2(xMovement, yMovement);
+        return bulletMovement;
+    }
+
+    private void HandleShootSpread(Vector2 bulletMovement, int burstInterval)
     {
         int index = (int)Globals.UpgradeTypes.SpreadShot * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SpreadShot] - 1;
-        int spreadShots = Globals.UpgradeLevelBullets[index];
+        if (burstInterval >= Globals.UpgradeLevelBullets[index])
+            return;
         MakeBullet(Quaternion.Euler(0, 0, -10f) * bulletMovement);
         MakeBullet(Quaternion.Euler(0, 0, 10f) * bulletMovement);
-        if (spreadShots >= 4)
-            MakeBullet(Quaternion.Euler(0, 0, 15f) * bulletMovement);
-        if (spreadShots >= 5)
-            MakeBullet(Quaternion.Euler(0, 0, -15f) * bulletMovement);
-        if (spreadShots >= 6)
-            MakeBullet(Quaternion.Euler(0, 0, 20f) * bulletMovement);
-        if (spreadShots >= 7)
-            MakeBullet(Quaternion.Euler(0, 0, -20f) * bulletMovement);
     }
 
     private void MakeBullet(Vector2 bulletMovement)
@@ -300,10 +327,10 @@ public class Player : MonoBehaviour
         bulletRigidbody.velocity = bulletMovement;
     }
 
-    private void HandleShootRear(Vector2 bulletMovement)
+    private void HandleShootRear(Vector2 bulletMovement, int burstInterval)
     {
         int index = (int)Globals.UpgradeTypes.RearShot * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.RearShot] - 1;
-        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
+        if (burstInterval >= Globals.UpgradeLevelBullets[index])
             return;
         Vector2 bulletRearMovement = new Vector2(bulletMovement.x * -1f, bulletMovement.y * -1f);
         GameObject bulletRearGO = Instantiate(BulletDartPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
@@ -313,10 +340,10 @@ public class Player : MonoBehaviour
         bulletRearGO.transform.localEulerAngles = new Vector3(0, 0, bulletAngle);
     }
 
-    private void HandleShootSide(Vector2 bulletMovement)
+    private void HandleShootSide(Vector2 bulletMovement, int burstInterval)
     {
         int index = (int)Globals.UpgradeTypes.SideShot * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SideShot] - 1;
-        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
+        if (burstInterval >= Globals.UpgradeLevelBullets[index])
             return;
         Vector2 bullet1Movement = Quaternion.Euler(0, 0, -90f) * bulletMovement;
         Vector2 bullet2Movement = Quaternion.Euler(0, 0, 90f) * bulletMovement;
@@ -334,41 +361,49 @@ public class Player : MonoBehaviour
 
     private void HandleShootBoomerang(Vector2 bulletMovement)
     {
+        audioManager.PlayPlayerShoot2Sound();
         int index = (int)Globals.UpgradeTypes.Boomerang * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Boomerang] - 1;
-        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
-            return;
-        Vector2 boomerangMovement = Quaternion.Euler(0, 0, burstNum == burstNumMax ? 80f : -80f) * new Vector3(bulletMovement.x * .75f, bulletMovement.y * .75f);
-        GameObject boomerangGO = Instantiate(BoomerangPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
-        Rigidbody2D boomerangRigidbody = boomerangGO.GetComponent<Rigidbody2D>();
-        boomerangRigidbody.velocity = boomerangMovement;
+        int numShots = Globals.UpgradeLevelBullets[index];
+        for (int x = 0; x < numShots; x++)
+        {
+            Vector2 boomerangMovement = Quaternion.Euler(0, 0, x == 0 ? 80f : -80f) * new Vector3(bulletMovement.x * .75f, bulletMovement.y * .75f);
+            GameObject boomerangGO = Instantiate(BoomerangPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+            Rigidbody2D boomerangRigidbody = boomerangGO.GetComponent<Rigidbody2D>();
+            boomerangRigidbody.velocity = boomerangMovement;
+        }
     }
 
     private void HandleShootSwirl()
     {
+        audioManager.PlayPlayerShoot2Sound();
         int index = (int)Globals.UpgradeTypes.Swirl * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Swirl] - 1;
-        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
-            return;
-        Vector2 bulletMovement = Quaternion.Euler(0, 0, Random.Range(0, 360f)) * new Vector2(3f, 3f);
-        GameObject bulletGO = Instantiate(BulletSwirlPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
-        Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
-        bulletRigidbody.velocity = bulletMovement;
+        int numShots = Globals.UpgradeLevelBullets[index];
+        for (int x = 0; x < numShots; x++)
+        {
+            Vector2 bulletMovement = Quaternion.Euler(0, 0, Random.Range(0, 360f)) * new Vector2(3f, 3f);
+            GameObject bulletGO = Instantiate(BulletSwirlPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+            Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
+            bulletRigidbody.velocity = bulletMovement;
+        }
     }
 
     private void HandleShootBomb()
     {
+        audioManager.PlayPlayerShoot2Sound();
         int index = (int)Globals.UpgradeTypes.Bomb * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] - 1;
-        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
-            return;
-        Vector2 bulletMovement = Quaternion.Euler(0, 0, Random.Range(-25f, 25f)) * new Vector2(0, 5f);
-        GameObject bulletGO = Instantiate(BulletBombPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
-        Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
-        bulletRigidbody.velocity = bulletMovement;
+        int numShots = Globals.UpgradeLevelBullets[index];
+        for (int x = 0; x < numShots; x++)
+        {
+            Vector2 bulletMovement = Quaternion.Euler(0, 0, Random.Range(-25f, 25f)) * new Vector2(0, 5f);
+            GameObject bulletGO = Instantiate(BulletBombPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+            Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
+            bulletRigidbody.velocity = bulletMovement;
+        }
     }
 
     private void HandleShootLaser()
     {
-        if (burstNum < burstNumMax)
-            return;
+        audioManager.PlayPlayerLaserSound();
         Laser.SetActive(true);
         int index = (int)Globals.UpgradeTypes.Laser * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Laser] - 1;
         float laserTimerMax = Globals.UpgradeLevelAttackTimes[index];
@@ -377,36 +412,43 @@ public class Player : MonoBehaviour
 
     private void HandleLaunchInvader()
     {
+        audioManager.PlayPlayerShoot2Sound();
         int index = (int)Globals.UpgradeTypes.Invader * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Invader] - 1;
-        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
-            return;
-        GameObject invaderGO = Instantiate(InvaderPrefab, new Vector3(this.transform.localPosition.x, this.transform.localPosition.y + 100f, 0), Quaternion.identity, BulletContainer.transform);
-        invaderGO.GetComponent<Invader>().Init(this.transform.localPosition);
+        int numShots = Globals.UpgradeLevelBullets[index];
+        for (int x = 0; x < numShots; x++)
+        {
+            GameObject invaderGO = Instantiate(InvaderPrefab, new Vector3(this.transform.localPosition.x, this.transform.localPosition.y + 100f, 0), Quaternion.identity, BulletContainer.transform);
+            invaderGO.GetComponent<Invader>().Init(this.transform.localPosition);
+        }
     }
 
     private void HandleLaunchGhost()
     {
+        audioManager.PlayPlayerShoot2Sound();
         int index = (int)Globals.UpgradeTypes.Ghost * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Ghost] - 1;
-        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
-            return;
-        GameObject ghostGO = Instantiate(GhostPrefab, new Vector3(this.transform.localPosition.x, this.transform.localPosition.y, 0), Quaternion.identity, BulletContainer.transform);
-        ghostGO.GetComponent<Ghost>().Init(this.transform.localPosition);
+        int numShots = Globals.UpgradeLevelBullets[index];
+        for (int x = 0; x < numShots; x++)
+        {
+            GameObject ghostGO = Instantiate(GhostPrefab, new Vector3(this.transform.localPosition.x, this.transform.localPosition.y, 0), Quaternion.identity, BulletContainer.transform);
+            ghostGO.GetComponent<Ghost>().Init(this.transform.localPosition);
+        }
     }
 
     private void HandleLaunchBees()
     {
+        audioManager.PlayPlayerBeeSound();
         int index = (int)Globals.UpgradeTypes.Bees * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] - 1;
-        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
-            return;
-        GameObject beesGO = Instantiate(BeesPrefab, new Vector3(this.transform.localPosition.x, this.transform.localPosition.y + 100f, 0), Quaternion.identity, BulletContainer.transform);
-        beesGO.GetComponent<Bees>().Init(this.transform.localPosition, burstNum == burstNumMax);
+        int numShots = Globals.UpgradeLevelBullets[index];
+        for (int x = 0; x < numShots; x++)
+        {
+            GameObject beesGO = Instantiate(BeesPrefab, new Vector3(this.transform.localPosition.x, this.transform.localPosition.y + 100f, 0), Quaternion.identity, BulletContainer.transform);
+            beesGO.GetComponent<Bees>().Init(this.transform.localPosition, burstNum == burstNumMax);
+        }
     }
 
     private void HandleCreatePit(Vector2 bulletMovement)
     {
-        int index = (int)Globals.UpgradeTypes.Pit * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] - 1;
-        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
-            return;
+        audioManager.PlayPlayerShoot2Sound();
         GameObject pitGO = Instantiate(PitPrefab,
             new Vector3(this.transform.localPosition.x + bulletMovement.x * -.075f, this.transform.localPosition.y + bulletMovement.y * -.075f, 0),
             Quaternion.identity,
@@ -415,19 +457,22 @@ public class Player : MonoBehaviour
 
     private void HandleShootTornado(Vector2 bulletMovement)
     {
+        audioManager.PlayPlayerShoot2Sound();
         int index = (int)Globals.UpgradeTypes.Tornado * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Tornado] - 1;
-        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
-            return;
-        GameObject bulletGO = Instantiate(BulletTornadoPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
-        bulletGO.GetComponent<Bullet>().SetLifeTimer(Globals.UpgradeLevelAttackTimes[index]);
-        Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
-        bulletRigidbody.velocity = new Vector2(bulletMovement.x * .4f, bulletMovement.y * .4f);
+        int numShots = Globals.UpgradeLevelBullets[index];
+        for (int x = 0; x < numShots; x++)
+        {
+            GameObject bulletGO = Instantiate(BulletTornadoPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+            bulletGO.GetComponent<Bullet>().SetLifeTimer(Globals.UpgradeLevelAttackTimes[index]);
+            Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
+            bulletRigidbody.velocity = new Vector2(bulletMovement.x * .4f, bulletMovement.y * .4f);
+        }
     }
 
-    private void HandleShootSeekerMissile()
+    private void HandleShootSeekerMissile(int burstInterval)
     {
         int index = (int)Globals.UpgradeTypes.SeekerMissile * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SeekerMissile] - 1;
-        if ((burstNumMax - burstNum) >= Globals.UpgradeLevelBullets[index])
+        if (burstInterval >= Globals.UpgradeLevelBullets[index])
             return;
         GameObject bulletGO = Instantiate(BulletSeekerPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
     }
@@ -493,12 +538,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void HitPlayer(float damage)
+    public void HitPlayer(int damage)
     {
         if (invincibleTimer <= 0)
         {
             audioManager.PlayPlayerHitSound();
-            float defenseAdjustedDamage = damage / Globals.currentDefense;
+            int defenseAdjustment = (int)(Mathf.Round((float)(Globals.currentDefense) / 2f));
+            float defenseAdjustedDamage = Mathf.Max(1, defenseAdjustment);
             health -= defenseAdjustedDamage;
             if (health < 0 )
                 health = 0;
@@ -542,13 +588,13 @@ public class Player : MonoBehaviour
         if (candy != null && isAlive)
         {
             CollectCandy();
-            Destroy(candy.gameObject);
+            candy.DeActivate();
         }
         Phone phone = collider.gameObject.GetComponent<Phone>();
         if (phone != null && isAlive)
         {
             CollectPhone();
-            Destroy(phone.gameObject);
+            phone.DeActivate();
         }
     }
 
@@ -594,13 +640,11 @@ public class Player : MonoBehaviour
         }
         else if (upgradeType == Globals.UpgradeTypes.Defense && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Defense] > 0)
         {
-            int defenseLevel = Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Defense];
-            Globals.currentDefense = Globals.currentDefense + (defenseLevel * .2f);
+            Globals.currentDefense = Globals.currentDefense + 1;
         }
         else if (upgradeType == Globals.UpgradeTypes.Attack && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Attack] > 0)
         {
-            int attackLevel = Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Attack];
-            Globals.currentAttack = Globals.currentAttack + (attackLevel * .2f);
+            Globals.currentAttack = Globals.currentAttack + 1;
         }
     }
 

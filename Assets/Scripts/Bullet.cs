@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    AudioManager audioManager;
     [SerializeField]
     Globals.BulletTypes type = Globals.BulletTypes.Standard;
 
@@ -18,6 +19,9 @@ public class Bullet : MonoBehaviour
 
     void Awake()
     {
+        GameObject am = GameObject.Find("AudioManager");
+        if (am)
+            audioManager = am.GetComponent<AudioManager>();
         bulletContainer = GameObject.Find("BulletContainer");
     }
 
@@ -55,8 +59,9 @@ public class Bullet : MonoBehaviour
             if (type == Globals.BulletTypes.Bomb)
             {
                 // create shockwave
-                 GameObject shockwaveGO = Instantiate(BombShockWavePrefab, this.transform.position, Quaternion.identity, bulletContainer.transform);
-                 shockwaveGO.GetComponent<BombShockWave>().StartEffect();
+                audioManager.PlayExplodeSound();
+                GameObject shockwaveGO = Instantiate(BombShockWavePrefab, this.transform.position, Quaternion.identity, bulletContainer.transform);
+                shockwaveGO.GetComponent<BombShockWave>().StartEffect();
             }
             Destroy(this.gameObject);
         }
