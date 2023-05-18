@@ -87,9 +87,15 @@ public class Enemy : MonoBehaviour
 
     public void ConfigureEnemy(Vector3 pos, Globals.EnemyTypes newType, int extraLife, bool flip)
     {
+        flashTimer = 0;
+        impactTimer = 0f;
+        positionTimer = .1f;
+        enemyRenderer.material = enemyMaterial;
+
         this.transform.localPosition = pos;
         enemyRenderer.enabled = false;
         enemyAnimator.enabled = false;
+
         type = newType;
         enemyRenderer.sprite = EnemySprites[(int)type];
         enemyRigidbody.mass = 1f;
@@ -405,7 +411,7 @@ public class Enemy : MonoBehaviour
         if (positionTimer > 0)
         {
             positionTimer -= Time.deltaTime;
-            if (positionTimer < 0)
+            if (positionTimer <= 0)
             {
                 if (type != Globals.EnemyTypes.Moon && type != Globals.EnemyTypes.Plane)
                 {
