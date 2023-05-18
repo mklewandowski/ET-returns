@@ -139,14 +139,14 @@ public class Globals
         Surround,
         Invader,
         Ghost,
-        // Defense,
         Speed,
         SeekerMissile,
         Tornado,
         Bees,
         Boomerang,
         Pit,
-        // Attack,
+        Defense,
+        Attack,
         // DonkeyKong,
         // Coily,
         // Robot,
@@ -171,14 +171,14 @@ public class Globals
         "Orbiting Drone",
         "Invader",
         "Ghost",
-        // "Defense Boost",
         "Speed Boost",
         "Seeker Star",
         "Tornado",
         "Killer Bees",
         "Boomerang",
         "Pit Trap",
-        // "Attack Boost",
+        "Defense Boost",
+        "Attack Boost",
         // "Donkey Kong",
         // "Coily",
         // "Berzerk Bot",
@@ -205,8 +205,8 @@ public class Globals
         "Summon killer bees from side of screen.", "Increase bee attack range by 20%.", "Increases number of enemies that bees pass through by 1.", "Adds second bee swarm.", "Increase bee attack range by 20%.",
         "Shoots boomerang to the side of player.", "Increases boomerang attack range by 20%.", "Increases boomerang attack range by 20%.", "Adds additional boomerang.", "Increases boomerang attack range by 20%.",
         "Place pit trap behind player.", "Increase pit trap attack time by 10%.", "Increase pit trap size by 25%.", "Increase pit trap attack time by 10%.", "Increase pit trap size by 25%.",
-        // "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.",
-        // "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.",
+        "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.",
+        "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.",
         // "Summons Donkey Kong to attack enemies.",
         // "Summons Coily to attack enemies.",
         // "Summons Berzerk Bot to attack enemies.",
@@ -231,8 +231,8 @@ public class Globals
         1,1,1,2,2,
         1,1,1,2,2,
         1,1,1,1,1,
-        // 0,0,0,0,0,
-        // 0,0,0,0,0,
+        0,0,0,0,0,
+        0,0,0,0,0,
     };
     public static float[] UpgradeLevelAttackTimes = {
         0,0,0,0,0,
@@ -251,8 +251,8 @@ public class Globals
         1.2f, 1.5f, 1.5f, 1.5f, 1.75f,
         .25f, .3f, .35f, .35f, .4f,
         1f, 1.1f, 1.1f, 1.2f, 1.2f,
-        // 0,0,0,0,0,
-        // 0,0,0,0,0,
+        0,0,0,0,0,
+        0,0,0,0,0,
     };
     public static float[] UpgradeLevelAttackSizes = {
         1f,1.1f,1.2f,1.33f,1.46f,
@@ -271,8 +271,8 @@ public class Globals
         0,0,0,0,0,
         0,0,0,0,0,
         1f,1f,1.25f,1.25f,1.5f,
-        // 0,0,0,0,0,
-        // 0,0,0,0,0,
+        0,0,0,0,0,
+        0,0,0,0,0,
     };
     public static int[] UpgradeLevelEnemyHits = {
         1,1,1,1,1,
@@ -291,8 +291,8 @@ public class Globals
         3,3,4,4,4,
         1,1,1,1,1,
         1,1,1,1,1,
-        // 0,0,0,0,0,
-        // 0,0,0,0,0,
+        0,0,0,0,0,
+        0,0,0,0,0,
     };
 
     public static int[] CurrentUpgradeLevels;
@@ -307,9 +307,9 @@ public class Globals
     public static int[] defensePerLevel;
 
     public static float startMaxHealth = 20f;
-    public static float currentAttack = 0;
+    public static int currentAttack = 0;
     public static float currentMaxHealth = 20f;
-    public static float currentDefense = 1f;
+    public static int currentDefense = 1;
     public static float maxAttack = 10f;
     public static float maxDefense = 10f;
     public static int currrentNumEnemies = 0;
@@ -380,9 +380,9 @@ public class Globals
         killCount = 0;
         gameTime = 0;
         startMaxHealth = 20f;
-        currentAttack = 0f;
+        currentAttack = 0;
         currentMaxHealth = 20f;
-        currentDefense = 0f;
+        currentDefense = 0;
         currrentNumEnemies = 0;
     }
 

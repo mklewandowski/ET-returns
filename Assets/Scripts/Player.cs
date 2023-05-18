@@ -538,12 +538,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void HitPlayer(float damage)
+    public void HitPlayer(int damage)
     {
         if (invincibleTimer <= 0)
         {
             audioManager.PlayPlayerHitSound();
-            float defenseAdjustedDamage = Mathf.Max(1f, damage - Globals.currentDefense);
+            int defenseAdjustment = (int)(Mathf.Round((float)(Globals.currentDefense) / 2f));
+            float defenseAdjustedDamage = Mathf.Max(1, defenseAdjustment);
             health -= defenseAdjustedDamage;
             if (health < 0 )
                 health = 0;
@@ -637,16 +638,14 @@ public class Player : MonoBehaviour
             int speedLevel = Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Speed];
             moveSpeed = moveSpeedInitial + (speedLevel * .22f);
         }
-        // else if (upgradeType == Globals.UpgradeTypes.Defense && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Defense] > 0)
-        // {
-        //     int defenseLevel = Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Defense];
-        //     Globals.currentDefense = Globals.currentDefense + (defenseLevel * .2f);
-        // }
-        // else if (upgradeType == Globals.UpgradeTypes.Attack && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Attack] > 0)
-        // {
-        //     int attackLevel = Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Attack];
-        //     Globals.currentAttack = Globals.currentAttack + (attackLevel * .2f);
-        // }
+        else if (upgradeType == Globals.UpgradeTypes.Defense && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Defense] > 0)
+        {
+            Globals.currentDefense = Globals.currentDefense + 1;
+        }
+        else if (upgradeType == Globals.UpgradeTypes.Attack && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Attack] > 0)
+        {
+            Globals.currentAttack = Globals.currentAttack + 1;
+        }
     }
 
     public void ResetHUDPhone()
