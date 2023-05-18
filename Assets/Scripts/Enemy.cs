@@ -493,6 +493,9 @@ public class Enemy : MonoBehaviour
             damage = attackObject.Damage * Globals.currentAttack;
         }
         life = life - damage;
+        if (damage > 0)
+            GameSceneManagerScript.ActivateHitNoticeFromPool(this.gameObject.transform.position, (int)damage);
+
         if (life <= 0)
             KillEnemy();
         else if (damage > 0)

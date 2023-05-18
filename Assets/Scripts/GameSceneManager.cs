@@ -68,6 +68,11 @@ public class GameSceneManager : MonoBehaviour
     GameObject PhonePrefab;
 
     // ENEMIES
+    [SerializeField]
+    GameObject  HitNoticeContainer;
+    [SerializeField]
+    GameObject HitNoticePrefab;
+    HitNotice[] hitNotice = new HitNotice[40];
     Enemy[] enemyPool = new Enemy[200];
     Enemy[] enemyDigPool = new Enemy[45];
     Enemy[] enemyFBIPool = new Enemy[3];
@@ -160,6 +165,7 @@ public class GameSceneManager : MonoBehaviour
         CreateCandyPool();
         CreatePhonePool();
         CreateEnemyPool();
+        CreateHitNoticePool();
 
         fadeManager.StartFadeIn();
         fadeIn = true;
@@ -199,6 +205,25 @@ public class GameSceneManager : MonoBehaviour
             if (!phonePool[x].IsActive())
             {
                 phonePool[x].Activate(phonePos);
+                break;
+            }
+        }
+    }
+    void CreateHitNoticePool()
+    {
+        for (int x = 0; x < hitNotice.Length; x++)
+        {
+            GameObject go = Instantiate(HitNoticePrefab, this.transform.localPosition, Quaternion.identity, HitNoticeContainer.transform);
+            hitNotice[x] = go.GetComponent<HitNotice>();
+        }
+    }
+    public void ActivateHitNoticeFromPool(Vector3 pos, int damage)
+    {
+        for (int x = 0; x < hitNotice.Length; x++)
+        {
+            if (!hitNotice[x].IsActive())
+            {
+                hitNotice[x].Activate(pos, damage);
                 break;
             }
         }
