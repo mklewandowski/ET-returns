@@ -408,7 +408,7 @@ public class GameSceneManager : MonoBehaviour
         {
             specialAttackTimer = specialAttackTimerMax;
             EnemySpecialAttackPatterns specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Digs);
-            if (difficultyLevel > 3)
+            if (difficultyLevel > 3 && difficultyLevel <= 5)
                 specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Planes);
             else if (difficultyLevel > 5)
                 specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Rovers);
