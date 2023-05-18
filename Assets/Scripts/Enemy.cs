@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     AudioManager audioManager;
     GameSceneManager GameSceneManagerScript;
 
-    float life = 1f;
+    int life = 1;
     float hitStrength = 1f;
 
     [SerializeField]
@@ -85,7 +85,7 @@ public class Enemy : MonoBehaviour
         return isActive;
     }
 
-    public void ConfigureEnemy(Vector3 pos, Globals.EnemyTypes newType, float extraLife, bool flip)
+    public void ConfigureEnemy(Vector3 pos, Globals.EnemyTypes newType, int extraLife, bool flip)
     {
         this.transform.localPosition = pos;
         enemyRenderer.enabled = false;
@@ -112,7 +112,7 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(6f, 6f, 1f);
             enemyCollider.size = new Vector2(0.08f, 0.08f);
             flipWithMovement = true;
-            life = 1.5f;
+            life = 2;
             hitStrength = 2f;
         }
         else if (type == Globals.EnemyTypes.Pac)
@@ -124,7 +124,7 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.14f, 0.1f);
             flipWithMovement = true;
-            life = 3f;
+            life = 3;
             hitStrength = 3f;
         }
         else if (type == Globals.EnemyTypes.MsPac)
@@ -136,7 +136,7 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.14f, 0.1f);
             flipWithMovement = true;
-            life = 4f;
+            life = 4;
             hitStrength = 4f;
         }
         else if (type == Globals.EnemyTypes.Joust)
@@ -148,7 +148,7 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = true;
-            life = 5f;
+            life = 5;
             hitStrength = 5f;
         }
         else if (type == Globals.EnemyTypes.Joust2)
@@ -160,7 +160,7 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = true;
-            life = 6f;
+            life = 6;
             hitStrength = 6f;
         }
 
@@ -173,7 +173,7 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(6f, 6f, 1f);
             enemyCollider.size = new Vector2(0.08f, 0.08f);
             flipWithMovement = true;
-            life = 4f;
+            life = 4;
             hitStrength = 4f;
         }
 
@@ -187,7 +187,7 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(6f, 6f, 1f);
             enemyCollider.size = new Vector2(0.1f, 0.1f);
             flipWithMovement = true;
-            life = 3f;
+            life = 3;
             hitStrength = 3f;
             attackPattern = AttackPattern.Angle;
         }
@@ -200,7 +200,7 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(8f, 8f, 1f);
             enemyCollider.size = new Vector2(0.05f, 0.1f);
             flipWithMovement = true;
-            life = 6f;
+            life = 6;
             hitStrength = 4f;
             attackPattern = AttackPattern.Angle;
         }
@@ -213,7 +213,7 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.3f, 0.07f);
             flipWithMovement = true;
-            life = 12f;
+            life = 12;
             hitStrength = 6f;
             attackPattern = AttackPattern.Angle;
         }
@@ -228,7 +228,7 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             flipWithMovement = true;
-            life = 6f;
+            life = 6;
             hitStrength = 6f;
         }
         else if (type == Globals.EnemyTypes.Kangaroo)
@@ -241,7 +241,7 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.12f, 0.2f);
             flipWithMovement = true;
-            life = 10f;
+            life = 10;
             hitStrength = 8f;
         }
         else if (type == Globals.EnemyTypes.Bear)
@@ -254,7 +254,7 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.12f, 0.12f);
             flipWithMovement = true;
-            life = 12f;
+            life = 12;
             hitStrength = 10f;
         }
         else if (type == Globals.EnemyTypes.Hero)
@@ -267,7 +267,7 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.12f, 0.2f);
             flipWithMovement = true;
-            life = 15f;
+            life = 15;
             hitStrength = 12f;
         }
         else if (type == Globals.EnemyTypes.Hero2)
@@ -279,7 +279,7 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.12f, 0.2f);
             flipWithMovement = true;
-            life = 20f;
+            life = 20;
             hitStrength = 14f;
         }
 
@@ -292,7 +292,7 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(.1f, .1f, 1f);
             enemyCollider.size = new Vector2(0.1f, 0.1f);
             flipWithMovement = true;
-            life = 6f;
+            life = 6;
             hitStrength = 6f;
             pauseBeforeAction = 2f;
             this.GetComponent<GrowAndShrink>().StartEffect();
@@ -303,7 +303,7 @@ public class Enemy : MonoBehaviour
             enemyAnimator.enabled = false;
             this.transform.localScale = new Vector3(.1f, .1f, 1f);
             enemyCollider.size = new Vector2(0.1f, 0.1f);
-            life = 4f;
+            life = 4;
             hitStrength = 4f;
             pauseBeforeAction = 2f;
             this.GetComponent<GrowAndShrink>().StartEffect();
@@ -321,7 +321,7 @@ public class Enemy : MonoBehaviour
             enemyAnimator.Play("moon");
             this.transform.localScale = new Vector3(.1f, .1f, 1f);
             enemyCollider.size = new Vector2(0.3f, 0.07f);
-            life = 7f;
+            life = 7;
             hitStrength = 5f;
             pauseBeforeAction = 2f;
             this.GetComponent<GrowAndShrink>().StartEffect();
@@ -345,7 +345,7 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.3f);
             flipWithMovement = true;
-            life = 2f;
+            life = 2;
             hitStrength = 4f;
             enemyRigidbody.mass = 999f;
             int collisionLayer = LayerMask.NameToLayer("EnemySpecial");
@@ -360,7 +360,7 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.3f);
             flipWithMovement = true;
-            life = 4f;
+            life = 4;
             hitStrength = 4f;
             enemyRigidbody.mass = 999f;
             int collisionLayer = LayerMask.NameToLayer("EnemySpecial");
@@ -377,9 +377,10 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(15f, 15f, 1f);
             enemyCollider.size = new Vector2(0.14f, 0.1f);
             flipWithMovement = true;
-            life = 100f;
+            life = 100;
             hitStrength = 3f;
         }
+        life = life + extraLife;
         enemyCollider.enabled = true;
         enemyRenderer.enabled = true;
         isActive = true;
@@ -478,7 +479,7 @@ public class Enemy : MonoBehaviour
 
         Bullet bullet = collider.gameObject.GetComponent<Bullet>();
         AttackObject attackObject = collider.gameObject.GetComponent<AttackObject>();
-        float damage = 0;
+        int damage = 0;
         Vector2 damageVelocity = new Vector2(0, 0);
         if (bullet != null)
         {
@@ -490,11 +491,25 @@ public class Enemy : MonoBehaviour
         if (attackObject)
         {
             audioManager.PlayEnemyHitSound();
-            damage = attackObject.Damage * Globals.currentAttack;
+            float currentAttackPercent = Globals.currentAttack / Globals.maxAttack;
+            float randVal = Random.Range(0, 100f);
+            if (randVal < 75f)
+                damage = (int)Mathf.Round(attackObject.NormalDamageMin + (attackObject.NormalDamageMax - attackObject.NormalDamageMin) * currentAttackPercent);
+            else if (randVal < 95f)
+                damage = (int)Mathf.Round(attackObject.StrongDamageMin + (attackObject.StrongDamageMax - attackObject.StrongDamageMin) * currentAttackPercent);
+            else
+                damage = (int)Mathf.Round(attackObject.CriticalDamageMin + (attackObject.CriticalDamageMax - attackObject.CriticalDamageMin) * currentAttackPercent);
+
+            Debug.Log(attackObject.NormalDamageMin + (attackObject.NormalDamageMax - attackObject.NormalDamageMin) * currentAttackPercent);
+            Debug.Log(attackObject.StrongDamageMin + (attackObject.StrongDamageMax - attackObject.StrongDamageMin) * currentAttackPercent);
+            Debug.Log(attackObject.CriticalDamageMin + (attackObject.CriticalDamageMax - attackObject.CriticalDamageMin) * currentAttackPercent);
+            Debug.Log((int)(attackObject.NormalDamageMin + (attackObject.NormalDamageMax - attackObject.NormalDamageMin) * currentAttackPercent));
+            Debug.Log((int)(attackObject.StrongDamageMin + (attackObject.StrongDamageMax - attackObject.StrongDamageMin) * currentAttackPercent));
+            Debug.Log((int)(attackObject.CriticalDamageMin + (attackObject.CriticalDamageMax - attackObject.CriticalDamageMin) * currentAttackPercent));
         }
         life = life - damage;
         if (damage > 0)
-            GameSceneManagerScript.ActivateHitNoticeFromPool(this.gameObject.transform.position, (int)damage);
+            GameSceneManagerScript.ActivateHitNoticeFromPool(this.gameObject.transform.position, damage);
 
         if (life <= 0)
             KillEnemy();

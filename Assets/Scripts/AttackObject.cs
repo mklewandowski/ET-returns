@@ -4,5 +4,10 @@ using UnityEngine;
 
 public class AttackObject : MonoBehaviour
 {
-    public float Damage = 1f;
+    public float NormalDamageMin = 1f;
+    public float NormalDamageMax = 5f;
+    public float StrongDamageMin = 2f;
+    public float StrongDamageMax = 8f;
+    public float CriticalDamageMin = 3f;
+    public float CriticalDamageMax = 10f;
 }

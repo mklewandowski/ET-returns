@@ -19946,7 +19946,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3684bc19e32a8ec4194f58d73f4f3dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 1
+  NormalDamageMin: 1
+  NormalDamageMax: 2
+  StrongDamageMin: 2
+  StrongDamageMax: 4
+  CriticalDamageMin: 3
+  CriticalDamageMax: 5
 --- !u!1 &326869535
 GameObject:
   m_ObjectHideFlags: 0
@@ -25706,7 +25711,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3684bc19e32a8ec4194f58d73f4f3dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 1
+  NormalDamageMin: 1
+  NormalDamageMax: 2
+  StrongDamageMin: 2
+  StrongDamageMax: 4
+  CriticalDamageMin: 3
+  CriticalDamageMax: 5
 --- !u!1 &414321177
 GameObject:
   m_ObjectHideFlags: 0
@@ -53797,7 +53807,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3684bc19e32a8ec4194f58d73f4f3dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 1
+  NormalDamageMin: 1
+  NormalDamageMax: 2
+  StrongDamageMin: 2
+  StrongDamageMax: 4
+  CriticalDamageMin: 3
+  CriticalDamageMax: 5
 --- !u!114 &865658005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107042,7 +107057,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3684bc19e32a8ec4194f58d73f4f3dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 1
+  NormalDamageMin: 1
+  NormalDamageMax: 3
+  StrongDamageMin: 2
+  StrongDamageMax: 5
+  CriticalDamageMin: 3
+  CriticalDamageMax: 8
 --- !u!1 &1779207957
 GameObject:
   m_ObjectHideFlags: 0
@@ -107368,7 +107388,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3684bc19e32a8ec4194f58d73f4f3dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 1
+  NormalDamageMin: 1
+  NormalDamageMax: 2
+  StrongDamageMin: 2
+  StrongDamageMax: 4
+  CriticalDamageMin: 3
+  CriticalDamageMax: 5
 --- !u!114 &1782096308
 MonoBehaviour:
   m_ObjectHideFlags: 0

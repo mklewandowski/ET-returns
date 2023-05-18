@@ -261,7 +261,7 @@ public class GameSceneManager : MonoBehaviour
             enemyVehiclePool[x].Init();
         }
     }
-    public void ActivateEnemyFromPool(Vector3 enemyPos, Globals.EnemyTypes enemyType, float extraLife, bool flip)
+    public void ActivateEnemyFromPool(Vector3 enemyPos, Globals.EnemyTypes enemyType, int extraLife, bool flip)
     {
         Enemy[] pool = enemyPool;
         if (enemyType == Globals.EnemyTypes.FBI)
@@ -482,14 +482,14 @@ public class GameSceneManager : MonoBehaviour
 
     void SpawnFBI()
     {
-        float extraLife = difficultyLevel * .5f;
+        int extraLife = (int)(difficultyLevel * .5f);
         SpawnEnemy(Globals.EnemyTypes.FBI, extraLife);
     }
 
     void SpawnEnemies(int num)
     {
         numSpawns++;
-        float extraLife = 0;
+        int extraLife = 0;
         for (int x = 0; x < num; x++)
         {
             Globals.EnemyTypes enemyType = Globals.EnemyTypes.Yar;
@@ -497,7 +497,7 @@ public class GameSceneManager : MonoBehaviour
             if (randVal > 98f && difficultyLevel > 3)
             {
                 enemyType = Globals.EnemyTypes.Scientist;
-                extraLife = difficultyLevel * .4f;
+                extraLife = (int)(difficultyLevel * .5f);
             }
             else if (randVal > 84f)
                 enemyType = GetEnemyType(currentStrongEnemyMaxSpawn, strongEnemySpawnRates, Globals.StrongEnemyTypes);
@@ -524,7 +524,7 @@ public class GameSceneManager : MonoBehaviour
         }
     }
 
-    void SpawnEnemy(Globals.EnemyTypes enemyType, float extraLife)
+    void SpawnEnemy(Globals.EnemyTypes enemyType, int extraLife)
     {
         // Debug.Log(Globals.currrentNumEnemies);
         if (Globals.currrentNumEnemies >= Globals.maxEnemies && enemyType != Globals.EnemyTypes.FBI)
@@ -577,7 +577,7 @@ public class GameSceneManager : MonoBehaviour
 
     void SpawnDigs()
     {
-        float extraLife = difficultyLevel * .5f;
+        int extraLife = (int)(difficultyLevel * .5f);
         int numDigs = 15;
         Vector2 playerPos = Player.transform.localPosition;
         float minX = leftTanksTransform.position.x + 1f;
@@ -597,7 +597,7 @@ public class GameSceneManager : MonoBehaviour
 
     void SpawnPlanes()
     {
-        float extraLife = difficultyLevel * .5f;
+        int extraLife = (int)(difficultyLevel * .5f);
         int numRows = 5;
         int numCols = 3;
         Vector2 playerPos = Player.transform.localPosition;
@@ -615,7 +615,7 @@ public class GameSceneManager : MonoBehaviour
 
     void SpawnRovers()
     {
-        float extraLife = difficultyLevel * .5f;
+        int extraLife = (int)(difficultyLevel * .5f);
         int numRows = 5;
         int numCols = 2;
         Vector2 playerPos = Player.transform.localPosition;
@@ -765,17 +765,17 @@ public class GameSceneManager : MonoBehaviour
             if (Globals.healthPerLevel.Length > Globals.currentLevel && Globals.healthPerLevel[Globals.currentLevel] > 0)
             {
                 statsText = statsText + ("HP+" + Globals.healthPerLevel[Globals.currentLevel] + " ");
-                Globals.currentMaxHealth += 1f;
+                Globals.currentMaxHealth += Globals.healthPerLevel[Globals.currentLevel];
             }
             if (Globals.attackPerLevel.Length > Globals.currentLevel && Globals.attackPerLevel[Globals.currentLevel] > 0)
             {
-                statsText = statsText + ("ATTACK+" + Globals.attackPerLevel[Globals.currentLevel] + "% ");
-                Globals.currentAttack = Globals.currentAttack + (Globals.attackPerLevel[Globals.currentLevel] * .01f);
+                statsText = statsText + ("ATTACK+" + Globals.attackPerLevel[Globals.currentLevel] + " ");
+                Globals.currentAttack += Globals.attackPerLevel[Globals.currentLevel];
             }
             if (Globals.defensePerLevel.Length > Globals.currentLevel && Globals.defensePerLevel[Globals.currentLevel] > 0)
             {
-                statsText = statsText + ("DEFENSE+" + Globals.defensePerLevel[Globals.currentLevel] + "% ");
-                Globals.currentDefense = Globals.currentDefense + (Globals.defensePerLevel[Globals.currentLevel] * .01f);
+                statsText = statsText + ("DEFENSE+" + Globals.defensePerLevel[Globals.currentLevel] + " ");
+                Globals.currentDefense += Globals.defensePerLevel[Globals.currentLevel];
             }
             LevelUpStats.text = statsText;
 

@@ -110,6 +110,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &366263705155149004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,7 +186,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3684bc19e32a8ec4194f58d73f4f3dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 3
+  NormalDamageMin: 3
+  NormalDamageMax: 9
+  StrongDamageMin: 4
+  StrongDamageMax: 14
+  CriticalDamageMin: 6
+  CriticalDamageMax: 18
 --- !u!114 &8368942198633991326
 MonoBehaviour:
   m_ObjectHideFlags: 0
