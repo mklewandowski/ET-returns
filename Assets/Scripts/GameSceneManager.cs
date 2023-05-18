@@ -473,7 +473,7 @@ public class GameSceneManager : MonoBehaviour
         if (levelUpTimer > 0)
         {
             levelUpTimer -= Time.deltaTime;
-            if (levelUpTimer < 0)
+            if (levelUpTimer <= 0)
             {
                 LevelUpPanel.GetComponent<MoveWhenPaused>().MoveDown();
             }

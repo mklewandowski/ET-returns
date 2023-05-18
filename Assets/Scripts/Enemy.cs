@@ -447,7 +447,7 @@ public class Enemy : MonoBehaviour
         if (flashTimer > 0)
         {
             flashTimer -= Time.deltaTime;
-            if (flashTimer < 0)
+            if (flashTimer <= 0)
             {
                 enemyRenderer.material = enemyMaterial;
             }
@@ -467,7 +467,7 @@ public class Enemy : MonoBehaviour
         if (!useLifeTimer)
             return;
         lifeTimer -= Time.deltaTime;
-        if (lifeTimer < 0)
+        if (lifeTimer <= 0)
         {
             DeActivate();
         }
