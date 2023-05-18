@@ -777,11 +777,6 @@ public class GameSceneManager : MonoBehaviour
                 statsText = statsText + ("DEFENSE+" + Globals.defensePerLevel[Globals.currentLevel] + "% ");
                 Globals.currentDefense = Globals.currentDefense + (Globals.defensePerLevel[Globals.currentLevel] * .01f);
             }
-            if (Globals.shootTimerDecreasePerLevel.Length > Globals.currentLevel && Globals.shootTimerDecreasePerLevel[Globals.currentLevel] > 0)
-            {
-                statsText = statsText + ("SHOT INTERVAL-" + Globals.shootTimerDecreasePerLevel[Globals.currentLevel]);
-                Globals.currentShootTimerMax -= Globals.shootTimerDecreasePerLevel[Globals.currentLevel];
-            }
             LevelUpStats.text = statsText;
 
             LevelUpPanel.GetComponent<MoveWhenPaused>().MoveUp();
