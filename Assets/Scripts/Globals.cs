@@ -53,20 +53,20 @@ public class Globals
     public static string[] PlayerUnlockTexts = {
         "",
         "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
+        "Complete 2 missions",
+        "Complete 5 missions",
+        "Complete 10 missions",
+        "Complete 20 missions",
+        "Complete 30 missions",
+        "Complete 50 missions",
+        "Survive for 10 minutes",
+        "Survive for 20 minutes",
+        "Defeat Papa Pac-Man",
+        "Defeat Popeye",
+        "Defeat Harry",
+        "Defeat Mario",
+        "Defeat Luigi",
+        "Defeat Kool-aid Man",
     };
 
     public static string[] AnimationSuffixes = {
@@ -123,6 +123,23 @@ public class Globals
         HarryBoss,
         KoolBoss,
     }
+
+    public static string[] BossText = {
+        "Waka Waka Waka Waka!",
+        "I yam what I yam!",
+        "It's a me!",
+        "Mamma Mia!",
+        "Welcome to the jungle!",
+        "Oh Yeah!"
+    };
+    public static string[] BossNames = {
+        "Mega Pac-Man",
+        "Popeye",
+        "Mario",
+        "Luigi",
+        "Harry",
+        "Koolaid Man"
+    };
 
     public static EnemyTypes[] FastEnemyTypes = {EnemyTypes.Yar, EnemyTypes.Pac, EnemyTypes.MsPac, EnemyTypes.Bear, EnemyTypes.Joust, EnemyTypes.Joust2, EnemyTypes.Yar2};
     public static EnemyTypes[] StrongEnemyTypes = {EnemyTypes.Qbert, EnemyTypes.Kangaroo, EnemyTypes.Bear, EnemyTypes.Hero, EnemyTypes.Hero2};
