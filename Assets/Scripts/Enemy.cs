@@ -9,6 +9,11 @@ public class Enemy : MonoBehaviour
     AudioManager audioManager;
     GameSceneManager GameSceneManagerScript;
 
+    Transform LeftWall;
+    Transform TopWall;
+    Transform RightWall;
+    Transform BottomWall;
+
     int life = 1;
     int hitStrength = 1;
 
@@ -24,6 +29,7 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D enemyRigidbody;
     float moveSpeed = .5f;
     Vector3 movementVector = new Vector3(0, 0, 0);
+    Vector3 desiredPosition = new Vector3(0, 0, 0);
     bool allowImpactVelocity = true;
     Vector3 impactVector = new Vector3(0, 0, 0);
     float impactTimer = 0f;
@@ -67,6 +73,10 @@ public class Enemy : MonoBehaviour
         GameSceneManagerScript = GameObject.Find("SceneManager").GetComponent<GameSceneManager>();
         playerTransform = GameObject.Find("Player").transform;
         debrisContainer = GameObject.Find("DebrisContainer");
+        LeftWall = GameObject.Find("EnemySolidLeft").transform;
+        TopWall = GameObject.Find("EnemySolidTop").transform;
+        RightWall = GameObject.Find("EnemySolidRight").transform;
+        BottomWall = GameObject.Find("EnemySolidBottom").transform;
         enemyAnimator = GetComponent<Animator>();
         enemyCollider = GetComponent<BoxCollider2D>();
         enemyRigidbody = GetComponent<Rigidbody2D>();
@@ -395,13 +405,13 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        handleMovement();
-        handleFlash();
-        handleImpact();
-        handleLifeTimer();
+        HandleMovement();
+        HandleFlash();
+        HandleImpact();
+        HandleLifeTimer();
     }
 
-    private void handleMovement()
+    private void HandleMovement()
     {
         if (pauseBeforeAction > 0)
         {
@@ -415,11 +425,18 @@ public class Enemy : MonoBehaviour
             {
                 if (type != Globals.EnemyTypes.Moon && type != Globals.EnemyTypes.Plane)
                 {
-                    Vector3 desiredPosition = (type == Globals.EnemyTypes.FBI || type == Globals.EnemyTypes.Scientist)
-                        ? new Vector3(playerTransform.position.x + 6f * (Random.Range(0, 2) == 0 ? -1f : 1f), playerTransform.position.y + 4f * (Random.Range(0, 2) == 0 ? -1f : 1f), 0)
-                        : playerTransform.position;
-
-                    movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
+                    if (type == Globals.EnemyTypes.FBI || type == Globals.EnemyTypes.Scientist)
+                    {
+                        UpdateFBIOrScientistMovement();
+                    }
+                    else
+                    {
+                        // float distanceFromDesiredPosition = Mathf.Abs(Vector3.Distance(desiredPosition, this.transform.localPosition));
+                        // int distanceUnitsAway = (int)(distanceFromDesiredPosition / 2f);
+                        desiredPosition = playerTransform.position;
+                        // movementVector = Quaternion.Euler(0, 0, Random.Range (-20f * distanceUnitsAway, 20f * distanceUnitsAway)) * movementVector;
+                        movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
+                    }
                     if (attackPattern == AttackPattern.Angle)
                     {
                         movementVector = Quaternion.Euler(0, 0, Random.Range (50f, 50f)) * movementVector;
@@ -439,22 +456,48 @@ public class Enemy : MonoBehaviour
             if ((movementVector.x >= 0 && this.transform.localScale.x < 0) || (movementVector.x < 0 && this.transform.localScale.x > 0))
                 this.transform.localScale = new Vector3(this.transform.localScale.x * -1, this.transform.localScale.y, this.transform.localScale.z);
         }
+        if (type == Globals.EnemyTypes.FBI || type == Globals.EnemyTypes.Scientist)
+        {
+            CheckFBIOrScientistPosition();
+        }
         enemyRigidbody.velocity = impactTimer > 0 ? impactVector : movementVector;
     }
 
-    private void handleFlash()
+    private void UpdateFBIOrScientistMovement()
+    {
+        desiredPosition = new Vector3(
+            playerTransform.position.x + 6f * (Random.Range(0, 2) == 0 ? -1f : 1f),
+            playerTransform.position.y + 4f * (Random.Range(0, 2) == 0 ? -1f : 1f),
+            0
+        );
+        movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
+    }
+    private void CheckFBIOrScientistPosition()
+    {
+        float xBuffer = 2f;
+        float yBuffer = 2.2f;
+        if ((this.transform.localPosition.x + xBuffer >= RightWall.position.x && movementVector.x > 0) ||
+            (this.transform.localPosition.x - xBuffer <= LeftWall.position.x && movementVector.x < 0) ||
+            (this.transform.localPosition.y + yBuffer >= TopWall.position.y && movementVector.y > 0) ||
+            (this.transform.localPosition.y - yBuffer <= BottomWall.position.y && movementVector.y < 0))
+        {
+            UpdateFBIOrScientistMovement();
+        }
+    }
+
+    private void HandleFlash()
     {
         if (flashTimer > 0)
         {
             flashTimer -= Time.deltaTime;
-            if (flashTimer < 0)
+            if (flashTimer <= 0)
             {
                 enemyRenderer.material = enemyMaterial;
             }
         }
     }
 
-    private void handleImpact()
+    private void HandleImpact()
     {
         if (impactTimer > 0)
         {
@@ -462,12 +505,12 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void handleLifeTimer()
+    private void HandleLifeTimer()
     {
         if (!useLifeTimer)
             return;
         lifeTimer -= Time.deltaTime;
-        if (lifeTimer < 0)
+        if (lifeTimer <= 0)
         {
             DeActivate();
         }

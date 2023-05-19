@@ -238,7 +238,7 @@ public class Player : MonoBehaviour
     {
         if (!isAlive) return;
         shootTimer -= Time.deltaTime;
-        if (shootTimer < 0)
+        if (shootTimer <= 0)
         {
             ShootType shootType = shootTypes[shootIndex];
             Vector2 bulletMovement = GetBulletMovement();
@@ -290,7 +290,7 @@ public class Player : MonoBehaviour
         if (muzzleFlashTimer > 0)
         {
             muzzleFlashTimer -= Time.deltaTime;
-            if (muzzleFlashTimer < 0)
+            if (muzzleFlashTimer <= 0)
                 MuzzleGO.SetActive(false);
         }
     }
@@ -495,7 +495,7 @@ public class Player : MonoBehaviour
         {
             invincibleTimer -= Time.deltaTime;
             bool flashOn = (int)Mathf.Floor(invincibleTimer / .1f) % 2 == 1;
-            if (invincibleTimer < 0)
+            if (invincibleTimer <= 0)
             {
                 flashOn = false;
             }
@@ -544,7 +544,7 @@ public class Player : MonoBehaviour
         {
             audioManager.PlayPlayerHitSound();
             int defenseAdjustment = (int)(Mathf.Round((float)(Globals.currentDefense) / 2f));
-            float defenseAdjustedDamage = Mathf.Max(1, defenseAdjustment);
+            float defenseAdjustedDamage = Mathf.Max(1, damage - defenseAdjustment);
             health -= defenseAdjustedDamage;
             if (health < 0 )
                 health = 0;

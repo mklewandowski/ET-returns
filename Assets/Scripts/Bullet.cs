@@ -29,7 +29,7 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         lifeTimer -= Time.deltaTime;
-        if (lifeTimer < 0)
+        if (lifeTimer <= 0)
         {
             Destroy(this.gameObject);
         }
