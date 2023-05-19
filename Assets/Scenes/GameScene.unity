@@ -27074,7 +27074,7 @@ GameObject:
   - component: {fileID: 449257281}
   - component: {fileID: 449257282}
   m_Layer: 11
-  m_Name: EnemySolid
+  m_Name: EnemySolidBottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52631,7 +52631,7 @@ GameObject:
   - component: {fileID: 839826111}
   - component: {fileID: 839826112}
   m_Layer: 11
-  m_Name: EnemySolid
+  m_Name: EnemySolidRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59948,7 +59948,7 @@ GameObject:
   - component: {fileID: 959617764}
   - component: {fileID: 959617765}
   m_Layer: 11
-  m_Name: EnemySolid
+  m_Name: EnemySolidTop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -105562,7 +105562,7 @@ GameObject:
   - component: {fileID: 1743968430}
   - component: {fileID: 1743968431}
   m_Layer: 11
-  m_Name: EnemySolid
+  m_Name: EnemySolidLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
