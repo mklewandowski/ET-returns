@@ -143,7 +143,27 @@ public class GameSceneManager : MonoBehaviour
     int roverSpawnsRemaining = 0;
     float tankReturnTimer = 0;
 
+    [SerializeField]
+    GameObject HUDBossPanel;
+    [SerializeField]
+    Image HUDBossImage;
+    [SerializeField]
+    TextMeshProUGUI HUDBossNameText;
+    [SerializeField]
+    TextMeshProUGUI HUDBossText;
+    [SerializeField]
+    TypewriterUI HUDBossTextType;
+    [SerializeField]
+    Sprite[] BossSprites;
     Globals.EnemyTypes currentBossType = Globals.EnemyTypes.PacBoss;
+    enum BossStates {
+        None,
+        ShowHUD,
+        ShowText,
+        ShowBoss,
+    }
+    BossStates currentBossState = BossStates.None;
+    float bossTimer = 0;
 
     float deadTimer = 0f;
     float deadTimerMax = 4f;
@@ -312,6 +332,7 @@ public class GameSceneManager : MonoBehaviour
         HandleTankTimer();
         HandleEnemySpawnTimer();
         HandleLevelUpTimer();
+        HandleBoss();
     }
 
     void HandleInput()
@@ -480,6 +501,40 @@ public class GameSceneManager : MonoBehaviour
         }
     }
 
+    void HandleBoss()
+    {
+        if (currentBossState == BossStates.ShowHUD)
+        {
+            bossTimer -= Time.deltaTime;
+            if (bossTimer <= 0)
+            {
+                int firstBossIndex = (int)Globals.EnemyTypes.PacBoss;
+                HUDBossTextType.StartEffect(Globals.BossText[(int)currentBossType - firstBossIndex]);
+                bossTimer = 1f;
+                currentBossState = BossStates.ShowText;
+            }
+        }
+        else if (currentBossState == BossStates.ShowText)
+        {
+            bossTimer -= Time.deltaTime;
+            if (bossTimer <= 0)
+            {
+                SpawnBoss();
+                bossTimer = 1f;
+                currentBossState = BossStates.ShowBoss;
+            }
+        }
+        else if (currentBossState == BossStates.ShowBoss)
+        {
+            bossTimer -= Time.deltaTime;
+            if (bossTimer <= 0)
+            {
+                HUDBossPanel.GetComponent<MoveNormal>().MoveLeft();
+                currentBossState = BossStates.None;
+            }
+        }
+    }
+
     void SpawnFBI()
     {
         int extraLife = (int)(difficultyLevel * .5f);
@@ -554,25 +609,30 @@ public class GameSceneManager : MonoBehaviour
         Vector2 enemyPos = new Vector2(playerPos.x + xOffset, playerPos.y + yOffset);
         ActivateEnemyFromPool(enemyPos, enemyType, extraLife, false);
         Globals.currrentNumEnemies++;
+        StartBoss();
     }
 
     void StartBoss()
     {
-        // TODO
-        // announce boss
-        // bring in boundaries
-        // do I need to remove some enemies?
-        // set boss timer
-        // spawn and place boss
         currentBossType = Globals.EnemyTypes.PacBoss;
-        if (numSpawns == 1)
-        {
-            SpawnEnemy(currentBossType, 0);
-            bottomTanksTransform.gameObject.GetComponent<MoveNormal>().MoveUp();
-            topTanksTransform.gameObject.GetComponent<MoveNormal>().MoveDown();
-            leftTanksTransform.gameObject.GetComponent<MoveNormal>().MoveRight();
-            rightTanksTransform.gameObject.GetComponent<MoveNormal>().MoveLeft();
-        }
+        int firstBossIndex = (int)Globals.EnemyTypes.PacBoss;
+        HUDBossImage.sprite = BossSprites[(int)currentBossType - firstBossIndex];
+        HUDBossNameText.text = Globals.BossNames[(int)currentBossType - firstBossIndex];
+        HUDBossText.text = "";
+        HUDBossPanel.GetComponent<MoveNormal>().MoveRight();
+        currentBossState = BossStates.ShowHUD;
+        bossTimer = .75f;
+    }
+
+    void SpawnBoss()
+    {
+        // WTD WTD
+        // get boss from pool
+        // move boss in
+        // destroy nearby enemies
+        // shake camera
+        // set boss timer
+        // when timer goes off, hide boss
     }
 
     void SpawnDigs()
