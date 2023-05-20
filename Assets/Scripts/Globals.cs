@@ -61,7 +61,7 @@ public class Globals
         "Complete 50 missions",
         "Survive for 10 minutes",
         "Survive for 20 minutes",
-        "Defeat Papa Pac-Man",
+        "Defeat Mr. Pac-Man",
         "Defeat Popeye",
         "Defeat Harry",
         "Defeat Mario",
@@ -133,7 +133,7 @@ public class Globals
         "Oh Yeah!"
     };
     public static string[] BossNames = {
-        "Mega Pac-Man",
+        "Mr. Pac-Man",
         "Popeye",
         "Mario",
         "Luigi",

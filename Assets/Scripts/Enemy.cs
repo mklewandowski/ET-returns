@@ -411,8 +411,8 @@ public class Enemy : MonoBehaviour
             behaviorTimerMax = 4f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("pac");
-            this.transform.localScale = new Vector3(15f, 15f, 1f);
-            enemyCollider.size = new Vector2(0.14f, 0.1f);
+            this.transform.localScale = new Vector3(25f, 25f, 1f);
+            enemyCollider.size = new Vector2(0.12f, 0.1f);
             life = 100;
             hitStrength = 10;
 
@@ -425,6 +425,106 @@ public class Enemy : MonoBehaviour
             useLifeTimer = true;
             lifeTimer = 45f;
         }
+        else if (type == Globals.EnemyTypes.PopeyeBoss)
+        {
+            moveSpeed = 2f;
+            behaviorTimerMax = 2f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("sailor");
+            this.transform.localScale = new Vector3(15f, 15f, 1f);
+            enemyCollider.size = new Vector2(0.14f, 0.24f);
+            life = 100;
+            hitStrength = 10;
+
+            attackType = AttackType.Direct;
+            currentBehavior = BehaviorType.MoveIn;
+            behaviorTimer = 2f;
+            this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
+            this.GetComponent<MoveNormal>().MoveDown();
+
+            useLifeTimer = true;
+            lifeTimer = 45f;
+        }
+        else if (type == Globals.EnemyTypes.MarioBoss)
+        {
+            moveSpeed = 2f;
+            behaviorTimerMax = 2f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("mario");
+            this.transform.localScale = new Vector3(15f, 15f, 1f);
+            enemyCollider.size = new Vector2(0.1f, 0.2f);
+            life = 100;
+            hitStrength = 10;
+
+            attackType = AttackType.Direct;
+            currentBehavior = BehaviorType.MoveIn;
+            behaviorTimer = 2f;
+            this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
+            this.GetComponent<MoveNormal>().MoveDown();
+
+            useLifeTimer = true;
+            lifeTimer = 45f;
+        }
+        else if (type == Globals.EnemyTypes.LuigiBoss)
+        {
+            moveSpeed = 2f;
+            behaviorTimerMax = 2f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("luigi");
+            this.transform.localScale = new Vector3(15f, 15f, 1f);
+            enemyCollider.size = new Vector2(0.1f, 0.2f);
+            life = 100;
+            hitStrength = 10;
+
+            attackType = AttackType.Direct;
+            currentBehavior = BehaviorType.MoveIn;
+            behaviorTimer = 2f;
+            this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
+            this.GetComponent<MoveNormal>().MoveDown();
+
+            useLifeTimer = true;
+            lifeTimer = 45f;
+        }
+        else if (type == Globals.EnemyTypes.HarryBoss)
+        {
+            moveSpeed = 2.5f;
+            behaviorTimerMax = 1.5f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("jungle");
+            this.transform.localScale = new Vector3(15f, 15f, 1f);
+            enemyCollider.size = new Vector2(0.08f, 0.16f);
+            life = 100;
+            hitStrength = 10;
+
+            attackType = AttackType.Direct;
+            currentBehavior = BehaviorType.MoveIn;
+            behaviorTimer = 2f;
+            this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
+            this.GetComponent<MoveNormal>().MoveDown();
+
+            useLifeTimer = true;
+            lifeTimer = 45f;
+        }
+        else if (type == Globals.EnemyTypes.KoolBoss)
+        {
+            moveSpeed = 1f;
+            behaviorTimerMax = 4f;
+            enemyAnimator.enabled = false;
+            this.transform.localScale = new Vector3(25f, 25f, 1f);
+            enemyCollider.size = new Vector2(0.16f, 0.11f);
+            life = 100;
+            hitStrength = 10;
+
+            attackType = AttackType.Direct;
+            currentBehavior = BehaviorType.MoveIn;
+            behaviorTimer = 2f;
+            this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
+            this.GetComponent<MoveNormal>().MoveDown();
+
+            useLifeTimer = true;
+            lifeTimer = 45f;
+        }
+
         life = life + extraLife;
         enemyCollider.enabled = true;
         enemyRenderer.enabled = true;

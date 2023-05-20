@@ -330,8 +330,9 @@ public class GameSceneManager : MonoBehaviour
         gameHasBoss = Random.Range(0, 2) == 1 ? true: false;
 
         // WTD WTD WTD remove
-        currentBossType = Globals.EnemyTypes.PacBoss;
+        currentBossType = Globals.EnemyTypes.HarryBoss;
         gameHasBoss= true;
+        StartBoss();
 
         SpawnEnemies(10);
         SpawnFBI();
