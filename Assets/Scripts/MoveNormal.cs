@@ -94,4 +94,12 @@ public class MoveNormal : MonoBehaviour
     {
         currentMoveState = MoveState.None;
     }
+    public void SetMovingDownEndPos(Vector2 newPos)
+    {
+        movingDownEndPos = newPos;
+    }
+    public void SetMovingUpEndPos(Vector2 newPos)
+    {
+        movingUpEndPos = newPos;
+    }
 }

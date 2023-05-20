@@ -78,6 +78,7 @@ public class GameSceneManager : MonoBehaviour
     Enemy[] enemyFBIPool = new Enemy[3];
     Enemy[] enemyScientistPool = new Enemy[1];
     Enemy[] enemyVehiclePool = new Enemy[60];
+    Enemy[] enemyBossPool = new Enemy[1];
     [SerializeField]
     GameObject EnemyPrefab;
     [SerializeField]
@@ -164,6 +165,8 @@ public class GameSceneManager : MonoBehaviour
     }
     BossStates currentBossState = BossStates.None;
     float bossTimer = 0;
+    bool gameHasBoss = false;
+    bool bossDefeated = false;
 
     float deadTimer = 0f;
     float deadTimerMax = 4f;
@@ -280,6 +283,12 @@ public class GameSceneManager : MonoBehaviour
             enemyVehiclePool[x] = enemyGO.GetComponent<Enemy>();
             enemyVehiclePool[x].Init();
         }
+        for (int x = 0; x < enemyBossPool.Length; x++)
+        {
+            GameObject enemyGO = Instantiate(EnemyPrefab, this.transform.localPosition, Quaternion.identity, EnemyContainer.transform);
+            enemyBossPool[x] = enemyGO.GetComponent<Enemy>();
+            enemyBossPool[x].Init();
+        }
     }
     public void ActivateEnemyFromPool(Vector3 enemyPos, Globals.EnemyTypes enemyType, int extraLife, bool flip)
     {
@@ -292,6 +301,9 @@ public class GameSceneManager : MonoBehaviour
             pool = enemyDigPool;
         else if (enemyType == Globals.EnemyTypes.Moon || enemyType == Globals.EnemyTypes.Plane)
             pool = enemyVehiclePool;
+        else if (enemyType == Globals.EnemyTypes.PacBoss || enemyType == Globals.EnemyTypes.KoolBoss || enemyType == Globals.EnemyTypes.PopeyeBoss ||
+                 enemyType == Globals.EnemyTypes.MarioBoss || enemyType == Globals.EnemyTypes.LuigiBoss || enemyType == Globals.EnemyTypes.HarryBoss)
+            pool = enemyBossPool;
 
         for (int x = 0; x < pool.Length; x++)
         {
@@ -315,6 +327,11 @@ public class GameSceneManager : MonoBehaviour
         Globals.ResetGlobals();
 
         currentBossType = (Globals.EnemyTypes)Random.Range((int)Globals.EnemyTypes.PacBoss, (int)Globals.EnemyTypes.KoolBoss + 1);
+        gameHasBoss = Random.Range(0, 2) == 1 ? true: false;
+
+        // WTD WTD WTD remove
+        currentBossType = Globals.EnemyTypes.PacBoss;
+        gameHasBoss= true;
 
         SpawnEnemies(10);
         SpawnFBI();
@@ -428,6 +445,13 @@ public class GameSceneManager : MonoBehaviour
         if (specialAttackTimer <= 0)
         {
             specialAttackTimer = specialAttackTimerMax;
+
+            if (gameHasBoss && !bossDefeated && (difficultyLevel == 6 || difficultyLevel == 10 || difficultyLevel == 14))
+            {
+                StartBoss();
+                return;
+            }
+
             EnemySpecialAttackPatterns specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Digs);
             if (difficultyLevel > 3 && difficultyLevel <= 5)
                 specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Planes);
@@ -609,12 +633,10 @@ public class GameSceneManager : MonoBehaviour
         Vector2 enemyPos = new Vector2(playerPos.x + xOffset, playerPos.y + yOffset);
         ActivateEnemyFromPool(enemyPos, enemyType, extraLife, false);
         Globals.currrentNumEnemies++;
-        StartBoss();
     }
 
     void StartBoss()
     {
-        currentBossType = Globals.EnemyTypes.PacBoss;
         int firstBossIndex = (int)Globals.EnemyTypes.PacBoss;
         HUDBossImage.sprite = BossSprites[(int)currentBossType - firstBossIndex];
         HUDBossNameText.text = Globals.BossNames[(int)currentBossType - firstBossIndex];
@@ -626,13 +648,19 @@ public class GameSceneManager : MonoBehaviour
 
     void SpawnBoss()
     {
-        // WTD WTD
-        // get boss from pool
-        // move boss in
+        Vector2 enemyPos = new Vector3(Player.transform.localPosition.x - 4f, Player.transform.localPosition.y + 10f, Player.transform.localPosition.z);
+        ActivateEnemyFromPool(enemyPos, currentBossType, 0, false);
+        // WTD
         // destroy nearby enemies
         // shake camera
-        // set boss timer
-        // when timer goes off, hide boss
+        // make noise
+        // make shoot
+        // handle invalid spawn position
+    }
+
+    void KillBoss()
+    {
+        bossDefeated = true;
     }
 
     void SpawnDigs()

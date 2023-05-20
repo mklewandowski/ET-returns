@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6232591748759594083}
   - component: {fileID: 6232591748759594082}
   - component: {fileID: 4665281913154049914}
+  - component: {fileID: 4223287618532264434}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
@@ -215,3 +216,23 @@ MonoBehaviour:
   ShrinkTo: 5
   Rate: 15
   JuiceTime: 0
+--- !u!114 &4223287618532264434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6232591748759594092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0513281251b534742af033cc7ccb5c23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movingUpEndPos: {x: 0, y: 0}
+  movingDownEndPos: {x: 0, y: 0}
+  movingLeftEndPos: {x: 0, y: 0}
+  movingRightEndPos: {x: 0, y: 0}
+  movingUpVelocity: 20
+  movingDownVelocity: -20
+  movingLeftVelocity: -20
+  movingRightVelocity: 20
