@@ -75,6 +75,8 @@ public class Enemy : MonoBehaviour
     }
     BehaviorType currentBehavior = BehaviorType.Seek;
 
+    bool isBoss = false;
+
     public void Init()
     {
         GameObject am = GameObject.Find("AudioManager");
@@ -407,83 +409,91 @@ public class Enemy : MonoBehaviour
         // BOSS
         else if (type == Globals.EnemyTypes.PacBoss)
         {
-            moveSpeed = 1f;
-            behaviorTimerMax = 4f;
+            moveSpeed = 1.4f;
+            behaviorTimerMax = 1.5f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("pac");
-            this.transform.localScale = new Vector3(25f, 25f, 1f);
+            this.transform.localScale = new Vector3(12f, 12f, 1f);
             enemyCollider.size = new Vector2(0.12f, 0.1f);
+            enemyRigidbody.mass = 99f;
             life = 100;
             hitStrength = 10;
 
             attackType = AttackType.Direct;
-            currentBehavior = BehaviorType.MoveIn;
+            //currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = 2f;
-            this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
-            this.GetComponent<MoveNormal>().MoveDown();
+            //this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
+            //this.GetComponent<MoveNormal>().MoveDown();
 
-            useLifeTimer = true;
-            lifeTimer = 45f;
+            //useLifeTimer = true;
+            //lifeTimer = 45f;
+            isBoss = true;
         }
         else if (type == Globals.EnemyTypes.PopeyeBoss)
         {
-            moveSpeed = 2f;
-            behaviorTimerMax = 2f;
+            moveSpeed = 1.8f;
+            behaviorTimerMax = 1f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("sailor");
-            this.transform.localScale = new Vector3(15f, 15f, 1f);
+            this.transform.localScale = new Vector3(6f, 6f, 1f);
             enemyCollider.size = new Vector2(0.14f, 0.24f);
+            enemyRigidbody.mass = 99f;
             life = 100;
             hitStrength = 10;
 
             attackType = AttackType.Direct;
-            currentBehavior = BehaviorType.MoveIn;
+            //currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = 2f;
-            this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
-            this.GetComponent<MoveNormal>().MoveDown();
+            //this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
+            //this.GetComponent<MoveNormal>().MoveDown();
 
-            useLifeTimer = true;
-            lifeTimer = 45f;
+            //useLifeTimer = true;
+            //lifeTimer = 45f;
+            isBoss = true;
         }
         else if (type == Globals.EnemyTypes.MarioBoss)
         {
-            moveSpeed = 2f;
-            behaviorTimerMax = 2f;
+            moveSpeed = 1.8f;
+            behaviorTimerMax = 1f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("mario");
-            this.transform.localScale = new Vector3(15f, 15f, 1f);
+            this.transform.localScale = new Vector3(6f, 6f, 1f);
             enemyCollider.size = new Vector2(0.1f, 0.2f);
+            enemyRigidbody.mass = 99f;
             life = 100;
             hitStrength = 10;
 
             attackType = AttackType.Direct;
-            currentBehavior = BehaviorType.MoveIn;
+            //currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = 2f;
-            this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
-            this.GetComponent<MoveNormal>().MoveDown();
+            //this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
+            //this.GetComponent<MoveNormal>().MoveDown();
 
-            useLifeTimer = true;
-            lifeTimer = 45f;
+            //useLifeTimer = true;
+            //lifeTimer = 45f;
+            isBoss = true;
         }
         else if (type == Globals.EnemyTypes.LuigiBoss)
         {
-            moveSpeed = 2f;
-            behaviorTimerMax = 2f;
+            moveSpeed = 1.8f;
+            behaviorTimerMax = 1f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("luigi");
-            this.transform.localScale = new Vector3(15f, 15f, 1f);
+            this.transform.localScale = new Vector3(6f, 6f, 1f);
             enemyCollider.size = new Vector2(0.1f, 0.2f);
+            enemyRigidbody.mass = 99f;
             life = 100;
             hitStrength = 10;
 
             attackType = AttackType.Direct;
-            currentBehavior = BehaviorType.MoveIn;
+            //currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = 2f;
-            this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
-            this.GetComponent<MoveNormal>().MoveDown();
+            //this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
+            //this.GetComponent<MoveNormal>().MoveDown();
 
-            useLifeTimer = true;
-            lifeTimer = 45f;
+            //useLifeTimer = true;
+            //lifeTimer = 45f;
+            isBoss = true;
         }
         else if (type == Globals.EnemyTypes.HarryBoss)
         {
@@ -491,38 +501,41 @@ public class Enemy : MonoBehaviour
             behaviorTimerMax = 1.5f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("jungle");
-            this.transform.localScale = new Vector3(15f, 15f, 1f);
+            this.transform.localScale = new Vector3(10f, 10f, 1f);
             enemyCollider.size = new Vector2(0.08f, 0.16f);
             life = 100;
             hitStrength = 10;
 
             attackType = AttackType.Direct;
-            currentBehavior = BehaviorType.MoveIn;
+            //currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = 2f;
-            this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
-            this.GetComponent<MoveNormal>().MoveDown();
+            //this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
+            //this.GetComponent<MoveNormal>().MoveDown();
 
-            useLifeTimer = true;
-            lifeTimer = 45f;
+            //useLifeTimer = true;
+            //lifeTimer = 45f;
+            isBoss = true;
         }
         else if (type == Globals.EnemyTypes.KoolBoss)
         {
-            moveSpeed = 1f;
-            behaviorTimerMax = 4f;
+            moveSpeed = 1.4f;
+            behaviorTimerMax = 1.5f;
             enemyAnimator.enabled = false;
-            this.transform.localScale = new Vector3(25f, 25f, 1f);
+            this.transform.localScale = new Vector3(10f, 10f, 1f);
             enemyCollider.size = new Vector2(0.16f, 0.11f);
+            enemyRigidbody.mass = 99f;
             life = 100;
             hitStrength = 10;
 
             attackType = AttackType.Direct;
             currentBehavior = BehaviorType.MoveIn;
-            behaviorTimer = 2f;
+            behaviorTimer = .5f;
             this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
             this.GetComponent<MoveNormal>().MoveDown();
 
-            useLifeTimer = true;
-            lifeTimer = 45f;
+            //useLifeTimer = true;
+            //lifeTimer = 45f;
+            isBoss = true;
         }
 
         life = life + extraLife;
@@ -550,8 +563,17 @@ public class Enemy : MonoBehaviour
                 // do something with current behavior
                 if (currentBehavior == BehaviorType.MoveIn)
                 {
+                    // create debris
+                    int numDebris = Random.Range(8, 10);
+                    for (int x = 0; x < numDebris; x++)
+                    {
+                        GameObject debrisGO = Instantiate(DebrisPrefab, this.transform.localPosition, Quaternion.identity, debrisContainer.transform);
+                        debrisGO.GetComponent<Debris>().BossInit(Color.red);
+                    }
+                    audioManager.PlayBossLandSound();
                     currentBehavior = BehaviorType.Seek;
                     UpdateSeekPosition();
+
                 }
                 else if (currentBehavior == BehaviorType.MoveOut)
                 {
@@ -754,6 +776,10 @@ public class Enemy : MonoBehaviour
                 GameObject toxicDebrisGO = Instantiate(ToxicDebrisPrefab, this.transform.localPosition, Quaternion.identity, debrisContainer.transform);
                 toxicDebrisGO.GetComponent<ToxicDebris>().Init();
             }
+        }
+        else if (isBoss)
+        {
+            GameSceneManagerScript.KillBoss();
         }
         else if (Random.Range(0, 100f) < 50f)
         {

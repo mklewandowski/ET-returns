@@ -49,6 +49,9 @@ public class AudioManager : MonoBehaviour
     AudioClip LevelUpSound;
 
     [SerializeField]
+    AudioClip BossLandSound;
+
+    [SerializeField]
     AudioClip[] ClickSounds = new AudioClip[4];
 
     void Awake()
@@ -149,6 +152,12 @@ public class AudioManager : MonoBehaviour
     {
         if (Globals.AudioOn)
             audioSource.PlayOneShot(ExplodeSound, .75f);
+    }
+
+    public void PlayBossLandSound()
+    {
+        if (Globals.AudioOn)
+            audioSource.PlayOneShot(BossLandSound, .75f);
     }
 
     public void PlayClickSound()

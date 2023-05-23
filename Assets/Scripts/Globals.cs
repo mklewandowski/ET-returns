@@ -120,8 +120,8 @@ public class Globals
         PopeyeBoss,
         MarioBoss,
         LuigiBoss,
-        HarryBoss,
         KoolBoss,
+        HarryBoss,
     }
 
     public static string[] BossText = {
@@ -129,16 +129,16 @@ public class Globals
         "I yam what I yam!",
         "It's a me!",
         "Mamma Mia!",
+        "Oh Yeah!",
         "Welcome to the jungle!",
-        "Oh Yeah!"
     };
     public static string[] BossNames = {
         "Mr. Pac-Man",
         "Popeye",
         "Mario",
         "Luigi",
+        "Koolaid Man",
         "Harry",
-        "Koolaid Man"
     };
 
     public static EnemyTypes[] FastEnemyTypes = {EnemyTypes.Yar, EnemyTypes.Pac, EnemyTypes.MsPac, EnemyTypes.Bear, EnemyTypes.Joust, EnemyTypes.Joust2, EnemyTypes.Yar2};

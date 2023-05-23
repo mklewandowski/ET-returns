@@ -32,13 +32,24 @@ public class Debris : MonoBehaviour
         };
         Color newColor = debrisColors[Random.Range(0, debrisColors.Length)];
         this.GetComponent<SpriteRenderer>().color = newColor;
-        float randomAngle = Random.Range(0f, 360f);
+        float randomAngle = Random.Range(0f, 2 * Mathf.PI);
         Vector2 normalizedPos = new Vector2(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle));
         Vector2 scaledNormalizedPos = normalizedPos * Random.Range (2.0f, 4.0f);
         float newScale = Random.Range(2f, 4f);
         this.transform.localScale = new Vector2(newScale, newScale);
         this.GetComponent<Rigidbody2D>().velocity = scaledNormalizedPos;
+    }
 
+    public void BossInit(Color debrisColor)
+    {
+        lifeTimer = Random.Range(.2f, .5f);
+        this.GetComponent<SpriteRenderer>().color = debrisColor;
+        float randomAngle = Random.Range(0f, Mathf.PI);
+        Vector2 normalizedPos = new Vector2(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle));
+        Vector2 scaledNormalizedPos = normalizedPos * Random.Range (3.0f, 5.0f);
+        float newScale = Random.Range(4f, 6f);
+        this.transform.localScale = new Vector2(newScale, newScale);
+        this.GetComponent<Rigidbody2D>().velocity = scaledNormalizedPos;
     }
 
 }

@@ -78537,6 +78537,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AudioManagerPrefab: {fileID: 8388956219249298800, guid: bdd74ac2ced41c644a1ecab20eff63f5, type: 3}
+  cameraController: {fileID: 519420033}
   fadeManager: {fileID: 960945946}
   Player: {fileID: 971181771}
   ExpBar: {fileID: 556872507}

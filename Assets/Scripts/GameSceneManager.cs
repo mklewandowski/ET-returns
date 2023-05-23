@@ -8,9 +8,11 @@ using TMPro;
 public class GameSceneManager : MonoBehaviour
 {
     AudioManager audioManager;
-
     [SerializeField]
     GameObject AudioManagerPrefab;
+
+    [SerializeField]
+    CameraController cameraController;
 
     [SerializeField]
     FadeManager fadeManager;
@@ -166,7 +168,7 @@ public class GameSceneManager : MonoBehaviour
     BossStates currentBossState = BossStates.None;
     float bossTimer = 0;
     bool gameHasBoss = false;
-    bool bossDefeated = false;
+    int bossSpawnDifficulty = 0;
 
     float deadTimer = 0f;
     float deadTimerMax = 4f;
@@ -328,11 +330,7 @@ public class GameSceneManager : MonoBehaviour
 
         currentBossType = (Globals.EnemyTypes)Random.Range((int)Globals.EnemyTypes.PacBoss, (int)Globals.EnemyTypes.KoolBoss + 1);
         gameHasBoss = Random.Range(0, 2) == 1 ? true: false;
-
-        // WTD WTD WTD remove
-        currentBossType = Globals.EnemyTypes.HarryBoss;
-        gameHasBoss= true;
-        StartBoss();
+        bossSpawnDifficulty = Random.Range(6, 10);
 
         SpawnEnemies(10);
         SpawnFBI();
@@ -447,9 +445,9 @@ public class GameSceneManager : MonoBehaviour
         {
             specialAttackTimer = specialAttackTimerMax;
 
-            if (gameHasBoss && !bossDefeated && (difficultyLevel == 6 || difficultyLevel == 10 || difficultyLevel == 14))
+            if (gameHasBoss && (difficultyLevel == bossSpawnDifficulty || difficultyLevel == (bossSpawnDifficulty + 5)))
             {
-                StartBoss();
+                SpawnBoss();
                 return;
             }
 
@@ -545,7 +543,7 @@ public class GameSceneManager : MonoBehaviour
             if (bossTimer <= 0)
             {
                 SpawnBoss();
-                bossTimer = 1f;
+                bossTimer = .5f;
                 currentBossState = BossStates.ShowBoss;
             }
         }
@@ -554,6 +552,7 @@ public class GameSceneManager : MonoBehaviour
             bossTimer -= Time.deltaTime;
             if (bossTimer <= 0)
             {
+                cameraController.ShakeCamera();
                 HUDBossPanel.GetComponent<MoveNormal>().MoveLeft();
                 currentBossState = BossStates.None;
             }
@@ -645,23 +644,25 @@ public class GameSceneManager : MonoBehaviour
         HUDBossPanel.GetComponent<MoveNormal>().MoveRight();
         currentBossState = BossStates.ShowHUD;
         bossTimer = .75f;
+        // WTD
+        // destroy nearby enemies
+        // make shoot, unique behaviors
+        // make fbi/scientist avoid
+        // handle invalid spawn position
+        // unify where intro stuff happens
+        // get size right
     }
 
     void SpawnBoss()
     {
         Vector2 enemyPos = new Vector3(Player.transform.localPosition.x - 4f, Player.transform.localPosition.y + 10f, Player.transform.localPosition.z);
         ActivateEnemyFromPool(enemyPos, currentBossType, 0, false);
-        // WTD
-        // destroy nearby enemies
-        // shake camera
-        // make noise
-        // make shoot
-        // handle invalid spawn position
     }
 
-    void KillBoss()
+    public void KillBoss()
     {
-        bossDefeated = true;
+        // WTD
+        // use this in case we need to unlock
     }
 
     void SpawnDigs()
