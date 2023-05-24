@@ -8,9 +8,11 @@ using TMPro;
 public class GameSceneManager : MonoBehaviour
 {
     AudioManager audioManager;
-
     [SerializeField]
     GameObject AudioManagerPrefab;
+
+    [SerializeField]
+    CameraController cameraController;
 
     [SerializeField]
     FadeManager fadeManager;
@@ -78,6 +80,7 @@ public class GameSceneManager : MonoBehaviour
     Enemy[] enemyFBIPool = new Enemy[3];
     Enemy[] enemyScientistPool = new Enemy[1];
     Enemy[] enemyVehiclePool = new Enemy[60];
+    Enemy[] enemyBossPool = new Enemy[1];
     [SerializeField]
     GameObject EnemyPrefab;
     [SerializeField]
@@ -143,7 +146,30 @@ public class GameSceneManager : MonoBehaviour
     int roverSpawnsRemaining = 0;
     float tankReturnTimer = 0;
 
+    [SerializeField]
+    GameObject HUDBossPanel;
+    [SerializeField]
+    Image HUDBossImage;
+    [SerializeField]
+    TextMeshProUGUI HUDBossNameText;
+    [SerializeField]
+    TextMeshProUGUI HUDBossText;
+    [SerializeField]
+    TypewriterUI HUDBossTextType;
+    [SerializeField]
+    Sprite[] BossSprites;
     Globals.EnemyTypes currentBossType = Globals.EnemyTypes.PacBoss;
+    enum BossStates {
+        None,
+        ShowHUD,
+        ShowText,
+        ShowBoss,
+    }
+    BossStates currentBossState = BossStates.None;
+    float bossTimer = 0;
+    bool gameHasBoss = false;
+    int bossSpawnDifficulty = 0;
+    bool bossDefeated = false;
 
     float deadTimer = 0f;
     float deadTimerMax = 4f;
@@ -260,6 +286,12 @@ public class GameSceneManager : MonoBehaviour
             enemyVehiclePool[x] = enemyGO.GetComponent<Enemy>();
             enemyVehiclePool[x].Init();
         }
+        for (int x = 0; x < enemyBossPool.Length; x++)
+        {
+            GameObject enemyGO = Instantiate(EnemyPrefab, this.transform.localPosition, Quaternion.identity, EnemyContainer.transform);
+            enemyBossPool[x] = enemyGO.GetComponent<Enemy>();
+            enemyBossPool[x].Init();
+        }
     }
     public void ActivateEnemyFromPool(Vector3 enemyPos, Globals.EnemyTypes enemyType, int extraLife, bool flip)
     {
@@ -272,6 +304,9 @@ public class GameSceneManager : MonoBehaviour
             pool = enemyDigPool;
         else if (enemyType == Globals.EnemyTypes.Moon || enemyType == Globals.EnemyTypes.Plane)
             pool = enemyVehiclePool;
+        else if (enemyType == Globals.EnemyTypes.PacBoss || enemyType == Globals.EnemyTypes.KoolBoss || enemyType == Globals.EnemyTypes.PopeyeBoss ||
+                 enemyType == Globals.EnemyTypes.MarioBoss || enemyType == Globals.EnemyTypes.LuigiBoss || enemyType == Globals.EnemyTypes.HarryBoss)
+            pool = enemyBossPool;
 
         for (int x = 0; x < pool.Length; x++)
         {
@@ -295,6 +330,8 @@ public class GameSceneManager : MonoBehaviour
         Globals.ResetGlobals();
 
         currentBossType = (Globals.EnemyTypes)Random.Range((int)Globals.EnemyTypes.PacBoss, (int)Globals.EnemyTypes.KoolBoss + 1);
+        gameHasBoss = Random.Range(0, 2) == 1 ? true: false;
+        bossSpawnDifficulty = Random.Range(6, 10);
 
         SpawnEnemies(10);
         SpawnFBI();
@@ -312,6 +349,7 @@ public class GameSceneManager : MonoBehaviour
         HandleTankTimer();
         HandleEnemySpawnTimer();
         HandleLevelUpTimer();
+        HandleBoss();
     }
 
     void HandleInput()
@@ -407,6 +445,13 @@ public class GameSceneManager : MonoBehaviour
         if (specialAttackTimer <= 0)
         {
             specialAttackTimer = specialAttackTimerMax;
+
+            if (gameHasBoss && (difficultyLevel == bossSpawnDifficulty || difficultyLevel == (bossSpawnDifficulty + 5)))
+            {
+                SpawnBoss();
+                return;
+            }
+
             EnemySpecialAttackPatterns specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Digs);
             if (difficultyLevel > 3 && difficultyLevel <= 5)
                 specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Planes);
@@ -476,6 +521,41 @@ public class GameSceneManager : MonoBehaviour
             if (levelUpTimer <= 0)
             {
                 LevelUpPanel.GetComponent<MoveWhenPaused>().MoveDown();
+            }
+        }
+    }
+
+    void HandleBoss()
+    {
+        if (currentBossState == BossStates.ShowHUD)
+        {
+            bossTimer -= Time.deltaTime;
+            if (bossTimer <= 0)
+            {
+                int firstBossIndex = (int)Globals.EnemyTypes.PacBoss;
+                HUDBossTextType.StartEffect(Globals.BossText[(int)currentBossType - firstBossIndex]);
+                bossTimer = 1f;
+                currentBossState = BossStates.ShowText;
+            }
+        }
+        else if (currentBossState == BossStates.ShowText)
+        {
+            bossTimer -= Time.deltaTime;
+            if (bossTimer <= 0)
+            {
+                SpawnBoss();
+                bossTimer = .5f;
+                currentBossState = BossStates.ShowBoss;
+            }
+        }
+        else if (currentBossState == BossStates.ShowBoss)
+        {
+            bossTimer -= Time.deltaTime;
+            if (bossTimer <= 0)
+            {
+                cameraController.ShakeCamera();
+                HUDBossPanel.GetComponent<MoveNormal>().MoveLeft();
+                currentBossState = BossStates.None;
             }
         }
     }
@@ -558,21 +638,31 @@ public class GameSceneManager : MonoBehaviour
 
     void StartBoss()
     {
-        // TODO
-        // announce boss
-        // bring in boundaries
-        // do I need to remove some enemies?
-        // set boss timer
-        // spawn and place boss
-        currentBossType = Globals.EnemyTypes.PacBoss;
-        if (numSpawns == 1)
-        {
-            SpawnEnemy(currentBossType, 0);
-            bottomTanksTransform.gameObject.GetComponent<MoveNormal>().MoveUp();
-            topTanksTransform.gameObject.GetComponent<MoveNormal>().MoveDown();
-            leftTanksTransform.gameObject.GetComponent<MoveNormal>().MoveRight();
-            rightTanksTransform.gameObject.GetComponent<MoveNormal>().MoveLeft();
-        }
+        int firstBossIndex = (int)Globals.EnemyTypes.PacBoss;
+        HUDBossImage.sprite = BossSprites[(int)currentBossType - firstBossIndex];
+        HUDBossNameText.text = Globals.BossNames[(int)currentBossType - firstBossIndex];
+        HUDBossText.text = "";
+        HUDBossPanel.GetComponent<MoveNormal>().MoveRight();
+        currentBossState = BossStates.ShowHUD;
+        bossTimer = .75f;
+        // WTD
+        // destroy nearby enemies
+        // make shoot, unique behaviors
+        // make fbi/scientist avoid
+        // handle invalid spawn position
+        // unify where intro stuff happens
+        // get size right
+    }
+
+    void SpawnBoss()
+    {
+        Vector2 enemyPos = new Vector3(Player.transform.localPosition.x - 4f, Player.transform.localPosition.y + 10f, Player.transform.localPosition.z);
+        ActivateEnemyFromPool(enemyPos, currentBossType, 0, false);
+    }
+
+    public void KillBoss()
+    {
+        bossDefeated = true;
     }
 
     void SpawnDigs()
@@ -793,5 +883,50 @@ public class GameSceneManager : MonoBehaviour
     public void GameOver()
     {
         deadTimer = deadTimerMax;
+        Globals.UpdateGamesPlayed(Globals.GamesPlayed + 1);
+
+        // check for unlocked characters
+        Globals.ResetUnlockedCharacterList();
+        if (Globals.GamesPlayed >= 1 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Atari2600] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Atari2600);
+        if (Globals.GamesPlayed >= 2 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Goth] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Goth);
+        if (Globals.GamesPlayed >= 5 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Miami] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Miami);
+        if (Globals.GamesPlayed >= 10 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Punk] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Punk);
+        if (Globals.GamesPlayed >= 20 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Toxic] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Toxic);
+        if (Globals.GamesPlayed >= 30 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Bubblegum] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Bubblegum);
+        if (Globals.GamesPlayed >= 50 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Smurf] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Smurf);
+        if (Globals.gameTime >= 600 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Hulk] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Hulk);
+        if (Globals.gameTime >= 1200 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Super] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Super);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Laser] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.RadStyle] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.RadStyle);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SeekerMissile] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Ninja] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Ninja);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Swirl] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Crush] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Crush);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Grape] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Grape);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.New] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.New);
+        if (bossDefeated && currentBossType == Globals.EnemyTypes.PacBoss && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Pac] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Pac);
+        if (bossDefeated && currentBossType == Globals.EnemyTypes.PopeyeBoss && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Sailor] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Sailor);
+        if (bossDefeated && currentBossType == Globals.EnemyTypes.MarioBoss && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Mario] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Mario);
+        if (bossDefeated && currentBossType == Globals.EnemyTypes.LuigiBoss && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Luigi] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Luigi);
+        if (bossDefeated && currentBossType == Globals.EnemyTypes.KoolBoss && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Koolaid] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Koolaid);
+
+        Globals.UpdateUnlockedCharactersFromList();
+
     }
 }

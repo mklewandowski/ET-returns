@@ -15,17 +15,21 @@ public class Globals
     public enum PlayerTypes {
         Cinema,
         Atari2600,
-        Ninja,
         Goth,
+        Miami,
         Punk,
         Toxic,
-        Super,
-        RadStyle,
+        Bubblegum,
         Smurf,
         Hulk,
+        Super,
+        RadStyle,
+        Ninja,
+        Crush,
+        Grape,
+        New,
         Pac,
         Sailor,
-        Pitfall,
         Mario,
         Luigi,
         Koolaid
@@ -34,17 +38,21 @@ public class Globals
     public static string[] PlayerNames = {
         "Movie E.T.",
         "2600 E.T.",
-        "Ninja E.T.",
         "Goth E.T.",
+        "Miami E.T.",
         "Punk E.T.",
         "Toxic E.T.",
+        "Bubblegum E.T.",
+        "Smurf E.T.",
+        "Hulk E.T.",
         "Super E.T.",
         "Rad Style E.T.",
-        "Smurf E.T.",
-        "Incredible E.T.",
+        "Ninja E.T.",
+        "Crush E.T.",
+        "Grape Crush E.T.",
+        "New Wave E.T.",
         "Pac E.T.",
         "Sailor E.T.",
-        "Jungle E.T.",
         "Mario E.T.",
         "Luigi E.T.",
         "Kool E.T.",
@@ -53,44 +61,52 @@ public class Globals
     public static string[] PlayerUnlockTexts = {
         "",
         "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
-        "Complete 1 mission",
+        "Complete 2 missions",
+        "Complete 5 missions",
+        "Complete 10 missions",
+        "Complete 20 missions",
+        "Complete 30 missions",
+        "Complete 50 missions",
+        "Survive for 10 minutes",
+        "Survive for 20 minutes",
+        "Upgrade laser to level 5",
+        "Upgrade seeker star to level 5",
+        "Upgrade swirl to level 5",
+        "Upgrade pit trap to level 5",
+        "Upgrade bomb to level 5",
+        "Defeat Giant Pac-Man",
+        "Defeat Popeye",
+        "Defeat Mario",
+        "Defeat Luigi",
+        "Defeat Kool-aid Man",
     };
 
     public static string[] AnimationSuffixes = {
         "",
         "-2600",
-        "-ninja",
         "-goth",
+        "-miami",
         "-punk",
         "-toxic",
-        "-super",
-        "-rad",
+        "-gum",
         "-smurf",
         "-hulk",
+        "-super",
+        "-rad",
+        "-ninja",
+        "-crush",
+        "-grape",
+        "-new",
         "-pac",
         "-sailor",
-        "-jungle",
         "-mario",
         "-luigi",
         "-kool",
     };
 
     public static PlayerTypes currentPlayerType = PlayerTypes.Cinema;
-    public static int MaxPlayerTypes = 16;
-    public static int[] PlayerTypeUnlockStates = new int[MaxPlayerTypes];
+    public static int MaxPlayerTypes = 20;
+    public static int[] CharacterUnlockStates = new int[MaxPlayerTypes];
 
     public enum EnemyTypes {
         Yar,
@@ -120,9 +136,26 @@ public class Globals
         PopeyeBoss,
         MarioBoss,
         LuigiBoss,
-        HarryBoss,
         KoolBoss,
+        HarryBoss,
     }
+
+    public static string[] BossText = {
+        "Waka Waka Waka Waka!",
+        "I yam what I yam!",
+        "It's a me!",
+        "Mamma Mia!",
+        "Oh Yeah!",
+        "Welcome to the jungle!",
+    };
+    public static string[] BossNames = {
+        "Mr. Pac-Man",
+        "Popeye",
+        "Mario",
+        "Luigi",
+        "Koolaid Man",
+        "Harry",
+    };
 
     public static EnemyTypes[] FastEnemyTypes = {EnemyTypes.Yar, EnemyTypes.Pac, EnemyTypes.MsPac, EnemyTypes.Bear, EnemyTypes.Joust, EnemyTypes.Joust2, EnemyTypes.Yar2};
     public static EnemyTypes[] StrongEnemyTypes = {EnemyTypes.Qbert, EnemyTypes.Kangaroo, EnemyTypes.Bear, EnemyTypes.Hero, EnemyTypes.Hero2};
@@ -319,21 +352,53 @@ public class Globals
     public static int killCount;
     public static float gameTime;
 
+    public static int GamesPlayed;
+    public static List<PlayerTypes> UnlockedCharacters = new List<PlayerTypes>();
+
     public const string PlayerTypeUnlockPlayerPrefsKey = "PlayerType";
-    public static void LoadPlayerTypeUnlockStatesFromPlayerPrefs()
+    public const string GamesPlayedUnlockPlayerPrefsKey = "GamedPlayed";
+
+    public static void ResetUnlockedCharacterList()
+    {
+        UnlockedCharacters.Clear();
+    }
+    public static void AddUnlockedCharacterToList(PlayerTypes character)
+    {
+        UnlockedCharacters.Add(character);
+    }
+    public static void UpdateUnlockedCharactersFromList()
+    {
+        foreach(Globals.PlayerTypes playerType in Globals.UnlockedCharacters)
+        {
+            UnlockCharacter((int)playerType);
+        }
+    }
+
+    public static void LoadGameStateFromPlayerPrefs()
+    {
+        LoadCharacterUnlockStatesFromPlayerPrefs();
+        GamesPlayed = LoadIntFromPlayerPrefs(GamesPlayedUnlockPlayerPrefsKey);
+    }
+
+    public static void UpdateGamesPlayed(int newVal)
+    {
+        GamesPlayed = newVal;
+        SaveIntToPlayerPrefs(GamesPlayedUnlockPlayerPrefsKey, GamesPlayed);
+    }
+
+    public static void LoadCharacterUnlockStatesFromPlayerPrefs()
     {
         for (int x = 0; x < MaxPlayerTypes; x++)
         {
             int unlock = LoadIntFromPlayerPrefs(PlayerTypeUnlockPlayerPrefsKey + x.ToString());
-            PlayerTypeUnlockStates[x] = unlock;
-            PlayerTypeUnlockStates[x] = 1; // WTD WTD WTD remove
+            CharacterUnlockStates[x] = unlock;
         }
-        PlayerTypeUnlockStates[0] = 1;
+        CharacterUnlockStates[0] = 1;
     }
 
-    public static void UnlockPlayerType(int playerTypeNum)
+    public static void UnlockCharacter(int playerTypeNum)
     {
-        PlayerTypeUnlockStates[playerTypeNum] = 1;
+        CharacterUnlockStates[playerTypeNum] = 1;
         SaveIntToPlayerPrefs(PlayerTypeUnlockPlayerPrefsKey + playerTypeNum.ToString(), 1);
     }
 

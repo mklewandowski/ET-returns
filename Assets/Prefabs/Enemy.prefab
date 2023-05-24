@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6232591748759594083}
   - component: {fileID: 6232591748759594082}
   - component: {fileID: 4665281913154049914}
+  - component: {fileID: 4223287618532264434}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
@@ -170,11 +171,11 @@ MonoBehaviour:
   - {fileID: -462392754, guid: f2b2929274aeb374b9293ef04b1af26c, type: 3}
   - {fileID: -83080630, guid: 8364174679a7de947bfdc145a200ab89, type: 3}
   - {fileID: -1072581382, guid: 6377fe0bdc0d1dd469bb5c068a55811a, type: 3}
-  - {fileID: -1072581382, guid: 6377fe0bdc0d1dd469bb5c068a55811a, type: 3}
-  - {fileID: -1072581382, guid: 6377fe0bdc0d1dd469bb5c068a55811a, type: 3}
-  - {fileID: -1072581382, guid: 6377fe0bdc0d1dd469bb5c068a55811a, type: 3}
-  - {fileID: -1072581382, guid: 6377fe0bdc0d1dd469bb5c068a55811a, type: 3}
-  - {fileID: -1072581382, guid: 6377fe0bdc0d1dd469bb5c068a55811a, type: 3}
+  - {fileID: 1577060689, guid: e08d1e239fff8fc4d83594496af88288, type: 3}
+  - {fileID: -452724800, guid: beb2ec89f19d7a6428bf80fee0a62d15, type: 3}
+  - {fileID: -732598460, guid: 14f89084a1116ca40bb07b6e467e535d, type: 3}
+  - {fileID: -1197132564, guid: 41ffd3dd17ecd6e4ab7104f5a0012e0a, type: 3}
+  - {fileID: 21300000, guid: b4ba360efeac3c84c9a499d3c49e4397, type: 3}
   FlashMaterial: {fileID: 2100000, guid: 5a5709c4c6be05344ad5fcd750b857fb, type: 2}
   DebrisPrefab: {fileID: 4395591764634758786, guid: 6884334da442b4c4296f325b9b896c61, type: 3}
   ToxicDebrisPrefab: {fileID: 5148339097020038030, guid: 0ca1291124edc3f4d8db6c3370877a62, type: 3}
@@ -215,3 +216,23 @@ MonoBehaviour:
   ShrinkTo: 5
   Rate: 15
   JuiceTime: 0
+--- !u!114 &4223287618532264434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6232591748759594092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0513281251b534742af033cc7ccb5c23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movingUpEndPos: {x: 0, y: 0}
+  movingDownEndPos: {x: 0, y: 0}
+  movingLeftEndPos: {x: 0, y: 0}
+  movingRightEndPos: {x: 0, y: 0}
+  movingUpVelocity: 20
+  movingDownVelocity: -20
+  movingLeftVelocity: -20
+  movingRightVelocity: 20

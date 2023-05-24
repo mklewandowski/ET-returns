@@ -59,6 +59,8 @@ MonoBehaviour:
   CollectPhoneSound: {fileID: 8300000, guid: 530015ca6a855f9439cade410ff76645, type: 3}
   PhoneDialSound: {fileID: 8300000, guid: dc1c94fcbd2a2f148a3a7093f565153a, type: 3}
   LevelUpSound: {fileID: 8300000, guid: b2268fa8479ba1b43a17e5f05ffebc2a, type: 3}
+  BossLandSound: {fileID: 8300000, guid: 835d2b3f25f76ec4fa64e990cd1d05f8, type: 3}
+  FanfareSound: {fileID: 8300000, guid: b2268fa8479ba1b43a17e5f05ffebc2a, type: 3}
   ClickSounds:
   - {fileID: 8300000, guid: 8a02ce2abda8d0b43833a293b3d58eda, type: 3}
   - {fileID: 8300000, guid: 217e7c3d5c699f448a1ebb864926c3bc, type: 3}
