@@ -159,7 +159,7 @@ public class SelectSceneManager : MonoBehaviour
         ETgun.sprite = ETgunSprites[index];
         ETname.text = Globals.PlayerNames[index];
 
-        if (Globals.PlayerTypeUnlockStates[index] == 1)
+        if (Globals.CharacterUnlockStates[index] == 1)
         {
             UnlockText.text = "";
             SelectButton.SetActive(true);

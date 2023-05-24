@@ -52,6 +52,11 @@ public class EndSceneManager : MonoBehaviour
         int sec = timeInSeconds - (min * 60);
         string secPadded = sec < 10 ? "0" + sec : sec.ToString();
         textToType = "SURVIVAL TIME: " + min + ":" + secPadded + "\n\nEARTHLINGS ELIMINATED: " + Globals.killCount + "\n\nCANDIES COLLECTED: " + Globals.candyCount;
+
+        foreach(Globals.PlayerTypes playerType in Globals.UnlockedCharacters)
+        {
+            Debug.Log(playerType);
+        }
     }
 
     // Update is called once per frame

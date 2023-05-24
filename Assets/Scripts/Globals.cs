@@ -73,7 +73,7 @@ public class Globals
         "Upgrade seeker star to level 5",
         "Upgrade swirl to level 5",
         "Upgrade pit trap to level 5",
-        "Upgrade bees to level 5",
+        "Upgrade bomb to level 5",
         "Defeat Giant Pac-Man",
         "Defeat Popeye",
         "Defeat Mario",
@@ -106,7 +106,7 @@ public class Globals
 
     public static PlayerTypes currentPlayerType = PlayerTypes.Cinema;
     public static int MaxPlayerTypes = 20;
-    public static int[] PlayerTypeUnlockStates = new int[MaxPlayerTypes];
+    public static int[] CharacterUnlockStates = new int[MaxPlayerTypes];
 
     public enum EnemyTypes {
         Yar,
@@ -352,21 +352,53 @@ public class Globals
     public static int killCount;
     public static float gameTime;
 
+    public static int GamesPlayed;
+    public static List<PlayerTypes> UnlockedCharacters = new List<PlayerTypes>();
+
     public const string PlayerTypeUnlockPlayerPrefsKey = "PlayerType";
-    public static void LoadPlayerTypeUnlockStatesFromPlayerPrefs()
+    public const string GamesPlayedUnlockPlayerPrefsKey = "GamedPlayed";
+
+    public static void ResetUnlockedCharacterList()
+    {
+        UnlockedCharacters.Clear();
+    }
+    public static void AddUnlockedCharacterToList(PlayerTypes character)
+    {
+        UnlockedCharacters.Add(character);
+    }
+    public static void UpdateUnlockedCharactersFromList()
+    {
+        foreach(Globals.PlayerTypes playerType in Globals.UnlockedCharacters)
+        {
+            UnlockCharacter((int)playerType);
+        }
+    }
+
+    public static void LoadGameStateFromPlayerPrefs()
+    {
+        LoadCharacterUnlockStatesFromPlayerPrefs();
+        GamesPlayed = LoadIntFromPlayerPrefs(GamesPlayedUnlockPlayerPrefsKey);
+    }
+
+    public static void UpdateGamesPlayed(int newVal)
+    {
+        GamesPlayed = newVal;
+        SaveIntToPlayerPrefs(GamesPlayedUnlockPlayerPrefsKey, GamesPlayed);
+    }
+
+    public static void LoadCharacterUnlockStatesFromPlayerPrefs()
     {
         for (int x = 0; x < MaxPlayerTypes; x++)
         {
             int unlock = LoadIntFromPlayerPrefs(PlayerTypeUnlockPlayerPrefsKey + x.ToString());
-            PlayerTypeUnlockStates[x] = unlock;
-            PlayerTypeUnlockStates[x] = 1; // WTD WTD WTD remove
+            CharacterUnlockStates[x] = unlock;
         }
-        PlayerTypeUnlockStates[0] = 1;
+        CharacterUnlockStates[0] = 1;
     }
 
-    public static void UnlockPlayerType(int playerTypeNum)
+    public static void UnlockCharacter(int playerTypeNum)
     {
-        PlayerTypeUnlockStates[playerTypeNum] = 1;
+        CharacterUnlockStates[playerTypeNum] = 1;
         SaveIntToPlayerPrefs(PlayerTypeUnlockPlayerPrefsKey + playerTypeNum.ToString(), 1);
     }
 

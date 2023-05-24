@@ -169,6 +169,7 @@ public class GameSceneManager : MonoBehaviour
     float bossTimer = 0;
     bool gameHasBoss = false;
     int bossSpawnDifficulty = 0;
+    bool bossDefeated = false;
 
     float deadTimer = 0f;
     float deadTimerMax = 4f;
@@ -661,8 +662,7 @@ public class GameSceneManager : MonoBehaviour
 
     public void KillBoss()
     {
-        // WTD
-        // use this in case we need to unlock
+        bossDefeated = true;
     }
 
     void SpawnDigs()
@@ -883,5 +883,50 @@ public class GameSceneManager : MonoBehaviour
     public void GameOver()
     {
         deadTimer = deadTimerMax;
+        Globals.UpdateGamesPlayed(Globals.GamesPlayed + 1);
+
+        // check for unlocked characters
+        Globals.ResetUnlockedCharacterList();
+        if (Globals.GamesPlayed >= 1 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Atari2600] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Atari2600);
+        if (Globals.GamesPlayed >= 2 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Goth] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Goth);
+        if (Globals.GamesPlayed >= 5 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Miami] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Miami);
+        if (Globals.GamesPlayed >= 10 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Punk] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Punk);
+        if (Globals.GamesPlayed >= 20 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Toxic] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Toxic);
+        if (Globals.GamesPlayed >= 30 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Bubblegum] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Bubblegum);
+        if (Globals.GamesPlayed >= 50 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Smurf] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Smurf);
+        if (Globals.gameTime >= 600 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Hulk] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Hulk);
+        if (Globals.gameTime >= 1200 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Super] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Super);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Laser] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.RadStyle] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.RadStyle);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SeekerMissile] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Ninja] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Ninja);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Swirl] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Crush] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Crush);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Grape] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Grape);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.New] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.New);
+        if (bossDefeated && currentBossType == Globals.EnemyTypes.PacBoss && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Pac] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Pac);
+        if (bossDefeated && currentBossType == Globals.EnemyTypes.PopeyeBoss && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Sailor] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Sailor);
+        if (bossDefeated && currentBossType == Globals.EnemyTypes.MarioBoss && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Mario] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Mario);
+        if (bossDefeated && currentBossType == Globals.EnemyTypes.LuigiBoss && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Luigi] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Luigi);
+        if (bossDefeated && currentBossType == Globals.EnemyTypes.KoolBoss && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Koolaid] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Koolaid);
+
+        Globals.UpdateUnlockedCharactersFromList();
+
     }
 }
