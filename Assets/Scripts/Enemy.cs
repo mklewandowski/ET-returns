@@ -582,7 +582,10 @@ public class Enemy : MonoBehaviour
                 }
                 else if (currentBehavior == BehaviorType.Wait)
                 {
-                    currentBehavior = BehaviorType.StraightLine;
+                    if (attackType == AttackType.StraightLine)
+                        currentBehavior = BehaviorType.StraightLine;
+                    else
+                        currentBehavior = BehaviorType.Seek;
                 }
                 else if (currentBehavior == BehaviorType.StraightLine)
                 {
