@@ -17,6 +17,25 @@ public class EndSceneManager : MonoBehaviour
     [SerializeField]
     GameObject StatsText;
 
+    [SerializeField]
+    GameObject[] UnlockPanels;
+    [SerializeField]
+    TextMeshProUGUI[] UnlockPanelNames;
+    [SerializeField]
+    Image[] UnlockPanelETimages;
+    [SerializeField]
+    Image[] UnlockPanelETguns;
+    [SerializeField]
+    Sprite[] ETsprites;
+    [SerializeField]
+    Sprite[] ETgunSprites;
+
+    [SerializeField]
+    GameObject NextButton;
+
+    float unlockTimer = 0;
+    float unlockTimerMax = 3f;
+
     bool fadeIn = false;
     bool fadeOut = false;
     string sceneToLoad = "TitleScene";
@@ -52,10 +71,25 @@ public class EndSceneManager : MonoBehaviour
         int sec = timeInSeconds - (min * 60);
         string secPadded = sec < 10 ? "0" + sec : sec.ToString();
         textToType = "SURVIVAL TIME: " + min + ":" + secPadded + "\n\nEARTHLINGS ELIMINATED: " + Globals.killCount + "\n\nCANDIES COLLECTED: " + Globals.candyCount;
+    }
 
-        foreach(Globals.PlayerTypes playerType in Globals.UnlockedCharacters)
+    void DisplayUnlockedCharacters()
+    {
+        if (Globals.UnlockedCharacters.Count > 0)
         {
+            audioManager.PlayFanfareSound();
+        }
+        for (int x = 0; x < Globals.UnlockedCharacters.Count; x++)
+        {
+            Globals.PlayerTypes playerType = Globals.UnlockedCharacters[x];
             Debug.Log(playerType);
+            int characterIndex = (int)playerType;
+            UnlockPanelETimages[x].sprite = ETsprites[characterIndex];
+            UnlockPanelETguns[x].sprite = ETgunSprites[characterIndex];
+            UnlockPanelNames[x].text = Globals.PlayerNames[characterIndex];
+            UnlockPanels[x].transform.localScale = new Vector3(.1f, .1f, .1f);
+            UnlockPanels[x].SetActive(true);
+            UnlockPanels[x].GetComponent<GrowAndShrink>().StartEffect();
         }
     }
 
@@ -67,17 +101,30 @@ public class EndSceneManager : MonoBehaviour
             fadeIn = false;
 
             StatsText.GetComponent<TypewriterUI>().StartEffect(textToType);
+            unlockTimer = unlockTimerMax;
         }
         if (fadeOut && fadeManager.FadeComplete())
         {
             fadeOut = false;
             SceneManager.LoadScene(sceneToLoad);
         }
+        if (unlockTimer > 0)
+        {
+            unlockTimer -= Time.deltaTime;
+            if (unlockTimer <= 0)
+            {
+                DisplayUnlockedCharacters();
+                NextButton.SetActive(true);
+                NextButton.GetComponent<MoveNormal>().MoveUp();
+            }
+        }
         HandleInput();
     }
 
     void HandleInput()
     {
+        if (!NextButton.activeSelf)
+            return;
         if (controllerAttached)
         {
             if (Input.GetButton("Fire1"))
