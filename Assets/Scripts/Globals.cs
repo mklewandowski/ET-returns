@@ -353,10 +353,12 @@ public class Globals
     public static float gameTime;
 
     public static int GamesPlayed;
+    public static int BestTime;
     public static List<PlayerTypes> UnlockedCharacters = new List<PlayerTypes>();
 
     public const string PlayerTypeUnlockPlayerPrefsKey = "PlayerType";
     public const string GamesPlayedUnlockPlayerPrefsKey = "GamedPlayed";
+    public const string BestTimePlayerPrefsKey = "BestTime";
 
     public static void ResetUnlockedCharacterList()
     {
@@ -378,12 +380,20 @@ public class Globals
     {
         LoadCharacterUnlockStatesFromPlayerPrefs();
         GamesPlayed = LoadIntFromPlayerPrefs(GamesPlayedUnlockPlayerPrefsKey);
+        BestTime = LoadIntFromPlayerPrefs(BestTimePlayerPrefsKey);
     }
 
     public static void UpdateGamesPlayed(int newVal)
     {
         GamesPlayed = newVal;
         SaveIntToPlayerPrefs(GamesPlayedUnlockPlayerPrefsKey, GamesPlayed);
+    }
+
+    public static void UpdateBestTime(int newVal)
+    {
+        if (BestTime < newVal)
+            BestTime = newVal;
+        SaveIntToPlayerPrefs(BestTimePlayerPrefsKey, BestTime);
     }
 
     public static void LoadCharacterUnlockStatesFromPlayerPrefs()

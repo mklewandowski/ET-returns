@@ -3172,6 +3172,7 @@ MonoBehaviour:
   tutorialPanel: {fileID: 508004148}
   buttonPanel: {fileID: 1951017783}
   statsPanel: {fileID: 935986087}
+  stats: {fileID: 2031914575}
   tutorialPanels:
   - {fileID: 1542979960}
   - {fileID: 1165923384}

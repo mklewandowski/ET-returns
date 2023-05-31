@@ -920,6 +920,7 @@ public class GameSceneManager : MonoBehaviour
     {
         deadTimer = deadTimerMax;
         Globals.UpdateGamesPlayed(Globals.GamesPlayed + 1);
+        Globals.UpdateBestTime((int)Globals.gameTime);
 
         // check for unlocked characters
         Globals.ResetUnlockedCharacterList();

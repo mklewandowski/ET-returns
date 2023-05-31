@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class TitleSceneManager : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class TitleSceneManager : MonoBehaviour
     GameObject buttonPanel;
     [SerializeField]
     GameObject statsPanel;
+    [SerializeField]
+    TextMeshProUGUI stats;
     [SerializeField]
     GameObject[] tutorialPanels;
     int currTutorial = 0;
@@ -63,6 +66,18 @@ public class TitleSceneManager : MonoBehaviour
         }
 
         Globals.LoadGameStateFromPlayerPrefs();
+
+        int timeInSeconds = Globals.BestTime;
+        int min = (int)(timeInSeconds / 60f);
+        int sec = timeInSeconds - (min * 60);
+        string secPadded = sec < 10 ? "0" + sec : sec.ToString();
+        int numUnlocked = 0;
+        for (int x = 0; x < Globals.CharacterUnlockStates.Length; x++)
+        {
+            if (Globals.CharacterUnlockStates[x] == 1)
+                numUnlocked++;
+        }
+        stats.text = "GAMES PLAYED: " + Globals.GamesPlayed + "\n\nBEST SURVIVAL TIME: " + min + ":" + secPadded + "\n\nE.T.'S UNLOCKED: " + numUnlocked + " of " + Globals.MaxPlayerTypes;
 
         fadeManager.StartFadeIn();
         fadeIn = true;
