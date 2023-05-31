@@ -364,7 +364,7 @@ public class GameSceneManager : MonoBehaviour
 
             if (controllerAttached)
             {
-                if (Input.GetButton("Fire1"))
+                if (Input.GetButtonDown("Fire1"))
                     SelectUpgrade(upgradeHighlightIndex);
 
                 float controllerLeftStickX;

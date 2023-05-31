@@ -85,7 +85,7 @@ public class SelectSceneManager : MonoBehaviour
         bool moveRight = false;
         if (controllerAttached)
         {
-            if (Input.GetButton("Fire1") && SelectButton.activeSelf)
+            if (Input.GetButtonDown("Fire1") && SelectButton.activeSelf)
                 SelectStart();
 
             float controllerLeftStickX;

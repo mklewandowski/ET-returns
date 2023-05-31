@@ -16,7 +16,15 @@ public class TitleSceneManager : MonoBehaviour
     [SerializeField]
     RectTransform[] Buttons;
     [SerializeField]
+    GameObject introPanel;
+    [SerializeField]
     GameObject animationPanel;
+    [SerializeField]
+    GameObject tutorialPanel;
+    [SerializeField]
+    GameObject buttonPanel;
+    [SerializeField]
+    GameObject statsPanel;
     [SerializeField]
     GameObject[] tutorialPanels;
     int currTutorial = 0;
@@ -32,6 +40,7 @@ public class TitleSceneManager : MonoBehaviour
     bool stickDown = false;
     bool controllerAttached = false;
     int highlightIndex = 1;
+    bool showBackButton = false;
 
     void Awake()
     {
@@ -75,10 +84,11 @@ public class TitleSceneManager : MonoBehaviour
         if (animationPanel.transform.localPosition.x >= 1600f)
         {
             animationPanel.transform.localPosition = new Vector2(-1500f, animationPanel.transform.localPosition.y);
-            animationPanel.GetComponent<MoveNormal>().StopMove();
-            currTutorial = 0;
-            tutorialPanels[currTutorial].GetComponent<MoveNormal>().MoveUp();
-            tutorialGapTimer = tutorialGapTimerMax;
+            animationPanel.GetComponent<MoveNormal>().MoveRight();
+            // animationPanel.GetComponent<MoveNormal>().StopMove();
+            // currTutorial = 0;
+            // tutorialPanels[currTutorial].GetComponent<MoveNormal>().MoveUp();
+            // tutorialGapTimer = tutorialGapTimerMax;
         }
         if (tutorialGapTimer > 0)
         {
@@ -120,7 +130,7 @@ public class TitleSceneManager : MonoBehaviour
         bool selectButton = false;
         if (controllerAttached)
         {
-            if (Input.GetButton("Fire1"))
+            if (Input.GetButtonDown("Fire1"))
             {
                 selectButton = true;
             }
@@ -151,14 +161,19 @@ public class TitleSceneManager : MonoBehaviour
 
         if (selectButton)
         {
-            if (highlightIndex == 0)
-                SelectStart();
-            else if (highlightIndex == 1)
-                SelectStart();
-            else if (highlightIndex == 2)
-                SelectStart();
+            if (showBackButton)
+                SelectBack();
+            else
+            {
+                if (highlightIndex == 0)
+                    SelectTutorial();
+                else if (highlightIndex == 1)
+                    SelectStart();
+                else if (highlightIndex == 2)
+                    SelectStats();
+            }
         }
-        if (moveLeft)
+        if (moveLeft && !showBackButton)
         {
             highlightIndex--;
             if (highlightIndex < 0)
@@ -167,7 +182,7 @@ public class TitleSceneManager : MonoBehaviour
             audioManager.PlayMenuSound();
             HighlightButton();
         }
-        else if (moveRight)
+        else if (moveRight && !showBackButton)
         {
             highlightIndex++;
             if (highlightIndex >= Buttons.Length)
@@ -195,12 +210,27 @@ public class TitleSceneManager : MonoBehaviour
 
     public void SelectTutorial()
     {
-
+        introPanel.GetComponent<MoveNormal>().MoveDown();
+        buttonPanel.GetComponent<MoveNormal>().MoveDown();
+        tutorialPanel.GetComponent<MoveNormal>().MoveUp();
+        showBackButton = true;
     }
 
     public void SelectStats()
     {
+        introPanel.GetComponent<MoveNormal>().MoveDown();
+        buttonPanel.GetComponent<MoveNormal>().MoveDown();
+        statsPanel.GetComponent<MoveNormal>().MoveUp();
+        showBackButton = true;
+    }
 
+    public void SelectBack()
+    {
+        introPanel.GetComponent<MoveNormal>().MoveUp();
+        buttonPanel.GetComponent<MoveNormal>().MoveUp();
+        statsPanel.GetComponent<MoveNormal>().MoveDown();
+        tutorialPanel.GetComponent<MoveNormal>().MoveDown();
+        showBackButton = false;
     }
 
     public void SelectStart()
