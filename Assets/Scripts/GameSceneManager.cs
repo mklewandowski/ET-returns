@@ -356,29 +356,42 @@ public class GameSceneManager : MonoBehaviour
 
     void HandleInput()
     {
-        if (Globals.IsPaused && controllerAttached)
+        if (Globals.IsPaused)
         {
-            if (Input.GetButton("Fire1"))
-                SelectUpgrade(upgradeHighlightIndex);
 
-            float controllerLeftStickX;
-            controllerLeftStickX = Input.GetAxis("Horizontal");
             bool moveLeft = false;
             bool moveRight = false;
-            if (controllerLeftStickX > .5f)
+
+            if (controllerAttached)
             {
-                if (!stickDown) moveRight = true;
-                stickDown = true;
+                if (Input.GetButton("Fire1"))
+                    SelectUpgrade(upgradeHighlightIndex);
+
+                float controllerLeftStickX;
+                controllerLeftStickX = Input.GetAxis("Horizontal");
+                if (controllerLeftStickX > .5f)
+                {
+                    if (!stickDown) moveRight = true;
+                    stickDown = true;
+                }
+                else if (controllerLeftStickX < -.5f)
+                {
+                    if (!stickDown) moveLeft = true;
+                    stickDown = true;
+                }
+                else
+                {
+                    stickDown = false;
+                }
             }
-            else if (controllerLeftStickX < -.5f)
-            {
-                if (!stickDown) moveLeft = true;
-                stickDown = true;
-            }
-            else
-            {
-                stickDown = false;
-            }
+
+            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown("a"))
+                moveLeft = true;
+            else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown("d"))
+                moveRight = true;
+            if (Input.GetKeyDown("space"))
+                SelectUpgrade(upgradeHighlightIndex);
+
             if (moveLeft)
             {
                 upgradeHighlightIndex--;
@@ -793,8 +806,7 @@ public class GameSceneManager : MonoBehaviour
     public void ShowUpgradeSelection()
     {
         upgradeHighlightIndex = 0;
-        if (controllerAttached)
-            HighlightUpgradeButton();
+        HighlightUpgradeButton();
         availableUpgrades.Clear();
         int numUpgrades = 0;
         int maxUpgrades = 6;

@@ -115,15 +115,18 @@ public class TitleSceneManager : MonoBehaviour
 
     void HandleInput()
     {
+        bool moveLeft = false;
+        bool moveRight = false;
+        bool selectButton = false;
         if (controllerAttached)
         {
             if (Input.GetButton("Fire1"))
-                SelectStart();
+            {
+                selectButton = true;
+            }
 
             float controllerLeftStickX;
             controllerLeftStickX = Input.GetAxis("Horizontal");
-            bool moveLeft = false;
-            bool moveRight = false;
             if (controllerLeftStickX > .5f)
             {
                 if (!stickDown) moveRight = true;
@@ -138,27 +141,41 @@ public class TitleSceneManager : MonoBehaviour
             {
                 stickDown = false;
             }
-            if (moveLeft)
-            {
-                highlightIndex--;
-                if (highlightIndex < 0)
-                    highlightIndex = Buttons.Length - 1;
-
-                audioManager.PlayMenuSound();
-                HighlightButton();
-            }
-            else if (moveRight)
-            {
-                highlightIndex++;
-                if (highlightIndex >= Buttons.Length)
-                    highlightIndex = 0;
-
-                audioManager.PlayMenuSound();
-                HighlightButton();
-            }
         }
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown("a"))
+            moveLeft = true;
+        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown("d"))
+            moveRight = true;
         if (Input.GetKeyDown("space"))
-            SelectStart();
+            selectButton = true;
+
+        if (selectButton)
+        {
+            if (highlightIndex == 0)
+                SelectStart();
+            else if (highlightIndex == 1)
+                SelectStart();
+            else if (highlightIndex == 2)
+                SelectStart();
+        }
+        if (moveLeft)
+        {
+            highlightIndex--;
+            if (highlightIndex < 0)
+                highlightIndex = Buttons.Length - 1;
+
+            audioManager.PlayMenuSound();
+            HighlightButton();
+        }
+        else if (moveRight)
+        {
+            highlightIndex++;
+            if (highlightIndex >= Buttons.Length)
+                highlightIndex = 0;
+
+            audioManager.PlayMenuSound();
+            HighlightButton();
+        }
     }
 
     private void HighlightButton()
