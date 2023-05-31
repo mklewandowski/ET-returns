@@ -39,7 +39,7 @@ public class GameSceneManager : MonoBehaviour
     [SerializeField]
     GameObject HUDUpgradePanel;
     [SerializeField]
-    GameObject[] HUDUpgradeButtonHighlights;
+    RectTransform[] HUDUpgradeButtons;
     [SerializeField]
     TextMeshProUGUI[] HUDUpgradeButtonTitleTexts;
     [SerializeField]
@@ -379,14 +379,24 @@ public class GameSceneManager : MonoBehaviour
             {
                 stickDown = false;
             }
-            int previousUpgradeHighlightIndex = upgradeHighlightIndex;
             if (moveLeft)
-                upgradeHighlightIndex = Mathf.Max(0, upgradeHighlightIndex - 1);
-            else if (moveRight)
-                upgradeHighlightIndex = Mathf.Min(2, upgradeHighlightIndex + 1);
-            if (previousUpgradeHighlightIndex != upgradeHighlightIndex)
+            {
+                upgradeHighlightIndex--;
+                if (upgradeHighlightIndex < 0)
+                    upgradeHighlightIndex = HUDUpgradeButtons.Length - 1;
+
                 audioManager.PlayMenuSound();
-            HighlightUpgradeButton();
+                HighlightUpgradeButton();
+            }
+            else if (moveRight)
+            {
+                upgradeHighlightIndex++;
+                if (upgradeHighlightIndex >= HUDUpgradeButtons.Length)
+                    upgradeHighlightIndex = 0;
+
+                audioManager.PlayMenuSound();
+                HighlightUpgradeButton();
+            }
         }
     }
 
@@ -840,9 +850,16 @@ public class GameSceneManager : MonoBehaviour
 
     private void HighlightUpgradeButton()
     {
-        for (int x = 0; x < HUDUpgradeButtonHighlights.Length; x++)
+        for (int x = 0; x < HUDUpgradeButtons.Length; x++)
         {
-            HUDUpgradeButtonHighlights[x].SetActive(x == upgradeHighlightIndex);
+            if (x == upgradeHighlightIndex)
+            {
+                HUDUpgradeButtons[x].sizeDelta = new Vector2 (410f, 350f);
+            }
+            else
+            {
+                HUDUpgradeButtons[x].sizeDelta = new Vector2 (380f, 320f);
+            }
         }
     }
 

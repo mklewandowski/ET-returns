@@ -14,6 +14,8 @@ public class TitleSceneManager : MonoBehaviour
     [SerializeField]
     FadeManager fadeManager;
     [SerializeField]
+    RectTransform[] Buttons;
+    [SerializeField]
     GameObject animationPanel;
     [SerializeField]
     GameObject[] tutorialPanels;
@@ -27,7 +29,9 @@ public class TitleSceneManager : MonoBehaviour
     bool fadeOut = false;
     string sceneToLoad = "SelectScene";
 
+    bool stickDown = false;
     bool controllerAttached = false;
+    int highlightIndex = 1;
 
     void Awake()
     {
@@ -106,7 +110,6 @@ public class TitleSceneManager : MonoBehaviour
             }
         }
         HandleInput();
-
     }
 
 
@@ -116,9 +119,71 @@ public class TitleSceneManager : MonoBehaviour
         {
             if (Input.GetButton("Fire1"))
                 SelectStart();
+
+            float controllerLeftStickX;
+            controllerLeftStickX = Input.GetAxis("Horizontal");
+            bool moveLeft = false;
+            bool moveRight = false;
+            if (controllerLeftStickX > .5f)
+            {
+                if (!stickDown) moveRight = true;
+                stickDown = true;
+            }
+            else if (controllerLeftStickX < -.5f)
+            {
+                if (!stickDown) moveLeft = true;
+                stickDown = true;
+            }
+            else
+            {
+                stickDown = false;
+            }
+            if (moveLeft)
+            {
+                highlightIndex--;
+                if (highlightIndex < 0)
+                    highlightIndex = Buttons.Length - 1;
+
+                audioManager.PlayMenuSound();
+                HighlightButton();
+            }
+            else if (moveRight)
+            {
+                highlightIndex++;
+                if (highlightIndex >= Buttons.Length)
+                    highlightIndex = 0;
+
+                audioManager.PlayMenuSound();
+                HighlightButton();
+            }
         }
         if (Input.GetKeyDown("space"))
             SelectStart();
+    }
+
+    private void HighlightButton()
+    {
+        for (int x = 0; x < Buttons.Length; x++)
+        {
+            if (x == highlightIndex)
+            {
+                Buttons[x].sizeDelta = new Vector2 (420f, 120f);
+            }
+            else
+            {
+                Buttons[x].sizeDelta = new Vector2 (400f, 100f);
+            }
+        }
+    }
+
+    public void SelectTutorial()
+    {
+
+    }
+
+    public void SelectStats()
+    {
+
     }
 
     public void SelectStart()
