@@ -141,6 +141,8 @@ public class GameSceneManager : MonoBehaviour
 
     float spawnTimer = 5f;
     float spawnTimerMax = 7f;
+    float FBIspawnTimer = 5f;
+    float FBIspawnTimerMax = 7f;
     int digSpawnsRemaining = 0;
     int planeSpawnsRemaining = 0;
     int roverSpawnsRemaining = 0;
@@ -509,6 +511,11 @@ public class GameSceneManager : MonoBehaviour
         {
             spawnTimer = spawnTimerMax;
             SpawnEnemies(10 + (int)((float)difficultyLevel * 1.5f));
+        }
+        FBIspawnTimer -= Time.deltaTime;
+        if (FBIspawnTimer <= 0)
+        {
+            FBIspawnTimer = FBIspawnTimerMax;
             SpawnFBI();
         }
     }
@@ -562,7 +569,7 @@ public class GameSceneManager : MonoBehaviour
 
     void SpawnFBI()
     {
-        int extraLife = (int)(difficultyLevel * .5f);
+        int extraLife = (int)(difficultyLevel * 1.5f);
         SpawnEnemy(Globals.EnemyTypes.FBI, extraLife);
     }
 
