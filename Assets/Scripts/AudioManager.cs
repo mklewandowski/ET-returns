@@ -52,6 +52,9 @@ public class AudioManager : MonoBehaviour
     AudioClip BossLandSound;
 
     [SerializeField]
+    AudioClip BossKillSound;
+
+    [SerializeField]
     AudioClip FanfareSound;
 
     [SerializeField]
@@ -167,6 +170,12 @@ public class AudioManager : MonoBehaviour
     {
         if (Globals.AudioOn)
             audioSource.PlayOneShot(FanfareSound, .5f);
+    }
+
+    public void PlayBossKillSound()
+    {
+        if (Globals.AudioOn)
+            audioSource.PlayOneShot(BossKillSound, .5f);
     }
 
     public void PlayClickSound()

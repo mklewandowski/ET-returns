@@ -207,13 +207,15 @@ public class GameSceneManager : MonoBehaviour
             candyPool[x] = candyGO.GetComponent<Candy>();
         }
     }
-    public void ActivateCandyFromPool(Vector3 candyPos)
+    public void ActivateCandyFromPool(Vector3 candyPos, bool move, Vector3 moveDir)
     {
         for (int x = 0; x < candyPool.Length; x++)
         {
             if (!candyPool[x].IsActive())
             {
                 candyPool[x].Activate(candyPos);
+                if (move)
+                    candyPool[x].StartMove(moveDir);
                 break;
             }
         }
