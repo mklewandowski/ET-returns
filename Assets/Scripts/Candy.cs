@@ -9,6 +9,7 @@ public class Candy : MonoBehaviour
     float moveTimerMax = .25f;
     Vector3 moveDir;
     float speed = .2f;
+    float startSpeed = .2f;
 
     void Update()
     {
@@ -37,7 +38,8 @@ public class Candy : MonoBehaviour
 
     public void StartMove(Vector3 dir)
     {
-        moveTimer = moveTimerMax;
+        moveTimer = moveTimerMax + Random.Range(-.1f, .1f);
+        speed = startSpeed + Random.Range(-.02f, .02f);
         moveDir = dir;
     }
 
