@@ -147,6 +147,7 @@ public class GameSceneManager : MonoBehaviour
     int planeSpawnsRemaining = 0;
     int roverSpawnsRemaining = 0;
     float tankReturnTimer = 0;
+    int totalUpgradesThisGame = 0;
 
     [SerializeField]
     GameObject HUDBossPanel;
@@ -801,6 +802,9 @@ public class GameSceneManager : MonoBehaviour
         HUDUpgradePanel.GetComponent<MoveWhenPaused>().MoveDown();
         playerScript.ResetHUDPhone();
         playerScript.UpdateUpgrades(availableUpgrades[upgradeNum]);
+        totalUpgradesThisGame++;
+        if (totalUpgradesThisGame % 5 == 0)
+            FBIspawnTimerMax = FBIspawnTimerMax + 1f;
         Time.timeScale = 1f;
         Globals.IsPaused = false;
     }
