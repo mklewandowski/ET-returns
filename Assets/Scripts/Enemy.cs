@@ -720,6 +720,8 @@ public class Enemy : MonoBehaviour
         }
 
         Bullet bullet = collider.gameObject.GetComponent<Bullet>();
+        Boomerang boomerang = collider.gameObject.GetComponent<Boomerang>();
+        ToxicDebris toxicDebris = collider.gameObject.GetComponent<ToxicDebris>();
         AttackObject attackObject = collider.gameObject.GetComponent<AttackObject>();
         int damage = 0;
         Vector2 damageVelocity = new Vector2(0, 0);
@@ -727,9 +729,16 @@ public class Enemy : MonoBehaviour
         {
             Rigidbody2D bulletRB = collider.gameObject.GetComponent<Rigidbody2D>();
             if (bulletRB != null)
-                damageVelocity = collider.gameObject.GetComponent<Rigidbody2D>().velocity;
+                damageVelocity = bulletRB.velocity;
             bullet.HitEnemy();
         }
+        else if (boomerang != null || toxicDebris != null)
+        {
+            Rigidbody2D objectRB = collider.gameObject.GetComponent<Rigidbody2D>();
+            if (objectRB != null)
+                damageVelocity = objectRB.velocity;
+        }
+
         if (attackObject)
         {
             audioManager.PlayEnemyHitSound();
@@ -741,6 +750,12 @@ public class Enemy : MonoBehaviour
                 damage = (int)Mathf.Round(attackObject.StrongDamageMin + (attackObject.StrongDamageMax - attackObject.StrongDamageMin) * currentAttackPercent);
             else
                 damage = (int)Mathf.Round(attackObject.CriticalDamageMin + (attackObject.CriticalDamageMax - attackObject.CriticalDamageMin) * currentAttackPercent);
+
+            if (attackObject.CausePushBackDamageVelocity)
+            {
+                damageVelocity = enemyRigidbody.velocity * (-1f * attackObject.PushBackDamageVelocityMultiplier);
+                Debug.Log(damageVelocity);
+            }
         }
         life = life - damage;
         if (damage > 0)
