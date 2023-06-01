@@ -13147,7 +13147,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &225385082
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13166,7 +13166,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -27, y: 0}
-  m_SizeDelta: {x: 54, y: 52}
+  m_SizeDelta: {x: 0, y: 52}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &225385083
 MonoBehaviour:
@@ -25187,7 +25187,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &402660456
 RectTransform:
   m_ObjectHideFlags: 0
@@ -25206,7 +25206,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -27, y: 0}
-  m_SizeDelta: {x: 54, y: 52}
+  m_SizeDelta: {x: 0, y: 52}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &402660457
 MonoBehaviour:
@@ -25599,7 +25599,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &407128121
 RectTransform:
   m_ObjectHideFlags: 0
@@ -25618,7 +25618,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -27, y: 0}
-  m_SizeDelta: {x: 54, y: 52}
+  m_SizeDelta: {x: 0, y: 52}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &407128122
 MonoBehaviour:
@@ -51249,7 +51249,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &809220292
 RectTransform:
   m_ObjectHideFlags: 0
@@ -51268,7 +51268,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -27, y: 0}
-  m_SizeDelta: {x: 54, y: 52}
+  m_SizeDelta: {x: 0, y: 52}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &809220293
 MonoBehaviour:
@@ -58730,7 +58730,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &928022820
 RectTransform:
   m_ObjectHideFlags: 0
@@ -58749,7 +58749,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -27, y: 0}
-  m_SizeDelta: {x: 54, y: 52}
+  m_SizeDelta: {x: 0, y: 52}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &928022821
 MonoBehaviour:
@@ -60740,7 +60740,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &960945945
 RectTransform:
   m_ObjectHideFlags: 0
@@ -68659,7 +68659,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1090499278
 RectTransform:
   m_ObjectHideFlags: 0
@@ -68678,7 +68678,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -27, y: 0}
-  m_SizeDelta: {x: 54, y: 52}
+  m_SizeDelta: {x: 0, y: 52}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1090499279
 MonoBehaviour:
@@ -78754,6 +78754,13 @@ MonoBehaviour:
   - {fileID: 554699600}
   - {fileID: 998967086}
   - {fileID: 60664587}
+  HUDUpgradeCompletionBoxes:
+  - {fileID: 809220292}
+  - {fileID: 225385082}
+  - {fileID: 928022820}
+  - {fileID: 402660456}
+  - {fileID: 1090499278}
+  - {fileID: 407128121}
   ItemContainer: {fileID: 1121603906}
   CandyPrefab: {fileID: 2789390833255965416, guid: 49350f0dc1443174ba4820f99ba21979, type: 3}
   PhonePrefab: {fileID: 2789390833255965416, guid: 396c665cfb2423e488e62eabcfc48b6a, type: 3}

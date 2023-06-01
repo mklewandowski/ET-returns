@@ -48,6 +48,8 @@ public class GameSceneManager : MonoBehaviour
     TextMeshProUGUI[] HUDUpgradeButtonDescTexts;
     [SerializeField]
     Image[] HUDUpgradeButtonIcons;
+    [SerializeField]
+    RectTransform[] HUDUpgradeCompletionBoxes;
     List<Globals.UpgradeTypes> availableUpgrades = new List<Globals.UpgradeTypes>();
     int upgradeHighlightIndex = 0;
     bool stickDown = false;
@@ -798,6 +800,17 @@ public class GameSceneManager : MonoBehaviour
 
             }
             Globals.CurrentUpgradeLevels[(int)availableUpgrades[upgradeNum]]++;
+
+            float upgradeCompletionBarWidth = 54f;
+            for (int x = 0; x < Globals.CurrentUpgradeTypes.Count; x++)
+            {
+                if (Globals.CurrentUpgradeTypes[x] == availableUpgrades[upgradeNum])
+                {
+                    HUDUpgradeCompletionBoxes[x].sizeDelta = new Vector2 (
+                        (float)(Globals.CurrentUpgradeLevels[(int)availableUpgrades[upgradeNum]]) / (float)Globals.MaxLevelsPerUpgrade * upgradeCompletionBarWidth,
+                        HUDUpgradeCompletionBoxes[x].sizeDelta.y);
+                }
+            }
         }
         HUDUpgradePanel.GetComponent<MoveWhenPaused>().MoveDown();
         playerScript.ResetHUDPhone();
@@ -811,7 +824,7 @@ public class GameSceneManager : MonoBehaviour
 
     public void ShowUpgradeSelection()
     {
-        upgradeHighlightIndex = 0;
+        upgradeHighlightIndex = 1;
         HighlightUpgradeButton();
         availableUpgrades.Clear();
         int numUpgrades = 0;
