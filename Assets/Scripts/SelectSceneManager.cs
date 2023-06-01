@@ -85,7 +85,7 @@ public class SelectSceneManager : MonoBehaviour
         bool moveRight = false;
         if (controllerAttached)
         {
-            if (Input.GetButton("Fire1") && SelectButton.activeSelf)
+            if (Input.GetButtonDown("Fire1") && SelectButton.activeSelf)
                 SelectStart();
 
             float controllerLeftStickX;
@@ -129,7 +129,7 @@ public class SelectSceneManager : MonoBehaviour
     public void SelectNext()
     {
         if (fadeOut) return;
-        audioManager.PlayButtonSound();
+        audioManager.PlayMenuSound();
         int index = (int)Globals.currentPlayerType;
         index++;
         int numPlayerTypes = System.Enum.GetValues(typeof(Globals.PlayerTypes)).Length;
@@ -142,7 +142,7 @@ public class SelectSceneManager : MonoBehaviour
     public void SelectPrevious()
     {
         if (fadeOut) return;
-        audioManager.PlayButtonSound();
+        audioManager.PlayMenuSound();
         int index = (int)Globals.currentPlayerType;
         index--;
         int numPlayerTypes = System.Enum.GetValues(typeof(Globals.PlayerTypes)).Length;

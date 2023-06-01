@@ -416,7 +416,7 @@ public class Enemy : MonoBehaviour
             this.transform.localScale = new Vector3(12f, 12f, 1f);
             enemyCollider.size = new Vector2(0.12f, 0.1f);
             enemyRigidbody.mass = 99f;
-            life = 100;
+            life = 200;
             hitStrength = 10;
 
             attackType = AttackType.Direct;
@@ -435,10 +435,10 @@ public class Enemy : MonoBehaviour
             behaviorTimerMax = 1f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("sailor");
-            this.transform.localScale = new Vector3(6f, 6f, 1f);
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.14f, 0.24f);
             enemyRigidbody.mass = 99f;
-            life = 100;
+            life = 200;
             hitStrength = 10;
 
             attackType = AttackType.Direct;
@@ -457,10 +457,10 @@ public class Enemy : MonoBehaviour
             behaviorTimerMax = 1f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("mario");
-            this.transform.localScale = new Vector3(6f, 6f, 1f);
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.1f, 0.2f);
             enemyRigidbody.mass = 99f;
-            life = 100;
+            life = 200;
             hitStrength = 10;
 
             attackType = AttackType.Direct;
@@ -479,10 +479,10 @@ public class Enemy : MonoBehaviour
             behaviorTimerMax = 1f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("luigi");
-            this.transform.localScale = new Vector3(6f, 6f, 1f);
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.1f, 0.2f);
             enemyRigidbody.mass = 99f;
-            life = 100;
+            life = 200;
             hitStrength = 10;
 
             attackType = AttackType.Direct;
@@ -503,7 +503,7 @@ public class Enemy : MonoBehaviour
             enemyAnimator.Play("jungle");
             this.transform.localScale = new Vector3(10f, 10f, 1f);
             enemyCollider.size = new Vector2(0.08f, 0.16f);
-            life = 100;
+            life = 200;
             hitStrength = 10;
 
             attackType = AttackType.Direct;
@@ -521,17 +521,17 @@ public class Enemy : MonoBehaviour
             moveSpeed = 1.4f;
             behaviorTimerMax = 1.5f;
             enemyAnimator.enabled = false;
-            this.transform.localScale = new Vector3(10f, 10f, 1f);
+            this.transform.localScale = new Vector3(6f, 6f, 1f);
             enemyCollider.size = new Vector2(0.16f, 0.11f);
             enemyRigidbody.mass = 99f;
-            life = 100;
+            life = 250;
             hitStrength = 10;
 
             attackType = AttackType.Direct;
-            currentBehavior = BehaviorType.MoveIn;
+            // currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = .5f;
-            this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
-            this.GetComponent<MoveNormal>().MoveDown();
+            // this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
+            // this.GetComponent<MoveNormal>().MoveDown();
 
             //useLifeTimer = true;
             //lifeTimer = 45f;
@@ -720,6 +720,8 @@ public class Enemy : MonoBehaviour
         }
 
         Bullet bullet = collider.gameObject.GetComponent<Bullet>();
+        Boomerang boomerang = collider.gameObject.GetComponent<Boomerang>();
+        ToxicDebris toxicDebris = collider.gameObject.GetComponent<ToxicDebris>();
         AttackObject attackObject = collider.gameObject.GetComponent<AttackObject>();
         int damage = 0;
         Vector2 damageVelocity = new Vector2(0, 0);
@@ -727,9 +729,16 @@ public class Enemy : MonoBehaviour
         {
             Rigidbody2D bulletRB = collider.gameObject.GetComponent<Rigidbody2D>();
             if (bulletRB != null)
-                damageVelocity = collider.gameObject.GetComponent<Rigidbody2D>().velocity;
+                damageVelocity = bulletRB.velocity;
             bullet.HitEnemy();
         }
+        else if (boomerang != null || toxicDebris != null)
+        {
+            Rigidbody2D objectRB = collider.gameObject.GetComponent<Rigidbody2D>();
+            if (objectRB != null)
+                damageVelocity = objectRB.velocity;
+        }
+
         if (attackObject)
         {
             audioManager.PlayEnemyHitSound();
@@ -741,6 +750,11 @@ public class Enemy : MonoBehaviour
                 damage = (int)Mathf.Round(attackObject.StrongDamageMin + (attackObject.StrongDamageMax - attackObject.StrongDamageMin) * currentAttackPercent);
             else
                 damage = (int)Mathf.Round(attackObject.CriticalDamageMin + (attackObject.CriticalDamageMax - attackObject.CriticalDamageMin) * currentAttackPercent);
+
+            if (attackObject.CausePushBackDamageVelocity)
+            {
+                damageVelocity = enemyRigidbody.velocity * (-1f * attackObject.PushBackDamageVelocityMultiplier);
+            }
         }
         life = life - damage;
         if (damage > 0)
@@ -782,11 +796,18 @@ public class Enemy : MonoBehaviour
         }
         else if (isBoss)
         {
+            audioManager.PlayBossKillSound();
             GameSceneManagerScript.KillBoss();
+            for (int i = 0; i < 10; i++)
+            {
+                float randX = Random.Range(-.5f, .5f);
+                float randY = Random.Range(-.5f, .5f);
+                GameSceneManagerScript.ActivateCandyFromPool(this.transform.localPosition, true, new Vector3(randX, randY, this.transform.localPosition.z));
+            }
         }
         else if (Random.Range(0, 100f) < 50f)
         {
-            GameSceneManagerScript.ActivateCandyFromPool(this.transform.localPosition);
+            GameSceneManagerScript.ActivateCandyFromPool(this.transform.localPosition, false, Vector3.zero);
         }
 
         enemyCollider.enabled = false;

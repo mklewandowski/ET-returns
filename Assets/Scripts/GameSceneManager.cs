@@ -39,7 +39,7 @@ public class GameSceneManager : MonoBehaviour
     [SerializeField]
     GameObject HUDUpgradePanel;
     [SerializeField]
-    GameObject[] HUDUpgradeButtonHighlights;
+    RectTransform[] HUDUpgradeButtons;
     [SerializeField]
     TextMeshProUGUI[] HUDUpgradeButtonTitleTexts;
     [SerializeField]
@@ -48,6 +48,8 @@ public class GameSceneManager : MonoBehaviour
     TextMeshProUGUI[] HUDUpgradeButtonDescTexts;
     [SerializeField]
     Image[] HUDUpgradeButtonIcons;
+    [SerializeField]
+    RectTransform[] HUDUpgradeCompletionBoxes;
     List<Globals.UpgradeTypes> availableUpgrades = new List<Globals.UpgradeTypes>();
     int upgradeHighlightIndex = 0;
     bool stickDown = false;
@@ -141,10 +143,13 @@ public class GameSceneManager : MonoBehaviour
 
     float spawnTimer = 5f;
     float spawnTimerMax = 7f;
+    float FBIspawnTimer = 5f;
+    float FBIspawnTimerMax = 7f;
     int digSpawnsRemaining = 0;
     int planeSpawnsRemaining = 0;
     int roverSpawnsRemaining = 0;
     float tankReturnTimer = 0;
+    int totalUpgradesThisGame = 0;
 
     [SerializeField]
     GameObject HUDBossPanel;
@@ -205,13 +210,15 @@ public class GameSceneManager : MonoBehaviour
             candyPool[x] = candyGO.GetComponent<Candy>();
         }
     }
-    public void ActivateCandyFromPool(Vector3 candyPos)
+    public void ActivateCandyFromPool(Vector3 candyPos, bool move, Vector3 moveDir)
     {
         for (int x = 0; x < candyPool.Length; x++)
         {
             if (!candyPool[x].IsActive())
             {
                 candyPool[x].Activate(candyPos);
+                if (move)
+                    candyPool[x].StartMove(moveDir);
                 break;
             }
         }
@@ -354,37 +361,60 @@ public class GameSceneManager : MonoBehaviour
 
     void HandleInput()
     {
-        if (Globals.IsPaused && controllerAttached)
+        if (Globals.IsPaused)
         {
-            if (Input.GetButton("Fire1"))
-                SelectUpgrade(upgradeHighlightIndex);
 
-            float controllerLeftStickX;
-            controllerLeftStickX = Input.GetAxis("Horizontal");
             bool moveLeft = false;
             bool moveRight = false;
-            if (controllerLeftStickX > .5f)
+
+            if (controllerAttached)
             {
-                if (!stickDown) moveRight = true;
-                stickDown = true;
+                if (Input.GetButtonDown("Fire1"))
+                    SelectUpgrade(upgradeHighlightIndex);
+
+                float controllerLeftStickX;
+                controllerLeftStickX = Input.GetAxis("Horizontal");
+                if (controllerLeftStickX > .5f)
+                {
+                    if (!stickDown) moveRight = true;
+                    stickDown = true;
+                }
+                else if (controllerLeftStickX < -.5f)
+                {
+                    if (!stickDown) moveLeft = true;
+                    stickDown = true;
+                }
+                else
+                {
+                    stickDown = false;
+                }
             }
-            else if (controllerLeftStickX < -.5f)
-            {
-                if (!stickDown) moveLeft = true;
-                stickDown = true;
-            }
-            else
-            {
-                stickDown = false;
-            }
-            int previousUpgradeHighlightIndex = upgradeHighlightIndex;
+
+            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown("a"))
+                moveLeft = true;
+            else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown("d"))
+                moveRight = true;
+            if (Input.GetKeyDown("space"))
+                SelectUpgrade(upgradeHighlightIndex);
+
             if (moveLeft)
-                upgradeHighlightIndex = Mathf.Max(0, upgradeHighlightIndex - 1);
-            else if (moveRight)
-                upgradeHighlightIndex = Mathf.Min(2, upgradeHighlightIndex + 1);
-            if (previousUpgradeHighlightIndex != upgradeHighlightIndex)
+            {
+                upgradeHighlightIndex--;
+                if (upgradeHighlightIndex < 0)
+                    upgradeHighlightIndex = HUDUpgradeButtons.Length - 1;
+
                 audioManager.PlayMenuSound();
-            HighlightUpgradeButton();
+                HighlightUpgradeButton();
+            }
+            else if (moveRight)
+            {
+                upgradeHighlightIndex++;
+                if (upgradeHighlightIndex >= HUDUpgradeButtons.Length)
+                    upgradeHighlightIndex = 0;
+
+                audioManager.PlayMenuSound();
+                HighlightUpgradeButton();
+            }
         }
     }
 
@@ -509,6 +539,11 @@ public class GameSceneManager : MonoBehaviour
         {
             spawnTimer = spawnTimerMax;
             SpawnEnemies(10 + (int)((float)difficultyLevel * 1.5f));
+        }
+        FBIspawnTimer -= Time.deltaTime;
+        if (FBIspawnTimer <= 0)
+        {
+            FBIspawnTimer = FBIspawnTimerMax;
             SpawnFBI();
         }
     }
@@ -562,7 +597,7 @@ public class GameSceneManager : MonoBehaviour
 
     void SpawnFBI()
     {
-        int extraLife = (int)(difficultyLevel * .5f);
+        int extraLife = (int)(difficultyLevel * 1.5f);
         SpawnEnemy(Globals.EnemyTypes.FBI, extraLife);
     }
 
@@ -765,19 +800,32 @@ public class GameSceneManager : MonoBehaviour
 
             }
             Globals.CurrentUpgradeLevels[(int)availableUpgrades[upgradeNum]]++;
+
+            float upgradeCompletionBarWidth = 54f;
+            for (int x = 0; x < Globals.CurrentUpgradeTypes.Count; x++)
+            {
+                if (Globals.CurrentUpgradeTypes[x] == availableUpgrades[upgradeNum])
+                {
+                    HUDUpgradeCompletionBoxes[x].sizeDelta = new Vector2 (
+                        (float)(Globals.CurrentUpgradeLevels[(int)availableUpgrades[upgradeNum]]) / (float)Globals.MaxLevelsPerUpgrade * upgradeCompletionBarWidth,
+                        HUDUpgradeCompletionBoxes[x].sizeDelta.y);
+                }
+            }
         }
         HUDUpgradePanel.GetComponent<MoveWhenPaused>().MoveDown();
         playerScript.ResetHUDPhone();
         playerScript.UpdateUpgrades(availableUpgrades[upgradeNum]);
+        totalUpgradesThisGame++;
+        if (totalUpgradesThisGame % 5 == 0)
+            FBIspawnTimerMax = FBIspawnTimerMax + 1f;
         Time.timeScale = 1f;
         Globals.IsPaused = false;
     }
 
     public void ShowUpgradeSelection()
     {
-        upgradeHighlightIndex = 0;
-        if (controllerAttached)
-            HighlightUpgradeButton();
+        upgradeHighlightIndex = 1;
+        HighlightUpgradeButton();
         availableUpgrades.Clear();
         int numUpgrades = 0;
         int maxUpgrades = 6;
@@ -833,9 +881,16 @@ public class GameSceneManager : MonoBehaviour
 
     private void HighlightUpgradeButton()
     {
-        for (int x = 0; x < HUDUpgradeButtonHighlights.Length; x++)
+        for (int x = 0; x < HUDUpgradeButtons.Length; x++)
         {
-            HUDUpgradeButtonHighlights[x].SetActive(x == upgradeHighlightIndex);
+            if (x == upgradeHighlightIndex)
+            {
+                HUDUpgradeButtons[x].sizeDelta = new Vector2 (410f, 350f);
+            }
+            else
+            {
+                HUDUpgradeButtons[x].sizeDelta = new Vector2 (380f, 320f);
+            }
         }
     }
 
@@ -884,6 +939,7 @@ public class GameSceneManager : MonoBehaviour
     {
         deadTimer = deadTimerMax;
         Globals.UpdateGamesPlayed(Globals.GamesPlayed + 1);
+        Globals.UpdateBestTime((int)Globals.gameTime);
 
         // check for unlocked characters
         Globals.ResetUnlockedCharacterList();

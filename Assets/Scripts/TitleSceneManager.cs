@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class TitleSceneManager : MonoBehaviour
 {
@@ -14,7 +15,19 @@ public class TitleSceneManager : MonoBehaviour
     [SerializeField]
     FadeManager fadeManager;
     [SerializeField]
+    RectTransform[] Buttons;
+    [SerializeField]
+    GameObject introPanel;
+    [SerializeField]
     GameObject animationPanel;
+    [SerializeField]
+    GameObject tutorialPanel;
+    [SerializeField]
+    GameObject buttonPanel;
+    [SerializeField]
+    GameObject statsPanel;
+    [SerializeField]
+    TextMeshProUGUI stats;
     [SerializeField]
     GameObject[] tutorialPanels;
     int currTutorial = 0;
@@ -27,7 +40,10 @@ public class TitleSceneManager : MonoBehaviour
     bool fadeOut = false;
     string sceneToLoad = "SelectScene";
 
+    bool stickDown = false;
     bool controllerAttached = false;
+    int highlightIndex = 1;
+    bool showBackButton = false;
 
     void Awake()
     {
@@ -51,6 +67,18 @@ public class TitleSceneManager : MonoBehaviour
 
         Globals.LoadGameStateFromPlayerPrefs();
 
+        int timeInSeconds = Globals.BestTime;
+        int min = (int)(timeInSeconds / 60f);
+        int sec = timeInSeconds - (min * 60);
+        string secPadded = sec < 10 ? "0" + sec : sec.ToString();
+        int numUnlocked = 0;
+        for (int x = 0; x < Globals.CharacterUnlockStates.Length; x++)
+        {
+            if (Globals.CharacterUnlockStates[x] == 1)
+                numUnlocked++;
+        }
+        stats.text = "GAMES PLAYED: " + Globals.GamesPlayed + "\n\nBEST SURVIVAL TIME: " + min + ":" + secPadded + "\n\nE.T.'S UNLOCKED: " + numUnlocked + " of " + Globals.MaxPlayerTypes;
+
         fadeManager.StartFadeIn();
         fadeIn = true;
     }
@@ -71,10 +99,11 @@ public class TitleSceneManager : MonoBehaviour
         if (animationPanel.transform.localPosition.x >= 1600f)
         {
             animationPanel.transform.localPosition = new Vector2(-1500f, animationPanel.transform.localPosition.y);
-            animationPanel.GetComponent<MoveNormal>().StopMove();
-            currTutorial = 0;
-            tutorialPanels[currTutorial].GetComponent<MoveNormal>().MoveUp();
-            tutorialGapTimer = tutorialGapTimerMax;
+            animationPanel.GetComponent<MoveNormal>().MoveRight();
+            // animationPanel.GetComponent<MoveNormal>().StopMove();
+            // currTutorial = 0;
+            // tutorialPanels[currTutorial].GetComponent<MoveNormal>().MoveUp();
+            // tutorialGapTimer = tutorialGapTimerMax;
         }
         if (tutorialGapTimer > 0)
         {
@@ -106,19 +135,117 @@ public class TitleSceneManager : MonoBehaviour
             }
         }
         HandleInput();
-
     }
 
 
     void HandleInput()
     {
+        bool moveLeft = false;
+        bool moveRight = false;
+        bool selectButton = false;
         if (controllerAttached)
         {
-            if (Input.GetButton("Fire1"))
-                SelectStart();
+            if (Input.GetButtonDown("Fire1"))
+            {
+                selectButton = true;
+            }
+
+            float controllerLeftStickX;
+            controllerLeftStickX = Input.GetAxis("Horizontal");
+            if (controllerLeftStickX > .5f)
+            {
+                if (!stickDown) moveRight = true;
+                stickDown = true;
+            }
+            else if (controllerLeftStickX < -.5f)
+            {
+                if (!stickDown) moveLeft = true;
+                stickDown = true;
+            }
+            else
+            {
+                stickDown = false;
+            }
         }
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown("a"))
+            moveLeft = true;
+        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown("d"))
+            moveRight = true;
         if (Input.GetKeyDown("space"))
-            SelectStart();
+            selectButton = true;
+
+        if (selectButton)
+        {
+            if (showBackButton)
+                SelectBack();
+            else
+            {
+                if (highlightIndex == 0)
+                    SelectTutorial();
+                else if (highlightIndex == 1)
+                    SelectStart();
+                else if (highlightIndex == 2)
+                    SelectStats();
+            }
+        }
+        if (moveLeft && !showBackButton)
+        {
+            highlightIndex--;
+            if (highlightIndex < 0)
+                highlightIndex = Buttons.Length - 1;
+
+            audioManager.PlayMenuSound();
+            HighlightButton();
+        }
+        else if (moveRight && !showBackButton)
+        {
+            highlightIndex++;
+            if (highlightIndex >= Buttons.Length)
+                highlightIndex = 0;
+
+            audioManager.PlayMenuSound();
+            HighlightButton();
+        }
+    }
+
+    private void HighlightButton()
+    {
+        for (int x = 0; x < Buttons.Length; x++)
+        {
+            if (x == highlightIndex)
+            {
+                Buttons[x].sizeDelta = new Vector2 (420f, 120f);
+            }
+            else
+            {
+                Buttons[x].sizeDelta = new Vector2 (400f, 100f);
+            }
+        }
+    }
+
+    public void SelectTutorial()
+    {
+        introPanel.GetComponent<MoveNormal>().MoveDown();
+        buttonPanel.GetComponent<MoveNormal>().MoveDown();
+        tutorialPanel.GetComponent<MoveNormal>().MoveUp();
+        showBackButton = true;
+    }
+
+    public void SelectStats()
+    {
+        introPanel.GetComponent<MoveNormal>().MoveDown();
+        buttonPanel.GetComponent<MoveNormal>().MoveDown();
+        statsPanel.GetComponent<MoveNormal>().MoveUp();
+        showBackButton = true;
+    }
+
+    public void SelectBack()
+    {
+        introPanel.GetComponent<MoveNormal>().MoveUp();
+        buttonPanel.GetComponent<MoveNormal>().MoveUp();
+        statsPanel.GetComponent<MoveNormal>().MoveDown();
+        tutorialPanel.GetComponent<MoveNormal>().MoveDown();
+        showBackButton = false;
     }
 
     public void SelectStart()

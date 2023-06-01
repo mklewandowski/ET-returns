@@ -10,4 +10,6 @@ public class AttackObject : MonoBehaviour
     public float StrongDamageMax = 8f;
     public float CriticalDamageMin = 3f;
     public float CriticalDamageMax = 10f;
+    public bool CausePushBackDamageVelocity = false;
+    public float PushBackDamageVelocityMultiplier = 1f;
 }

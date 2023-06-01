@@ -113,6 +113,7 @@ public class Player : MonoBehaviour
     float invincibleTimer = 0f;
     float invincibleTimerMax = .75f;
     private SpriteRenderer playerRenderer;
+    private BoxCollider2D playerCollider;
     [SerializeField]
     GameObject HealthBar;
     [SerializeField]
@@ -134,6 +135,7 @@ public class Player : MonoBehaviour
             audioManager = am.GetComponent<AudioManager>();
 
         playerRigidbody = GetComponent<Rigidbody2D>();
+        playerCollider = GetComponent<BoxCollider2D>();
         playerAnimator = PlayerGO.GetComponent<Animator>();
         playerRenderer = PlayerGO.GetComponent<SpriteRenderer>();
         if (Globals.DebugMode)
@@ -498,6 +500,8 @@ public class Player : MonoBehaviour
             if (invincibleTimer <= 0)
             {
                 flashOn = false;
+                playerCollider.enabled = false;
+                playerCollider.enabled = true;
             }
             playerRenderer.color = flashOn ? new Color(240f/255f, 165f/255f, 0) : Color.white;
         }
