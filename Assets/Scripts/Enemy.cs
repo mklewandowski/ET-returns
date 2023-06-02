@@ -285,7 +285,6 @@ public class Enemy : MonoBehaviour
         {
             moveSpeed = Random.Range(1.8f, 2.1f);
             behaviorTimerMax = .7f;
-            attackType = AttackType.Alternate;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("bear");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
@@ -639,11 +638,15 @@ public class Enemy : MonoBehaviour
                     UpdateSeekPosition();
                     //float distanceFromDesiredPosition = Mathf.Abs(Vector3.Distance(desiredPosition, this.transform.localPosition));
                 }
+                else if (currentBehavior == BehaviorType.Surround)
+                {
+                    UpdateSeekPosition();
+                }
                 behaviorTimer = Random.Range(behaviorTimerMax - .25f, behaviorTimerMax + .25f);
             }
         }
-        if (currentBehavior == BehaviorType.Seek || currentBehavior == BehaviorType.RandomAngle || currentBehavior == BehaviorType.StaticLine ||
-            currentBehavior == BehaviorType.Avoid)
+        if (currentBehavior == BehaviorType.Seek || currentBehavior == BehaviorType.Surround || currentBehavior == BehaviorType.RandomAngle ||
+            currentBehavior == BehaviorType.StaticLine || currentBehavior == BehaviorType.Avoid)
             enemyRigidbody.velocity = impactTimer > 0 ? impactVector : movementVector;
 
         if (flipWithMovement)
