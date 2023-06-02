@@ -59,7 +59,6 @@ public class Enemy : MonoBehaviour
         Seek,
         Surround,
         Chaotic,
-        Alternate,
         Avoid,
         StaticLine
     }
@@ -77,6 +76,17 @@ public class Enemy : MonoBehaviour
         MoveOut, // unused, were for bosses
     }
     BehaviorType currentBehavior = BehaviorType.Seek;
+
+    enum SurroundType {
+        Up,
+        Down,
+        Left,
+        Right,
+    }
+    SurroundType surroundType = SurroundType.Up;
+    int surroundCount = 1;
+    float surroundOffsetX;
+    float surroundOffsetY;
 
     bool isBoss = false;
 
@@ -133,6 +143,7 @@ public class Enemy : MonoBehaviour
         allowImpactVelocity = true;
         attackType = AttackType.Seek;
         currentBehavior = BehaviorType.Seek;
+        surroundCount = 1;
 
         enemyRigidbody.mass = 1f;
         useLifeTimer = false;
@@ -176,25 +187,25 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Yar2)
         {
-            moveSpeed = Random.Range(2.3f, 2.5f);
-            behaviorTimerMax = .75f;
+            moveSpeed = Random.Range(1.8f, 2.1f);
+            behaviorTimerMax = .5f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("yar2");
             this.transform.localScale = new Vector3(6f, 6f, 1f);
             enemyCollider.size = new Vector2(0.08f, 0.08f);
             life = 10;
-            hitStrength = 12;
+            hitStrength = 6;
         }
         else if (type == Globals.EnemyTypes.JrPac)
         {
-            moveSpeed = Random.Range(1.5f, 1.8f);
-            behaviorTimerMax = .5f;
+            moveSpeed = Random.Range(2.1f, 2.3f);
+            behaviorTimerMax = .6f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("jrpac");
             this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.14f, 0.1f);
-            life = 6;
-            hitStrength = 5;
+            life = 14;
+            hitStrength = 7;
         }
 
         // STRONG SEEK
@@ -227,30 +238,30 @@ public class Enemy : MonoBehaviour
             enemyAnimator.Play("hero");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.12f, 0.2f);
-            life = 36;
+            life = 28;
             hitStrength = 16;
         }
         else if (type == Globals.EnemyTypes.Pengo)
         {
-            moveSpeed = Random.Range(1.3f, 1.6f);
+            moveSpeed = Random.Range(1.4f, 1.6f);
             behaviorTimerMax = 2f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("pengo");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.3f, 0.07f);
-            life = 20;
-            hitStrength = 12;
+            life = 34;
+            hitStrength = 18;
         }
         else if (type == Globals.EnemyTypes.Hero2)
         {
-            moveSpeed = Random.Range(1.4f, 1.6f);
+            moveSpeed = Random.Range(1.6f, 1.8f);
             behaviorTimerMax = .4f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("hero2");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.12f, 0.2f);
             life = 40;
-            hitStrength = 18;
+            hitStrength = 20;
         }
 
 
@@ -270,8 +281,8 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Joust)
         {
-            moveSpeed = Random.Range(1.8f, 2.1f);
-            behaviorTimerMax = .4f;
+            moveSpeed = Random.Range(1.5f, 1.2f);
+            behaviorTimerMax = 1f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("joust");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
@@ -283,27 +294,27 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Bear)
         {
-            moveSpeed = Random.Range(1.8f, 2.1f);
-            behaviorTimerMax = .7f;
+            moveSpeed = Random.Range(1.4f, 1.6f);
+            behaviorTimerMax = 1f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("bear");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.12f, 0.12f);
-            life = 28;
-            hitStrength = 14;
+            life = 12;
+            hitStrength = 10;
             attackType = AttackType.Surround;
             currentBehavior = BehaviorType.Surround;
         }
         else if (type == Globals.EnemyTypes.Joust2)
         {
-            moveSpeed = Random.Range(1.9f, 2.2f);
-            behaviorTimerMax = .3f;
+            moveSpeed = Random.Range(1.6f, 1.8f);
+            behaviorTimerMax = 1f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("joust2");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.15f);
-            life = 10;
-            hitStrength = 10;
+            life = 18;
+            hitStrength = 12;
             attackType = AttackType.Surround;
             currentBehavior = BehaviorType.Surround;
         }
@@ -324,7 +335,7 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Jungle)
         {
-            moveSpeed = 1.5f;
+            moveSpeed = Random.Range(1.8f, 2f);
             behaviorTimerMax = 1.5f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("jungle");
@@ -337,14 +348,14 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Harry)
         {
-            moveSpeed = 1.5f;
+            moveSpeed = Random.Range(2f, 2.2f);
             behaviorTimerMax = 1.5f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("harry");
             this.transform.localScale = new Vector3(4f, 4f, 1f);
             enemyCollider.size = new Vector2(0.08f, 0.16f);
-            life = 20;
-            hitStrength = 10;
+            life = 30;
+            hitStrength = 12;
             attackType = AttackType.Chaotic;
             currentBehavior = BehaviorType.RandomAngle;
         }
@@ -618,29 +629,16 @@ public class Enemy : MonoBehaviour
                 }
                 else if (currentBehavior == BehaviorType.RandomAngle)
                 {
-                    if (attackType == AttackType.Alternate)
-                    {
-                        currentBehavior = BehaviorType.Seek;
-                        UpdateSeekPosition();
-                    }
-                    else
-                    {
-                        UpdateRandomAnglePosition();
-                    }
+                    UpdateRandomAnglePosition();
                 }
                 else if (currentBehavior == BehaviorType.Seek)
                 {
-                    if (attackType == AttackType.Alternate)
-                    {
-                        currentBehavior = BehaviorType.RandomAngle;
-                        UpdateRandomAnglePosition();
-                    }
                     UpdateSeekPosition();
                     //float distanceFromDesiredPosition = Mathf.Abs(Vector3.Distance(desiredPosition, this.transform.localPosition));
                 }
                 else if (currentBehavior == BehaviorType.Surround)
                 {
-                    UpdateSeekPosition();
+                    UpdateSurroundPosition();
                 }
                 behaviorTimer = Random.Range(behaviorTimerMax - .25f, behaviorTimerMax + .25f);
             }
@@ -663,6 +661,27 @@ public class Enemy : MonoBehaviour
     private void UpdateSeekPosition()
     {
         desiredPosition = playerTransform.position;
+        movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
+    }
+    private void UpdateSurroundPosition()
+    {
+        surroundCount--;
+        if (surroundCount == 0)
+        {
+            surroundType = (SurroundType)(Random.Range(0, 4));
+            surroundCount = Random.Range(5, 10);
+            surroundOffsetX = 0;
+            surroundOffsetY = 0;
+            if (surroundType == SurroundType.Up)
+                surroundOffsetY = Random.Range(3f, 7f);
+            else if (surroundType == SurroundType.Down)
+                surroundOffsetY = Random.Range(-3f, -7f);
+            else if (surroundType == SurroundType.Left)
+                surroundOffsetX = Random.Range(-3f, -7f);
+            else if (surroundType == SurroundType.Right)
+                surroundOffsetX = Random.Range(3f, 7f);
+        }
+        desiredPosition = new Vector3(playerTransform.position.x + surroundOffsetX, playerTransform.position.y + surroundOffsetY, playerTransform.position.z);
         movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
     }
     private void UpdateRandomAnglePosition()
