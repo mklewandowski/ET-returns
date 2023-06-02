@@ -797,7 +797,7 @@ public class Enemy : MonoBehaviour
 
             if (attackObject.CausePushBackDamageVelocity)
             {
-                damageVelocity = enemyRigidbody.velocity * (-1f * attackObject.PushBackDamageVelocityMultiplier);
+                damageVelocity = enemyRigidbody.velocity.normalized * (-1f * attackObject.PushBackDamageVelocityMultiplier);
             }
         }
         life = life - damage;
