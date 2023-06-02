@@ -56,22 +56,25 @@ public class Enemy : MonoBehaviour
     GameObject ToxicDebrisPrefab;
 
     enum AttackType {
-        Direct,
-        Angle,
+        Seek,
+        Surround,
+        Chaotic,
         Alternate,
         Avoid,
-        StraightLine
+        StaticLine
     }
-    AttackType attackType = AttackType.Direct;
+    AttackType attackType = AttackType.Seek;
 
     enum BehaviorType {
         Seek,
+        Surround,
         RandomAngle,
-        MoveIn,
-        MoveOut,
+        Spread, // used to unclump
         Wait,
-        Avoid,
-        StraightLine
+        Avoid, // used by FBI and scientist
+        StaticLine, // used by plane and rover
+        MoveIn, // unused, were for bosses
+        MoveOut, // unused, were for bosses
     }
     BehaviorType currentBehavior = BehaviorType.Seek;
 
@@ -128,7 +131,7 @@ public class Enemy : MonoBehaviour
         // movement and behavior
         flipWithMovement = true;
         allowImpactVelocity = true;
-        attackType = AttackType.Direct;
+        attackType = AttackType.Seek;
         currentBehavior = BehaviorType.Seek;
 
         enemyRigidbody.mass = 1f;
@@ -137,7 +140,7 @@ public class Enemy : MonoBehaviour
         int defaultCollisionLayer = LayerMask.NameToLayer("Enemy");
         gameObject.layer = defaultCollisionLayer;
 
-        // FAST
+        // FAST SEEK
         if (type == Globals.EnemyTypes.Yar)
         {
             moveSpeed = Random.Range(.9f, 1.2f);
@@ -171,29 +174,6 @@ public class Enemy : MonoBehaviour
             life = 6;
             hitStrength = 5;
         }
-        else if (type == Globals.EnemyTypes.Joust)
-        {
-            moveSpeed = Random.Range(1.8f, 2.1f);
-            behaviorTimerMax = .4f;
-            enemyAnimator.enabled = true;
-            enemyAnimator.Play("joust");
-            this.transform.localScale = new Vector3(5f, 5f, 1f);
-            enemyCollider.size = new Vector2(0.15f, 0.15f);
-            life = 8;
-            hitStrength = 7;
-        }
-        else if (type == Globals.EnemyTypes.Joust2)
-        {
-            moveSpeed = Random.Range(1.9f, 2.2f);
-            behaviorTimerMax = .3f;
-            enemyAnimator.enabled = true;
-            enemyAnimator.Play("joust2");
-            this.transform.localScale = new Vector3(5f, 5f, 1f);
-            enemyCollider.size = new Vector2(0.15f, 0.15f);
-            life = 10;
-            hitStrength = 10;
-        }
-
         else if (type == Globals.EnemyTypes.Yar2)
         {
             moveSpeed = Random.Range(2.3f, 2.5f);
@@ -205,6 +185,74 @@ public class Enemy : MonoBehaviour
             life = 10;
             hitStrength = 12;
         }
+        else if (type == Globals.EnemyTypes.JrPac)
+        {
+            moveSpeed = Random.Range(1.5f, 1.8f);
+            behaviorTimerMax = .5f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("jrpac");
+            this.transform.localScale = new Vector3(4f, 4f, 1f);
+            enemyCollider.size = new Vector2(0.14f, 0.1f);
+            life = 6;
+            hitStrength = 5;
+        }
+
+        // STRONG SEEK
+        else if (type == Globals.EnemyTypes.Qbert)
+        {
+            moveSpeed = Random.Range(.8f, 1f);
+            behaviorTimerMax = 1f;
+            enemyAnimator.enabled = false;
+            this.transform.localScale = new Vector3(4f, 4f, 1f);
+            enemyCollider.size = new Vector2(0.15f, 0.15f);
+            life = 10;
+            hitStrength = 8;
+        }
+        else if (type == Globals.EnemyTypes.Kangaroo)
+        {
+            moveSpeed = Random.Range(1f, 1.2f);
+            behaviorTimerMax = .9f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("kangaroo");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.12f, 0.2f);
+            life = 20;
+            hitStrength = 12;
+        }
+        else if (type == Globals.EnemyTypes.Hero)
+        {
+            moveSpeed = Random.Range(1.2f, 1.4f);
+            behaviorTimerMax = .6f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("hero");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.12f, 0.2f);
+            life = 36;
+            hitStrength = 16;
+        }
+        else if (type == Globals.EnemyTypes.Pengo)
+        {
+            moveSpeed = Random.Range(1.3f, 1.6f);
+            behaviorTimerMax = 2f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("pengo");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.3f, 0.07f);
+            life = 20;
+            hitStrength = 12;
+        }
+        else if (type == Globals.EnemyTypes.Hero2)
+        {
+            moveSpeed = Random.Range(1.4f, 1.6f);
+            behaviorTimerMax = .4f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("hero2");
+            this.transform.localScale = new Vector3(5f, 5f, 1f);
+            enemyCollider.size = new Vector2(0.12f, 0.2f);
+            life = 40;
+            hitStrength = 18;
+        }
+
 
         // SURROUND
         else if (type == Globals.EnemyTypes.Frogger)
@@ -217,59 +265,21 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.1f, 0.1f);
             life = 5;
             hitStrength = 5;
-            attackType = AttackType.Angle;
-            currentBehavior = BehaviorType.RandomAngle;
+            attackType = AttackType.Surround;
+            currentBehavior = BehaviorType.Surround;
         }
-        else if (type == Globals.EnemyTypes.Indy)
+        else if (type == Globals.EnemyTypes.Joust)
         {
-            moveSpeed = Random.Range(1.6f, 1.8f);
-            behaviorTimerMax = 2f;
+            moveSpeed = Random.Range(1.8f, 2.1f);
+            behaviorTimerMax = .4f;
             enemyAnimator.enabled = true;
-            enemyAnimator.Play("indy");
-            this.transform.localScale = new Vector3(8f, 8f, 1f);
-            enemyCollider.size = new Vector2(0.05f, 0.1f);
-            life = 10;
-            hitStrength = 8;
-            attackType = AttackType.Angle;
-            currentBehavior = BehaviorType.RandomAngle;
-        }
-        else if (type == Globals.EnemyTypes.Pengo)
-        {
-            moveSpeed = Random.Range(1.3f, 1.6f);
-            behaviorTimerMax = 2f;
-            enemyAnimator.enabled = true;
-            enemyAnimator.Play("pengo");
-            this.transform.localScale = new Vector3(4f, 4f, 1f);
-            enemyCollider.size = new Vector2(0.3f, 0.07f);
-            life = 20;
-            hitStrength = 12;
-            attackType = AttackType.Angle;
-            currentBehavior = BehaviorType.RandomAngle;
-        }
-
-        // STRONG
-        else if (type == Globals.EnemyTypes.Qbert)
-        {
-            moveSpeed = Random.Range(.8f, 1f);
-            behaviorTimerMax = 1f;
-            attackType = AttackType.Alternate;
-            enemyAnimator.enabled = false;
-            this.transform.localScale = new Vector3(4f, 4f, 1f);
-            enemyCollider.size = new Vector2(0.15f, 0.15f);
-            life = 10;
-            hitStrength = 8;
-        }
-        else if (type == Globals.EnemyTypes.Kangaroo)
-        {
-            moveSpeed = Random.Range(1f, 1.2f);
-            behaviorTimerMax = .9f;
-            attackType = AttackType.Alternate;
-            enemyAnimator.enabled = true;
-            enemyAnimator.Play("kangaroo");
+            enemyAnimator.Play("joust");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
-            enemyCollider.size = new Vector2(0.12f, 0.2f);
-            life = 20;
-            hitStrength = 12;
+            enemyCollider.size = new Vector2(0.15f, 0.15f);
+            life = 8;
+            hitStrength = 7;
+            attackType = AttackType.Surround;
+            currentBehavior = BehaviorType.Surround;
         }
         else if (type == Globals.EnemyTypes.Bear)
         {
@@ -282,29 +292,62 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.12f, 0.12f);
             life = 28;
             hitStrength = 14;
+            attackType = AttackType.Surround;
+            currentBehavior = BehaviorType.Surround;
         }
-        else if (type == Globals.EnemyTypes.Hero)
+        else if (type == Globals.EnemyTypes.Joust2)
         {
-            moveSpeed = Random.Range(1.2f, 1.4f);
-            behaviorTimerMax = .6f;
-            attackType = AttackType.Alternate;
+            moveSpeed = Random.Range(1.9f, 2.2f);
+            behaviorTimerMax = .3f;
             enemyAnimator.enabled = true;
-            enemyAnimator.Play("hero");
+            enemyAnimator.Play("joust2");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
-            enemyCollider.size = new Vector2(0.12f, 0.2f);
-            life = 36;
-            hitStrength = 16;
+            enemyCollider.size = new Vector2(0.15f, 0.15f);
+            life = 10;
+            hitStrength = 10;
+            attackType = AttackType.Surround;
+            currentBehavior = BehaviorType.Surround;
         }
-        else if (type == Globals.EnemyTypes.Hero2)
+
+        // CHAOS
+        else if (type == Globals.EnemyTypes.Indy)
         {
-            moveSpeed = Random.Range(1.4f, 1.6f);
-            behaviorTimerMax = .4f;
+            moveSpeed = Random.Range(1.6f, 1.8f);
+            behaviorTimerMax = 2f;
             enemyAnimator.enabled = true;
-            enemyAnimator.Play("hero2");
-            this.transform.localScale = new Vector3(5f, 5f, 1f);
-            enemyCollider.size = new Vector2(0.12f, 0.2f);
-            life = 40;
-            hitStrength = 18;
+            enemyAnimator.Play("indy");
+            this.transform.localScale = new Vector3(8f, 8f, 1f);
+            enemyCollider.size = new Vector2(0.05f, 0.1f);
+            life = 10;
+            hitStrength = 8;
+            attackType = AttackType.Chaotic;
+            currentBehavior = BehaviorType.RandomAngle;
+        }
+        else if (type == Globals.EnemyTypes.Jungle)
+        {
+            moveSpeed = 1.5f;
+            behaviorTimerMax = 1.5f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("jungle");
+            this.transform.localScale = new Vector3(4f, 4f, 1f);
+            enemyCollider.size = new Vector2(0.08f, 0.16f);
+            life = 20;
+            hitStrength = 10;
+            attackType = AttackType.Chaotic;
+            currentBehavior = BehaviorType.RandomAngle;
+        }
+        else if (type == Globals.EnemyTypes.Harry)
+        {
+            moveSpeed = 1.5f;
+            behaviorTimerMax = 1.5f;
+            enemyAnimator.enabled = true;
+            enemyAnimator.Play("harry");
+            this.transform.localScale = new Vector3(4f, 4f, 1f);
+            enemyCollider.size = new Vector2(0.08f, 0.16f);
+            life = 20;
+            hitStrength = 10;
+            attackType = AttackType.Chaotic;
+            currentBehavior = BehaviorType.RandomAngle;
         }
 
         // SPECIAL
@@ -331,7 +374,7 @@ public class Enemy : MonoBehaviour
             life = 8;
             hitStrength = 10;
 
-            attackType = AttackType.StraightLine;
+            attackType = AttackType.StaticLine;
             currentBehavior = BehaviorType.Wait;
             behaviorTimer = 2f;
             allowImpactVelocity = false;
@@ -356,7 +399,7 @@ public class Enemy : MonoBehaviour
             life = 10;
             hitStrength = 15;
 
-            attackType = AttackType.StraightLine;
+            attackType = AttackType.StaticLine;
             currentBehavior = BehaviorType.Wait;
             behaviorTimer = 2f;
             allowImpactVelocity = false;
@@ -419,7 +462,7 @@ public class Enemy : MonoBehaviour
             life = 200;
             hitStrength = 10;
 
-            attackType = AttackType.Direct;
+            attackType = AttackType.Seek;
             //currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = 2f;
             //this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
@@ -441,7 +484,7 @@ public class Enemy : MonoBehaviour
             life = 200;
             hitStrength = 10;
 
-            attackType = AttackType.Direct;
+            attackType = AttackType.Seek;
             //currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = 2f;
             //this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
@@ -463,7 +506,7 @@ public class Enemy : MonoBehaviour
             life = 200;
             hitStrength = 10;
 
-            attackType = AttackType.Direct;
+            attackType = AttackType.Seek;
             //currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = 2f;
             //this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
@@ -485,28 +528,7 @@ public class Enemy : MonoBehaviour
             life = 200;
             hitStrength = 10;
 
-            attackType = AttackType.Direct;
-            //currentBehavior = BehaviorType.MoveIn;
-            behaviorTimer = 2f;
-            //this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
-            //this.GetComponent<MoveNormal>().MoveDown();
-
-            //useLifeTimer = true;
-            //lifeTimer = 45f;
-            isBoss = true;
-        }
-        else if (type == Globals.EnemyTypes.HarryBoss)
-        {
-            moveSpeed = 2.5f;
-            behaviorTimerMax = 1.5f;
-            enemyAnimator.enabled = true;
-            enemyAnimator.Play("jungle");
-            this.transform.localScale = new Vector3(10f, 10f, 1f);
-            enemyCollider.size = new Vector2(0.08f, 0.16f);
-            life = 200;
-            hitStrength = 10;
-
-            attackType = AttackType.Direct;
+            attackType = AttackType.Seek;
             //currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = 2f;
             //this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
@@ -527,7 +549,7 @@ public class Enemy : MonoBehaviour
             life = 250;
             hitStrength = 10;
 
-            attackType = AttackType.Direct;
+            attackType = AttackType.Seek;
             // currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = .5f;
             // this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
@@ -582,12 +604,12 @@ public class Enemy : MonoBehaviour
                 }
                 else if (currentBehavior == BehaviorType.Wait)
                 {
-                    if (attackType == AttackType.StraightLine)
-                        currentBehavior = BehaviorType.StraightLine;
+                    if (attackType == AttackType.StaticLine)
+                        currentBehavior = BehaviorType.StaticLine;
                     else
                         currentBehavior = BehaviorType.Seek;
                 }
-                else if (currentBehavior == BehaviorType.StraightLine)
+                else if (currentBehavior == BehaviorType.StaticLine)
                 {
                     // nothing?
                 }
@@ -620,7 +642,7 @@ public class Enemy : MonoBehaviour
                 behaviorTimer = Random.Range(behaviorTimerMax - .25f, behaviorTimerMax + .25f);
             }
         }
-        if (currentBehavior == BehaviorType.Seek || currentBehavior == BehaviorType.RandomAngle || currentBehavior == BehaviorType.StraightLine ||
+        if (currentBehavior == BehaviorType.Seek || currentBehavior == BehaviorType.RandomAngle || currentBehavior == BehaviorType.StaticLine ||
             currentBehavior == BehaviorType.Avoid)
             enemyRigidbody.velocity = impactTimer > 0 ? impactVector : movementVector;
 

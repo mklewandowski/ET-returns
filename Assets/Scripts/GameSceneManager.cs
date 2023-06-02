@@ -312,7 +312,7 @@ public class GameSceneManager : MonoBehaviour
         else if (enemyType == Globals.EnemyTypes.Moon || enemyType == Globals.EnemyTypes.Plane)
             pool = enemyVehiclePool;
         else if (enemyType == Globals.EnemyTypes.PacBoss || enemyType == Globals.EnemyTypes.KoolBoss || enemyType == Globals.EnemyTypes.PopeyeBoss ||
-                 enemyType == Globals.EnemyTypes.MarioBoss || enemyType == Globals.EnemyTypes.LuigiBoss || enemyType == Globals.EnemyTypes.HarryBoss)
+                 enemyType == Globals.EnemyTypes.MarioBoss || enemyType == Globals.EnemyTypes.LuigiBoss)
             pool = enemyBossPool;
 
         for (int x = 0; x < pool.Length; x++)

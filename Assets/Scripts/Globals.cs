@@ -112,19 +112,23 @@ public class Globals
         Yar,
         Pac,
         MsPac,
-        Joust,
-        Joust2,
         Yar2,
-
-        Frogger,
-        Indy,
-        Pengo,
+        JrPac,
 
         Qbert,
         Kangaroo,
-        Bear,
         Hero,
+        Pengo,
         Hero2,
+
+        Frogger,
+        Joust,
+        Bear,
+        Joust2,
+
+        Indy,
+        Jungle,
+        Harry,
 
         Dig,
         Plane,
@@ -137,7 +141,6 @@ public class Globals
         MarioBoss,
         LuigiBoss,
         KoolBoss,
-        HarryBoss,
     }
 
     public static string[] BossText = {
