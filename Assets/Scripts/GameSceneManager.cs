@@ -105,7 +105,6 @@ public class GameSceneManager : MonoBehaviour
         Rovers,
         None
     }
-    EnemySpecialAttackPatterns currentEnemySpecialAttack = EnemySpecialAttackPatterns.None;
 
     int[] fastEnemySpawnValues =     { 6,  0, -3, -6,  -9 };
     int[] strongEnemySpawnValues =   { 4, -1, -4, -7, -11 };
@@ -160,7 +159,6 @@ public class GameSceneManager : MonoBehaviour
 
     float deadTimer = 0f;
     float deadTimerMax = 4f;
-    bool fadeIn = false;
     bool fadeOut = false;
 
     void Awake()
@@ -181,7 +179,6 @@ public class GameSceneManager : MonoBehaviour
         CreateHitNoticePool();
 
         fadeManager.StartFadeIn();
-        fadeIn = true;
     }
 
     void CreateCandyPool()
@@ -345,7 +342,6 @@ public class GameSceneManager : MonoBehaviour
     {
         if (Globals.IsPaused)
         {
-
             bool moveLeft = false;
             bool moveRight = false;
 
@@ -381,19 +377,17 @@ public class GameSceneManager : MonoBehaviour
 
             if (moveLeft)
             {
+                if (upgradeHighlightIndex == 0)
+                    return;
                 upgradeHighlightIndex--;
-                if (upgradeHighlightIndex < 0)
-                    upgradeHighlightIndex = HUDUpgradeButtons.Length - 1;
-
                 audioManager.PlayMenuSound();
                 HighlightUpgradeButton();
             }
             else if (moveRight)
             {
+                if (upgradeHighlightIndex == HUDUpgradeButtons.Length - 1)
+                    return;
                 upgradeHighlightIndex++;
-                if (upgradeHighlightIndex >= HUDUpgradeButtons.Length)
-                    upgradeHighlightIndex = 0;
-
                 audioManager.PlayMenuSound();
                 HighlightUpgradeButton();
             }
