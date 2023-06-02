@@ -132,6 +132,7 @@ MonoBehaviour:
   CriticalDamageMin: 3
   CriticalDamageMax: 10
   CausePushBackDamageVelocity: 1
+  PushBackDamageVelocityMultiplier: 2.5
 --- !u!114 &-4429935846255050971
 MonoBehaviour:
   m_ObjectHideFlags: 0

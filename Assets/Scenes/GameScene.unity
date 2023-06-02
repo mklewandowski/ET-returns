@@ -20028,7 +20028,7 @@ MonoBehaviour:
   CriticalDamageMin: 3
   CriticalDamageMax: 5
   CausePushBackDamageVelocity: 1
-  PushBackDamageVelocityMultiplier: 2
+  PushBackDamageVelocityMultiplier: 2.5
 --- !u!1 &326869535
 GameObject:
   m_ObjectHideFlags: 0
@@ -54371,7 +54371,7 @@ MonoBehaviour:
   CriticalDamageMin: 3
   CriticalDamageMax: 5
   CausePushBackDamageVelocity: 1
-  PushBackDamageVelocityMultiplier: 2
+  PushBackDamageVelocityMultiplier: 2.5
 --- !u!114 &865658005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108061,7 +108061,7 @@ MonoBehaviour:
   CriticalDamageMin: 3
   CriticalDamageMax: 5
   CausePushBackDamageVelocity: 1
-  PushBackDamageVelocityMultiplier: 2
+  PushBackDamageVelocityMultiplier: 2.5
 --- !u!114 &1782096308
 MonoBehaviour:
   m_ObjectHideFlags: 0
