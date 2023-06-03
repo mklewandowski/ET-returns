@@ -468,10 +468,23 @@ public class Player : MonoBehaviour
     private void HandleCreatePit(Vector2 bulletMovement)
     {
         audioManager.PlayPlayerShoot2Sound();
-        GameObject pitGO = Instantiate(PitPrefab,
-            new Vector3(this.transform.localPosition.x + bulletMovement.x * -.075f, this.transform.localPosition.y + bulletMovement.y * -.075f, 0),
-            Quaternion.identity,
-            BulletContainer.transform);
+        int index = (int)Globals.UpgradeTypes.Pit * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] - 1;
+        int numShots = Globals.UpgradeLevelBullets[index];
+        for (int x = 0; x < numShots; x++)
+        {
+            Vector3 rotatedBulletMovement = new Vector3(bulletMovement.x, bulletMovement.y);
+            if (x == 1)
+                rotatedBulletMovement = Quaternion.Euler(0, 0, -60f) * bulletMovement;
+            else if (x == 2)
+                rotatedBulletMovement = Quaternion.Euler(0, 0, 60f) * bulletMovement;
+
+            Vector3 behindVector = new Vector3(this.transform.localPosition.x + rotatedBulletMovement.x * -.1f, this.transform.localPosition.y + rotatedBulletMovement.y * -.1f, 0);
+
+            GameObject pitGO = Instantiate(PitPrefab,
+                behindVector,
+                Quaternion.identity,
+                BulletContainer.transform);
+        }
     }
 
     private void HandleShootTornado()

@@ -126,13 +126,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NormalDamageMin: 1
-  NormalDamageMax: 5
+  NormalDamageMax: 3
   StrongDamageMin: 2
-  StrongDamageMax: 8
-  CriticalDamageMin: 3
-  CriticalDamageMax: 10
+  StrongDamageMax: 4
+  CriticalDamageMin: 4
+  CriticalDamageMax: 6
   CausePushBackDamageVelocity: 1
-  PushBackDamageVelocityMultiplier: 2.5
+  PushBackDamageVelocityMultiplier: 2
 --- !u!114 &-4429935846255050971
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -238,7 +238,7 @@ public class Globals
         "Summon tornado from right side of screen", "Increase number of enemies that tornado passes through by 1.", "Add additional tornado.", "Increase number of enemies that tornado passes through by 1.", "Add additional tornado.",
         "Summon killer bees from left side of screen.", "Increase number of enemies that bees pass through by 1.", "Add additional bee swarm.", "Increase number of enemies that bees pass through by 1.", "Add additional bee swarm.",
         "Shoot boomerang to the side of player.", "Increase boomerang attack range by 20%.", "Increase boomerang attack range by 20%.", "Add additional boomerang.", "Increase boomerang attack range by 20%.",
-        "Place pit trap behind player.", "Increase pit trap attack time by 10%.", "Increase pit trap size by 25%.", "Increase pit trap attack time by 10%.", "Increase pit trap size by 25%.",
+        "Place pit trap behind player.", "Increase pit trap attack time by 20%.", "Add additional pit.", "Increase pit trap attack time by 20%.", "Add additional pit.",
         "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.",
         "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.",
         "Launch ICBMs from bottom of screen.", "Increase number of enemies that ICBMs pass through by 1.", "Add additional ICBM.", "Increase number of enemies that ICBMs pass through by 1.", "Add additional ICBM.",
@@ -264,7 +264,7 @@ public class Globals
         1,1,2,2,3,
         1,1,2,2,3,
         1,1,1,2,2,
-        1,1,1,1,1,
+        1,1,2,2,3,
         0,0,0,0,0,
         0,0,0,0,0,
         1,1,2,2,3,
@@ -285,7 +285,7 @@ public class Globals
         0,0,0,0,0,
         0,0,0,0,0,
         .25f, .3f, .35f, .35f, .4f,
-        1f, 1.1f, 1.1f, 1.2f, 1.2f,
+        1f, 1.2f, 1.2f, 1.4f, 1.4f,
         0,0,0,0,0,
         0,0,0,0,0,
         0,0,0,0,0,
@@ -306,7 +306,7 @@ public class Globals
         0,0,0,0,0,
         0,0,0,0,0,
         0,0,0,0,0,
-        1f,1f,1.25f,1.25f,1.5f,
+        1.5f,1.5f,1.5f,1.5f,1.5f,
         0,0,0,0,0,
         0,0,0,0,0,
         0,0,0,0,0,
@@ -450,7 +450,7 @@ public class Globals
         {
             Globals.CurrentUpgradeLevels[x] = 0;
         }
-        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.ICBM] = 5;
+        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] = 1;
         // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] = 5;
         CurrentUpgradeTypes.Clear();
 
