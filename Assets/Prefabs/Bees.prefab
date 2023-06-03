@@ -186,12 +186,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3684bc19e32a8ec4194f58d73f4f3dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NormalDamageMin: 3
-  NormalDamageMax: 9
-  StrongDamageMin: 4
-  StrongDamageMax: 14
-  CriticalDamageMin: 6
-  CriticalDamageMax: 18
+  NormalDamageMin: 1
+  NormalDamageMax: 5
+  StrongDamageMin: 2
+  StrongDamageMax: 8
+  CriticalDamageMin: 3
+  CriticalDamageMax: 10
   CausePushBackDamageVelocity: 0
   PushBackDamageVelocityMultiplier: 1
 --- !u!114 &8368942198633991326
