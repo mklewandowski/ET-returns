@@ -20,12 +20,15 @@ public class Bullet : MonoBehaviour
     int numDebris = 4;
     GameObject bulletContainer;
 
+    Rigidbody2D bulletRigidbody;
+
     void Awake()
     {
         GameObject am = GameObject.Find("AudioManager");
         if (am)
             audioManager = am.GetComponent<AudioManager>();
         bulletContainer = GameObject.Find("BulletContainer");
+        bulletRigidbody = this.GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -80,6 +83,11 @@ public class Bullet : MonoBehaviour
                 }
             }
             Destroy(this.gameObject);
+        }
+        else if (type == Globals.BulletTypes.Breakout)
+        {
+            Vector2 bulletMovement = Quaternion.Euler(0, 0, Random.Range(0, 360f)) * new Vector2(3f, 3f);
+            bulletRigidbody.velocity = bulletMovement;
         }
     }
 }

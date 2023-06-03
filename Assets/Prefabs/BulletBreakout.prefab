@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 5148339097020038027}
   - component: {fileID: 5148339097020038024}
+  - component: {fileID: 5148339097020038025}
   - component: {fileID: 5755518129056890295}
   - component: {fileID: 2996679969254156398}
   - component: {fileID: 7092949324700239454}
-  - component: {fileID: 7940580697034823972}
   m_Layer: 0
-  m_Name: SlimeDebris
+  m_Name: BulletBreakout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 5148339097020038030}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: ffc8f6cbc65c2e14694e19caff53a80b, type: 3}
-  m_Color: {r: 0.29803923, g: 1, b: 0, a: 1}
+  m_Color: {r: 0.050980393, g: 0.6156863, b: 0.8784314, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -88,6 +88,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5148339097020038025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5148339097020038030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d318ada4d7d85d409241e7cae7c34b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 4
+  lifeTimer: 2
+  enemyHits: 5
+  BombShockWavePrefab: {fileID: 0}
+  SlimeDebrisPrefab: {fileID: 0}
 --- !u!50 &5755518129056890295
 Rigidbody2D:
   serializedVersion: 4
@@ -133,7 +150,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.05, y: 0.05}
+  m_Size: {x: 0.1, y: 0.05}
   m_EdgeRadius: 0
 --- !u!114 &7092949324700239454
 MonoBehaviour:
@@ -149,21 +166,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NormalDamageMin: 1
   NormalDamageMax: 2
-  StrongDamageMin: 3
-  StrongDamageMax: 4
-  CriticalDamageMin: 5
-  CriticalDamageMax: 6
+  StrongDamageMin: 2
+  StrongDamageMax: 3
+  CriticalDamageMin: 4
+  CriticalDamageMax: 5
   CausePushBackDamageVelocity: 0
   PushBackDamageVelocityMultiplier: 1
---- !u!114 &7940580697034823972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5148339097020038030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2e73078308f23142a35bd1ef0883998, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

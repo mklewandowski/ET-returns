@@ -412,16 +412,16 @@ public class Player : MonoBehaviour
 
     private void HandleShootBreakout()
     {
-        // audioManager.PlayPlayerShoot2Sound();
-        // int index = (int)Globals.UpgradeTypes.Breakout * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Breakout] - 1;
-        // int numShots = Globals.UpgradeLevelBullets[index];
-        // for (int x = 0; x < numShots; x++)
-        // {
-        //     Vector2 boomerangMovement = Quaternion.Euler(0, 0, x == 0 ? 80f : -80f) * new Vector3(bulletMovement.x * .75f, bulletMovement.y * .75f);
-        //     GameObject boomerangGO = Instantiate(BoomerangPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
-        //     Rigidbody2D boomerangRigidbody = boomerangGO.GetComponent<Rigidbody2D>();
-        //     boomerangRigidbody.velocity = boomerangMovement;
-        // }
+        audioManager.PlayPlayerShoot2Sound();
+        int index = (int)Globals.UpgradeTypes.Breakout * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Breakout] - 1;
+        int numShots = Globals.UpgradeLevelBullets[index];
+        for (int x = 0; x < numShots; x++)
+        {
+            Vector2 bulletMovement = Quaternion.Euler(0, 0, Random.Range(0, 360f)) * new Vector2(3f, 3f);
+            GameObject bulletGO = Instantiate(BreakoutPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+            Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
+            bulletRigidbody.velocity = bulletMovement;
+        }
     }
 
     private void HandleShootSwirl()

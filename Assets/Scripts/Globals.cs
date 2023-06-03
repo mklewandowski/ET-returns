@@ -194,7 +194,8 @@ public class Globals
         Standard,
         Swirl,
         Bomb,
-        Slime
+        Slime,
+        Breakout
     }
 
     public static string[] UpgradeText = {
@@ -338,7 +339,7 @@ public class Globals
         0,0,0,0,0,
         0,0,0,0,0,
         3,4,4,5,5,
-        3,5,5,7,7,
+        5,7,7,10,10,
         1,1,1,1,1,
     };
 
@@ -459,8 +460,8 @@ public class Globals
         {
             Globals.CurrentUpgradeLevels[x] = 0;
         }
-        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] = 1;
-        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Slime] = 1;
+        Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Slime] = 5;
+        Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Breakout] = 5;
         CurrentUpgradeTypes.Clear();
 
         currentExp = 0;
