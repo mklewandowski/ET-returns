@@ -15,6 +15,9 @@ public class Bullet : MonoBehaviour
 
     [SerializeField]
     GameObject BombShockWavePrefab;
+    [SerializeField]
+    GameObject SlimeDebrisPrefab;
+    int numDebris = 4;
     GameObject bulletContainer;
 
     void Awake()
@@ -50,6 +53,11 @@ public class Bullet : MonoBehaviour
         lifeTimer = newLifeTimer;
     }
 
+    public void SetDebrisAmount(int newNumDebris)
+    {
+        numDebris = newNumDebris;
+    }
+
     public void HitEnemy()
     {
         enemyHits--;
@@ -62,6 +70,14 @@ public class Bullet : MonoBehaviour
                 audioManager.PlayExplodeSound();
                 GameObject shockwaveGO = Instantiate(BombShockWavePrefab, this.transform.position, Quaternion.identity, bulletContainer.transform);
                 shockwaveGO.GetComponent<BombShockWave>().StartEffect();
+            }
+            else if (type == Globals.BulletTypes.Slime)
+            {
+                for (int x = 0; x < numDebris; x++)
+                {
+                    GameObject slimeDebrisGO = Instantiate(SlimeDebrisPrefab, this.transform.localPosition, Quaternion.identity, bulletContainer.transform);
+                    slimeDebrisGO.GetComponent<SlimeDebris>().Init();
+                }
             }
             Destroy(this.gameObject);
         }

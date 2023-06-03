@@ -185,13 +185,16 @@ public class Globals
         Defense,
         Attack,
         ICBM,
+        Breakout,
+        Slime,
         RefillHP,
     }
 
     public enum BulletTypes {
         Standard,
         Swirl,
-        Bomb
+        Bomb,
+        Slime
     }
 
     public static string[] UpgradeText = {
@@ -214,9 +217,8 @@ public class Globals
         "Defense Boost",
         "Attack Boost",
         "ICBM",
-        // "Coily",
-        // "Berzerk Bot",
-        // "Frygar"
+        "Breakout Ball",
+        "Exploding Slime",
         "Refill HP"
     };
 
@@ -242,9 +244,8 @@ public class Globals
         "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.",
         "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.",
         "Launch ICBMs from bottom of screen.", "Increase number of enemies that ICBMs pass through by 1.", "Add additional ICBM.", "Increase number of enemies that ICBMs pass through by 1.", "Add additional ICBM.",
-        // "Summons Coily to attack enemies.",
-        // "Summons Berzerk Bot to attack enemies.",
-        // "Summons Frygar to attack enemies."
+        "Shoot ricocheting breakout ball.", "Increase number of ricochets by 2", "Add additional breakout ball.", "Increase number of ricochets by 2", "Add additional breakout ball.",
+        "Shoot exploding slime bullets in random direction.", "Increase slime shrapnel by 50%.", "Add additional slime bullet.", "Increase slime shrapnel by 50%.", "Add additional slime bullet.",
         "Refill HP meter to maximum amount."
     };
 
@@ -268,6 +269,8 @@ public class Globals
         0,0,0,0,0,
         0,0,0,0,0,
         1,1,2,2,3,
+        1,1,2,2,3,
+        1,1,2,2,3,
     };
     public static float[] UpgradeLevelAttackTimes = {
         0,0,0,0,0,
@@ -286,6 +289,8 @@ public class Globals
         0,0,0,0,0,
         .25f, .3f, .35f, .35f, .4f,
         1f, 1.2f, 1.2f, 1.4f, 1.4f,
+        0,0,0,0,0,
+        0,0,0,0,0,
         0,0,0,0,0,
         0,0,0,0,0,
         0,0,0,0,0,
@@ -310,6 +315,8 @@ public class Globals
         0,0,0,0,0,
         0,0,0,0,0,
         0,0,0,0,0,
+        0,0,0,0,0,
+        0,0,0,0,0,
     };
     public static int[] UpgradeLevelEnemyHits = {
         1,1,1,1,1,
@@ -331,6 +338,8 @@ public class Globals
         0,0,0,0,0,
         0,0,0,0,0,
         3,4,4,5,5,
+        3,5,5,7,7,
+        1,1,1,1,1,
     };
 
     public static int[] CurrentUpgradeLevels;
@@ -451,7 +460,7 @@ public class Globals
             Globals.CurrentUpgradeLevels[x] = 0;
         }
         // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] = 1;
-        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] = 5;
+        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Slime] = 1;
         CurrentUpgradeTypes.Clear();
 
         currentExp = 0;

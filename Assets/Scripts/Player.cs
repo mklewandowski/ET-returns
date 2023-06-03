@@ -57,6 +57,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject ICBMPrefab;
     [SerializeField]
+    GameObject SlimePrefab;
+    [SerializeField]
+    GameObject BreakoutPrefab;
+    [SerializeField]
     GameObject BulletContainer;
     [SerializeField]
     GameObject ForceField;
@@ -89,14 +93,16 @@ public class Player : MonoBehaviour
         Boomerang,
         Pit,
         ICBM,
+        Breakout,
+        Slime,
         None
     }
 
     ShootType[] shootTypes = {
         ShootType.Gun, ShootType.Gun, ShootType.Gun, ShootType.Gun, ShootType.Gun,
-        ShootType.Bomb, ShootType.Swirl, ShootType.Laser, ShootType.Invader, ShootType.Ghost, ShootType.None,
+        ShootType.Bomb, ShootType.Swirl, ShootType.Laser, ShootType.Invader, ShootType.Ghost, ShootType.Breakout,
         ShootType.Gun, ShootType.Gun, ShootType.Gun, ShootType.Gun, ShootType.Gun,
-        ShootType.ICBM, ShootType.Tornado, ShootType.Bees, ShootType.Boomerang, ShootType.Pit, ShootType.None
+        ShootType.ICBM, ShootType.Tornado, ShootType.Bees, ShootType.Boomerang, ShootType.Pit, ShootType.Slime
     };
     int shootIndex = 0;
 
@@ -287,6 +293,10 @@ public class Player : MonoBehaviour
                 HandleCreatePit(bulletMovement);
             else if (shootType == ShootType.ICBM && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.ICBM] > 0 || Globals.DebugMode)
                 HandleLaunchICBM();
+            else if (shootType == ShootType.Slime && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Slime] > 0 || Globals.DebugMode)
+                HandleShootSlime();
+            else if (shootType == ShootType.Breakout && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Breakout] > 0 || Globals.DebugMode)
+                HandleShootBreakout();
 
             shootTimer = shootTimerMax;
             shootIndex++;
@@ -378,6 +388,40 @@ public class Player : MonoBehaviour
             Rigidbody2D boomerangRigidbody = boomerangGO.GetComponent<Rigidbody2D>();
             boomerangRigidbody.velocity = boomerangMovement;
         }
+    }
+
+    private void HandleShootSlime()
+    {
+        audioManager.PlayPlayerShoot2Sound();
+        int index = (int)Globals.UpgradeTypes.Slime * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Slime] - 1;
+        int numDebris = 4;
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Slime] >= 4)
+            numDebris = 8;
+        else if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Slime] >= 2)
+            numDebris = 6;
+        int numShots = Globals.UpgradeLevelBullets[index];
+        for (int x = 0; x < numShots; x++)
+        {
+            Vector2 bulletMovement = Quaternion.Euler(0, 0, Random.Range(0, 360f)) * new Vector2(3f, 3f);
+            GameObject bulletGO = Instantiate(SlimePrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+            bulletGO.GetComponent<Bullet>().SetDebrisAmount(numDebris);
+            Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
+            bulletRigidbody.velocity = bulletMovement;
+        }
+    }
+
+    private void HandleShootBreakout()
+    {
+        // audioManager.PlayPlayerShoot2Sound();
+        // int index = (int)Globals.UpgradeTypes.Breakout * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Breakout] - 1;
+        // int numShots = Globals.UpgradeLevelBullets[index];
+        // for (int x = 0; x < numShots; x++)
+        // {
+        //     Vector2 boomerangMovement = Quaternion.Euler(0, 0, x == 0 ? 80f : -80f) * new Vector3(bulletMovement.x * .75f, bulletMovement.y * .75f);
+        //     GameObject boomerangGO = Instantiate(BoomerangPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
+        //     Rigidbody2D boomerangRigidbody = boomerangGO.GetComponent<Rigidbody2D>();
+        //     boomerangRigidbody.velocity = boomerangMovement;
+        // }
     }
 
     private void HandleShootSwirl()
