@@ -184,10 +184,7 @@ public class Globals
         Pit,
         Defense,
         Attack,
-        // DonkeyKong,
-        // Coily,
-        // Robot,
-        // Frygar
+        ICBM,
         RefillHP,
     }
 
@@ -216,7 +213,7 @@ public class Globals
         "Pit Trap",
         "Defense Boost",
         "Attack Boost",
-        // "Donkey Kong",
+        "ICBM",
         // "Coily",
         // "Berzerk Bot",
         // "Frygar"
@@ -244,7 +241,7 @@ public class Globals
         "Place pit trap behind player.", "Increase pit trap attack time by 10%.", "Increase pit trap size by 25%.", "Increase pit trap attack time by 10%.", "Increase pit trap size by 25%.",
         "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.",
         "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.",
-        // "Summons Donkey Kong to attack enemies.",
+        "Launch ICBMs from bottom of screen.", "Increase number of enemies that ICBMs pass through by 1.", "Add additional ICBM.", "Increase number of enemies that ICBMs pass through by 1.", "Add additional ICBM.",
         // "Summons Coily to attack enemies.",
         // "Summons Berzerk Bot to attack enemies.",
         // "Summons Frygar to attack enemies."
@@ -270,6 +267,7 @@ public class Globals
         1,1,1,1,1,
         0,0,0,0,0,
         0,0,0,0,0,
+        1,1,2,2,3,
     };
     public static float[] UpgradeLevelAttackTimes = {
         0,0,0,0,0,
@@ -288,6 +286,7 @@ public class Globals
         0,0,0,0,0,
         .25f, .3f, .35f, .35f, .4f,
         1f, 1.1f, 1.1f, 1.2f, 1.2f,
+        0,0,0,0,0,
         0,0,0,0,0,
         0,0,0,0,0,
     };
@@ -310,6 +309,7 @@ public class Globals
         1f,1f,1.25f,1.25f,1.5f,
         0,0,0,0,0,
         0,0,0,0,0,
+        0,0,0,0,0,
     };
     public static int[] UpgradeLevelEnemyHits = {
         1,1,1,1,1,
@@ -330,6 +330,7 @@ public class Globals
         1,1,1,1,1,
         0,0,0,0,0,
         0,0,0,0,0,
+        3,4,4,5,5,
     };
 
     public static int[] CurrentUpgradeLevels;
@@ -449,7 +450,7 @@ public class Globals
         {
             Globals.CurrentUpgradeLevels[x] = 0;
         }
-        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Tornado] = 5;
+        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.ICBM] = 5;
         // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] = 5;
         CurrentUpgradeTypes.Clear();
 

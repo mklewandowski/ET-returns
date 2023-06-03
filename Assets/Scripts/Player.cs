@@ -55,6 +55,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject PitPrefab;
     [SerializeField]
+    GameObject ICBMPrefab;
+    [SerializeField]
     GameObject BulletContainer;
     [SerializeField]
     GameObject ForceField;
@@ -86,6 +88,7 @@ public class Player : MonoBehaviour
         Bees,
         Boomerang,
         Pit,
+        ICBM,
         None
     }
 
@@ -93,7 +96,7 @@ public class Player : MonoBehaviour
         ShootType.Gun, ShootType.Gun, ShootType.Gun, ShootType.Gun, ShootType.Gun,
         ShootType.Bomb, ShootType.Swirl, ShootType.Laser, ShootType.Invader, ShootType.Ghost, ShootType.None,
         ShootType.Gun, ShootType.Gun, ShootType.Gun, ShootType.Gun, ShootType.Gun,
-        ShootType.None, ShootType.Tornado, ShootType.Bees, ShootType.Boomerang, ShootType.Pit, ShootType.None
+        ShootType.ICBM, ShootType.Tornado, ShootType.Bees, ShootType.Boomerang, ShootType.Pit, ShootType.None
     };
     int shootIndex = 0;
 
@@ -282,6 +285,8 @@ public class Player : MonoBehaviour
                 HandleShootBoomerang(bulletMovement);
             else if (shootType == ShootType.Pit && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] > 0 || Globals.DebugMode)
                 HandleCreatePit(bulletMovement);
+            else if (shootType == ShootType.ICBM && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.ICBM] > 0 || Globals.DebugMode)
+                HandleLaunchICBM();
 
             shootTimer = shootTimerMax;
             shootIndex++;
@@ -421,6 +426,18 @@ public class Player : MonoBehaviour
         {
             GameObject invaderGO = Instantiate(InvaderPrefab, new Vector3(this.transform.localPosition.x, this.transform.localPosition.y + 100f, 0), Quaternion.identity, BulletContainer.transform);
             invaderGO.GetComponent<Invader>().Init(this.transform.localPosition);
+        }
+    }
+
+    private void HandleLaunchICBM()
+    {
+        audioManager.PlayPlayerShoot2Sound();
+        int index = (int)Globals.UpgradeTypes.ICBM * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.ICBM] - 1;
+        int numShots = Globals.UpgradeLevelBullets[index];
+        for (int x = 0; x < numShots; x++)
+        {
+            GameObject icbmGO = Instantiate(ICBMPrefab, new Vector3(this.transform.localPosition.x, this.transform.localPosition.y + 100f, 0), Quaternion.identity, BulletContainer.transform);
+            icbmGO.GetComponent<ICBM>().Init(this.transform.localPosition);
         }
     }
 
