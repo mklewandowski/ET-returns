@@ -3810,7 +3810,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1898727552
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4514,14 +4514,14 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Games Played: 100
 
-    
+
 
     BEST SURVIVAL TIME: 00:00:00
 
-    
 
-    E.T.''s
-    UNLOCKED: 5 of 20'
+
+    E.T.''s UNLOCKED:
+    5 of 20'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 820477dd141385f4e92cdee590f37adb, type: 2}
   m_sharedMaterial: {fileID: 906269662328401386, guid: 820477dd141385f4e92cdee590f37adb, type: 2}
