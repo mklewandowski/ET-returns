@@ -219,7 +219,7 @@ public class Globals
         "Attack Boost",
         "ICBM",
         "Breakout Ball",
-        "Exploding Slime",
+        "TNT Slime",
         "Refill HP"
     };
 
@@ -460,8 +460,8 @@ public class Globals
         {
             Globals.CurrentUpgradeLevels[x] = 0;
         }
-        Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Slime] = 5;
-        Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Breakout] = 5;
+        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Slime] = 5;
+        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Breakout] = 5;
         CurrentUpgradeTypes.Clear();
 
         currentExp = 0;
