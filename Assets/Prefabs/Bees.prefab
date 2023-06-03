@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
-  lifeTimer: 1
+  lifeTimer: 2
   enemyHits: 3
   BombShockWavePrefab: {fileID: 0}
 --- !u!50 &1879809515585156411
@@ -192,6 +192,8 @@ MonoBehaviour:
   StrongDamageMax: 14
   CriticalDamageMin: 6
   CriticalDamageMax: 18
+  CausePushBackDamageVelocity: 0
+  PushBackDamageVelocityMultiplier: 1
 --- !u!114 &8368942198633991326
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -238,8 +238,8 @@ public class Globals
         "Emit ghosts that harm enemies in their path.", "Increase number of enemies that ghost passes through by 1.", "Add additional ghost.", "Increase number of enemies that ghost passes through by 1.", "Add additional ghost.",
         "Increase player speed by 10%.", "Increase player speed by 10%.", "Increase player speed by 10%.", "Increase player speed by 10%.", "Increase player speed by 10%.",
         "Launch seeker star that attacks nearest enemy.", "Add additional seeker star.", "Add additional seeker star.", "Add additional seeker star.", "Add additional seeker star.",
-        "Launch tornado that damages enemies.", "Increase tornado attack range by 10%.", "Increase tornado attack range by 10%.", "Increase tornado attack range by 10%.", "Increase tornado attack range by 10%.",
-        "Summon killer bees from side of screen.", "Increase bee attack range by 20%.", "Increase number of enemies that bees pass through by 1.", "Add second bee swarm.", "Increase bee attack range by 20%.",
+        "Summon tornado from right side of screen", "Increase number of enemies that tornado passes through by 1.", "Add additional tornado.", "Increase number of enemies that tornado passes through by 1.", "Add additional tornado.",
+        "Summon killer bees from left side of screen.", "Increase number of enemies that bees pass through by 1.", "Add additional bee swarm.", "Increase number of enemies that bees pass through by 1.", "Add additional bee swarm.",
         "Shoot boomerang to the side of player.", "Increase boomerang attack range by 20%.", "Increase boomerang attack range by 20%.", "Add additional boomerang.", "Increase boomerang attack range by 20%.",
         "Place pit trap behind player.", "Increase pit trap attack time by 10%.", "Increase pit trap size by 25%.", "Increase pit trap attack time by 10%.", "Increase pit trap size by 25%.",
         "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.",
@@ -264,8 +264,8 @@ public class Globals
         1,1,2,2,3,
         0,0,0,0,0,
         1,2,3,4,5,
-        1,1,1,1,1,
-        1,1,1,2,2,
+        1,1,2,2,3,
+        1,1,2,2,3,
         1,1,1,2,2,
         1,1,1,1,1,
         0,0,0,0,0,
@@ -284,8 +284,8 @@ public class Globals
         0,0,0,0,0,
         0,0,0,0,0,
         0,0,0,0,0,
-        .5f, .55f, .6f, .6f, .7f,
-        1.2f, 1.5f, 1.5f, 1.5f, 1.75f,
+        0,0,0,0,0,
+        0,0,0,0,0,
         .25f, .3f, .35f, .35f, .4f,
         1f, 1.1f, 1.1f, 1.2f, 1.2f,
         0,0,0,0,0,
@@ -324,8 +324,8 @@ public class Globals
         3,4,4,5,5,
         0,0,0,0,0,
         1,1,1,1,1,
-        6,6,6,6,6,
-        3,3,4,4,4,
+        3,4,4,5,5,
+        3,4,4,5,5,
         1,1,1,1,1,
         1,1,1,1,1,
         0,0,0,0,0,
@@ -450,7 +450,7 @@ public class Globals
             Globals.CurrentUpgradeLevels[x] = 0;
         }
         // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Tornado] = 5;
-        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] = 1;
+        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] = 5;
         CurrentUpgradeTypes.Clear();
 
         currentExp = 0;

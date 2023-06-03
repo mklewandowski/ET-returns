@@ -275,7 +275,7 @@ public class Player : MonoBehaviour
             else if (shootType == ShootType.Ghost && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Ghost] > 0 || Globals.DebugMode)
                 HandleLaunchGhost();
             else if (shootType == ShootType.Tornado && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Tornado] > 0 || Globals.DebugMode)
-                HandleShootTornado(bulletMovement);
+                HandleShootTornado();
             else if (shootType == ShootType.Bees && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] > 0 || Globals.DebugMode)
                 HandleLaunchBees();
             else if (shootType == ShootType.Boomerang && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Boomerang] > 0 || Globals.DebugMode)
@@ -444,7 +444,7 @@ public class Player : MonoBehaviour
         for (int x = 0; x < numShots; x++)
         {
             GameObject beesGO = Instantiate(BeesPrefab, new Vector3(this.transform.localPosition.x, this.transform.localPosition.y + 100f, 0), Quaternion.identity, BulletContainer.transform);
-            beesGO.GetComponent<Bees>().Init(this.transform.localPosition, burstNum == burstNumMax);
+            beesGO.GetComponent<Bees>().Init(this.transform.localPosition);
         }
     }
 
@@ -457,18 +457,17 @@ public class Player : MonoBehaviour
             BulletContainer.transform);
     }
 
-    private void HandleShootTornado(Vector2 bulletMovement)
+    private void HandleShootTornado()
     {
         audioManager.PlayPlayerShoot2Sound();
         int index = (int)Globals.UpgradeTypes.Tornado * Globals.MaxLevelsPerUpgrade + Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Tornado] - 1;
         int numShots = Globals.UpgradeLevelBullets[index];
         for (int x = 0; x < numShots; x++)
         {
-            GameObject bulletGO = Instantiate(BulletTornadoPrefab, MuzzleGO.transform.position, Quaternion.identity, BulletContainer.transform);
-            bulletGO.GetComponent<Bullet>().SetLifeTimer(Globals.UpgradeLevelAttackTimes[index]);
-            Rigidbody2D bulletRigidbody = bulletGO.GetComponent<Rigidbody2D>();
-            bulletRigidbody.velocity = new Vector2(bulletMovement.x * .4f, bulletMovement.y * .4f);
+            GameObject tornadoGO = Instantiate(BulletTornadoPrefab, new Vector3(this.transform.localPosition.x, this.transform.localPosition.y + 100f, 0), Quaternion.identity, BulletContainer.transform);
+            tornadoGO.GetComponent<Tornado>().Init(this.transform.localPosition);
         }
+
     }
 
     private void HandleShootSeekerMissile(int burstInterval)
