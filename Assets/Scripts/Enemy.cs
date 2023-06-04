@@ -68,6 +68,7 @@ public class Enemy : MonoBehaviour
         Seek,
         Surround,
         RandomAngle,
+        SetAngle,
         Spread, // used to unclump
         Wait,
         Avoid, // used by FBI and scientist
@@ -331,7 +332,7 @@ public class Enemy : MonoBehaviour
             life = 10;
             hitStrength = 8;
             attackType = AttackType.Chaotic;
-            currentBehavior = BehaviorType.RandomAngle;
+            currentBehavior = Random.Range(0, 4) > 0 ? BehaviorType.SetAngle : BehaviorType.RandomAngle;
         }
         else if (type == Globals.EnemyTypes.Jungle)
         {
@@ -344,7 +345,7 @@ public class Enemy : MonoBehaviour
             life = 20;
             hitStrength = 10;
             attackType = AttackType.Chaotic;
-            currentBehavior = BehaviorType.RandomAngle;
+            currentBehavior = Random.Range(0, 4) > 0 ? BehaviorType.SetAngle : BehaviorType.RandomAngle;
         }
         else if (type == Globals.EnemyTypes.Harry)
         {
@@ -357,7 +358,7 @@ public class Enemy : MonoBehaviour
             life = 30;
             hitStrength = 12;
             attackType = AttackType.Chaotic;
-            currentBehavior = BehaviorType.RandomAngle;
+            currentBehavior = Random.Range(0, 4) > 0 ? BehaviorType.SetAngle : BehaviorType.RandomAngle;
         }
 
         // SPECIAL
@@ -631,6 +632,10 @@ public class Enemy : MonoBehaviour
                 {
                     UpdateRandomAnglePosition();
                 }
+                else if (currentBehavior == BehaviorType.SetAngle)
+                {
+                    UpdateSetAnglePosition();
+                }
                 else if (currentBehavior == BehaviorType.Seek)
                 {
                     UpdateSeekPosition();
@@ -643,7 +648,7 @@ public class Enemy : MonoBehaviour
                 behaviorTimer = Random.Range(behaviorTimerMax - .25f, behaviorTimerMax + .25f);
             }
         }
-        if (currentBehavior == BehaviorType.Seek || currentBehavior == BehaviorType.Surround || currentBehavior == BehaviorType.RandomAngle ||
+        if (currentBehavior == BehaviorType.Seek || currentBehavior == BehaviorType.Surround || currentBehavior == BehaviorType.RandomAngle || currentBehavior == BehaviorType.SetAngle ||
             currentBehavior == BehaviorType.StaticLine || currentBehavior == BehaviorType.Avoid)
             enemyRigidbody.velocity = impactTimer > 0 ? impactVector : movementVector;
 
@@ -688,7 +693,13 @@ public class Enemy : MonoBehaviour
     {
         desiredPosition = playerTransform.position;
         movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
-        movementVector = Quaternion.Euler(0, 0, Random.Range (50f, 50f)) * movementVector;
+        movementVector = Quaternion.Euler(0, 0, Random.Range (-50f, 50f)) * movementVector;
+    }
+    private void UpdateSetAnglePosition()
+    {
+        desiredPosition = playerTransform.position;
+        movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
+        movementVector = Quaternion.Euler(0, 0, 50f) * movementVector;
     }
     private void UpdateAvoidPosition()
     {
