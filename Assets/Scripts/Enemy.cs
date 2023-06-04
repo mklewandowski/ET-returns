@@ -77,15 +77,8 @@ public class Enemy : MonoBehaviour
         MoveOut, // unused, were for bosses
     }
     BehaviorType currentBehavior = BehaviorType.Seek;
+    float sightDistance = 2f;
 
-    enum SurroundType {
-        Up,
-        Down,
-        Left,
-        Right,
-    }
-    SurroundType surroundType = SurroundType.Up;
-    int surroundCount = 1;
     float surroundOffsetX;
     float surroundOffsetY;
 
@@ -144,7 +137,6 @@ public class Enemy : MonoBehaviour
         allowImpactVelocity = true;
         attackType = AttackType.Seek;
         currentBehavior = BehaviorType.Seek;
-        surroundCount = 1;
 
         enemyRigidbody.mass = 1f;
         useLifeTimer = false;
@@ -279,6 +271,7 @@ public class Enemy : MonoBehaviour
             hitStrength = 5;
             attackType = AttackType.Surround;
             currentBehavior = BehaviorType.Surround;
+            PickSurroundOffsets();
         }
         else if (type == Globals.EnemyTypes.Joust)
         {
@@ -292,6 +285,7 @@ public class Enemy : MonoBehaviour
             hitStrength = 7;
             attackType = AttackType.Surround;
             currentBehavior = BehaviorType.Surround;
+            PickSurroundOffsets();
         }
         else if (type == Globals.EnemyTypes.Bear)
         {
@@ -305,6 +299,7 @@ public class Enemy : MonoBehaviour
             hitStrength = 10;
             attackType = AttackType.Surround;
             currentBehavior = BehaviorType.Surround;
+            PickSurroundOffsets();
         }
         else if (type == Globals.EnemyTypes.Joust2)
         {
@@ -318,6 +313,7 @@ public class Enemy : MonoBehaviour
             hitStrength = 12;
             attackType = AttackType.Surround;
             currentBehavior = BehaviorType.Surround;
+            PickSurroundOffsets();
         }
 
         // CHAOS
@@ -577,6 +573,16 @@ public class Enemy : MonoBehaviour
         isActive = true;
     }
 
+    void PickSurroundOffsets()
+    {
+        surroundOffsetY = Random.Range(0, 2) == 0
+            ? Random.Range(3f, 6f)
+            : Random.Range(-3f, -6f);
+        surroundOffsetX = Random.Range(0, 2) == 0
+            ? Random.Range(3f, 6f)
+            : Random.Range(-3f, -6f);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -639,11 +645,20 @@ public class Enemy : MonoBehaviour
                 else if (currentBehavior == BehaviorType.Seek)
                 {
                     UpdateSeekPosition();
-                    //float distanceFromDesiredPosition = Mathf.Abs(Vector3.Distance(desiredPosition, this.transform.localPosition));
+                    float distanceFromPlayer = Mathf.Abs(Vector3.Distance(playerTransform.position, this.transform.localPosition));
+                    if (attackType == AttackType.Surround && distanceFromPlayer > (sightDistance + 1f))
+                    {
+                        currentBehavior = BehaviorType.Surround;
+                    }
                 }
                 else if (currentBehavior == BehaviorType.Surround)
                 {
                     UpdateSurroundPosition();
+                    float distanceFromPlayer = Mathf.Abs(Vector3.Distance(playerTransform.position, this.transform.localPosition));
+                    if (distanceFromPlayer <= sightDistance)
+                    {
+                        currentBehavior = BehaviorType.Seek;
+                    }
                 }
                 behaviorTimer = Random.Range(behaviorTimerMax - .25f, behaviorTimerMax + .25f);
             }
@@ -670,22 +685,6 @@ public class Enemy : MonoBehaviour
     }
     private void UpdateSurroundPosition()
     {
-        surroundCount--;
-        if (surroundCount == 0)
-        {
-            surroundType = (SurroundType)(Random.Range(0, 4));
-            surroundCount = Random.Range(5, 10);
-            surroundOffsetX = 0;
-            surroundOffsetY = 0;
-            if (surroundType == SurroundType.Up)
-                surroundOffsetY = Random.Range(3f, 7f);
-            else if (surroundType == SurroundType.Down)
-                surroundOffsetY = Random.Range(-3f, -7f);
-            else if (surroundType == SurroundType.Left)
-                surroundOffsetX = Random.Range(-3f, -7f);
-            else if (surroundType == SurroundType.Right)
-                surroundOffsetX = Random.Range(3f, 7f);
-        }
         desiredPosition = new Vector3(playerTransform.position.x + surroundOffsetX, playerTransform.position.y + surroundOffsetY, playerTransform.position.z);
         movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
     }
