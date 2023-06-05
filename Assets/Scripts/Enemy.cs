@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField]
+    TextMeshPro DebugText;
+
     bool isActive = false;
 
     AudioManager audioManager;
@@ -576,8 +580,8 @@ public class Enemy : MonoBehaviour
     void PickSurroundOffsets()
     {
         surroundOffsetY = Random.Range(0, 2) == 0
-            ? Random.Range(3f, 6f)
-            : Random.Range(-3f, -6f);
+            ? Random.Range(2f, 4f)
+            : Random.Range(-2f, -4f);
         surroundOffsetX = Random.Range(0, 2) == 0
             ? Random.Range(3f, 6f)
             : Random.Range(-3f, -6f);
@@ -599,6 +603,7 @@ public class Enemy : MonoBehaviour
             behaviorTimer -= Time.deltaTime;
             if (behaviorTimer <= 0)
             {
+                behaviorTimer = Random.Range(behaviorTimerMax - .25f, behaviorTimerMax + .25f);
                 // do something with current behavior
                 if (currentBehavior == BehaviorType.MoveIn)
                 {
@@ -644,27 +649,67 @@ public class Enemy : MonoBehaviour
                 }
                 else if (currentBehavior == BehaviorType.Seek)
                 {
-                    UpdateSeekPosition();
-                    float distanceFromPlayer = Mathf.Abs(Vector3.Distance(playerTransform.position, this.transform.localPosition));
-                    if (attackType == AttackType.Surround && distanceFromPlayer > (sightDistance + 1f))
+                    if (CheckForClumping())
                     {
-                        currentBehavior = BehaviorType.Surround;
+                        currentBehavior = BehaviorType.Spread;
+                        behaviorTimer = Mathf.Max(4f, Random.Range(behaviorTimerMax - .25f, behaviorTimerMax + .25f) * 5f);
+                    }
+                    else
+                    {
+                        if (attackType == AttackType.Surround)
+                        {
+                            float distanceFromPlayer = Mathf.Abs(Vector3.Distance(playerTransform.position, this.transform.localPosition));
+                            if (distanceFromPlayer > (sightDistance + 1f))
+                            {
+                                currentBehavior = BehaviorType.Surround;
+                                UpdateSurroundPosition();
+                            }
+                        }
+                        else
+                        {
+                            UpdateSeekPosition();
+                        }
                     }
                 }
                 else if (currentBehavior == BehaviorType.Surround)
                 {
-                    UpdateSurroundPosition();
-                    float distanceFromPlayer = Mathf.Abs(Vector3.Distance(playerTransform.position, this.transform.localPosition));
-                    if (distanceFromPlayer <= sightDistance)
+                    if (CheckForClumping())
                     {
-                        currentBehavior = BehaviorType.Seek;
+                        currentBehavior = BehaviorType.Spread;
+                        behaviorTimer = Mathf.Max(4f, Random.Range(behaviorTimerMax - .25f, behaviorTimerMax + .25f) * 5f);
+                    }
+                    else
+                    {
+                        float distanceFromPlayer = Mathf.Abs(Vector3.Distance(playerTransform.position, this.transform.localPosition));
+                        if (distanceFromPlayer <= sightDistance)
+                        {
+                            currentBehavior = BehaviorType.Seek;
+                            UpdateSeekPosition();
+                        }
+                        else
+                        {
+                            UpdateSurroundPosition();
+                        }
                     }
                 }
-                behaviorTimer = Random.Range(behaviorTimerMax - .25f, behaviorTimerMax + .25f);
+                else if (currentBehavior == BehaviorType.Spread)
+                {
+                    if (attackType == AttackType.Surround)
+                    {
+                        currentBehavior = BehaviorType.Surround;
+                        UpdateSurroundPosition();
+                    }
+                    else if (attackType == AttackType.Seek)
+                    {
+                        currentBehavior = BehaviorType.Seek;
+                        UpdateSeekPosition();
+                    }
+                }
+
             }
         }
         if (currentBehavior == BehaviorType.Seek || currentBehavior == BehaviorType.Surround || currentBehavior == BehaviorType.RandomAngle || currentBehavior == BehaviorType.SetAngle ||
-            currentBehavior == BehaviorType.StaticLine || currentBehavior == BehaviorType.Avoid)
+            currentBehavior == BehaviorType.StaticLine || currentBehavior == BehaviorType.Avoid || currentBehavior == BehaviorType.Spread)
             enemyRigidbody.velocity = impactTimer > 0 ? impactVector : movementVector;
 
         if (flipWithMovement)
@@ -676,6 +721,40 @@ public class Enemy : MonoBehaviour
         {
             CheckAvoidPosition();
         }
+    }
+
+    private bool CheckForClumping()
+    {
+        Vector2 enemyVectorSum = Vector2.zero;
+        float enemiesInGroup = 0f; // the number of enemies in the collision circle
+        float groupCircleRadius = .75f;
+        int minEnemiesInGroupBeforeSpread = 2;
+        float spreadMagnitudeThreshold = 3f;
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, groupCircleRadius);
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.GetComponent<Enemy>() != null && hitCollider.transform != transform)
+            {
+                // get the difference so we know which way to go
+                Vector2 difference = transform.position - hitCollider.transform.position;
+
+                // weight by distance so being closer means moving more
+                difference = difference.normalized / Mathf.Abs(difference.magnitude);
+
+                // add together to get average of the group
+                // this allows those at the edges of a group to move out while
+                // the enemies in the center of a group to not move much
+                enemyVectorSum += difference;
+                enemiesInGroup++;
+            }
+        }
+        if (enemiesInGroup >= minEnemiesInGroupBeforeSpread && enemyVectorSum.magnitude > spreadMagnitudeThreshold)
+        {
+            // normalize the vector and multiply by movespeed to move away from group
+            movementVector = enemyVectorSum.normalized * moveSpeed;
+            return true;
+        }
+        return false;
     }
 
     private void UpdateSeekPosition()
