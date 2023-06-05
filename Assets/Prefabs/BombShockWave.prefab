@@ -147,4 +147,4 @@ MonoBehaviour:
   CriticalDamageMin: 3
   CriticalDamageMax: 10
   CausePushBackDamageVelocity: 1
-  PushBackDamageVelocityMultiplier: 6
+  PushBackDamageVelocityMultiplier: 8

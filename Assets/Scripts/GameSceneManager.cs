@@ -105,40 +105,21 @@ public class GameSceneManager : MonoBehaviour
         Rovers,
         None
     }
-    EnemySpecialAttackPatterns currentEnemySpecialAttack = EnemySpecialAttackPatterns.None;
 
-    // D: 00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12
-    // T:  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12
+    int[] fastEnemySpawnValues =     { 6,  0, -3, -6,  -9 };
+    int[] strongEnemySpawnValues =   { 4, -1, -4, -7, -11 };
+    int[] surroundEnemySpawnValues = { 2, -3, -7, -11 };
+    int[] chaoticEnemySpawnValues =  {-3, -8, -12};
 
-    //1R: 80, 60, 40, 20, 10, 10, 10, 10, 10, 10, 10, 10, 10
-    //2R: 20, 40, 60, 80, 60, 40, 20, 10, 10, 10, 10, 10, 10
-    //3R   0,  0,  0, 10, 20, 40, 60, 80, 60, 40, 20, 20, 20
-    //4R   0,  0,  0,  0,  0,  0, 10, 20, 40, 60, 80, 80, 80,
+    int[] fastEnemySpawnThresholds = { 2, 0, 0, 0, 0 };
+    int[] strongEnemySpawnThresholds = { 2, 0, 0, 0, 0 };
+    int[] surroundEnemySpawnThresholds = { 2, 0, 0, 0 };
+    int[] chaoticEnemySpawnThresholds = {2, 0, 0};
 
-    int[] enemyFastOneSpawnRates = {100, 80, 60, 40, 20, 10, 10, 10, 10, 10, 10, 10, 10, 0};
-    int[] enemyFastTwoSpawnRates =   {0, 20, 40, 60, 80, 60, 40, 20, 10, 10, 10, 10, 10, 10, 10, 10, 0};
-    int[] enemyFastThreeSpawnRates = {0,  0,  0,  0, 10, 20, 40, 60, 80, 60, 40, 20, 20, 20, 20, 20, 20};
-    int[] enemyFastFourSpawnRates =  {0,  0,  0,  0,  0,  0,  0, 10, 20, 40, 60, 80, 60, 40, 30};
-    int[] enemyFastFiveSpawnRates =  {0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 20, 40, 60, 80, 60, 40};
-    int[] enemyFastSixSpawnRates =   {0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 20, 40, 60, 80, 60};
-    int[] enemyFastSevenSpawnRates = {0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 10, 20, 40, 60, 80};
-
-    int[] enemyStrongOneSpawnRates = {100, 100, 80, 60, 40, 20, 20, 10, 10, 10, 10, 10, 10, 10, 10, 0};
-    int[] enemyStrongTwoSpawnRates =   {0,  0,  20, 40, 60, 80, 80, 60, 40, 20, 10, 10, 10, 10, 10, 10, 10, 10, 0};
-    int[] enemyStrongThreeSpawnRates = {0,  0,  0,  0,  0,  10, 20, 40, 60, 80, 80, 60, 40, 20, 10};
-    int[] enemyStrongFourSpawnRates =  {0,  0,  0,  0,  0,  0,  0,  0,  10, 20, 40, 60, 80, 80, 60, 40};
-    int[] enemyStrongFiveSpawnRates =  {0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  10, 20, 40, 60, 80};
-
-    int[] enemySurroundOneSpawnRates = {100, 100, 100, 80, 60, 40, 20, 20, 10};
-    int[] enemySurroundTwoSpawnRates =   {0,   0,   0, 20, 40, 60, 80, 60, 60, 40, 30};
-    int[] enemySurroundThreeSpawnRates = {0,   0,   0,  0,  0,  0,  0, 0,  10, 20, 40, 60, 80};
-
-    int[] fastEnemySpawnRates = { 100, 100, 100, 100, 100, 100, 100 };
-    int[] strongEnemySpawnRates = { 100, 100, 100, 100, 100 };
-    int[] surroundEnemySpawnRates = { 100, 100, 100 };
-    int currentFastEnemyMaxSpawn = 100;
-    int currentStrongEnemyMaxSpawn = 100;
-    int currentSurroundEnemyMaxSpawn = 100;
+    int currentFastEnemyMaxSpawn = 2;
+    int currentStrongEnemyMaxSpawn = 2;
+    int currentSurroundEnemyMaxSpawn = 2;
+    int currentChaoticEnemyMaxSpawn = 2;
     int numSpawns = 0;
 
     float spawnTimer = 5f;
@@ -178,7 +159,6 @@ public class GameSceneManager : MonoBehaviour
 
     float deadTimer = 0f;
     float deadTimerMax = 4f;
-    bool fadeIn = false;
     bool fadeOut = false;
 
     void Awake()
@@ -199,7 +179,6 @@ public class GameSceneManager : MonoBehaviour
         CreateHitNoticePool();
 
         fadeManager.StartFadeIn();
-        fadeIn = true;
     }
 
     void CreateCandyPool()
@@ -312,7 +291,7 @@ public class GameSceneManager : MonoBehaviour
         else if (enemyType == Globals.EnemyTypes.Moon || enemyType == Globals.EnemyTypes.Plane)
             pool = enemyVehiclePool;
         else if (enemyType == Globals.EnemyTypes.PacBoss || enemyType == Globals.EnemyTypes.KoolBoss || enemyType == Globals.EnemyTypes.PopeyeBoss ||
-                 enemyType == Globals.EnemyTypes.MarioBoss || enemyType == Globals.EnemyTypes.LuigiBoss || enemyType == Globals.EnemyTypes.HarryBoss)
+                 enemyType == Globals.EnemyTypes.MarioBoss || enemyType == Globals.EnemyTypes.LuigiBoss)
             pool = enemyBossPool;
 
         for (int x = 0; x < pool.Length; x++)
@@ -363,7 +342,6 @@ public class GameSceneManager : MonoBehaviour
     {
         if (Globals.IsPaused)
         {
-
             bool moveLeft = false;
             bool moveRight = false;
 
@@ -399,19 +377,17 @@ public class GameSceneManager : MonoBehaviour
 
             if (moveLeft)
             {
+                if (upgradeHighlightIndex == 0)
+                    return;
                 upgradeHighlightIndex--;
-                if (upgradeHighlightIndex < 0)
-                    upgradeHighlightIndex = HUDUpgradeButtons.Length - 1;
-
                 audioManager.PlayMenuSound();
                 HighlightUpgradeButton();
             }
             else if (moveRight)
             {
+                if (upgradeHighlightIndex == HUDUpgradeButtons.Length - 1)
+                    return;
                 upgradeHighlightIndex++;
-                if (upgradeHighlightIndex >= HUDUpgradeButtons.Length)
-                    upgradeHighlightIndex = 0;
-
                 audioManager.PlayMenuSound();
                 HighlightUpgradeButton();
             }
@@ -445,27 +421,38 @@ public class GameSceneManager : MonoBehaviour
             difficultyLevel++;
             spawnTimerMax = Mathf.Max(5f, spawnTimerMax - .5f);
 
-            fastEnemySpawnRates[0] = difficultyLevel < enemyFastOneSpawnRates.Length ? enemyFastOneSpawnRates[difficultyLevel] : enemyFastOneSpawnRates[enemyFastOneSpawnRates.Length - 1];
-            fastEnemySpawnRates[1] = fastEnemySpawnRates[0] + (difficultyLevel < enemyFastTwoSpawnRates.Length ? enemyFastTwoSpawnRates[difficultyLevel] : enemyFastTwoSpawnRates[enemyFastTwoSpawnRates.Length - 1]);
-            fastEnemySpawnRates[2] = fastEnemySpawnRates[1] + (difficultyLevel < enemyFastThreeSpawnRates.Length ? enemyFastThreeSpawnRates[difficultyLevel] : enemyFastThreeSpawnRates[enemyFastThreeSpawnRates.Length - 1]);
-            fastEnemySpawnRates[3] = fastEnemySpawnRates[2] + (difficultyLevel < enemyFastFourSpawnRates.Length ? enemyFastFourSpawnRates[difficultyLevel] : enemyFastFourSpawnRates[enemyFastFourSpawnRates.Length - 1]);
-            fastEnemySpawnRates[4] = fastEnemySpawnRates[3] + (difficultyLevel < enemyFastFiveSpawnRates.Length ? enemyFastFiveSpawnRates[difficultyLevel] : enemyFastFiveSpawnRates[enemyFastFiveSpawnRates.Length - 1]);
-            fastEnemySpawnRates[5] = fastEnemySpawnRates[4] + (difficultyLevel < enemyFastSixSpawnRates.Length ? enemyFastSixSpawnRates[difficultyLevel] : enemyFastSixSpawnRates[enemyFastSixSpawnRates.Length - 1]);
-            fastEnemySpawnRates[6] = fastEnemySpawnRates[5] + (difficultyLevel < enemyFastSevenSpawnRates.Length ? enemyFastSevenSpawnRates[difficultyLevel] : enemyFastSevenSpawnRates[enemyFastSevenSpawnRates.Length - 1]);
+            // -2, -1, 0, 2, 4, 6, 8, 7, 5, 3, 1,
+            UpdateSpawnValuesAndThresholds(fastEnemySpawnValues, fastEnemySpawnThresholds);
+            UpdateSpawnValuesAndThresholds(strongEnemySpawnValues, strongEnemySpawnThresholds);
+            UpdateSpawnValuesAndThresholds(surroundEnemySpawnValues, surroundEnemySpawnThresholds);
+            UpdateSpawnValuesAndThresholds(chaoticEnemySpawnValues, chaoticEnemySpawnThresholds);
 
-            strongEnemySpawnRates[0] = difficultyLevel < enemyStrongOneSpawnRates.Length ? enemyStrongOneSpawnRates[difficultyLevel] : enemyStrongOneSpawnRates[enemyStrongOneSpawnRates.Length - 1];
-            strongEnemySpawnRates[1] = strongEnemySpawnRates[0] + (difficultyLevel < enemyStrongTwoSpawnRates.Length ? enemyStrongTwoSpawnRates[difficultyLevel] : enemyStrongTwoSpawnRates[enemyStrongTwoSpawnRates.Length - 1]);
-            strongEnemySpawnRates[2] = strongEnemySpawnRates[1] + (difficultyLevel < enemyStrongThreeSpawnRates.Length ? enemyStrongThreeSpawnRates[difficultyLevel] : enemyStrongThreeSpawnRates[enemyStrongThreeSpawnRates.Length - 1]);
-            strongEnemySpawnRates[3] = strongEnemySpawnRates[2] + (difficultyLevel < enemyStrongFourSpawnRates.Length ? enemyStrongFourSpawnRates[difficultyLevel] : enemyStrongFourSpawnRates[enemyStrongFourSpawnRates.Length - 1]);
-            strongEnemySpawnRates[4] = strongEnemySpawnRates[3] + (difficultyLevel < enemyStrongFiveSpawnRates.Length ? enemyStrongFiveSpawnRates[difficultyLevel] : enemyStrongFiveSpawnRates[enemyStrongFiveSpawnRates.Length - 1]);
+            currentFastEnemyMaxSpawn = fastEnemySpawnThresholds[fastEnemySpawnThresholds.Length - 1];
+            currentStrongEnemyMaxSpawn = strongEnemySpawnThresholds[strongEnemySpawnThresholds.Length - 1];
+            currentSurroundEnemyMaxSpawn = surroundEnemySpawnThresholds[surroundEnemySpawnThresholds.Length - 1];
+            currentChaoticEnemyMaxSpawn = chaoticEnemySpawnThresholds[chaoticEnemySpawnThresholds.Length - 1];
+        }
+    }
 
-            surroundEnemySpawnRates[0] = difficultyLevel < enemySurroundOneSpawnRates.Length ? enemySurroundOneSpawnRates[difficultyLevel] : enemySurroundOneSpawnRates[enemySurroundOneSpawnRates.Length - 1];
-            surroundEnemySpawnRates[1] = surroundEnemySpawnRates[0] + (difficultyLevel < enemySurroundTwoSpawnRates.Length ? enemySurroundTwoSpawnRates[difficultyLevel] : enemySurroundTwoSpawnRates[enemySurroundTwoSpawnRates.Length - 1]);
-            surroundEnemySpawnRates[2] = surroundEnemySpawnRates[1] + (difficultyLevel < enemySurroundThreeSpawnRates.Length ? enemySurroundThreeSpawnRates[difficultyLevel] : enemySurroundThreeSpawnRates[enemySurroundThreeSpawnRates.Length - 1]);
-
-            currentSurroundEnemyMaxSpawn = surroundEnemySpawnRates[surroundEnemySpawnRates.Length - 1];
-            currentStrongEnemyMaxSpawn = strongEnemySpawnRates[strongEnemySpawnRates.Length - 1];
-            currentFastEnemyMaxSpawn = fastEnemySpawnRates[fastEnemySpawnRates.Length - 1];
+    void UpdateSpawnValuesAndThresholds(int[] spawnValues, int[] spawnThresholds)
+    {
+        for (int x = 0; x < spawnValues.Length; x++)
+        {
+            if (spawnValues[x] < 0)
+                spawnValues[x]++;
+            else if (spawnValues[x] == 8)
+                spawnValues[x]--;
+            else if (spawnValues[x] % 2 == 0)
+                spawnValues[x] = spawnValues[x] + 2;
+            else if (spawnValues[x] % 2 == 1 && spawnValues[x] > 1)
+                spawnValues[x] = spawnValues[x] - 2;
+        }
+        for (int x = 0; x < spawnValues.Length; x++)
+        {
+            if (x == 0)
+                spawnThresholds[x] = spawnValues[x];
+            else
+                spawnThresholds[x] = spawnThresholds[x - 1] + (spawnValues[x] > 0 ? spawnValues[x] : 0);
         }
     }
 
@@ -614,12 +601,16 @@ public class GameSceneManager : MonoBehaviour
                 enemyType = Globals.EnemyTypes.Scientist;
                 extraLife = (int)(difficultyLevel * .5f);
             }
-            else if (randVal > 84f)
-                enemyType = GetEnemyType(currentStrongEnemyMaxSpawn, strongEnemySpawnRates, Globals.StrongEnemyTypes);
-            else if (randVal > 74f)
-                enemyType = GetEnemyType(currentSurroundEnemyMaxSpawn, surroundEnemySpawnRates, Globals.SurroundEnemyTypes);
+            else if (randVal > 90f && difficultyLevel > 4)
+                enemyType = GetEnemyType(currentChaoticEnemyMaxSpawn, chaoticEnemySpawnThresholds, Globals.ChaoticEnemyTypes);
+            else if (randVal > 25)
+                enemyType = GetEnemyType(currentFastEnemyMaxSpawn, fastEnemySpawnThresholds, Globals.FastEnemyTypes);
+            else if (randVal > 10f)
+                enemyType = GetEnemyType(currentStrongEnemyMaxSpawn, strongEnemySpawnThresholds, Globals.StrongEnemyTypes);
             else
-                enemyType = GetEnemyType(currentFastEnemyMaxSpawn, fastEnemySpawnRates, Globals.FastEnemyTypes);
+                enemyType = GetEnemyType(currentSurroundEnemyMaxSpawn, surroundEnemySpawnThresholds, Globals.SurroundEnemyTypes);
+
+
             SpawnEnemy(enemyType, extraLife);
         }
         if (digSpawnsRemaining > 0)
@@ -680,13 +671,6 @@ public class GameSceneManager : MonoBehaviour
         HUDBossPanel.GetComponent<MoveNormal>().MoveRight();
         currentBossState = BossStates.ShowHUD;
         bossTimer = .75f;
-        // WTD
-        // destroy nearby enemies
-        // make shoot, unique behaviors
-        // make fbi/scientist avoid
-        // handle invalid spawn position
-        // unify where intro stuff happens
-        // get size right
     }
 
     void SpawnBoss()
@@ -766,7 +750,7 @@ public class GameSceneManager : MonoBehaviour
         }
     }
 
-    Globals.EnemyTypes GetEnemyType(int currentEnemyMaxSpawn, int[] enemySpawnRates, Globals.EnemyTypes[] enemyTypes)
+    Globals.EnemyTypes GetEnemyType(int currentEnemyMaxSpawn, int[] enemySpawnThresholds, Globals.EnemyTypes[] enemyTypes)
     {
         int randVal = Random.Range(0, currentEnemyMaxSpawn);
         int index = 0;
@@ -774,10 +758,10 @@ public class GameSceneManager : MonoBehaviour
         bool valid = false;
         do {
             index = x;
-            if (randVal < enemySpawnRates[x])
+            if (randVal < enemySpawnThresholds[x])
                 valid = true;
             x++;
-        } while (!valid && x < enemySpawnRates.Length);
+        } while (!valid && x < enemySpawnThresholds.Length);
         Globals.EnemyTypes enemyType = enemyTypes[index];
         return enemyType;
     }

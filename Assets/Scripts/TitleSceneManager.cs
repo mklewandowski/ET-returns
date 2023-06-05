@@ -190,19 +190,17 @@ public class TitleSceneManager : MonoBehaviour
         }
         if (moveLeft && !showBackButton)
         {
+            if (highlightIndex == 0)
+                return;
             highlightIndex--;
-            if (highlightIndex < 0)
-                highlightIndex = Buttons.Length - 1;
-
             audioManager.PlayMenuSound();
             HighlightButton();
         }
         else if (moveRight && !showBackButton)
         {
+            if (highlightIndex == Buttons.Length - 1)
+                return;
             highlightIndex++;
-            if (highlightIndex >= Buttons.Length)
-                highlightIndex = 0;
-
             audioManager.PlayMenuSound();
             HighlightButton();
         }
@@ -225,6 +223,7 @@ public class TitleSceneManager : MonoBehaviour
 
     public void SelectTutorial()
     {
+        audioManager.PlayButtonSound();
         introPanel.GetComponent<MoveNormal>().MoveDown();
         buttonPanel.GetComponent<MoveNormal>().MoveDown();
         tutorialPanel.GetComponent<MoveNormal>().MoveUp();
@@ -233,6 +232,7 @@ public class TitleSceneManager : MonoBehaviour
 
     public void SelectStats()
     {
+        audioManager.PlayButtonSound();
         introPanel.GetComponent<MoveNormal>().MoveDown();
         buttonPanel.GetComponent<MoveNormal>().MoveDown();
         statsPanel.GetComponent<MoveNormal>().MoveUp();
@@ -241,6 +241,7 @@ public class TitleSceneManager : MonoBehaviour
 
     public void SelectBack()
     {
+        audioManager.PlayButtonSound();
         introPanel.GetComponent<MoveNormal>().MoveUp();
         buttonPanel.GetComponent<MoveNormal>().MoveUp();
         statsPanel.GetComponent<MoveNormal>().MoveDown();

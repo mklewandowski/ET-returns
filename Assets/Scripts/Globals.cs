@@ -112,19 +112,23 @@ public class Globals
         Yar,
         Pac,
         MsPac,
-        Joust,
-        Joust2,
         Yar2,
-
-        Frogger,
-        Indy,
-        Pengo,
+        JrPac,
 
         Qbert,
         Kangaroo,
-        Bear,
         Hero,
+        Pengo,
         Hero2,
+
+        Frogger,
+        Joust,
+        Bear,
+        Joust2,
+
+        Indy,
+        Jungle,
+        Harry,
 
         Dig,
         Plane,
@@ -137,7 +141,6 @@ public class Globals
         MarioBoss,
         LuigiBoss,
         KoolBoss,
-        HarryBoss,
     }
 
     public static string[] BossText = {
@@ -157,9 +160,10 @@ public class Globals
         "Harry",
     };
 
-    public static EnemyTypes[] FastEnemyTypes = {EnemyTypes.Yar, EnemyTypes.Pac, EnemyTypes.MsPac, EnemyTypes.Bear, EnemyTypes.Joust, EnemyTypes.Joust2, EnemyTypes.Yar2};
-    public static EnemyTypes[] StrongEnemyTypes = {EnemyTypes.Qbert, EnemyTypes.Kangaroo, EnemyTypes.Bear, EnemyTypes.Hero, EnemyTypes.Hero2};
-    public static EnemyTypes[] SurroundEnemyTypes = {EnemyTypes.Frogger, EnemyTypes.Indy, EnemyTypes.Pengo};
+    public static EnemyTypes[] FastEnemyTypes = {EnemyTypes.Yar, EnemyTypes.Pac, EnemyTypes.MsPac, EnemyTypes.Yar2, EnemyTypes.JrPac};
+    public static EnemyTypes[] StrongEnemyTypes = {EnemyTypes.Qbert, EnemyTypes.Kangaroo, EnemyTypes.Hero, EnemyTypes.Pengo, EnemyTypes.Hero2};
+    public static EnemyTypes[] SurroundEnemyTypes = {EnemyTypes.Frogger, EnemyTypes.Joust, EnemyTypes.Bear, EnemyTypes.Joust2};
+    public static EnemyTypes[] ChaoticEnemyTypes = {EnemyTypes.Indy, EnemyTypes.Jungle, EnemyTypes.Harry};
 
     public enum UpgradeTypes {
         ForceField,
@@ -180,17 +184,18 @@ public class Globals
         Pit,
         Defense,
         Attack,
-        // DonkeyKong,
-        // Coily,
-        // Robot,
-        // Frygar
+        ICBM,
+        Breakout,
+        Slime,
         RefillHP,
     }
 
     public enum BulletTypes {
         Standard,
         Swirl,
-        Bomb
+        Bomb,
+        Slime,
+        Breakout
     }
 
     public static string[] UpgradeText = {
@@ -212,38 +217,36 @@ public class Globals
         "Pit Trap",
         "Defense Boost",
         "Attack Boost",
-        // "Donkey Kong",
-        // "Coily",
-        // "Berzerk Bot",
-        // "Frygar"
+        "ICBM",
+        "Breakout Ball",
+        "TNT Slime",
         "Refill HP"
     };
 
     public static int MaxLevelsPerUpgrade = 5;
 
     public static string[] UpgradeDescriptionText = {
-        "Create an attack force field around the player.", "Increase force field by 10%.", "Increase force field by 10%.", "Increase force field by 10%.", "Increase force field by 10%.",
+        "Create an attack force field around the player.", "Increase force field by 10 percent.", "Increase force field by 10 percent.", "Increase force field by 10 percent.", "Increase force field by 10 percent.",
         "Convert normal gun into spread shot.", "Add additional round of spread shot.", "Add additional round of spread shot.", "Add additional round of spread shot.", "Add additional round of spread shot.",
         "Shoot bullets behind player.", "Add additional round of rear bullet.", "Add additional round of rear bullet.", "Add additional round of rear bullet.", "Add additional round of rear bullet.",
         "Shoot bullets to the sides of player.", "Add additional round of side bullet.", "Add additional round of side bullet.", "Add additional round of side bullet.", "Add additional round of side bullet.",
         "Launch bomb that create explosive shockwave.", "Add additional bomb.", "Add additional bomb.", "Add additional bomb.", "Add additional bomb.",
         "Launch powerful swirl attack in random direction.", "Add additional swirl.", "Add additional swirl.", "Add additional swirl.", "Add additional swirl.",
-        "Shoot laser beam from player's eye.", "Increase laser attack time by 25%.", "Increase laser attack time by 30%.", "Increase laser attack time by 30%.", "Increase laser attack time by 35%.",
-        "Launch drone that orbits player.", "Increase drone orbit time by 10%.", "Add additional drone.", "Increase drone orbit time by 10%.", "Add additional drone.",
-        "Drop attack invaders from top of screen.", "Increase number of enemies that invader passes through by 1.", "Add additional invader.", "Increase number of enemies that invader passes through by 1.", "Add additional invader.",
-        "Emit ghosts that harm enemies in their path.", "Increase number of enemies that ghost passes through by 1.", "Add additional ghost.", "Increase number of enemies that ghost passes through by 1.", "Add additional ghost.",
-        "Increase player speed by 10%.", "Increase player speed by 10%.", "Increase player speed by 10%.", "Increase player speed by 10%.", "Increase player speed by 10%.",
+        "Shoot laser beam from player's eye.", "Increase laser attack time by 25 percent.", "Increase laser attack time by 30 percent.", "Increase laser attack time by 30 percent.", "Increase laser attack time by 35 percent.",
+        "Launch drone that orbits player.", "Increase drone orbit time by 10 percent.", "Add additional drone.", "Increase drone orbit time by 10 percent.", "Add additional drone.",
+        "Drop attack invaders from top of screen.", "Increase number of enemies invader passes through by 1.", "Add additional invader.", "Increase number of enemies invader passes through by 1.", "Add additional invader.",
+        "Emit ghosts that harm enemies in their path.", "Increase number of enemies ghost passes through by 1.", "Add additional ghost.", "Increase number of enemies ghost passes through by 1.", "Add additional ghost.",
+        "Increase player speed by 10 percent.", "Increase player speed by 10 percent.", "Increase player speed by 10 percent.", "Increase player speed by 10 percent.", "Increase player speed by 10 percent.",
         "Launch seeker star that attacks nearest enemy.", "Add additional seeker star.", "Add additional seeker star.", "Add additional seeker star.", "Add additional seeker star.",
-        "Launch tornado that damages enemies.", "Increase tornado attack range by 10%.", "Increase tornado attack range by 10%.", "Increase tornado attack range by 10%.", "Increase tornado attack range by 10%.",
-        "Summon killer bees from side of screen.", "Increase bee attack range by 20%.", "Increase number of enemies that bees pass through by 1.", "Add second bee swarm.", "Increase bee attack range by 20%.",
-        "Shoot boomerang to the side of player.", "Increase boomerang attack range by 20%.", "Increase boomerang attack range by 20%.", "Add additional boomerang.", "Increase boomerang attack range by 20%.",
-        "Place pit trap behind player.", "Increase pit trap attack time by 10%.", "Increase pit trap size by 25%.", "Increase pit trap attack time by 10%.", "Increase pit trap size by 25%.",
+        "Summon tornado from right side of screen", "Increase number of enemies tornado passes through by 1.", "Add additional tornado.", "Increase number of enemies tornado passes through by 1.", "Add additional tornado.",
+        "Summon killer bees from left side of screen.", "Increase number of enemies bees pass through by 1.", "Add additional bee swarm.", "Increase number of enemies bees pass through by 1.", "Add additional bee swarm.",
+        "Shoot boomerang to the side of player.", "Increase boomerang attack range by 20 percent.", "Increase boomerang attack range by 20 percent.", "Add additional boomerang.", "Increase boomerang attack range by 20 percent.",
+        "Place pit trap behind player.", "Increase pit trap attack time by 20 percent.", "Add additional pit.", "Increase pit trap attack time by 20 percent.", "Add additional pit.",
         "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.", "Increase player defense by 1 point.",
         "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.",
-        // "Summons Donkey Kong to attack enemies.",
-        // "Summons Coily to attack enemies.",
-        // "Summons Berzerk Bot to attack enemies.",
-        // "Summons Frygar to attack enemies."
+        "Launch ICBMs from bottom of screen.", "Increase number of enemies ICBMs pass through by 1.", "Add additional ICBM.", "Increase number of enemies ICBMs pass through by 1.", "Add additional ICBM.",
+        "Shoot ricocheting breakout ball.", "Increase number of ricochets by 2", "Add additional breakout ball.", "Increase number of ricochets by 2", "Add additional breakout ball.",
+        "Shoot exploding slime bullets in random direction.", "Increase slime shrapnel by 50 percent.", "Add additional slime bullet.", "Increase slime shrapnel by 50 percent.", "Add additional slime bullet.",
         "Refill HP meter to maximum amount."
     };
 
@@ -260,12 +263,15 @@ public class Globals
         1,1,2,2,3,
         0,0,0,0,0,
         1,2,3,4,5,
-        1,1,1,1,1,
+        1,1,2,2,3,
+        1,1,2,2,3,
         1,1,1,2,2,
-        1,1,1,2,2,
-        1,1,1,1,1,
+        1,1,2,2,3,
         0,0,0,0,0,
         0,0,0,0,0,
+        1,1,2,2,3,
+        1,1,2,2,3,
+        1,1,2,2,3,
     };
     public static float[] UpgradeLevelAttackTimes = {
         0,0,0,0,0,
@@ -280,10 +286,13 @@ public class Globals
         0,0,0,0,0,
         0,0,0,0,0,
         0,0,0,0,0,
-        .5f, .55f, .6f, .6f, .7f,
-        1.2f, 1.5f, 1.5f, 1.5f, 1.75f,
+        0,0,0,0,0,
+        0,0,0,0,0,
         .25f, .3f, .35f, .35f, .4f,
-        1f, 1.1f, 1.1f, 1.2f, 1.2f,
+        1f, 1.2f, 1.2f, 1.4f, 1.4f,
+        0,0,0,0,0,
+        0,0,0,0,0,
+        0,0,0,0,0,
         0,0,0,0,0,
         0,0,0,0,0,
     };
@@ -303,7 +312,10 @@ public class Globals
         0,0,0,0,0,
         0,0,0,0,0,
         0,0,0,0,0,
-        1f,1f,1.25f,1.25f,1.5f,
+        1.5f,1.5f,1.5f,1.5f,1.5f,
+        0,0,0,0,0,
+        0,0,0,0,0,
+        0,0,0,0,0,
         0,0,0,0,0,
         0,0,0,0,0,
     };
@@ -320,12 +332,15 @@ public class Globals
         3,4,4,5,5,
         0,0,0,0,0,
         1,1,1,1,1,
-        6,6,6,6,6,
-        3,3,4,4,4,
+        3,4,4,5,5,
+        3,4,4,5,5,
         1,1,1,1,1,
         1,1,1,1,1,
         0,0,0,0,0,
         0,0,0,0,0,
+        3,4,4,5,5,
+        5,7,7,10,10,
+        1,1,1,1,1,
     };
 
     public static int[] CurrentUpgradeLevels;
@@ -445,8 +460,8 @@ public class Globals
         {
             Globals.CurrentUpgradeLevels[x] = 0;
         }
-        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Tornado] = 5;
-        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] = 1;
+        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Slime] = 5;
+        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Breakout] = 5;
         CurrentUpgradeTypes.Clear();
 
         currentExp = 0;

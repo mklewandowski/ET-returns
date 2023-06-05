@@ -33,7 +33,7 @@ public class Pit : MonoBehaviour
         if (state == PitState.Grow)
         {
             float newScale = Mathf.Min(GrowTo, this.transform.localScale.x + Time.deltaTime * Rate);
-            this.transform.localScale = new Vector3(newScale, newScale, newScale);
+            this.transform.localScale = new Vector3(newScale, newScale, 1f);
             if (newScale == GrowTo)
             {
                 state =  PitState.Hold;

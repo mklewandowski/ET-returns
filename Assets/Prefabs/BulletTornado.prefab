@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1879809515585156411}
   - component: {fileID: 6428030214657378042}
   - component: {fileID: 2796331600196713253}
+  - component: {fileID: 6282226556181756567}
   m_Layer: 0
   m_Name: BulletTornado
   m_TagString: Untagged
@@ -77,7 +78,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: -413264242, guid: 2af40710b22ff664b9073a72146a76ed, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -124,7 +125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   lifeTimer: 2
-  enemyHits: 12
+  enemyHits: 3
   BombShockWavePrefab: {fileID: 0}
 --- !u!50 &1879809515585156411
 Rigidbody2D:
@@ -171,7 +172,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.08, y: 0.08}
+  m_Size: {x: 0.16, y: 0.11}
   m_EdgeRadius: 0
 --- !u!114 &2796331600196713253
 MonoBehaviour:
@@ -185,4 +186,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3684bc19e32a8ec4194f58d73f4f3dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 1
+  NormalDamageMin: 1
+  NormalDamageMax: 5
+  StrongDamageMin: 2
+  StrongDamageMax: 8
+  CriticalDamageMin: 3
+  CriticalDamageMax: 10
+  CausePushBackDamageVelocity: 0
+  PushBackDamageVelocityMultiplier: 1
+--- !u!114 &6282226556181756567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7729169512300866286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aacab8e2960ea64499ccc7b74d9b517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
