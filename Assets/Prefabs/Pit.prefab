@@ -128,9 +128,9 @@ MonoBehaviour:
   NormalDamageMin: 1
   NormalDamageMax: 3
   StrongDamageMin: 2
-  StrongDamageMax: 4
-  CriticalDamageMin: 4
-  CriticalDamageMax: 6
+  StrongDamageMax: 5
+  CriticalDamageMin: 3
+  CriticalDamageMax: 8
   CausePushBackDamageVelocity: 1
   PushBackDamageVelocityMultiplier: 2
 --- !u!114 &-4429935846255050971

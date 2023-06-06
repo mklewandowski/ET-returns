@@ -105,6 +105,7 @@ MonoBehaviour:
   lifeTimer: 1
   enemyHits: 1
   BombShockWavePrefab: {fileID: 0}
+  SlimeDebrisPrefab: {fileID: 0}
 --- !u!50 &5755518129056890295
 Rigidbody2D:
   serializedVersion: 4
@@ -164,12 +165,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3684bc19e32a8ec4194f58d73f4f3dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NormalDamageMin: 1
-  NormalDamageMax: 5
-  StrongDamageMin: 2
-  StrongDamageMax: 8
-  CriticalDamageMin: 3
-  CriticalDamageMax: 10
+  NormalDamageMin: 2
+  NormalDamageMax: 6
+  StrongDamageMin: 3
+  StrongDamageMax: 9
+  CriticalDamageMin: 4
+  CriticalDamageMax: 12
   CausePushBackDamageVelocity: 0
   PushBackDamageVelocityMultiplier: 1
 --- !u!114 &-8827188445157208572

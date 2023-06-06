@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5755518129056890295}
   - component: {fileID: 2996679969254156398}
   - component: {fileID: 7092949324700239454}
+  - component: {fileID: -9032552811636278920}
   m_Layer: 0
   m_Name: BulletBreakout
   m_TagString: Untagged
@@ -165,10 +166,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NormalDamageMin: 1
-  NormalDamageMax: 2
+  NormalDamageMax: 3
   StrongDamageMin: 2
-  StrongDamageMax: 3
-  CriticalDamageMin: 4
-  CriticalDamageMax: 5
+  StrongDamageMax: 5
+  CriticalDamageMin: 3
+  CriticalDamageMax: 8
   CausePushBackDamageVelocity: 0
   PushBackDamageVelocityMultiplier: 1
+--- !u!114 &-9032552811636278920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5148339097020038030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cc12362d7da9c940acb5274bb232d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FadePrefab: {fileID: 5148339097020038030, guid: 946f49b63e04adc499d33ee92308645a, type: 3}
