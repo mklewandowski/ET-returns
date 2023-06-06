@@ -904,11 +904,11 @@ public class GameSceneManager : MonoBehaviour
         if (Globals.GamesPlayed >= 10 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Punk] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Punk);
         if (Globals.GamesPlayed >= 20 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.New] == 0)
-            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Toxic);
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.New);
         if (Globals.GamesPlayed >= 30 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Bubblegum] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Bubblegum);
         if (Globals.GamesPlayed >= 50 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Electro] == 0)
-            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Smurf);
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Electro);
         if (Globals.gameTime >= 600 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Hulk] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Hulk);
         if (Globals.gameTime >= 1200 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Super] == 0)
@@ -921,7 +921,7 @@ public class GameSceneManager : MonoBehaviour
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Crush);
         if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Grape] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Grape);
-        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.New] == 0)
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Bomber] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Bomber);
         if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Slime] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Toxic] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Toxic);
