@@ -90,7 +90,7 @@ public class Globals
         "Upgrade swirl to level 5",
         "Upgrade pit trap to level 5",
         "Upgrade bomb to level 5",
-        "Upgrade boomerange to level 5",
+        "Upgrade boomerang to level 5",
         "Upgrade slime to level 5",
         "Upgrade ghost to level 5",
         "Upgrade invader to level 5",
@@ -126,7 +126,7 @@ public class Globals
     };
 
     public static PlayerTypes currentPlayerType = PlayerTypes.Cinema;
-    public static int MaxPlayerTypes = 20;
+    public static int MaxPlayerTypes = 25;
     public static int[] CharacterUnlockStates = new int[MaxPlayerTypes];
 
     public enum EnemyTypes {
