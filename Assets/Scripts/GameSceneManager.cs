@@ -472,7 +472,7 @@ public class GameSceneManager : MonoBehaviour
             EnemySpecialAttackPatterns specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Digs);
             if (difficultyLevel > 3 && difficultyLevel <= 5)
                 specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Planes);
-            else if (difficultyLevel > 5)
+            else if (difficultyLevel > 5 && difficultyLevel <= 7)
                 specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Rovers);
             else if (difficultyLevel > 7)
                 specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.None);
