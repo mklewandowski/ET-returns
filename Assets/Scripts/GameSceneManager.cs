@@ -491,15 +491,15 @@ public class GameSceneManager : MonoBehaviour
             }
             else if (specialNum == EnemySpecialAttackPatterns.Digs)
             {
-                digSpawnsRemaining = Random.Range(Mathf.Min(difficultyLevel, 2), Mathf.Min(difficultyLevel, 4));
+                digSpawnsRemaining = 2;
             }
             else if (specialNum == EnemySpecialAttackPatterns.Planes)
             {
-                planeSpawnsRemaining = Random.Range(Mathf.Min(difficultyLevel, 2), Mathf.Min(difficultyLevel, 5));
+                planeSpawnsRemaining = Random.Range(2, 4);
             }
             else if (specialNum == EnemySpecialAttackPatterns.Rovers)
             {
-                roverSpawnsRemaining = Random.Range(Mathf.Min(difficultyLevel, 2), Mathf.Min(difficultyLevel, 5));
+                roverSpawnsRemaining = Random.Range(2, 4);
             }
         }
     }
