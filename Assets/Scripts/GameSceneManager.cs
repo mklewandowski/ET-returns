@@ -667,7 +667,7 @@ public class GameSceneManager : MonoBehaviour
             Vector2 enemyPos = playerPos + enemyRadialVector;
             if (enemyPos.x < maxX && enemyPos.x > minX && enemyPos.y < maxY && enemyPos.y > minY)
             {
-                ActivateEnemyFromPool(enemyPos, Globals.EnemyTypes.Dig, extraLife, false);
+                ActivateEnemyFromPool(enemyPos, Globals.EnemyTypes.Dig, extraLife, (x <= 1 || x >= 10));
             }
         }
     }

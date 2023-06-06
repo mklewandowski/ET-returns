@@ -367,7 +367,7 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.1f, 0.1f);
             life = 6;
             hitStrength = 6;
-
+            this.transform.localEulerAngles = new Vector3(0, flip ? 180f: 0f, 0);
             currentBehavior = BehaviorType.Wait;
             behaviorTimer = 2f;
             this.GetComponent<GrowAndShrink>().StartEffect();
@@ -576,7 +576,10 @@ public class Enemy : MonoBehaviour
                     if (attackType == AttackType.StaticLine)
                         currentBehavior = BehaviorType.StaticLine;
                     else
+                    {
                         currentBehavior = BehaviorType.Seek;
+                        UpdateSeekPosition();
+                    }
                 }
                 else if (currentBehavior == BehaviorType.StaticLine)
                 {
@@ -659,10 +662,12 @@ public class Enemy : MonoBehaviour
             currentBehavior == BehaviorType.StaticLine || currentBehavior == BehaviorType.Avoid || currentBehavior == BehaviorType.Spread)
             enemyRigidbody.velocity = impactTimer > 0 ? impactVector : movementVector;
 
-        if (flipWithMovement)
+        if (flipWithMovement && currentBehavior != BehaviorType.Wait)
         {
-            if ((movementVector.x >= 0 && this.transform.localScale.x < 0) || (movementVector.x < 0 && this.transform.localScale.x > 0))
-                this.transform.localScale = new Vector3(this.transform.localScale.x * -1, this.transform.localScale.y, this.transform.localScale.z);
+            if (movementVector.x >= 0 && this.transform.localEulerAngles.y > 1f)
+                this.transform.localEulerAngles = new Vector3(0, 0, 0);
+            else if (movementVector.x < 0 && this.transform.localEulerAngles.x < 1f)
+                this.transform.localEulerAngles = new Vector3(0, 180f, 0);
         }
         if (currentBehavior == BehaviorType.Avoid)
         {
