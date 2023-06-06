@@ -31,4 +31,9 @@ public class SlimeDebris : MonoBehaviour
         this.transform.localScale = new Vector2(newScale, newScale);
         this.GetComponent<Rigidbody2D>().velocity = scaledNormalizedPos;
     }
+
+    public void HitEnemy()
+    {
+        Destroy(this.gameObject);
+    }
 }

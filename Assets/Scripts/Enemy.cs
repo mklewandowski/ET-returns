@@ -855,6 +855,7 @@ public class Enemy : MonoBehaviour
         Bullet bullet = collider.gameObject.GetComponent<Bullet>();
         Boomerang boomerang = collider.gameObject.GetComponent<Boomerang>();
         ToxicDebris toxicDebris = collider.gameObject.GetComponent<ToxicDebris>();
+        SlimeDebris slimeDebris = collider.gameObject.GetComponent<SlimeDebris>();
         AttackObject attackObject = collider.gameObject.GetComponent<AttackObject>();
         int damage = 0;
         Vector2 damageVelocity = new Vector2(0, 0);
@@ -865,11 +866,13 @@ public class Enemy : MonoBehaviour
                 damageVelocity = bulletRB.velocity;
             bullet.HitEnemy();
         }
-        else if (boomerang != null || toxicDebris != null)
+        else if (boomerang != null || toxicDebris != null || !slimeDebris)
         {
             Rigidbody2D objectRB = collider.gameObject.GetComponent<Rigidbody2D>();
             if (objectRB != null)
                 damageVelocity = objectRB.velocity;
+            if (slimeDebris)
+                slimeDebris.HitEnemy();
         }
 
         if (attackObject)
