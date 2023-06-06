@@ -862,14 +862,14 @@ public class Enemy : MonoBehaviour
         if (bullet != null)
         {
             Rigidbody2D bulletRB = collider.gameObject.GetComponent<Rigidbody2D>();
-            if (bulletRB != null)
+            if (bulletRB != null && currentBehavior != BehaviorType.Wait)
                 damageVelocity = bulletRB.velocity;
             bullet.HitEnemy();
         }
         else if (boomerang != null || toxicDebris != null || !slimeDebris)
         {
             Rigidbody2D objectRB = collider.gameObject.GetComponent<Rigidbody2D>();
-            if (objectRB != null)
+            if (objectRB != null && currentBehavior != BehaviorType.Wait)
                 damageVelocity = objectRB.velocity;
             if (slimeDebris)
                 slimeDebris.HitEnemy();
@@ -887,7 +887,7 @@ public class Enemy : MonoBehaviour
             else
                 damage = (int)Mathf.Round(attackObject.CriticalDamageMin + (attackObject.CriticalDamageMax - attackObject.CriticalDamageMin) * currentAttackPercent);
 
-            if (attackObject.CausePushBackDamageVelocity)
+            if (attackObject.CausePushBackDamageVelocity && currentBehavior != BehaviorType.Wait)
             {
                 damageVelocity = enemyRigidbody.velocity.normalized * (-1f * attackObject.PushBackDamageVelocityMultiplier);
             }
