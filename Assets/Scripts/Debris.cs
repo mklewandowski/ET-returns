@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class Debris : MonoBehaviour
 {
-    float lifeTimer = 1f;
+    bool isActive = false;
 
-    void Awake()
-    {
-        Init();
-    }
+    float lifeTimer = 1f;
 
     // Update is called once per frame
     void Update()
     {
-        lifeTimer -= Time.deltaTime;
-        if (lifeTimer <= 0)
+        if (isActive)
         {
-            Destroy(this.gameObject);
+            lifeTimer -= Time.deltaTime;
+            if (lifeTimer <= 0)
+            {
+                DeActivate();
+            }
         }
     }
 
-    public void Init()
+    public void Activate(Vector3 pos)
     {
         lifeTimer = Random.Range(.1f, .5f);
         Color[] debrisColors = new Color[]
@@ -37,7 +37,11 @@ public class Debris : MonoBehaviour
         Vector2 scaledNormalizedPos = normalizedPos * Random.Range (2.0f, 4.0f);
         float newScale = Random.Range(2f, 4f);
         this.transform.localScale = new Vector2(newScale, newScale);
+
+        this.transform.localPosition = pos;
+        this.gameObject.SetActive(true);
         this.GetComponent<Rigidbody2D>().velocity = scaledNormalizedPos;
+        isActive = true;
     }
 
     public void BossInit(Color debrisColor)
@@ -50,6 +54,17 @@ public class Debris : MonoBehaviour
         float newScale = Random.Range(4f, 6f);
         this.transform.localScale = new Vector2(newScale, newScale);
         this.GetComponent<Rigidbody2D>().velocity = scaledNormalizedPos;
+    }
+
+    public void DeActivate()
+    {
+        isActive = false;
+        this.gameObject.SetActive(false);
+    }
+
+    public bool IsActive()
+    {
+        return isActive;
     }
 
 }

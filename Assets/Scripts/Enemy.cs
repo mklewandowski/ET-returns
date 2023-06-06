@@ -53,8 +53,6 @@ public class Enemy : MonoBehaviour
     float lifeTimer = 0f;
     bool useLifeTimer = false;
 
-    [SerializeField]
-    GameObject DebrisPrefab;
     GameObject debrisContainer;
     [SerializeField]
     GameObject ToxicDebrisPrefab;
@@ -605,26 +603,26 @@ public class Enemy : MonoBehaviour
             {
                 behaviorTimer = Random.Range(behaviorTimerMax - .25f, behaviorTimerMax + .25f);
                 // do something with current behavior
-                if (currentBehavior == BehaviorType.MoveIn)
-                {
-                    // create debris
-                    int numDebris = Random.Range(8, 10);
-                    for (int x = 0; x < numDebris; x++)
-                    {
-                        GameObject debrisGO = Instantiate(DebrisPrefab, this.transform.localPosition, Quaternion.identity, debrisContainer.transform);
-                        debrisGO.GetComponent<Debris>().BossInit(Color.red);
-                    }
-                    audioManager.PlayBossLandSound();
-                    currentBehavior = BehaviorType.Seek;
-                    UpdateSeekPosition();
+                // if (currentBehavior == BehaviorType.MoveIn)
+                // {
+                //     // create debris
+                //     int numDebris = Random.Range(8, 10);
+                //     for (int x = 0; x < numDebris; x++)
+                //     {
+                //         GameObject debrisGO = Instantiate(DebrisPrefab, this.transform.localPosition, Quaternion.identity, debrisContainer.transform);
+                //         debrisGO.GetComponent<Debris>().BossInit(Color.red);
+                //     }
+                //     audioManager.PlayBossLandSound();
+                //     currentBehavior = BehaviorType.Seek;
+                //     UpdateSeekPosition();
 
-                }
-                else if (currentBehavior == BehaviorType.MoveOut)
-                {
-                    DeActivate();
-                    currentBehavior = BehaviorType.Seek;
-                }
-                else if (currentBehavior == BehaviorType.Wait)
+                // }
+                // else if (currentBehavior == BehaviorType.MoveOut)
+                // {
+                //     DeActivate();
+                //     currentBehavior = BehaviorType.Seek;
+                // }
+                if (currentBehavior == BehaviorType.Wait)
                 {
                     if (attackType == AttackType.StaticLine)
                         currentBehavior = BehaviorType.StaticLine;
@@ -911,8 +909,7 @@ public class Enemy : MonoBehaviour
         int numDebris = Random.Range(8, 10);
         for (int x = 0; x < numDebris; x++)
         {
-            GameObject debrisGO = Instantiate(DebrisPrefab, this.transform.localPosition, Quaternion.identity, debrisContainer.transform);
-            debrisGO.GetComponent<Debris>().Init();
+            GameSceneManagerScript.ActivateDebrisFromPool(this.transform.localPosition);
         }
 
         // spawn phone or candy or toxic debris

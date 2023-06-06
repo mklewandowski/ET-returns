@@ -73,10 +73,15 @@ public class GameSceneManager : MonoBehaviour
 
     // ENEMIES
     [SerializeField]
-    GameObject  HitNoticeContainer;
+    GameObject DebrisPrefab;
+    [SerializeField]
+    GameObject DebrisContainer;
+    Debris[] debrisPool = new Debris[100];
+    [SerializeField]
+    GameObject HitNoticeContainer;
     [SerializeField]
     GameObject HitNoticePrefab;
-    HitNotice[] hitNotice = new HitNotice[40];
+    HitNotice[] hitNoticePool = new HitNotice[40];
     Enemy[] enemyPool = new Enemy[200];
     Enemy[] enemyDigPool = new Enemy[45];
     Enemy[] enemyFBIPool = new Enemy[3];
@@ -177,6 +182,7 @@ public class GameSceneManager : MonoBehaviour
         CreatePhonePool();
         CreateEnemyPool();
         CreateHitNoticePool();
+        CreateDebrisPool();
 
         fadeManager.StartFadeIn();
     }
@@ -221,21 +227,40 @@ public class GameSceneManager : MonoBehaviour
             }
         }
     }
+    void CreateDebrisPool()
+    {
+        for (int x = 0; x < debrisPool.Length; x++)
+        {
+            GameObject go = Instantiate(DebrisPrefab, this.transform.localPosition, Quaternion.identity, DebrisContainer.transform);
+            debrisPool[x] = go.GetComponent<Debris>();
+        }
+    }
+    public void ActivateDebrisFromPool(Vector3 pos)
+    {
+        for (int x = 0; x < debrisPool.Length; x++)
+        {
+            if (!debrisPool[x].IsActive())
+            {
+                debrisPool[x].Activate(pos);
+                break;
+            }
+        }
+    }
     void CreateHitNoticePool()
     {
-        for (int x = 0; x < hitNotice.Length; x++)
+        for (int x = 0; x < hitNoticePool.Length; x++)
         {
             GameObject go = Instantiate(HitNoticePrefab, this.transform.localPosition, Quaternion.identity, HitNoticeContainer.transform);
-            hitNotice[x] = go.GetComponent<HitNotice>();
+            hitNoticePool[x] = go.GetComponent<HitNotice>();
         }
     }
     public void ActivateHitNoticeFromPool(Vector3 pos, int damage)
     {
-        for (int x = 0; x < hitNotice.Length; x++)
+        for (int x = 0; x < hitNoticePool.Length; x++)
         {
-            if (!hitNotice[x].IsActive())
+            if (!hitNoticePool[x].IsActive())
             {
-                hitNotice[x].Activate(pos, damage);
+                hitNoticePool[x].Activate(pos, damage);
                 break;
             }
         }
