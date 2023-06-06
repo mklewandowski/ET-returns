@@ -75,8 +75,6 @@ public class Enemy : MonoBehaviour
         Wait,
         Avoid, // used by FBI and scientist
         StaticLine, // used by plane and rover
-        MoveIn, // unused, were for bosses
-        MoveOut, // unused, were for bosses
     }
     BehaviorType currentBehavior = BehaviorType.Seek;
     float sightDistance = 2f;
@@ -472,13 +470,7 @@ public class Enemy : MonoBehaviour
             hitStrength = 10;
 
             attackType = AttackType.Seek;
-            //currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = 2f;
-            //this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
-            //this.GetComponent<MoveNormal>().MoveDown();
-
-            //useLifeTimer = true;
-            //lifeTimer = 45f;
             isBoss = true;
         }
         else if (type == Globals.EnemyTypes.PopeyeBoss)
@@ -494,13 +486,7 @@ public class Enemy : MonoBehaviour
             hitStrength = 10;
 
             attackType = AttackType.Seek;
-            //currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = 2f;
-            //this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
-            //this.GetComponent<MoveNormal>().MoveDown();
-
-            //useLifeTimer = true;
-            //lifeTimer = 45f;
             isBoss = true;
         }
         else if (type == Globals.EnemyTypes.MarioBoss)
@@ -516,13 +502,7 @@ public class Enemy : MonoBehaviour
             hitStrength = 10;
 
             attackType = AttackType.Seek;
-            //currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = 2f;
-            //this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
-            //this.GetComponent<MoveNormal>().MoveDown();
-
-            //useLifeTimer = true;
-            //lifeTimer = 45f;
             isBoss = true;
         }
         else if (type == Globals.EnemyTypes.LuigiBoss)
@@ -538,13 +518,7 @@ public class Enemy : MonoBehaviour
             hitStrength = 10;
 
             attackType = AttackType.Seek;
-            //currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = 2f;
-            //this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
-            //this.GetComponent<MoveNormal>().MoveDown();
-
-            //useLifeTimer = true;
-            //lifeTimer = 45f;
             isBoss = true;
         }
         else if (type == Globals.EnemyTypes.KoolBoss)
@@ -559,13 +533,7 @@ public class Enemy : MonoBehaviour
             hitStrength = 10;
 
             attackType = AttackType.Seek;
-            // currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = .5f;
-            // this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
-            // this.GetComponent<MoveNormal>().MoveDown();
-
-            //useLifeTimer = true;
-            //lifeTimer = 45f;
             isBoss = true;
         }
 
@@ -603,25 +571,6 @@ public class Enemy : MonoBehaviour
             {
                 behaviorTimer = Random.Range(behaviorTimerMax - .25f, behaviorTimerMax + .25f);
                 // do something with current behavior
-                // if (currentBehavior == BehaviorType.MoveIn)
-                // {
-                //     // create debris
-                //     int numDebris = Random.Range(8, 10);
-                //     for (int x = 0; x < numDebris; x++)
-                //     {
-                //         GameObject debrisGO = Instantiate(DebrisPrefab, this.transform.localPosition, Quaternion.identity, debrisContainer.transform);
-                //         debrisGO.GetComponent<Debris>().BossInit(Color.red);
-                //     }
-                //     audioManager.PlayBossLandSound();
-                //     currentBehavior = BehaviorType.Seek;
-                //     UpdateSeekPosition();
-
-                // }
-                // else if (currentBehavior == BehaviorType.MoveOut)
-                // {
-                //     DeActivate();
-                //     currentBehavior = BehaviorType.Seek;
-                // }
                 if (currentBehavior == BehaviorType.Wait)
                 {
                     if (attackType == AttackType.StaticLine)
@@ -826,17 +775,7 @@ public class Enemy : MonoBehaviour
         lifeTimer -= Time.deltaTime;
         if (lifeTimer <= 0)
         {
-            if (type == Globals.EnemyTypes.PacBoss)
-            {
-                this.GetComponent<MoveNormal>().SetMovingUpEndPos(new Vector2(this.transform.localPosition.x, this.transform.localPosition.y + 15f));
-                this.GetComponent<MoveNormal>().MoveUp();
-                currentBehavior = BehaviorType.MoveOut;
-                behaviorTimer = .5f;
-            }
-            else
-            {
-                DeActivate();
-            }
+            DeActivate();
         }
     }
 
