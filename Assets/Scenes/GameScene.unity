@@ -61284,21 +61284,26 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
   - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
   - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
-  - {fileID: 21300000, guid: 5466dd0e1e6df92478ffe462340612de, type: 3}
+  - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
   - {fileID: 21300000, guid: 5f29347828c915b4ebf8257491bff42a, type: 3}
-  - {fileID: 21300000, guid: 3a3d525ce9d324a4eb566cf2f8918bc3, type: 3}
+  - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
   - {fileID: 21300000, guid: afaa7a71409166242a167b6835b51d3c, type: 3}
-  - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
-  - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
-  - {fileID: 21300000, guid: c2ad3b613c7abaf4eac330388d66b2c2, type: 3}
-  - {fileID: 21300000, guid: 2a434c6a6be4ad947a46cdfa5cfaf585, type: 3}
-  - {fileID: 21300000, guid: f421a68efe8088848b9ab83659d2cd19, type: 3}
   - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
   - {fileID: 21300000, guid: 34f135bc16e27f7449e7bb0d32acc4ac, type: 3}
   - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
   - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
   - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
   - {fileID: 21300000, guid: 445709260591f574d8d5c8bee722398b, type: 3}
+  - {fileID: 21300000, guid: 3a3d525ce9d324a4eb566cf2f8918bc3, type: 3}
+  - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
+  - {fileID: 21300000, guid: c2ad3b613c7abaf4eac330388d66b2c2, type: 3}
+  - {fileID: 21300000, guid: 2a434c6a6be4ad947a46cdfa5cfaf585, type: 3}
+  - {fileID: 21300000, guid: f421a68efe8088848b9ab83659d2cd19, type: 3}
+  - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
+  - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
+  - {fileID: 21300000, guid: 5466dd0e1e6df92478ffe462340612de, type: 3}
+  - {fileID: 21300000, guid: 5375eb5eee248e242adecfcf7b103478, type: 3}
+  - {fileID: 21300000, guid: 8c800bb23b897ff4c8fab3588b07dcfe, type: 3}
   MuzzleGO: {fileID: 1087746640}
   BulletPrefab: {fileID: 5148339097020038030, guid: 6db7e2048956a064b970678d45f772b8, type: 3}
   BulletArrowPrefab: {fileID: 5148339097020038030, guid: dd6cc3318ba4e8c4ea6cd9eeb85ff73d, type: 3}
@@ -78770,6 +78775,8 @@ MonoBehaviour:
   ItemContainer: {fileID: 1121603906}
   CandyPrefab: {fileID: 2789390833255965416, guid: 49350f0dc1443174ba4820f99ba21979, type: 3}
   PhonePrefab: {fileID: 2789390833255965416, guid: 396c665cfb2423e488e62eabcfc48b6a, type: 3}
+  DebrisPrefab: {fileID: 4395591764634758786, guid: 6884334da442b4c4296f325b9b896c61, type: 3}
+  DebrisContainer: {fileID: 1188524195}
   HitNoticeContainer: {fileID: 99070332}
   HitNoticePrefab: {fileID: 6880596710173919726, guid: 0080981dfbaf7ed43aabda6fc661154d, type: 3}
   EnemyPrefab: {fileID: 6232591748759594092, guid: 28e3236ac2921fb4eae47fc8de6cf408, type: 3}
@@ -78783,13 +78790,6 @@ MonoBehaviour:
   HUDBossNameText: {fileID: 1798015942}
   HUDBossText: {fileID: 647473338}
   HUDBossTextType: {fileID: 647473340}
-  BossSprites:
-  - {fileID: 21300000, guid: 3e1abdb6cbdccad46a9a81bdc9669df3, type: 3}
-  - {fileID: 21300000, guid: fafccf56382b12b46af8c94d0351881d, type: 3}
-  - {fileID: 21300000, guid: 09b20ba8c4a960c4f88c5ac221df1569, type: 3}
-  - {fileID: 21300000, guid: 5f1ffc1e8e9c0944ea1657fb2fd59ae9, type: 3}
-  - {fileID: 21300000, guid: 63be60f37246a8747bffe462a276a7d1, type: 3}
-  - {fileID: 21300000, guid: c377e516164b45942b21db389826c75e, type: 3}
 --- !u!114 &1264012507
 MonoBehaviour:
   m_ObjectHideFlags: 0

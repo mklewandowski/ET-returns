@@ -73,10 +73,15 @@ public class GameSceneManager : MonoBehaviour
 
     // ENEMIES
     [SerializeField]
-    GameObject  HitNoticeContainer;
+    GameObject DebrisPrefab;
+    [SerializeField]
+    GameObject DebrisContainer;
+    Debris[] debrisPool = new Debris[100];
+    [SerializeField]
+    GameObject HitNoticeContainer;
     [SerializeField]
     GameObject HitNoticePrefab;
-    HitNotice[] hitNotice = new HitNotice[40];
+    HitNotice[] hitNoticePool = new HitNotice[40];
     Enemy[] enemyPool = new Enemy[200];
     Enemy[] enemyDigPool = new Enemy[45];
     Enemy[] enemyFBIPool = new Enemy[3];
@@ -142,17 +147,7 @@ public class GameSceneManager : MonoBehaviour
     TextMeshProUGUI HUDBossText;
     [SerializeField]
     TypewriterUI HUDBossTextType;
-    [SerializeField]
-    Sprite[] BossSprites;
     Globals.EnemyTypes currentBossType = Globals.EnemyTypes.PacBoss;
-    enum BossStates {
-        None,
-        ShowHUD,
-        ShowText,
-        ShowBoss,
-    }
-    BossStates currentBossState = BossStates.None;
-    float bossTimer = 0;
     bool gameHasBoss = false;
     int bossSpawnDifficulty = 0;
     bool bossDefeated = false;
@@ -177,6 +172,7 @@ public class GameSceneManager : MonoBehaviour
         CreatePhonePool();
         CreateEnemyPool();
         CreateHitNoticePool();
+        CreateDebrisPool();
 
         fadeManager.StartFadeIn();
     }
@@ -221,21 +217,40 @@ public class GameSceneManager : MonoBehaviour
             }
         }
     }
+    void CreateDebrisPool()
+    {
+        for (int x = 0; x < debrisPool.Length; x++)
+        {
+            GameObject go = Instantiate(DebrisPrefab, this.transform.localPosition, Quaternion.identity, DebrisContainer.transform);
+            debrisPool[x] = go.GetComponent<Debris>();
+        }
+    }
+    public void ActivateDebrisFromPool(Vector3 pos)
+    {
+        for (int x = 0; x < debrisPool.Length; x++)
+        {
+            if (!debrisPool[x].IsActive())
+            {
+                debrisPool[x].Activate(pos);
+                break;
+            }
+        }
+    }
     void CreateHitNoticePool()
     {
-        for (int x = 0; x < hitNotice.Length; x++)
+        for (int x = 0; x < hitNoticePool.Length; x++)
         {
             GameObject go = Instantiate(HitNoticePrefab, this.transform.localPosition, Quaternion.identity, HitNoticeContainer.transform);
-            hitNotice[x] = go.GetComponent<HitNotice>();
+            hitNoticePool[x] = go.GetComponent<HitNotice>();
         }
     }
     public void ActivateHitNoticeFromPool(Vector3 pos, int damage)
     {
-        for (int x = 0; x < hitNotice.Length; x++)
+        for (int x = 0; x < hitNoticePool.Length; x++)
         {
-            if (!hitNotice[x].IsActive())
+            if (!hitNoticePool[x].IsActive())
             {
-                hitNotice[x].Activate(pos, damage);
+                hitNoticePool[x].Activate(pos, damage);
                 break;
             }
         }
@@ -335,7 +350,6 @@ public class GameSceneManager : MonoBehaviour
         HandleTankTimer();
         HandleEnemySpawnTimer();
         HandleLevelUpTimer();
-        HandleBoss();
     }
 
     void HandleInput()
@@ -472,7 +486,7 @@ public class GameSceneManager : MonoBehaviour
             EnemySpecialAttackPatterns specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Digs);
             if (difficultyLevel > 3 && difficultyLevel <= 5)
                 specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Planes);
-            else if (difficultyLevel > 5)
+            else if (difficultyLevel > 5 && difficultyLevel <= 7)
                 specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.Rovers);
             else if (difficultyLevel > 7)
                 specialNum = (EnemySpecialAttackPatterns)Random.Range(0, (int)EnemySpecialAttackPatterns.None);
@@ -491,15 +505,15 @@ public class GameSceneManager : MonoBehaviour
             }
             else if (specialNum == EnemySpecialAttackPatterns.Digs)
             {
-                digSpawnsRemaining = Random.Range(Mathf.Min(difficultyLevel, 2), Mathf.Min(difficultyLevel, 4));
+                digSpawnsRemaining = 2;
             }
             else if (specialNum == EnemySpecialAttackPatterns.Planes)
             {
-                planeSpawnsRemaining = Random.Range(Mathf.Min(difficultyLevel, 2), Mathf.Min(difficultyLevel, 5));
+                planeSpawnsRemaining = Random.Range(2, 4);
             }
             else if (specialNum == EnemySpecialAttackPatterns.Rovers)
             {
-                roverSpawnsRemaining = Random.Range(Mathf.Min(difficultyLevel, 2), Mathf.Min(difficultyLevel, 5));
+                roverSpawnsRemaining = Random.Range(2, 4);
             }
         }
     }
@@ -543,41 +557,6 @@ public class GameSceneManager : MonoBehaviour
             if (levelUpTimer <= 0)
             {
                 LevelUpPanel.GetComponent<MoveWhenPaused>().MoveDown();
-            }
-        }
-    }
-
-    void HandleBoss()
-    {
-        if (currentBossState == BossStates.ShowHUD)
-        {
-            bossTimer -= Time.deltaTime;
-            if (bossTimer <= 0)
-            {
-                int firstBossIndex = (int)Globals.EnemyTypes.PacBoss;
-                HUDBossTextType.StartEffect(Globals.BossText[(int)currentBossType - firstBossIndex]);
-                bossTimer = 1f;
-                currentBossState = BossStates.ShowText;
-            }
-        }
-        else if (currentBossState == BossStates.ShowText)
-        {
-            bossTimer -= Time.deltaTime;
-            if (bossTimer <= 0)
-            {
-                SpawnBoss();
-                bossTimer = .5f;
-                currentBossState = BossStates.ShowBoss;
-            }
-        }
-        else if (currentBossState == BossStates.ShowBoss)
-        {
-            bossTimer -= Time.deltaTime;
-            if (bossTimer <= 0)
-            {
-                cameraController.ShakeCamera();
-                HUDBossPanel.GetComponent<MoveNormal>().MoveLeft();
-                currentBossState = BossStates.None;
             }
         }
     }
@@ -662,17 +641,6 @@ public class GameSceneManager : MonoBehaviour
         Globals.currrentNumEnemies++;
     }
 
-    void StartBoss()
-    {
-        int firstBossIndex = (int)Globals.EnemyTypes.PacBoss;
-        HUDBossImage.sprite = BossSprites[(int)currentBossType - firstBossIndex];
-        HUDBossNameText.text = Globals.BossNames[(int)currentBossType - firstBossIndex];
-        HUDBossText.text = "";
-        HUDBossPanel.GetComponent<MoveNormal>().MoveRight();
-        currentBossState = BossStates.ShowHUD;
-        bossTimer = .75f;
-    }
-
     void SpawnBoss()
     {
         Vector2 enemyPos = new Vector3(Player.transform.localPosition.x - 4f, Player.transform.localPosition.y + 10f, Player.transform.localPosition.z);
@@ -699,7 +667,7 @@ public class GameSceneManager : MonoBehaviour
             Vector2 enemyPos = playerPos + enemyRadialVector;
             if (enemyPos.x < maxX && enemyPos.x > minX && enemyPos.y < maxY && enemyPos.y > minY)
             {
-                ActivateEnemyFromPool(enemyPos, Globals.EnemyTypes.Dig, extraLife, false);
+                ActivateEnemyFromPool(enemyPos, Globals.EnemyTypes.Dig, extraLife, (x <= 1 || x >= 10));
             }
         }
     }
@@ -935,11 +903,11 @@ public class GameSceneManager : MonoBehaviour
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Miami);
         if (Globals.GamesPlayed >= 10 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Punk] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Punk);
-        if (Globals.GamesPlayed >= 20 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Toxic] == 0)
+        if (Globals.GamesPlayed >= 20 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.New] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Toxic);
         if (Globals.GamesPlayed >= 30 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Bubblegum] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Bubblegum);
-        if (Globals.GamesPlayed >= 50 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Smurf] == 0)
+        if (Globals.GamesPlayed >= 50 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Electro] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Smurf);
         if (Globals.gameTime >= 600 && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Hulk] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Hulk);
@@ -954,7 +922,18 @@ public class GameSceneManager : MonoBehaviour
         if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Grape] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Grape);
         if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.New] == 0)
-            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.New);
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Bomber);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Slime] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Toxic] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Toxic);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Invader] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Invader] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Invader);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Ghost] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Ghost] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Ghost);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Boomerang] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Croc] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Croc);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Breakout] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Smurf] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Smurf);
+
         if (bossDefeated && currentBossType == Globals.EnemyTypes.PacBoss && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Pac] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Pac);
         if (bossDefeated && currentBossType == Globals.EnemyTypes.PopeyeBoss && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Sailor] == 0)

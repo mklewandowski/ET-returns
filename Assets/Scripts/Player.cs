@@ -273,29 +273,29 @@ public class Player : MonoBehaviour
                 burstNum = burstNum - 1;
                 if (burstNum == 0) burstNum = burstNumMax;
             }
-            else if (shootType == ShootType.Bomb && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] > 0 || Globals.DebugMode)
+            else if (shootType == ShootType.Bomb && (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] > 0 || Globals.DebugMode))
                 HandleShootBomb();
-            else if (shootType == ShootType.Swirl && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Swirl] > 0 || Globals.DebugMode)
+            else if (shootType == ShootType.Swirl && (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Swirl] > 0 || Globals.DebugMode))
                 HandleShootSwirl();
-            else if (shootType == ShootType.Laser && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Laser] > 0 || Globals.DebugMode)
+            else if (shootType == ShootType.Laser && (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Laser] > 0 || Globals.DebugMode))
                 HandleShootLaser();
-            else if (shootType == ShootType.Invader && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Invader] > 0 || Globals.DebugMode)
+            else if (shootType == ShootType.Invader && (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Invader] > 0 || Globals.DebugMode))
                 HandleLaunchInvader();
-            else if (shootType == ShootType.Ghost && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Ghost] > 0 || Globals.DebugMode)
+            else if (shootType == ShootType.Ghost && (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Ghost] > 0 || Globals.DebugMode))
                 HandleLaunchGhost();
-            else if (shootType == ShootType.Tornado && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Tornado] > 0 || Globals.DebugMode)
+            else if (shootType == ShootType.Tornado && (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Tornado] > 0 || Globals.DebugMode))
                 HandleShootTornado();
-            else if (shootType == ShootType.Bees && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] > 0 || Globals.DebugMode)
+            else if (shootType == ShootType.Bees && (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] > 0 || Globals.DebugMode))
                 HandleLaunchBees();
-            else if (shootType == ShootType.Boomerang && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Boomerang] > 0 || Globals.DebugMode)
+            else if (shootType == ShootType.Boomerang && (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Boomerang] > 0 || Globals.DebugMode))
                 HandleShootBoomerang(bulletMovement);
-            else if (shootType == ShootType.Pit && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] > 0 || Globals.DebugMode)
+            else if (shootType == ShootType.Pit && (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] > 0 || Globals.DebugMode))
                 HandleCreatePit(bulletMovement);
-            else if (shootType == ShootType.ICBM && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.ICBM] > 0 || Globals.DebugMode)
+            else if (shootType == ShootType.ICBM && (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.ICBM] > 0 || Globals.DebugMode))
                 HandleLaunchICBM();
-            else if (shootType == ShootType.Slime && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Slime] > 0 || Globals.DebugMode)
+            else if (shootType == ShootType.Slime && (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Slime] > 0 || Globals.DebugMode))
                 HandleShootSlime();
-            else if (shootType == ShootType.Breakout && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Breakout] > 0 || Globals.DebugMode)
+            else if (shootType == ShootType.Breakout && (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Breakout] > 0 || Globals.DebugMode))
                 HandleShootBreakout();
 
             shootTimer = shootTimerMax;

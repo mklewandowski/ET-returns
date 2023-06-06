@@ -53,8 +53,6 @@ public class Enemy : MonoBehaviour
     float lifeTimer = 0f;
     bool useLifeTimer = false;
 
-    [SerializeField]
-    GameObject DebrisPrefab;
     GameObject debrisContainer;
     [SerializeField]
     GameObject ToxicDebrisPrefab;
@@ -77,8 +75,6 @@ public class Enemy : MonoBehaviour
         Wait,
         Avoid, // used by FBI and scientist
         StaticLine, // used by plane and rover
-        MoveIn, // unused, were for bosses
-        MoveOut, // unused, were for bosses
     }
     BehaviorType currentBehavior = BehaviorType.Seek;
     float sightDistance = 2f;
@@ -371,7 +367,7 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.1f, 0.1f);
             life = 6;
             hitStrength = 6;
-
+            this.transform.localEulerAngles = new Vector3(0, flip ? 180f: 0f, 0);
             currentBehavior = BehaviorType.Wait;
             behaviorTimer = 2f;
             this.GetComponent<GrowAndShrink>().StartEffect();
@@ -474,13 +470,7 @@ public class Enemy : MonoBehaviour
             hitStrength = 10;
 
             attackType = AttackType.Seek;
-            //currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = 2f;
-            //this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
-            //this.GetComponent<MoveNormal>().MoveDown();
-
-            //useLifeTimer = true;
-            //lifeTimer = 45f;
             isBoss = true;
         }
         else if (type == Globals.EnemyTypes.PopeyeBoss)
@@ -496,13 +486,7 @@ public class Enemy : MonoBehaviour
             hitStrength = 10;
 
             attackType = AttackType.Seek;
-            //currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = 2f;
-            //this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
-            //this.GetComponent<MoveNormal>().MoveDown();
-
-            //useLifeTimer = true;
-            //lifeTimer = 45f;
             isBoss = true;
         }
         else if (type == Globals.EnemyTypes.MarioBoss)
@@ -518,13 +502,7 @@ public class Enemy : MonoBehaviour
             hitStrength = 10;
 
             attackType = AttackType.Seek;
-            //currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = 2f;
-            //this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
-            //this.GetComponent<MoveNormal>().MoveDown();
-
-            //useLifeTimer = true;
-            //lifeTimer = 45f;
             isBoss = true;
         }
         else if (type == Globals.EnemyTypes.LuigiBoss)
@@ -540,13 +518,7 @@ public class Enemy : MonoBehaviour
             hitStrength = 10;
 
             attackType = AttackType.Seek;
-            //currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = 2f;
-            //this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
-            //this.GetComponent<MoveNormal>().MoveDown();
-
-            //useLifeTimer = true;
-            //lifeTimer = 45f;
             isBoss = true;
         }
         else if (type == Globals.EnemyTypes.KoolBoss)
@@ -561,13 +533,7 @@ public class Enemy : MonoBehaviour
             hitStrength = 10;
 
             attackType = AttackType.Seek;
-            // currentBehavior = BehaviorType.MoveIn;
             behaviorTimer = .5f;
-            // this.GetComponent<MoveNormal>().SetMovingDownEndPos(new Vector2(pos.x, pos.y - 10f));
-            // this.GetComponent<MoveNormal>().MoveDown();
-
-            //useLifeTimer = true;
-            //lifeTimer = 45f;
             isBoss = true;
         }
 
@@ -605,31 +571,15 @@ public class Enemy : MonoBehaviour
             {
                 behaviorTimer = Random.Range(behaviorTimerMax - .25f, behaviorTimerMax + .25f);
                 // do something with current behavior
-                if (currentBehavior == BehaviorType.MoveIn)
-                {
-                    // create debris
-                    int numDebris = Random.Range(8, 10);
-                    for (int x = 0; x < numDebris; x++)
-                    {
-                        GameObject debrisGO = Instantiate(DebrisPrefab, this.transform.localPosition, Quaternion.identity, debrisContainer.transform);
-                        debrisGO.GetComponent<Debris>().BossInit(Color.red);
-                    }
-                    audioManager.PlayBossLandSound();
-                    currentBehavior = BehaviorType.Seek;
-                    UpdateSeekPosition();
-
-                }
-                else if (currentBehavior == BehaviorType.MoveOut)
-                {
-                    DeActivate();
-                    currentBehavior = BehaviorType.Seek;
-                }
-                else if (currentBehavior == BehaviorType.Wait)
+                if (currentBehavior == BehaviorType.Wait)
                 {
                     if (attackType == AttackType.StaticLine)
                         currentBehavior = BehaviorType.StaticLine;
                     else
+                    {
                         currentBehavior = BehaviorType.Seek;
+                        UpdateSeekPosition();
+                    }
                 }
                 else if (currentBehavior == BehaviorType.StaticLine)
                 {
@@ -712,10 +662,12 @@ public class Enemy : MonoBehaviour
             currentBehavior == BehaviorType.StaticLine || currentBehavior == BehaviorType.Avoid || currentBehavior == BehaviorType.Spread)
             enemyRigidbody.velocity = impactTimer > 0 ? impactVector : movementVector;
 
-        if (flipWithMovement)
+        if (flipWithMovement && currentBehavior != BehaviorType.Wait)
         {
-            if ((movementVector.x >= 0 && this.transform.localScale.x < 0) || (movementVector.x < 0 && this.transform.localScale.x > 0))
-                this.transform.localScale = new Vector3(this.transform.localScale.x * -1, this.transform.localScale.y, this.transform.localScale.z);
+            if (movementVector.x >= 0 && this.transform.localEulerAngles.y > 1f)
+                this.transform.localEulerAngles = new Vector3(0, 0, 0);
+            else if (movementVector.x < 0 && this.transform.localEulerAngles.x < 1f)
+                this.transform.localEulerAngles = new Vector3(0, 180f, 0);
         }
         if (currentBehavior == BehaviorType.Avoid)
         {
@@ -828,17 +780,7 @@ public class Enemy : MonoBehaviour
         lifeTimer -= Time.deltaTime;
         if (lifeTimer <= 0)
         {
-            if (type == Globals.EnemyTypes.PacBoss)
-            {
-                this.GetComponent<MoveNormal>().SetMovingUpEndPos(new Vector2(this.transform.localPosition.x, this.transform.localPosition.y + 15f));
-                this.GetComponent<MoveNormal>().MoveUp();
-                currentBehavior = BehaviorType.MoveOut;
-                behaviorTimer = .5f;
-            }
-            else
-            {
-                DeActivate();
-            }
+            DeActivate();
         }
     }
 
@@ -862,14 +804,14 @@ public class Enemy : MonoBehaviour
         if (bullet != null)
         {
             Rigidbody2D bulletRB = collider.gameObject.GetComponent<Rigidbody2D>();
-            if (bulletRB != null)
+            if (bulletRB != null && currentBehavior != BehaviorType.Wait)
                 damageVelocity = bulletRB.velocity;
             bullet.HitEnemy();
         }
         else if (boomerang != null || toxicDebris != null || !slimeDebris)
         {
             Rigidbody2D objectRB = collider.gameObject.GetComponent<Rigidbody2D>();
-            if (objectRB != null)
+            if (objectRB != null && currentBehavior != BehaviorType.Wait)
                 damageVelocity = objectRB.velocity;
             if (slimeDebris)
                 slimeDebris.HitEnemy();
@@ -887,7 +829,7 @@ public class Enemy : MonoBehaviour
             else
                 damage = (int)Mathf.Round(attackObject.CriticalDamageMin + (attackObject.CriticalDamageMax - attackObject.CriticalDamageMin) * currentAttackPercent);
 
-            if (attackObject.CausePushBackDamageVelocity)
+            if (attackObject.CausePushBackDamageVelocity && currentBehavior != BehaviorType.Wait)
             {
                 damageVelocity = enemyRigidbody.velocity.normalized * (-1f * attackObject.PushBackDamageVelocityMultiplier);
             }
@@ -911,8 +853,7 @@ public class Enemy : MonoBehaviour
         int numDebris = Random.Range(8, 10);
         for (int x = 0; x < numDebris; x++)
         {
-            GameObject debrisGO = Instantiate(DebrisPrefab, this.transform.localPosition, Quaternion.identity, debrisContainer.transform);
-            debrisGO.GetComponent<Debris>().Init();
+            GameSceneManagerScript.ActivateDebrisFromPool(this.transform.localPosition);
         }
 
         // spawn phone or candy or toxic debris
