@@ -20,6 +20,9 @@ public class GameSceneManager : MonoBehaviour
     [SerializeField]
     GameObject Player;
     Player playerScript;
+    [SerializeField]
+    GameObject DustPrefab;
+    Dust[] dustPool = new Dust[10];
 
     [SerializeField]
     RectTransform ExpBar;
@@ -173,6 +176,7 @@ public class GameSceneManager : MonoBehaviour
         CreateEnemyPool();
         CreateHitNoticePool();
         CreateDebrisPool();
+        CreateDustPool();
 
         fadeManager.StartFadeIn();
     }
@@ -217,6 +221,25 @@ public class GameSceneManager : MonoBehaviour
             }
         }
     }
+    void CreateDustPool()
+    {
+        for (int x = 0; x < dustPool.Length; x++)
+        {
+            GameObject go = Instantiate(DustPrefab, this.transform.localPosition, Quaternion.identity, DebrisContainer.transform);
+            dustPool[x] = go.GetComponent<Dust>();
+        }
+    }
+    public void ActivateDustFromPool(Vector3 pos)
+    {
+        for (int x = 0; x < dustPool.Length; x++)
+        {
+            if (!dustPool[x].IsActive())
+            {
+                dustPool[x].Activate(pos);
+                break;
+            }
+        }
+    }
     void CreateDebrisPool()
     {
         for (int x = 0; x < debrisPool.Length; x++)
@@ -225,13 +248,13 @@ public class GameSceneManager : MonoBehaviour
             debrisPool[x] = go.GetComponent<Debris>();
         }
     }
-    public void ActivateDebrisFromPool(Vector3 pos)
+    public void ActivateDebrisFromPool(Vector3 pos, bool isPlayer)
     {
         for (int x = 0; x < debrisPool.Length; x++)
         {
             if (!debrisPool[x].IsActive())
             {
-                debrisPool[x].Activate(pos);
+                debrisPool[x].Activate(pos, isPlayer);
                 break;
             }
         }

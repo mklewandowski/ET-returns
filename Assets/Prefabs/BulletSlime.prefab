@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1879809515585156411}
   - component: {fileID: 6428030214657378042}
   - component: {fileID: 2796331600196713253}
+  - component: {fileID: -988164155188778678}
   m_Layer: 0
   m_Name: BulletSlime
   m_TagString: Untagged
@@ -85,7 +86,7 @@ SpriteRenderer:
   m_Size: {x: 0.08, y: 0.08}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &366263705155149004
@@ -172,3 +173,24 @@ MonoBehaviour:
   CriticalDamageMax: 10
   CausePushBackDamageVelocity: 0
   PushBackDamageVelocityMultiplier: 3
+--- !u!95 &-988164155188778678
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7729169512300866286}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 65026e3703b142445b1d8487cb883456, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

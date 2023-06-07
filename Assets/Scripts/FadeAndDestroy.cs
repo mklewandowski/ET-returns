@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class FadeAndDestroy : MonoBehaviour
 {
-
     float timer = .5f;
 
     // Update is called once per frame

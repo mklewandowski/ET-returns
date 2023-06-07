@@ -853,7 +853,7 @@ public class Enemy : MonoBehaviour
         int numDebris = Random.Range(8, 10);
         for (int x = 0; x < numDebris; x++)
         {
-            GameSceneManagerScript.ActivateDebrisFromPool(this.transform.localPosition);
+            GameSceneManagerScript.ActivateDebrisFromPool(this.transform.localPosition, false);
         }
 
         // spawn phone or candy or toxic debris

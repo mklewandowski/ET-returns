@@ -21,21 +21,21 @@ public class Debris : MonoBehaviour
         }
     }
 
-    public void Activate(Vector3 pos)
+    public void Activate(Vector3 pos, bool isPlayer)
     {
-        lifeTimer = Random.Range(.1f, .5f);
-        Color[] debrisColors = new Color[]
+        lifeTimer = isPlayer ? Random.Range(.25f, .75f) : Random.Range(.1f, .5f);
+        Color[] enemyDebrisColors = new Color[]
         {
             new Color(255f/255f, 0/255f, 0/255f),
             new Color(251f/255f, 35f/255f, 35f/255f),
             new Color(251f/255f, 70f/255f, 70f/255f),
         };
-        Color newColor = debrisColors[Random.Range(0, debrisColors.Length)];
+        Color newColor = isPlayer ? Color.white : enemyDebrisColors[Random.Range(0, enemyDebrisColors.Length)];
         this.GetComponent<SpriteRenderer>().color = newColor;
         float randomAngle = Random.Range(0f, 2 * Mathf.PI);
         Vector2 normalizedPos = new Vector2(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle));
         Vector2 scaledNormalizedPos = normalizedPos * Random.Range (2.0f, 4.0f);
-        float newScale = Random.Range(2f, 4f);
+        float newScale = isPlayer ? Random.Range(4f, 6f) : Random.Range(2f, 4f);
         this.transform.localScale = new Vector2(newScale, newScale);
 
         this.transform.localPosition = pos;
