@@ -225,13 +225,13 @@ public class GameSceneManager : MonoBehaviour
             debrisPool[x] = go.GetComponent<Debris>();
         }
     }
-    public void ActivateDebrisFromPool(Vector3 pos)
+    public void ActivateDebrisFromPool(Vector3 pos, bool isPlayer)
     {
         for (int x = 0; x < debrisPool.Length; x++)
         {
             if (!debrisPool[x].IsActive())
             {
-                debrisPool[x].Activate(pos);
+                debrisPool[x].Activate(pos, isPlayer);
                 break;
             }
         }

@@ -650,6 +650,14 @@ public class Player : MonoBehaviour
     public void KillPlayer()
     {
         audioManager.PlayPlayerDieSound();
+
+        // create debris
+        int numDebris = Random.Range(10, 12);
+        for (int x = 0; x < numDebris; x++)
+        {
+            GameSceneManagerScript.ActivateDebrisFromPool(this.transform.localPosition, true);
+        }
+
         playerRigidbody.velocity = new Vector2(0, 0);
         this.GetComponent<Collider2D>().enabled = false;
         playerAnimator.Play("et-dead");
