@@ -735,7 +735,7 @@ public class Player : MonoBehaviour
         if (upgradeType == Globals.UpgradeTypes.Speed && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Speed] > 0)
         {
             int speedLevel = Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Speed];
-            moveSpeed = moveSpeedInitial + (speedLevel * .22f);
+            moveSpeed = moveSpeedInitial + (speedLevel * .12f);
         }
         else if (upgradeType == Globals.UpgradeTypes.Defense && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Defense] > 0)
         {

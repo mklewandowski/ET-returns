@@ -257,7 +257,7 @@ public class Globals
         "Launch drone that orbits player.", "Increase drone orbit time by 10 percent.", "Add additional drone.", "Increase drone orbit time by 10 percent.", "Add additional drone.",
         "Drop attack invaders from top of screen.", "Increase number of enemies invader passes through by 1.", "Add additional invader.", "Increase number of enemies invader passes through by 1.", "Add additional invader.",
         "Emit ghosts that harm enemies in their path.", "Increase number of enemies ghost passes through by 1.", "Add additional ghost.", "Increase number of enemies ghost passes through by 1.", "Add additional ghost.",
-        "Increase player speed by 10 percent.", "Increase player speed by 10 percent.", "Increase player speed by 10 percent.", "Increase player speed by 10 percent.", "Increase player speed by 10 percent.",
+        "Increase player speed by 5 percent.", "Increase player speed by 5 percent.", "Increase player speed by 5 percent.", "Increase player speed by 5 percent.", "Increase player speed by 5 percent.",
         "Launch seeker star that attacks nearest enemy.", "Add additional seeker star.", "Add additional seeker star.", "Add additional seeker star.", "Add additional seeker star.",
         "Summon tornado from right side of screen", "Increase number of enemies tornado passes through by 1.", "Add additional tornado.", "Increase number of enemies tornado passes through by 1.", "Add additional tornado.",
         "Summon killer bees from left side of screen.", "Increase number of enemies bees pass through by 1.", "Add additional bee swarm.", "Increase number of enemies bees pass through by 1.", "Add additional bee swarm.",
@@ -267,7 +267,7 @@ public class Globals
         "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.",
         "Launch ICBMs from bottom of screen.", "Increase number of enemies ICBMs pass through by 1.", "Add additional ICBM.", "Increase number of enemies ICBMs pass through by 1.", "Add additional ICBM.",
         "Shoot ricocheting breakout ball.", "Increase number of ricochets by 2", "Add additional breakout ball.", "Increase number of ricochets by 3", "Add additional breakout ball.",
-        "Shoot exploding slime bullets in random direction.", "Increase slime shrapnel by 50 percent.", "Add additional slime bullet.", "Increase slime shrapnel by 50 percent.", "Add additional slime bullet.",
+        "Shoot exploding slimes in random direction.", "Increase slime shrapnel by 50 percent.", "Add additional exploding slime.", "Increase slime shrapnel by 50 percent.", "Add additional exploding slime.",
         "Refill HP meter to maximum amount."
     };
 
