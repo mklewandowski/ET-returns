@@ -182,8 +182,8 @@ public class Globals
     };
 
     public static EnemyTypes[] FastEnemyTypes = {EnemyTypes.Yar, EnemyTypes.Pac, EnemyTypes.MsPac, EnemyTypes.Yar2, EnemyTypes.JrPac};
-    public static EnemyTypes[] StrongEnemyTypes = {EnemyTypes.Qbert, EnemyTypes.Kangaroo, EnemyTypes.Hero, EnemyTypes.Pengo, EnemyTypes.Hero2};
-    public static EnemyTypes[] SurroundEnemyTypes = {EnemyTypes.Frogger, EnemyTypes.Joust, EnemyTypes.Bear, EnemyTypes.Joust2};
+    public static EnemyTypes[] StrongEnemyTypes = {EnemyTypes.Qbert, EnemyTypes.Kangaroo, EnemyTypes.Hero, EnemyTypes.Bear, EnemyTypes.Hero2};
+    public static EnemyTypes[] SurroundEnemyTypes = {EnemyTypes.Frogger, EnemyTypes.Joust, EnemyTypes.Pengo, EnemyTypes.Joust2};
     public static EnemyTypes[] ChaoticEnemyTypes = {EnemyTypes.Indy, EnemyTypes.Jungle, EnemyTypes.Harry};
 
     public enum UpgradeTypes {
