@@ -79,6 +79,8 @@ public class Player : MonoBehaviour
     private Rigidbody2D playerRigidbody;
     bool isMoving = false;
     Animator playerAnimator;
+    float dustTimer = 0f;
+    float dustTimerMax = .1f;
 
     public enum ShootType {
         Gun,
@@ -163,6 +165,7 @@ public class Player : MonoBehaviour
         HandleInvincible();
         HandleLaser();
         HandleSurround();
+        HandleDust();
         if (isAlive)
             Globals.gameTime += Time.deltaTime;
     }
@@ -243,6 +246,17 @@ public class Player : MonoBehaviour
             GunGO.transform.localEulerAngles = new Vector3(0, 0, 270f);
         else if (currentPlayerOrientation == PlayerOrientation.DownLeft || currentPlayerOrientation == PlayerOrientation.DownRight)
             GunGO.transform.localEulerAngles = new Vector3(0, 0, 315f);
+    }
+
+    private void HandleDust()
+    {
+        dustTimer -= Time.deltaTime;
+        if (dustTimer <= 0)
+        {
+            dustTimer = dustTimerMax;
+            if (isMoving)
+                GameSceneManagerScript.ActivateDustFromPool(this.transform.localPosition);
+        }
     }
 
     private void HandleShoot()

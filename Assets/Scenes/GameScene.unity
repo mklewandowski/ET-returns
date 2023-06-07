@@ -78710,6 +78710,7 @@ MonoBehaviour:
   cameraController: {fileID: 519420033}
   fadeManager: {fileID: 960945946}
   Player: {fileID: 971181771}
+  DustPrefab: {fileID: 4395591764634758786, guid: 05fad257dc7e8844cb8783a7491758e3, type: 3}
   ExpBar: {fileID: 556872507}
   ExpLevel: {fileID: 1449827230}
   LevelUpPanel: {fileID: 1803605636}
