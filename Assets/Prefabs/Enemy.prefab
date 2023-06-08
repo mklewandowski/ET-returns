@@ -79,7 +79,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 257196385, guid: 6377fe0bdc0d1dd469bb5c068a55811a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -150,7 +150,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edbe77d5a32d29041abcc1d45b691d55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugVector: {x: 0, y: 0}
   DebugText: {fileID: 4034399362697179893}
   type: 0
   EnemySprites:
@@ -181,9 +180,7 @@ MonoBehaviour:
   - {fileID: -452724800, guid: beb2ec89f19d7a6428bf80fee0a62d15, type: 3}
   - {fileID: -732598460, guid: 14f89084a1116ca40bb07b6e467e535d, type: 3}
   - {fileID: 21300000, guid: b4ba360efeac3c84c9a499d3c49e4397, type: 3}
-  movementVector: {x: 0, y: 0, z: 0}
   FlashMaterial: {fileID: 2100000, guid: 5a5709c4c6be05344ad5fcd750b857fb, type: 2}
-  DebrisPrefab: {fileID: 4395591764634758786, guid: 6884334da442b4c4296f325b9b896c61, type: 3}
   ToxicDebrisPrefab: {fileID: 5148339097020038030, guid: 0ca1291124edc3f4d8db6c3370877a62, type: 3}
 --- !u!95 &6232591748759594082
 Animator:
