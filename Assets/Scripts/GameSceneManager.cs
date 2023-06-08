@@ -794,6 +794,8 @@ public class GameSceneManager : MonoBehaviour
         totalUpgradesThisGame++;
         if (totalUpgradesThisGame % 5 == 0)
             FBIspawnTimerMax = FBIspawnTimerMax + 1f;
+        if (totalUpgradesThisGame == 30)
+            FBIspawnTimerMax = FBIspawnTimerMax + 5f; // make FBI much less frequent once they max out upgrades
         Time.timeScale = 1f;
         Globals.IsPaused = false;
     }
