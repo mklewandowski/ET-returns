@@ -482,7 +482,7 @@ public class Globals
             Globals.CurrentUpgradeLevels[x] = 0;
         }
         // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Slime] = 5;
-        Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] = 5;
+        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] = 5;
         CurrentUpgradeTypes.Clear();
 
         currentExp = 0;
