@@ -63,6 +63,7 @@ public class GameSceneManager : MonoBehaviour
     float difficultyTimerMax = 60f;
     float specialAttackTimer = 90f;
     float specialAttackTimerMax = 60f;
+    float specialAttackTimerMin = 40f;
 
     // CANDY
     [SerializeField]
@@ -498,7 +499,7 @@ public class GameSceneManager : MonoBehaviour
         specialAttackTimer -= Time.deltaTime;
         if (specialAttackTimer <= 0)
         {
-            specialAttackTimer = specialAttackTimerMax;
+            specialAttackTimer = Mathf.Max(specialAttackTimerMin, (specialAttackTimerMax - difficultyLevel));
 
             if (gameHasBoss && (difficultyLevel == bossSpawnDifficulty || difficultyLevel == (bossSpawnDifficulty + 5)))
             {
