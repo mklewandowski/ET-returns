@@ -114,7 +114,7 @@ public class Enemy : MonoBehaviour
         return isActive;
     }
 
-    public void ConfigureEnemy(Vector3 pos, Globals.EnemyTypes newType, int extraLife, bool flip)
+    public void ConfigureEnemy(Vector3 pos, Globals.EnemyTypes newType, int extraLife, int extraHitStrength, float extraSpeed, bool flip)
     {
         type = newType;
 
@@ -539,6 +539,8 @@ public class Enemy : MonoBehaviour
         }
 
         life = life + extraLife;
+        moveSpeed = moveSpeed + extraSpeed;
+        hitStrength = hitStrength + extraHitStrength;
         enemyCollider.enabled = true;
         enemyRenderer.enabled = true;
         isActive = true;

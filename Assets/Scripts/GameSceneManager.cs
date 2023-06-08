@@ -318,26 +318,69 @@ public class GameSceneManager : MonoBehaviour
             enemyBossPool[x].Init();
         }
     }
-    public void ActivateEnemyFromPool(Vector3 enemyPos, Globals.EnemyTypes enemyType, int extraLife, bool flip)
+    public void ActivateEnemyFromPool(Vector3 enemyPos, Globals.EnemyTypes enemyType, bool flip)
     {
         Enemy[] pool = enemyPool;
+        int extraLife = 0;
+        int extraStrength = 0;
+        float extraSpeed = 0;
         if (enemyType == Globals.EnemyTypes.FBI)
+        {
+            extraLife = (int)(difficultyLevel * 1.5f);
             pool = enemyFBIPool;
+        }
         else if (enemyType == Globals.EnemyTypes.Scientist)
+        {
+            extraLife = (int)(difficultyLevel * .5f);
             pool = enemyScientistPool;
+        }
         else if (enemyType == Globals.EnemyTypes.Dig)
+        {
+            extraLife = (int)(difficultyLevel * .5f);
             pool = enemyDigPool;
+        }
         else if (enemyType == Globals.EnemyTypes.Moon || enemyType == Globals.EnemyTypes.Plane)
+        {
+            extraLife = (int)(difficultyLevel * .5f);
             pool = enemyVehiclePool;
+        }
         else if (enemyType == Globals.EnemyTypes.PacBoss || enemyType == Globals.EnemyTypes.KoolBoss || enemyType == Globals.EnemyTypes.PopeyeBoss ||
                  enemyType == Globals.EnemyTypes.MarioBoss || enemyType == Globals.EnemyTypes.LuigiBoss)
+        {
             pool = enemyBossPool;
+        }
+        else
+        {
+            if (difficultyLevel > 40)
+            {
+                extraLife = 10;
+                extraStrength = 6;
+                extraSpeed = .3f;
+            }
+            if (difficultyLevel > 30)
+            {
+                extraLife = 6;
+                extraStrength = 6;
+                extraSpeed = .2f;
+            }
+            else if (difficultyLevel > 25)
+            {
+                extraLife = 4;
+                extraStrength = 4;
+                extraSpeed = .1f;
+            }
+            else if (difficultyLevel > 20)
+            {
+                extraLife = 2;
+                extraStrength = 2;
+            }
+        }
 
         for (int x = 0; x < pool.Length; x++)
         {
             if (!pool[x].IsActive())
             {
-                pool[x].ConfigureEnemy(enemyPos, enemyType, extraLife, flip);
+                pool[x].ConfigureEnemy(enemyPos, enemyType, extraLife, extraStrength, extraSpeed, flip);
                 break;
             }
         }
@@ -587,23 +630,18 @@ public class GameSceneManager : MonoBehaviour
 
     void SpawnFBI()
     {
-        int extraLife = (int)(difficultyLevel * 1.5f);
-        SpawnEnemy(Globals.EnemyTypes.FBI, extraLife);
+        SpawnEnemy(Globals.EnemyTypes.FBI);
     }
 
     void SpawnEnemies(int num)
     {
         numSpawns++;
-        int extraLife = 0;
         for (int x = 0; x < num; x++)
         {
             Globals.EnemyTypes enemyType = Globals.EnemyTypes.Yar;
             float randVal = Random.Range(0, 100f);
             if (randVal > 98f && difficultyLevel > 3)
-            {
                 enemyType = Globals.EnemyTypes.Scientist;
-                extraLife = (int)(difficultyLevel * .5f);
-            }
             else if (randVal > 90f && difficultyLevel > 4)
                 enemyType = GetEnemyType(currentChaoticEnemyMaxSpawn, chaoticEnemySpawnThresholds, Globals.ChaoticEnemyTypes);
             else if (randVal > 25)
@@ -613,8 +651,7 @@ public class GameSceneManager : MonoBehaviour
             else
                 enemyType = GetEnemyType(currentSurroundEnemyMaxSpawn, surroundEnemySpawnThresholds, Globals.SurroundEnemyTypes);
 
-
-            SpawnEnemy(enemyType, extraLife);
+            SpawnEnemy(enemyType);
         }
         if (digSpawnsRemaining > 0)
         {
@@ -633,7 +670,7 @@ public class GameSceneManager : MonoBehaviour
         }
     }
 
-    void SpawnEnemy(Globals.EnemyTypes enemyType, int extraLife)
+    void SpawnEnemy(Globals.EnemyTypes enemyType)
     {
         // Debug.Log(Globals.currrentNumEnemies);
         if (Globals.currrentNumEnemies >= Globals.maxEnemies && enemyType != Globals.EnemyTypes.FBI)
@@ -661,14 +698,14 @@ public class GameSceneManager : MonoBehaviour
             yOffset = yOffset * -1f;
         }
         Vector2 enemyPos = new Vector2(playerPos.x + xOffset, playerPos.y + yOffset);
-        ActivateEnemyFromPool(enemyPos, enemyType, extraLife, false);
+        ActivateEnemyFromPool(enemyPos, enemyType, false);
         Globals.currrentNumEnemies++;
     }
 
     void SpawnBoss()
     {
         Vector2 enemyPos = new Vector3(Player.transform.localPosition.x - 4f, Player.transform.localPosition.y + 10f, Player.transform.localPosition.z);
-        ActivateEnemyFromPool(enemyPos, currentBossType, 0, false);
+        ActivateEnemyFromPool(enemyPos, currentBossType, false);
     }
 
     public void KillBoss()
@@ -678,7 +715,6 @@ public class GameSceneManager : MonoBehaviour
 
     void SpawnDigs()
     {
-        int extraLife = (int)(difficultyLevel * .5f);
         int numDigs = 15;
         Vector2 playerPos = Player.transform.localPosition;
         float minX = leftTanksTransform.position.x + 1f;
@@ -691,14 +727,13 @@ public class GameSceneManager : MonoBehaviour
             Vector2 enemyPos = playerPos + enemyRadialVector;
             if (enemyPos.x < maxX && enemyPos.x > minX && enemyPos.y < maxY && enemyPos.y > minY)
             {
-                ActivateEnemyFromPool(enemyPos, Globals.EnemyTypes.Dig, extraLife, (x <= 1 || x >= 10));
+                ActivateEnemyFromPool(enemyPos, Globals.EnemyTypes.Dig, (x <= 1 || x >= 10));
             }
         }
     }
 
     void SpawnPlanes()
     {
-        int extraLife = (int)(difficultyLevel * .5f);
         int numRows = 5;
         int numCols = 3;
         Vector2 playerPos = Player.transform.localPosition;
@@ -709,14 +744,13 @@ public class GameSceneManager : MonoBehaviour
             for (int y = 0; y < numRows; y++)
             {
                 Vector2 enemyPos = new Vector2(startX + x * -2.5f, startY + y * 2f);
-                ActivateEnemyFromPool(enemyPos, Globals.EnemyTypes.Plane, extraLife, false);
+                ActivateEnemyFromPool(enemyPos, Globals.EnemyTypes.Plane, false);
             }
         }
     }
 
     void SpawnRovers()
     {
-        int extraLife = (int)(difficultyLevel * .5f);
         int numRows = 5;
         int numCols = 2;
         Vector2 playerPos = Player.transform.localPosition;
@@ -727,7 +761,7 @@ public class GameSceneManager : MonoBehaviour
             for (int y = 0; y < numRows; y++)
             {
                 Vector2 enemyPos = new Vector2(startX + x * -4.5f, startY + y * 2f);
-                ActivateEnemyFromPool(enemyPos, Globals.EnemyTypes.Moon, extraLife, false);
+                ActivateEnemyFromPool(enemyPos, Globals.EnemyTypes.Moon, false);
             }
         }
         startX = playerPos.x + 6f;
@@ -737,7 +771,7 @@ public class GameSceneManager : MonoBehaviour
             for (int y = 0; y < numRows; y++)
             {
                 Vector2 enemyPos = new Vector2(startX + x * 4.5f, startY + y * 2f);
-                ActivateEnemyFromPool(enemyPos, Globals.EnemyTypes.Moon, extraLife, true);
+                ActivateEnemyFromPool(enemyPos, Globals.EnemyTypes.Moon, true);
             }
         }
     }
