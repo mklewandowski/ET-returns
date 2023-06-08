@@ -182,8 +182,8 @@ public class Globals
     };
 
     public static EnemyTypes[] FastEnemyTypes = {EnemyTypes.Yar, EnemyTypes.Pac, EnemyTypes.MsPac, EnemyTypes.Yar2, EnemyTypes.JrPac};
-    public static EnemyTypes[] StrongEnemyTypes = {EnemyTypes.Qbert, EnemyTypes.Kangaroo, EnemyTypes.Hero, EnemyTypes.Pengo, EnemyTypes.Hero2};
-    public static EnemyTypes[] SurroundEnemyTypes = {EnemyTypes.Frogger, EnemyTypes.Joust, EnemyTypes.Bear, EnemyTypes.Joust2};
+    public static EnemyTypes[] StrongEnemyTypes = {EnemyTypes.Qbert, EnemyTypes.Kangaroo, EnemyTypes.Hero, EnemyTypes.Bear, EnemyTypes.Hero2};
+    public static EnemyTypes[] SurroundEnemyTypes = {EnemyTypes.Frogger, EnemyTypes.Joust, EnemyTypes.Pengo, EnemyTypes.Joust2};
     public static EnemyTypes[] ChaoticEnemyTypes = {EnemyTypes.Indy, EnemyTypes.Jungle, EnemyTypes.Harry};
 
     public enum UpgradeTypes {
@@ -257,7 +257,7 @@ public class Globals
         "Launch drone that orbits player.", "Increase drone orbit time by 10 percent.", "Add additional drone.", "Increase drone orbit time by 10 percent.", "Add additional drone.",
         "Drop attack invaders from top of screen.", "Increase number of enemies invader passes through by 1.", "Add additional invader.", "Increase number of enemies invader passes through by 1.", "Add additional invader.",
         "Emit ghosts that harm enemies in their path.", "Increase number of enemies ghost passes through by 1.", "Add additional ghost.", "Increase number of enemies ghost passes through by 1.", "Add additional ghost.",
-        "Increase player speed by 10 percent.", "Increase player speed by 10 percent.", "Increase player speed by 10 percent.", "Increase player speed by 10 percent.", "Increase player speed by 10 percent.",
+        "Increase player speed by 5 percent.", "Increase player speed by 5 percent.", "Increase player speed by 5 percent.", "Increase player speed by 5 percent.", "Increase player speed by 5 percent.",
         "Launch seeker star that attacks nearest enemy.", "Add additional seeker star.", "Add additional seeker star.", "Add additional seeker star.", "Add additional seeker star.",
         "Summon tornado from right side of screen", "Increase number of enemies tornado passes through by 1.", "Add additional tornado.", "Increase number of enemies tornado passes through by 1.", "Add additional tornado.",
         "Summon killer bees from left side of screen.", "Increase number of enemies bees pass through by 1.", "Add additional bee swarm.", "Increase number of enemies bees pass through by 1.", "Add additional bee swarm.",
@@ -267,7 +267,7 @@ public class Globals
         "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.", "Increase player attack by 1 point.",
         "Launch ICBMs from bottom of screen.", "Increase number of enemies ICBMs pass through by 1.", "Add additional ICBM.", "Increase number of enemies ICBMs pass through by 1.", "Add additional ICBM.",
         "Shoot ricocheting breakout ball.", "Increase number of ricochets by 2", "Add additional breakout ball.", "Increase number of ricochets by 3", "Add additional breakout ball.",
-        "Shoot exploding slime bullets in random direction.", "Increase slime shrapnel by 50 percent.", "Add additional slime bullet.", "Increase slime shrapnel by 50 percent.", "Add additional slime bullet.",
+        "Shoot exploding slimes in random direction.", "Increase slime shrapnel by 50 percent.", "Add additional exploding slime.", "Increase slime shrapnel by 50 percent.", "Add additional exploding slime.",
         "Refill HP meter to maximum amount."
     };
 
@@ -378,7 +378,7 @@ public class Globals
     public static float startMaxHealth = 20f;
     public static int currentAttack = 0;
     public static float currentMaxHealth = 20f;
-    public static int currentDefense = 1;
+    public static int currentDefense = 0;
     public static float maxAttack = 10f;
     public static float maxDefense = 10f;
     public static int currrentNumEnemies = 0;
@@ -471,9 +471,9 @@ public class Globals
     public static void ResetGlobals()
     {
         Globals.maxExperiences = new int[] {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1200, 1400, 1600, 1800, 2000};
-        Globals.healthPerLevel  = new float[] {0, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1 };
-        Globals.attackPerLevel = new int[] {0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 };
-        Globals.defensePerLevel = new int[] {0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 };
+        Globals.healthPerLevel  = new float[] {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+        Globals.attackPerLevel = new int[] {0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 };
+        Globals.defensePerLevel = new int[] {0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 };
         // the last upgrade slot is the HP refill, don't include that since it behaves uniquely
         int numUpgrades = System.Enum.GetValues(typeof(Globals.UpgradeTypes)).Length - 1;
         Globals.CurrentUpgradeLevels = new int[numUpgrades];
@@ -482,7 +482,7 @@ public class Globals
             Globals.CurrentUpgradeLevels[x] = 0;
         }
         // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Slime] = 5;
-        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Breakout] = 5;
+        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] = 5;
         CurrentUpgradeTypes.Clear();
 
         currentExp = 0;

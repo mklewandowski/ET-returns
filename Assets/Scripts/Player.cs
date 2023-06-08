@@ -122,9 +122,14 @@ public class Player : MonoBehaviour
     bool isAlive = true;
     float health = 20f;
     float invincibleTimer = 0f;
-    float invincibleTimerMax = .75f;
+    float invincibleTimerMax = .6f;
     private SpriteRenderer playerRenderer;
     private BoxCollider2D playerCollider;
+    [SerializeField]
+    Material FlashMaterial;
+    Material playerMaterial;
+    float flashTimer = 0f;
+    float flashTimerMax = .15f;
     [SerializeField]
     GameObject HealthBar;
     [SerializeField]
@@ -149,6 +154,7 @@ public class Player : MonoBehaviour
         playerCollider = GetComponent<BoxCollider2D>();
         playerAnimator = PlayerGO.GetComponent<Animator>();
         playerRenderer = PlayerGO.GetComponent<SpriteRenderer>();
+        playerMaterial = playerRenderer.material;
         if (Globals.DebugMode)
             ForceField.SetActive(true);
 
@@ -163,6 +169,7 @@ public class Player : MonoBehaviour
         HandleMovement();
         HandleShoot();
         HandleInvincible();
+        HandleFlash();
         HandleLaser();
         HandleSurround();
         HandleDust();
@@ -555,7 +562,6 @@ public class Player : MonoBehaviour
             GameObject tornadoGO = Instantiate(BulletTornadoPrefab, new Vector3(this.transform.localPosition.x, this.transform.localPosition.y + 100f, 0), Quaternion.identity, BulletContainer.transform);
             tornadoGO.GetComponent<Tornado>().Init(this.transform.localPosition);
         }
-
     }
 
     private void HandleShootSeekerMissile(int burstInterval)
@@ -568,6 +574,7 @@ public class Player : MonoBehaviour
 
     private void HandleLaser()
     {
+        if (!isAlive) return;
         if (laserTimer > 0)
         {
             laserTimer -= Time.deltaTime;
@@ -578,24 +585,37 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void HandleFlash()
+    {
+        if (flashTimer > 0)
+        {
+            flashTimer -= Time.deltaTime;
+            if (flashTimer <= 0)
+            {
+                playerRenderer.material = playerMaterial;
+            }
+        }
+    }
+
     private void HandleInvincible()
     {
         if (invincibleTimer > 0)
         {
             invincibleTimer -= Time.deltaTime;
-            bool flashOn = (int)Mathf.Floor(invincibleTimer / .1f) % 2 == 1;
+            //bool flashOn = (int)Mathf.Floor(invincibleTimer / .1f) % 2 == 1;
             if (invincibleTimer <= 0)
             {
-                flashOn = false;
+                //flashOn = false;
                 playerCollider.enabled = false;
                 playerCollider.enabled = true;
             }
-            playerRenderer.color = flashOn ? new Color(240f/255f, 165f/255f, 0) : Color.white;
+            //playerRenderer.color = flashOn ? new Color(240f/255f, 165f/255f, 0) : Color.white;
         }
     }
 
     private void HandleSurround()
     {
+        if (!isAlive) return;
         if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Surround] > 0 || Globals.DebugMode)
         {
             surroundTimer -= Time.deltaTime;
@@ -643,7 +663,17 @@ public class Player : MonoBehaviour
             if (health <= 0)
                 KillPlayer();
             else
+            {
+                // create debris
+                int numDebris = Random.Range(6, 8);
+                for (int x = 0; x < numDebris; x++)
+                {
+                    GameSceneManagerScript.ActivateDebrisFromPool(this.transform.localPosition, false);
+                }
+                playerRenderer.material = FlashMaterial;
+                flashTimer = flashTimerMax;
                 invincibleTimer = invincibleTimerMax;
+            }
         }
     }
 
@@ -664,6 +694,12 @@ public class Player : MonoBehaviour
     public void KillPlayer()
     {
         audioManager.PlayPlayerDieSound();
+
+        for (int x = 0; x < SurroundObjects.Length; x++)
+        {
+            SurroundObjects[x].SetActive(false);
+        }
+        ForceField.SetActive(false);
 
         // create debris
         int numDebris = Random.Range(10, 12);
@@ -735,7 +771,7 @@ public class Player : MonoBehaviour
         if (upgradeType == Globals.UpgradeTypes.Speed && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Speed] > 0)
         {
             int speedLevel = Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Speed];
-            moveSpeed = moveSpeedInitial + (speedLevel * .22f);
+            moveSpeed = moveSpeedInitial + (speedLevel * .12f);
         }
         else if (upgradeType == Globals.UpgradeTypes.Defense && Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Defense] > 0)
         {

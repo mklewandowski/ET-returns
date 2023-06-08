@@ -78,7 +78,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_Sprite: {fileID: -413264242, guid: 2af40710b22ff664b9073a72146a76ed, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -127,6 +127,7 @@ MonoBehaviour:
   lifeTimer: 2
   enemyHits: 3
   BombShockWavePrefab: {fileID: 0}
+  SlimeDebrisPrefab: {fileID: 0}
 --- !u!50 &1879809515585156411
 Rigidbody2D:
   serializedVersion: 4
