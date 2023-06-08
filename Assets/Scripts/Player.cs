@@ -555,7 +555,6 @@ public class Player : MonoBehaviour
             GameObject tornadoGO = Instantiate(BulletTornadoPrefab, new Vector3(this.transform.localPosition.x, this.transform.localPosition.y + 100f, 0), Quaternion.identity, BulletContainer.transform);
             tornadoGO.GetComponent<Tornado>().Init(this.transform.localPosition);
         }
-
     }
 
     private void HandleShootSeekerMissile(int burstInterval)
@@ -568,6 +567,7 @@ public class Player : MonoBehaviour
 
     private void HandleLaser()
     {
+        if (!isAlive) return;
         if (laserTimer > 0)
         {
             laserTimer -= Time.deltaTime;
@@ -596,6 +596,7 @@ public class Player : MonoBehaviour
 
     private void HandleSurround()
     {
+        if (!isAlive) return;
         if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Surround] > 0 || Globals.DebugMode)
         {
             surroundTimer -= Time.deltaTime;
@@ -664,6 +665,12 @@ public class Player : MonoBehaviour
     public void KillPlayer()
     {
         audioManager.PlayPlayerDieSound();
+
+        for (int x = 0; x < SurroundObjects.Length; x++)
+        {
+            SurroundObjects[x].SetActive(false);
+        }
+        ForceField.SetActive(false);
 
         // create debris
         int numDebris = Random.Range(10, 12);
