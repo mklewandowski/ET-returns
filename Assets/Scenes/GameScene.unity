@@ -20718,7 +20718,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 336981427}
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -30.6, y: 0, z: 0}
+  m_LocalPosition: {x: -30.6, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -62277,7 +62277,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 991500744}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -18.6, z: 0}
+  m_LocalPosition: {x: 0, y: -15.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -62301,8 +62301,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0513281251b534742af033cc7ccb5c23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movingUpEndPos: {x: 0, y: -7.5}
-  movingDownEndPos: {x: 0, y: -18.6}
+  movingUpEndPos: {x: 0, y: -4.5}
+  movingDownEndPos: {x: 0, y: -15.6}
   movingLeftEndPos: {x: 0, y: 0}
   movingRightEndPos: {x: 0, y: 0}
   movingUpVelocity: 0.75
@@ -82234,7 +82234,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1307576640}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 30.6, y: 0, z: 0}
+  m_LocalPosition: {x: 30.6, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -123106,7 +123106,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2030575552}
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: 18.6, z: 0}
+  m_LocalPosition: {x: 0, y: 21.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -123130,8 +123130,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0513281251b534742af033cc7ccb5c23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movingUpEndPos: {x: 0, y: 18.6}
-  movingDownEndPos: {x: 0, y: 7.5}
+  movingUpEndPos: {x: 0, y: 21.6}
+  movingDownEndPos: {x: 0, y: 10.5}
   movingLeftEndPos: {x: 0, y: 0}
   movingRightEndPos: {x: 0, y: 0}
   movingUpVelocity: 0.75
