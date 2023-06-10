@@ -18,6 +18,11 @@ public class Enemy : MonoBehaviour
     Transform RightWall;
     Transform BottomWall;
 
+    Transform EnemySwarmCenterUL;
+    Transform EnemySwarmCenterUR;
+    Transform EnemySwarmCenterLR;
+    Transform EnemySwarmCenterLL;
+
     int life = 1;
     int hitStrength = 1;
 
@@ -60,7 +65,7 @@ public class Enemy : MonoBehaviour
     enum AttackType {
         Seek,
         Surround,
-        Guard,
+        PatrolAndSeek,
         Chaotic,
         Avoid,
         StaticLine
@@ -70,7 +75,7 @@ public class Enemy : MonoBehaviour
     enum BehaviorType {
         Seek,
         Surround,
-        Guard,
+        Patrol,
         RandomAngle,
         SetAngle,
         Spread, // used to unclump
@@ -79,11 +84,20 @@ public class Enemy : MonoBehaviour
         StaticLine, // used by plane and rover
     }
     BehaviorType currentBehavior = BehaviorType.Seek;
+
     float sightDistance = 2f;
+    Transform swarmCenter;
+
+    enum ClumpType {
+        None,
+        Group,
+        OneToOne,
+    }
 
     float surroundOffsetX;
     float surroundOffsetY;
-    Vector3 guardPosition;
+    float patrolX;
+    float patrolY;
 
     bool isBoss = false;
 
@@ -99,6 +113,10 @@ public class Enemy : MonoBehaviour
         TopWall = GameObject.Find("EnemySolidTop").transform;
         RightWall = GameObject.Find("EnemySolidRight").transform;
         BottomWall = GameObject.Find("EnemySolidBottom").transform;
+        EnemySwarmCenterUL = GameObject.Find("EnemySwarmCenterUL").transform;
+        EnemySwarmCenterUR = GameObject.Find("EnemySwarmCenterUR").transform;
+        EnemySwarmCenterLR = GameObject.Find("EnemySwarmCenterLR").transform;
+        EnemySwarmCenterLL = GameObject.Find("EnemySwarmCenterLL").transform;
         enemyAnimator = GetComponent<Animator>();
         enemyCollider = GetComponent<BoxCollider2D>();
         enemyRigidbody = GetComponent<Rigidbody2D>();
@@ -150,8 +168,8 @@ public class Enemy : MonoBehaviour
         // FAST SEEK
         if (type == Globals.EnemyTypes.Yar)
         {
-            moveSpeed = Random.Range(.9f, 1.2f);
-            behaviorTimerMax = .75f;
+            moveSpeed = Random.Range(1f, 1.3f);
+            behaviorTimerMax = .7f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("yar");
             this.transform.localScale = new Vector3(6f, 6f, 1f);
@@ -161,8 +179,8 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Pac)
         {
-            moveSpeed = Random.Range(1.2f, 1.5f);
-            behaviorTimerMax = .75f;
+            moveSpeed = Random.Range(1.3f, 1.6f);
+            behaviorTimerMax = .7f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("pac");
             this.transform.localScale = new Vector3(4f, 4f, 1f);
@@ -172,8 +190,8 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.MsPac)
         {
-            moveSpeed = Random.Range(1.5f, 1.8f);
-            behaviorTimerMax = .5f;
+            moveSpeed = Random.Range(1.6f, 1.9f);
+            behaviorTimerMax = .6f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("mspac");
             this.transform.localScale = new Vector3(4f, 4f, 1f);
@@ -194,8 +212,8 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.JrPac)
         {
-            moveSpeed = Random.Range(2.1f, 2.3f);
-            behaviorTimerMax = .5f;
+            moveSpeed = Random.Range(2.1f, 2.4f);
+            behaviorTimerMax = .4f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("jrpac");
             this.transform.localScale = new Vector3(4f, 4f, 1f);
@@ -207,7 +225,7 @@ public class Enemy : MonoBehaviour
         // STRONG SEEK
         else if (type == Globals.EnemyTypes.Qbert)
         {
-            moveSpeed = Random.Range(.8f, 1f);
+            moveSpeed = Random.Range(.9f, 1.1f);
             behaviorTimerMax = 1f;
             enemyAnimator.enabled = false;
             this.transform.localScale = new Vector3(4f, 4f, 1f);
@@ -217,8 +235,8 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Kangaroo)
         {
-            moveSpeed = Random.Range(1f, 1.2f);
-            behaviorTimerMax = .9f;
+            moveSpeed = Random.Range(1.1f, 1.3f);
+            behaviorTimerMax = .8f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("kangaroo");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
@@ -228,7 +246,7 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Hero)
         {
-            moveSpeed = Random.Range(1.3f, 1.5f);
+            moveSpeed = Random.Range(1.4f, 1.6f);
             behaviorTimerMax = .6f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("hero");
@@ -239,7 +257,7 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Bear)
         {
-            moveSpeed = Random.Range(1.5f, 1.7f);
+            moveSpeed = Random.Range(1.6f, 1.8f);
             behaviorTimerMax = .5f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("bear");
@@ -250,7 +268,7 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Hero2)
         {
-            moveSpeed = Random.Range(1.7f, 1.9f);
+            moveSpeed = Random.Range(1.8f, 2.0f);
             behaviorTimerMax = .4f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("hero2");
@@ -263,7 +281,7 @@ public class Enemy : MonoBehaviour
         // SURROUND
         else if (type == Globals.EnemyTypes.Frogger)
         {
-            moveSpeed = Random.Range(.6f, .8f);
+            moveSpeed = Random.Range(.7f, .9f);
             behaviorTimerMax = 2f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("frog");
@@ -271,95 +289,71 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.1f, 0.1f);
             life = 5;
             hitStrength = 5;
-            int randVal = Random.Range(0, 2);
-            if (randVal == 0)
-            {
-                attackType = AttackType.Surround;
-                currentBehavior = BehaviorType.Surround;
-                PickSurroundOffsets();
-            }
-            else
-            {
-                attackType = AttackType.Guard;
-                currentBehavior = BehaviorType.Guard;
-                PickGuardPosition();
-            }
+            attackType = AttackType.Surround;
+            currentBehavior = BehaviorType.Surround;
+            PickSurroundOffsets();
             sightDistance = 2f;
         }
         else if (type == Globals.EnemyTypes.Joust)
         {
             moveSpeed = Random.Range(1.5f, 1.7f);
-            behaviorTimerMax = 1f;
+            behaviorTimerMax = .75f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("joust");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             life = 10;
             hitStrength = 10;
-            int randVal = Random.Range(0, 2);
-            if (randVal == 0)
-            {
-                attackType = AttackType.Surround;
-                currentBehavior = BehaviorType.Surround;
-                PickSurroundOffsets();
-            }
-            else
-            {
-                attackType = AttackType.Guard;
-                currentBehavior = BehaviorType.Guard;
-                PickGuardPosition();
-            }
-            sightDistance = 2.5f;
+            attackType = AttackType.PatrolAndSeek;
+            currentBehavior = BehaviorType.Patrol;
+            patrolX = pos.x >= 0 ? 1f : -1f;
+            patrolY = pos.y >= 0 ? 1f : -1f;
+            if (patrolX < 0 && patrolY < 0)
+                swarmCenter = EnemySwarmCenterLL;
+            else if (patrolX < 0 && patrolY > 0)
+                swarmCenter = EnemySwarmCenterUL;
+            else if (patrolX > 0 && patrolY > 0)
+                swarmCenter = EnemySwarmCenterUR;
+            else if (patrolX > 0 && patrolY < 0)
+                swarmCenter = EnemySwarmCenterLR;
         }
         else if (type == Globals.EnemyTypes.Pengo)
         {
-            moveSpeed = Random.Range(1.2f, 1.5f);
-            behaviorTimerMax = .75f;
+            moveSpeed = Random.Range(1.5f, 1.8f);
+            behaviorTimerMax = .6f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("pengo");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.3f, 0.07f);
             life = 20;
             hitStrength = 15;
-            int randVal = Random.Range(0, 2);
-            if (randVal == 0)
-            {
-                attackType = AttackType.Surround;
-                currentBehavior = BehaviorType.Surround;
-                PickSurroundOffsets();
-            }
-            else
-            {
-                attackType = AttackType.Guard;
-                currentBehavior = BehaviorType.Guard;
-                PickGuardPosition();
-            }
+            attackType = AttackType.Surround;
+            currentBehavior = BehaviorType.Surround;
+            PickSurroundOffsets();
             sightDistance = 3f;
         }
         else if (type == Globals.EnemyTypes.Joust2)
         {
-            moveSpeed = Random.Range(1.7f, 2.0f);
-            behaviorTimerMax = .5f;
+            moveSpeed = Random.Range(1.8f, 2.1f);
+            behaviorTimerMax = .4f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("joust2");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             life = 25;
             hitStrength = 20;
-            int randVal = Random.Range(0, 2);
-            if (randVal == 0)
-            {
-                attackType = AttackType.Surround;
-                currentBehavior = BehaviorType.Surround;
-                PickSurroundOffsets();
-            }
-            else
-            {
-                attackType = AttackType.Guard;
-                currentBehavior = BehaviorType.Guard;
-                PickGuardPosition();
-            }
-            sightDistance = 3f;
+            attackType = AttackType.PatrolAndSeek;
+            currentBehavior = BehaviorType.Patrol;
+            patrolX = pos.x >= 0 ? 1f : -1f;
+            patrolY = pos.y >= 0 ? 1f : -1f;
+            if (patrolX < 0 && patrolY < 0)
+                swarmCenter = EnemySwarmCenterLL;
+            else if (patrolX < 0 && patrolY > 0)
+                swarmCenter = EnemySwarmCenterUL;
+            else if (patrolX > 0 && patrolY > 0)
+                swarmCenter = EnemySwarmCenterUR;
+            else if (patrolX > 0 && patrolY < 0)
+                swarmCenter = EnemySwarmCenterLR;
         }
 
         // CHAOS
@@ -591,21 +585,11 @@ public class Enemy : MonoBehaviour
 
     void PickSurroundOffsets()
     {
-        surroundOffsetY = Random.Range(0, 2) == 0
-            ? Random.Range(2f, 4f)
-            : Random.Range(-2f, -4f);
-        surroundOffsetX = Random.Range(0, 2) == 0
-            ? Random.Range(3f, 6f)
-            : Random.Range(-3f, -6f);
-    }
-
-    void PickGuardPosition()
-    {
-        float xVal = Random.Range(.5f, 12f);
-        float yVal = Random.Range(.5f, 6.5f);
-        xVal = Random.Range(0, 2) == 0 ? xVal : xVal * -1f;
-        yVal = Random.Range(0, 2) == 0 ? yVal : yVal * -1f;
-        guardPosition = new Vector3(xVal, yVal, 0);
+        surroundOffsetX = Globals.surroundOffsets[Globals.surroundIndex].x;
+        surroundOffsetY = Globals.surroundOffsets[Globals.surroundIndex].y;
+        Globals.surroundIndex++;
+        if (Globals.surroundIndex >= Globals.surroundOffsets.Count)
+            Globals.surroundIndex = 0;
     }
 
     // Update is called once per frame
@@ -654,12 +638,13 @@ public class Enemy : MonoBehaviour
                 }
                 else if (currentBehavior == BehaviorType.Seek)
                 {
-                    if (CheckForClumping())
+                    ClumpType clumpType = CheckForClumping();
+                    if (clumpType == ClumpType.Group)
                     {
                         currentBehavior = BehaviorType.Spread;
                         behaviorTimer = Mathf.Max(4f, Random.Range(behaviorTimerMax - .25f, behaviorTimerMax + .25f) * 5f);
                     }
-                    else
+                    else if (clumpType == ClumpType.None)
                     {
                         if (attackType == AttackType.Surround)
                         {
@@ -675,20 +660,6 @@ public class Enemy : MonoBehaviour
                                 behaviorTimer = behaviorTimer * .5f; // get more aggressive when in seek mode
                             }
                         }
-                        else if (attackType == AttackType.Guard)
-                        {
-                            float distanceFromPlayer = Mathf.Abs(Vector3.Distance(playerTransform.position, this.transform.localPosition));
-                            if (distanceFromPlayer > (sightDistance + 1f))
-                            {
-                                currentBehavior = BehaviorType.Guard;
-                                UpdateGuardPosition();
-                            }
-                            else
-                            {
-                                UpdateSeekPosition();
-                                behaviorTimer = behaviorTimer * .5f; // get more aggressive when in seek mode
-                            }
-                        }
                         else
                         {
                             UpdateSeekPosition();
@@ -697,12 +668,13 @@ public class Enemy : MonoBehaviour
                 }
                 else if (currentBehavior == BehaviorType.Surround)
                 {
-                    if (CheckForClumping())
+                    ClumpType clumpType = CheckForClumping();
+                    if (clumpType == ClumpType.Group)
                     {
                         currentBehavior = BehaviorType.Spread;
-                        behaviorTimer = Mathf.Max(4f, Random.Range(behaviorTimerMax - .25f, behaviorTimerMax + .25f) * 5f);
+                        behaviorTimer = Mathf.Max(4f, Random.Range(behaviorTimerMax - .25f, behaviorTimerMax + .25f) * 3f);
                     }
-                    else
+                    else if (clumpType == ClumpType.None)
                     {
                         float distanceFromPlayer = Mathf.Abs(Vector3.Distance(playerTransform.position, this.transform.localPosition));
                         if (distanceFromPlayer <= sightDistance)
@@ -716,18 +688,25 @@ public class Enemy : MonoBehaviour
                         }
                     }
                 }
-                else if (currentBehavior == BehaviorType.Guard)
+                else if (currentBehavior == BehaviorType.Patrol)
                 {
-                    float distanceFromPlayer = Mathf.Abs(Vector3.Distance(playerTransform.position, this.transform.localPosition));
-                    if (distanceFromPlayer <= sightDistance)
+                    bool playerInSector = false;
+                    if ((patrolX > 0 && playerTransform.position.x >= 0) && (patrolY > 0 && playerTransform.position.y >= 0))
+                        playerInSector = true;
+                    else if ((patrolX > 0 && playerTransform.position.x >= 0) && (patrolY < 0 && playerTransform.position.y < 0))
+                        playerInSector = true;
+                    else if ((patrolX < 0 && playerTransform.position.x < 0) && (patrolY > 0 && playerTransform.position.y >= 0))
+                        playerInSector = true;
+                    else if ((patrolX < 0 && playerTransform.position.x < 0) && (patrolY < 0 && playerTransform.position.y < 0))
+                        playerInSector = true;
+
+                    if (playerInSector)
                     {
                         currentBehavior = BehaviorType.Seek;
                         UpdateSeekPosition();
                     }
                     else
-                    {
-                        UpdateGuardPosition();
-                    }
+                        UpdatePatrolPosition();
                 }
                 else if (currentBehavior == BehaviorType.Spread)
                 {
@@ -736,7 +715,7 @@ public class Enemy : MonoBehaviour
                         currentBehavior = BehaviorType.Surround;
                         UpdateSurroundPosition();
                     }
-                    else if (attackType == AttackType.Seek)
+                    else
                     {
                         currentBehavior = BehaviorType.Seek;
                         UpdateSeekPosition();
@@ -746,7 +725,7 @@ public class Enemy : MonoBehaviour
             }
         }
         if (currentBehavior == BehaviorType.Seek || currentBehavior == BehaviorType.Surround || currentBehavior == BehaviorType.RandomAngle || currentBehavior == BehaviorType.SetAngle ||
-            currentBehavior == BehaviorType.StaticLine || currentBehavior == BehaviorType.Avoid || currentBehavior == BehaviorType.Spread || currentBehavior == BehaviorType.Guard)
+            currentBehavior == BehaviorType.StaticLine || currentBehavior == BehaviorType.Avoid || currentBehavior == BehaviorType.Spread || currentBehavior == BehaviorType.Patrol)
             enemyRigidbody.velocity = impactTimer > 0 ? impactVector : movementVector;
 
         if (flipWithMovement && currentBehavior != BehaviorType.Wait)
@@ -762,7 +741,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private bool CheckForClumping()
+    private ClumpType CheckForClumping()
     {
         Vector2 enemyVectorSum = Vector2.zero;
         float enemiesInGroup = 0f; // the number of enemies in the collision circle
@@ -791,9 +770,14 @@ public class Enemy : MonoBehaviour
         {
             // normalize the vector and multiply by movespeed to move away from group
             movementVector = enemyVectorSum.normalized * moveSpeed;
-            return true;
+            return ClumpType.Group;
         }
-        return false;
+        // else if (enemiesInGroup == 1 && enemyVectorSum.magnitude > 1.25f)
+        // {
+        //     movementVector = Quaternion.Euler(0, 0, 90f) * movementVector;
+        //     return ClumpType.OneToOne;
+        // }
+        return ClumpType.None;
     }
 
     private void UpdateSeekPosition()
@@ -804,11 +788,20 @@ public class Enemy : MonoBehaviour
     private void UpdateSurroundPosition()
     {
         desiredPosition = new Vector3(playerTransform.position.x + surroundOffsetX, playerTransform.position.y + surroundOffsetY, playerTransform.position.z);
+        float xBuffer = 2f;
+        float yBuffer = 2.2f;
+        if ((this.transform.localPosition.x + xBuffer >= RightWall.position.x && movementVector.x > 0) ||
+            (this.transform.localPosition.x - xBuffer <= LeftWall.position.x && movementVector.x < 0) ||
+            (this.transform.localPosition.y + yBuffer >= TopWall.position.y && movementVector.y > 0) ||
+            (this.transform.localPosition.y - yBuffer <= BottomWall.position.y && movementVector.y < 0))
+        {
+           desiredPosition = desiredPosition * -1f;
+        }
         movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
     }
-    private void UpdateGuardPosition()
+    private void UpdatePatrolPosition()
     {
-        desiredPosition = guardPosition;
+        desiredPosition = swarmCenter.localPosition;
         movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
     }
     private void UpdateRandomAnglePosition()

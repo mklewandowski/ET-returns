@@ -384,6 +384,9 @@ public class Globals
     public static int currrentNumEnemies = 0;
     public static int maxEnemies = 200;
 
+    public static List<Vector2> surroundOffsets = new List<Vector2>();
+    public static int surroundIndex = 0;
+
     public static int candyCount;
     public static int killCount;
     public static float gameTime;
@@ -484,6 +487,22 @@ public class Globals
         // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Slime] = 5;
         // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] = 5;
         CurrentUpgradeTypes.Clear();
+
+        int numOffsets = 15;
+        surroundOffsets.Clear();
+        surroundIndex = 0;
+        for (int x = 0; x < numOffsets; x++)
+        {
+            Vector2 radialVector = Quaternion.Euler(0, 0, x * 24f) * new Vector2(4f, 4f);
+            surroundOffsets.Add(radialVector);
+        }
+        for (int x = 0; x < numOffsets; x++)
+        {
+            int index = Random.Range(0, surroundOffsets.Count);
+            Vector2 swapVector = surroundOffsets[x];
+            surroundOffsets[x] = surroundOffsets[index];
+            surroundOffsets[index] = swapVector;
+        }
 
         currentExp = 0;
         currentLevel = 0;
