@@ -105,6 +105,10 @@ public class GameSceneManager : MonoBehaviour
     Transform leftTanksTransform;
     [SerializeField]
     Transform rightTanksTransform;
+    Transform LeftWall;
+    Transform TopWall;
+    Transform RightWall;
+    Transform BottomWall;
 
     enum EnemySpecialAttackPatterns {
         VerticalMove,
@@ -172,6 +176,10 @@ public class GameSceneManager : MonoBehaviour
             ami.name = "AudioManager";
             audioManager = ami.GetComponent<AudioManager>();
         }
+        LeftWall = GameObject.Find("EnemySolidLeft").transform;
+        TopWall = GameObject.Find("EnemySolidTop").transform;
+        RightWall = GameObject.Find("EnemySolidRight").transform;
+        BottomWall = GameObject.Find("EnemySolidBottom").transform;
         CreateCandyPool();
         CreatePhonePool();
         CreateEnemyPool();
@@ -675,29 +683,46 @@ public class GameSceneManager : MonoBehaviour
         // Debug.Log(Globals.currrentNumEnemies);
         if (Globals.currrentNumEnemies >= Globals.maxEnemies && enemyType != Globals.EnemyTypes.FBI)
             return;
-        bool verticalPos = (Random.Range(0, 2) == 0);
-        float xRangeMax = Mathf.Min((rightTanksTransform.position.x - leftTanksTransform.position.x - 2f) * .5f, 13f);
-        float yRangeMax = Mathf.Min((topTanksTransform.position.y - bottomTanksTransform.position.y - 2f) * .5f, 9f);
-        float xOffset = verticalPos
-            ? Random.Range(-10.5f, 10.5f)
-            : Random.Range(10f, xRangeMax) * (Random.Range(0, 2) == 0 ? -1f : 1f);
-        float yOffset = verticalPos
-            ? Random.Range(6f, yRangeMax) * (Random.Range(0, 2) == 0 ? -1f : 1f)
-            : Random.Range(-6.5f, 6.5f);
+        float horizontalPlayerSpace = 19f;
+        float verticalPlayerSpace = 11f;
+        float xMin = LeftWall.position.x + 1.5f;
+        float xMax = RightWall.position.x - 1.5f;
+        float yMin = BottomWall.position.y + 1.5f;
+        float yMax = TopWall.position.y - 1.5f;
+        float rawX = Random.Range(0, xMax - xMin - horizontalPlayerSpace);
+        float rawY = Random.Range(0, yMax - yMin - verticalPlayerSpace);
         Vector2 playerPos = Player.transform.localPosition;
-        float minX = leftTanksTransform.position.x + 1f;
-        float maxX = rightTanksTransform.position.x - 1f;
-        float minY = bottomTanksTransform.position.y + 1f;
-        float maxY = topTanksTransform.position.y - 1f;
-        if ((playerPos.x + xOffset) < minX || (playerPos.x + xOffset) > maxX)
+        float xPos = xMin + rawX;
+        float yPos = yMin + rawY;
+        if ((xMin + rawX) > (playerPos.x - 9.5f) && (yMin + rawY) > (playerPos.y - 5.5f))
         {
-            xOffset = xOffset * -1f;
+            xPos = xPos + horizontalPlayerSpace;
+            yPos = yPos + verticalPlayerSpace;
         }
-        if ((playerPos.y + yOffset) < minY || (playerPos.y + yOffset) > maxY)
-        {
-            yOffset = yOffset * -1f;
-        }
-        Vector2 enemyPos = new Vector2(playerPos.x + xOffset, playerPos.y + yOffset);
+        Vector2 enemyPos = new Vector2(xPos, yPos);
+        // bool verticalPos = (Random.Range(0, 2) == 0);
+        // float xRangeMax = Mathf.Min((rightTanksTransform.position.x - leftTanksTransform.position.x - 2f) * .5f, 13f);
+        // float yRangeMax = Mathf.Min((topTanksTransform.position.y - bottomTanksTransform.position.y - 2f) * .5f, 9f);
+        // float xOffset = verticalPos
+        //     ? Random.Range(-10.5f, 10.5f)
+        //     : Random.Range(10f, xRangeMax) * (Random.Range(0, 2) == 0 ? -1f : 1f);
+        // float yOffset = verticalPos
+        //     ? Random.Range(6f, yRangeMax) * (Random.Range(0, 2) == 0 ? -1f : 1f)
+        //     : Random.Range(-6.5f, 6.5f);
+        // Vector2 playerPos = Player.transform.localPosition;
+        // float minX = leftTanksTransform.position.x + 1f;
+        // float maxX = rightTanksTransform.position.x - 1f;
+        // float minY = bottomTanksTransform.position.y + 1f;
+        // float maxY = topTanksTransform.position.y - 1f;
+        // if ((playerPos.x + xOffset) < minX || (playerPos.x + xOffset) > maxX)
+        // {
+        //     xOffset = xOffset * -1f;
+        // }
+        // if ((playerPos.y + yOffset) < minY || (playerPos.y + yOffset) > maxY)
+        // {
+        //     yOffset = yOffset * -1f;
+        // }
+        // Vector2 enemyPos = new Vector2(playerPos.x + xOffset, playerPos.y + yOffset);
         ActivateEnemyFromPool(enemyPos, enemyType, false);
         Globals.currrentNumEnemies++;
     }
