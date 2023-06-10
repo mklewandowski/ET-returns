@@ -158,8 +158,8 @@ public class Enemy : MonoBehaviour
         // FAST SEEK
         if (type == Globals.EnemyTypes.Yar)
         {
-            moveSpeed = Random.Range(.9f, 1.2f);
-            behaviorTimerMax = .75f;
+            moveSpeed = Random.Range(1f, 1.3f);
+            behaviorTimerMax = .7f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("yar");
             this.transform.localScale = new Vector3(6f, 6f, 1f);
@@ -169,8 +169,8 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Pac)
         {
-            moveSpeed = Random.Range(1.2f, 1.5f);
-            behaviorTimerMax = .75f;
+            moveSpeed = Random.Range(1.3f, 1.6f);
+            behaviorTimerMax = .7f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("pac");
             this.transform.localScale = new Vector3(4f, 4f, 1f);
@@ -180,8 +180,8 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.MsPac)
         {
-            moveSpeed = Random.Range(1.5f, 1.8f);
-            behaviorTimerMax = .5f;
+            moveSpeed = Random.Range(1.6f, 1.9f);
+            behaviorTimerMax = .6f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("mspac");
             this.transform.localScale = new Vector3(4f, 4f, 1f);
@@ -202,8 +202,8 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.JrPac)
         {
-            moveSpeed = Random.Range(2.1f, 2.3f);
-            behaviorTimerMax = .5f;
+            moveSpeed = Random.Range(2.1f, 2.4f);
+            behaviorTimerMax = .4f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("jrpac");
             this.transform.localScale = new Vector3(4f, 4f, 1f);
@@ -215,7 +215,7 @@ public class Enemy : MonoBehaviour
         // STRONG SEEK
         else if (type == Globals.EnemyTypes.Qbert)
         {
-            moveSpeed = Random.Range(.8f, 1f);
+            moveSpeed = Random.Range(.9f, 1.1f);
             behaviorTimerMax = 1f;
             enemyAnimator.enabled = false;
             this.transform.localScale = new Vector3(4f, 4f, 1f);
@@ -225,8 +225,8 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Kangaroo)
         {
-            moveSpeed = Random.Range(1f, 1.2f);
-            behaviorTimerMax = .9f;
+            moveSpeed = Random.Range(1.1f, 1.3f);
+            behaviorTimerMax = .8f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("kangaroo");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
@@ -236,7 +236,7 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Hero)
         {
-            moveSpeed = Random.Range(1.3f, 1.5f);
+            moveSpeed = Random.Range(1.4f, 1.6f);
             behaviorTimerMax = .6f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("hero");
@@ -247,7 +247,7 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Bear)
         {
-            moveSpeed = Random.Range(1.5f, 1.7f);
+            moveSpeed = Random.Range(1.6f, 1.8f);
             behaviorTimerMax = .5f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("bear");
@@ -258,7 +258,7 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Hero2)
         {
-            moveSpeed = Random.Range(1.7f, 1.9f);
+            moveSpeed = Random.Range(1.8f, 2.0f);
             behaviorTimerMax = .4f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("hero2");
@@ -271,7 +271,7 @@ public class Enemy : MonoBehaviour
         // SURROUND
         else if (type == Globals.EnemyTypes.Frogger)
         {
-            moveSpeed = Random.Range(.6f, .8f);
+            moveSpeed = Random.Range(.7f, .9f);
             behaviorTimerMax = 2f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("frog");
@@ -287,7 +287,7 @@ public class Enemy : MonoBehaviour
         else if (type == Globals.EnemyTypes.Joust)
         {
             moveSpeed = Random.Range(1.5f, 1.7f);
-            behaviorTimerMax = 1f;
+            behaviorTimerMax = .75f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("joust");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
@@ -301,8 +301,8 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Pengo)
         {
-            moveSpeed = Random.Range(1.2f, 1.5f);
-            behaviorTimerMax = .75f;
+            moveSpeed = Random.Range(1.5f, 1.8f);
+            behaviorTimerMax = .6f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("pengo");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
@@ -316,8 +316,8 @@ public class Enemy : MonoBehaviour
         }
         else if (type == Globals.EnemyTypes.Joust2)
         {
-            moveSpeed = Random.Range(1.7f, 2.0f);
-            behaviorTimerMax = .5f;
+            moveSpeed = Random.Range(1.8f, 2.1f);
+            behaviorTimerMax = .4f;
             enemyAnimator.enabled = true;
             enemyAnimator.Play("joust2");
             this.transform.localScale = new Vector3(5f, 5f, 1f);
