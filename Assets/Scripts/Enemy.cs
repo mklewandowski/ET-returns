@@ -18,6 +18,11 @@ public class Enemy : MonoBehaviour
     Transform RightWall;
     Transform BottomWall;
 
+    Transform EnemySwarmCenterUL;
+    Transform EnemySwarmCenterUR;
+    Transform EnemySwarmCenterLR;
+    Transform EnemySwarmCenterLL;
+
     int life = 1;
     int hitStrength = 1;
 
@@ -81,6 +86,7 @@ public class Enemy : MonoBehaviour
     BehaviorType currentBehavior = BehaviorType.Seek;
 
     float sightDistance = 2f;
+    Transform swarmCenter;
 
     enum ClumpType {
         None,
@@ -107,6 +113,10 @@ public class Enemy : MonoBehaviour
         TopWall = GameObject.Find("EnemySolidTop").transform;
         RightWall = GameObject.Find("EnemySolidRight").transform;
         BottomWall = GameObject.Find("EnemySolidBottom").transform;
+        EnemySwarmCenterUL = GameObject.Find("EnemySwarmCenterUL").transform;
+        EnemySwarmCenterUR = GameObject.Find("EnemySwarmCenterUR").transform;
+        EnemySwarmCenterLR = GameObject.Find("EnemySwarmCenterLR").transform;
+        EnemySwarmCenterLL = GameObject.Find("EnemySwarmCenterLL").transform;
         enemyAnimator = GetComponent<Animator>();
         enemyCollider = GetComponent<BoxCollider2D>();
         enemyRigidbody = GetComponent<Rigidbody2D>();
@@ -298,6 +308,14 @@ public class Enemy : MonoBehaviour
             currentBehavior = BehaviorType.Patrol;
             patrolX = pos.x >= 0 ? 1f : -1f;
             patrolY = pos.y >= 0 ? 1f : -1f;
+            if (patrolX < 0 && patrolY < 0)
+                swarmCenter = EnemySwarmCenterLL;
+            else if (patrolX < 0 && patrolY > 0)
+                swarmCenter = EnemySwarmCenterUL;
+            else if (patrolX > 0 && patrolY > 0)
+                swarmCenter = EnemySwarmCenterUR;
+            else if (patrolX > 0 && patrolY < 0)
+                swarmCenter = EnemySwarmCenterLR;
         }
         else if (type == Globals.EnemyTypes.Pengo)
         {
@@ -328,6 +346,14 @@ public class Enemy : MonoBehaviour
             currentBehavior = BehaviorType.Patrol;
             patrolX = pos.x >= 0 ? 1f : -1f;
             patrolY = pos.y >= 0 ? 1f : -1f;
+            if (patrolX < 0 && patrolY < 0)
+                swarmCenter = EnemySwarmCenterLL;
+            else if (patrolX < 0 && patrolY > 0)
+                swarmCenter = EnemySwarmCenterUL;
+            else if (patrolX > 0 && patrolY > 0)
+                swarmCenter = EnemySwarmCenterUR;
+            else if (patrolX > 0 && patrolY < 0)
+                swarmCenter = EnemySwarmCenterLR;
         }
 
         // CHAOS
@@ -689,7 +715,7 @@ public class Enemy : MonoBehaviour
                         currentBehavior = BehaviorType.Surround;
                         UpdateSurroundPosition();
                     }
-                    else if (attackType == AttackType.Seek)
+                    else
                     {
                         currentBehavior = BehaviorType.Seek;
                         UpdateSeekPosition();
@@ -775,7 +801,7 @@ public class Enemy : MonoBehaviour
     }
     private void UpdatePatrolPosition()
     {
-        desiredPosition = this.transform.localPosition;
+        desiredPosition = swarmCenter.localPosition;
         movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
     }
     private void UpdateRandomAnglePosition()
