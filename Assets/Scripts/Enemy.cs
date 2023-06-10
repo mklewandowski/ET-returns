@@ -746,11 +746,11 @@ public class Enemy : MonoBehaviour
             movementVector = enemyVectorSum.normalized * moveSpeed;
             return ClumpType.Group;
         }
-        else if (enemiesInGroup == 1 && enemyVectorSum.magnitude > 1.25f)
-        {
-            movementVector = Quaternion.Euler(0, 0, 90f) * movementVector;
-            return ClumpType.OneToOne;
-        }
+        // else if (enemiesInGroup == 1 && enemyVectorSum.magnitude > 1.25f)
+        // {
+        //     movementVector = Quaternion.Euler(0, 0, 90f) * movementVector;
+        //     return ClumpType.OneToOne;
+        // }
         return ClumpType.None;
     }
 
@@ -762,6 +762,15 @@ public class Enemy : MonoBehaviour
     private void UpdateSurroundPosition()
     {
         desiredPosition = new Vector3(playerTransform.position.x + surroundOffsetX, playerTransform.position.y + surroundOffsetY, playerTransform.position.z);
+        float xBuffer = 2f;
+        float yBuffer = 2.2f;
+        if ((this.transform.localPosition.x + xBuffer >= RightWall.position.x && movementVector.x > 0) ||
+            (this.transform.localPosition.x - xBuffer <= LeftWall.position.x && movementVector.x < 0) ||
+            (this.transform.localPosition.y + yBuffer >= TopWall.position.y && movementVector.y > 0) ||
+            (this.transform.localPosition.y - yBuffer <= BottomWall.position.y && movementVector.y < 0))
+        {
+           desiredPosition = desiredPosition * -1f;
+        }
         movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
     }
     private void UpdatePatrolPosition()
