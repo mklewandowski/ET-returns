@@ -60,7 +60,7 @@ public class Enemy : MonoBehaviour
     enum AttackType {
         Seek,
         Surround,
-        Guard,
+        PatrolAndSeek,
         Chaotic,
         Avoid,
         StaticLine
@@ -70,7 +70,7 @@ public class Enemy : MonoBehaviour
     enum BehaviorType {
         Seek,
         Surround,
-        Guard,
+        Patrol,
         RandomAngle,
         SetAngle,
         Spread, // used to unclump
@@ -79,11 +79,19 @@ public class Enemy : MonoBehaviour
         StaticLine, // used by plane and rover
     }
     BehaviorType currentBehavior = BehaviorType.Seek;
+
     float sightDistance = 2f;
+
+    enum ClumpType {
+        None,
+        Group,
+        OneToOne,
+    }
 
     float surroundOffsetX;
     float surroundOffsetY;
-    Vector3 guardPosition;
+    float patrolX;
+    float patrolY;
 
     bool isBoss = false;
 
@@ -271,19 +279,9 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.1f, 0.1f);
             life = 5;
             hitStrength = 5;
-            int randVal = Random.Range(0, 2);
-            if (randVal == 0)
-            {
-                attackType = AttackType.Surround;
-                currentBehavior = BehaviorType.Surround;
-                PickSurroundOffsets();
-            }
-            else
-            {
-                attackType = AttackType.Guard;
-                currentBehavior = BehaviorType.Guard;
-                PickGuardPosition();
-            }
+            attackType = AttackType.Surround;
+            currentBehavior = BehaviorType.Surround;
+            PickSurroundOffsets();
             sightDistance = 2f;
         }
         else if (type == Globals.EnemyTypes.Joust)
@@ -296,20 +294,10 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             life = 10;
             hitStrength = 10;
-            int randVal = Random.Range(0, 2);
-            if (randVal == 0)
-            {
-                attackType = AttackType.Surround;
-                currentBehavior = BehaviorType.Surround;
-                PickSurroundOffsets();
-            }
-            else
-            {
-                attackType = AttackType.Guard;
-                currentBehavior = BehaviorType.Guard;
-                PickGuardPosition();
-            }
-            sightDistance = 2.5f;
+            attackType = AttackType.PatrolAndSeek;
+            currentBehavior = BehaviorType.Patrol;
+            patrolX = pos.x >= 0 ? 1f : -1f;
+            patrolY = pos.y >= 0 ? 1f : -1f;
         }
         else if (type == Globals.EnemyTypes.Pengo)
         {
@@ -321,19 +309,9 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.3f, 0.07f);
             life = 20;
             hitStrength = 15;
-            int randVal = Random.Range(0, 2);
-            if (randVal == 0)
-            {
-                attackType = AttackType.Surround;
-                currentBehavior = BehaviorType.Surround;
-                PickSurroundOffsets();
-            }
-            else
-            {
-                attackType = AttackType.Guard;
-                currentBehavior = BehaviorType.Guard;
-                PickGuardPosition();
-            }
+            attackType = AttackType.Surround;
+            currentBehavior = BehaviorType.Surround;
+            PickSurroundOffsets();
             sightDistance = 3f;
         }
         else if (type == Globals.EnemyTypes.Joust2)
@@ -346,20 +324,10 @@ public class Enemy : MonoBehaviour
             enemyCollider.size = new Vector2(0.15f, 0.15f);
             life = 25;
             hitStrength = 20;
-            int randVal = Random.Range(0, 2);
-            if (randVal == 0)
-            {
-                attackType = AttackType.Surround;
-                currentBehavior = BehaviorType.Surround;
-                PickSurroundOffsets();
-            }
-            else
-            {
-                attackType = AttackType.Guard;
-                currentBehavior = BehaviorType.Guard;
-                PickGuardPosition();
-            }
-            sightDistance = 3f;
+            attackType = AttackType.PatrolAndSeek;
+            currentBehavior = BehaviorType.Patrol;
+            patrolX = pos.x >= 0 ? 1f : -1f;
+            patrolY = pos.y >= 0 ? 1f : -1f;
         }
 
         // CHAOS
@@ -591,21 +559,11 @@ public class Enemy : MonoBehaviour
 
     void PickSurroundOffsets()
     {
-        surroundOffsetY = Random.Range(0, 2) == 0
-            ? Random.Range(2f, 4f)
-            : Random.Range(-2f, -4f);
-        surroundOffsetX = Random.Range(0, 2) == 0
-            ? Random.Range(3f, 6f)
-            : Random.Range(-3f, -6f);
-    }
-
-    void PickGuardPosition()
-    {
-        float xVal = Random.Range(.5f, 12f);
-        float yVal = Random.Range(.5f, 6.5f);
-        xVal = Random.Range(0, 2) == 0 ? xVal : xVal * -1f;
-        yVal = Random.Range(0, 2) == 0 ? yVal : yVal * -1f;
-        guardPosition = new Vector3(xVal, yVal, 0);
+        surroundOffsetX = Globals.surroundOffsets[Globals.surroundIndex].x;
+        surroundOffsetY = Globals.surroundOffsets[Globals.surroundIndex].y;
+        Globals.surroundIndex++;
+        if (Globals.surroundIndex >= Globals.surroundOffsets.Count)
+            Globals.surroundIndex = 0;
     }
 
     // Update is called once per frame
@@ -654,12 +612,13 @@ public class Enemy : MonoBehaviour
                 }
                 else if (currentBehavior == BehaviorType.Seek)
                 {
-                    if (CheckForClumping())
+                    ClumpType clumpType = CheckForClumping();
+                    if (clumpType == ClumpType.Group)
                     {
                         currentBehavior = BehaviorType.Spread;
                         behaviorTimer = Mathf.Max(4f, Random.Range(behaviorTimerMax - .25f, behaviorTimerMax + .25f) * 5f);
                     }
-                    else
+                    else if (clumpType == ClumpType.None)
                     {
                         if (attackType == AttackType.Surround)
                         {
@@ -675,20 +634,6 @@ public class Enemy : MonoBehaviour
                                 behaviorTimer = behaviorTimer * .5f; // get more aggressive when in seek mode
                             }
                         }
-                        else if (attackType == AttackType.Guard)
-                        {
-                            float distanceFromPlayer = Mathf.Abs(Vector3.Distance(playerTransform.position, this.transform.localPosition));
-                            if (distanceFromPlayer > (sightDistance + 1f))
-                            {
-                                currentBehavior = BehaviorType.Guard;
-                                UpdateGuardPosition();
-                            }
-                            else
-                            {
-                                UpdateSeekPosition();
-                                behaviorTimer = behaviorTimer * .5f; // get more aggressive when in seek mode
-                            }
-                        }
                         else
                         {
                             UpdateSeekPosition();
@@ -697,12 +642,13 @@ public class Enemy : MonoBehaviour
                 }
                 else if (currentBehavior == BehaviorType.Surround)
                 {
-                    if (CheckForClumping())
+                    ClumpType clumpType = CheckForClumping();
+                    if (clumpType == ClumpType.Group)
                     {
                         currentBehavior = BehaviorType.Spread;
-                        behaviorTimer = Mathf.Max(4f, Random.Range(behaviorTimerMax - .25f, behaviorTimerMax + .25f) * 5f);
+                        behaviorTimer = Mathf.Max(4f, Random.Range(behaviorTimerMax - .25f, behaviorTimerMax + .25f) * 3f);
                     }
-                    else
+                    else if (clumpType == ClumpType.None)
                     {
                         float distanceFromPlayer = Mathf.Abs(Vector3.Distance(playerTransform.position, this.transform.localPosition));
                         if (distanceFromPlayer <= sightDistance)
@@ -716,18 +662,25 @@ public class Enemy : MonoBehaviour
                         }
                     }
                 }
-                else if (currentBehavior == BehaviorType.Guard)
+                else if (currentBehavior == BehaviorType.Patrol)
                 {
-                    float distanceFromPlayer = Mathf.Abs(Vector3.Distance(playerTransform.position, this.transform.localPosition));
-                    if (distanceFromPlayer <= sightDistance)
+                    bool playerInSector = false;
+                    if ((patrolX > 0 && playerTransform.position.x >= 0) && (patrolY > 0 && playerTransform.position.y >= 0))
+                        playerInSector = true;
+                    else if ((patrolX > 0 && playerTransform.position.x >= 0) && (patrolY < 0 && playerTransform.position.y < 0))
+                        playerInSector = true;
+                    else if ((patrolX < 0 && playerTransform.position.x < 0) && (patrolY > 0 && playerTransform.position.y >= 0))
+                        playerInSector = true;
+                    else if ((patrolX < 0 && playerTransform.position.x < 0) && (patrolY < 0 && playerTransform.position.y < 0))
+                        playerInSector = true;
+
+                    if (playerInSector)
                     {
                         currentBehavior = BehaviorType.Seek;
                         UpdateSeekPosition();
                     }
                     else
-                    {
-                        UpdateGuardPosition();
-                    }
+                        UpdatePatrolPosition();
                 }
                 else if (currentBehavior == BehaviorType.Spread)
                 {
@@ -746,7 +699,7 @@ public class Enemy : MonoBehaviour
             }
         }
         if (currentBehavior == BehaviorType.Seek || currentBehavior == BehaviorType.Surround || currentBehavior == BehaviorType.RandomAngle || currentBehavior == BehaviorType.SetAngle ||
-            currentBehavior == BehaviorType.StaticLine || currentBehavior == BehaviorType.Avoid || currentBehavior == BehaviorType.Spread || currentBehavior == BehaviorType.Guard)
+            currentBehavior == BehaviorType.StaticLine || currentBehavior == BehaviorType.Avoid || currentBehavior == BehaviorType.Spread || currentBehavior == BehaviorType.Patrol)
             enemyRigidbody.velocity = impactTimer > 0 ? impactVector : movementVector;
 
         if (flipWithMovement && currentBehavior != BehaviorType.Wait)
@@ -762,7 +715,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private bool CheckForClumping()
+    private ClumpType CheckForClumping()
     {
         Vector2 enemyVectorSum = Vector2.zero;
         float enemiesInGroup = 0f; // the number of enemies in the collision circle
@@ -791,9 +744,14 @@ public class Enemy : MonoBehaviour
         {
             // normalize the vector and multiply by movespeed to move away from group
             movementVector = enemyVectorSum.normalized * moveSpeed;
-            return true;
+            return ClumpType.Group;
         }
-        return false;
+        else if (enemiesInGroup == 1 && enemyVectorSum.magnitude > 1.25f)
+        {
+            movementVector = Quaternion.Euler(0, 0, 90f) * movementVector;
+            return ClumpType.OneToOne;
+        }
+        return ClumpType.None;
     }
 
     private void UpdateSeekPosition()
@@ -806,9 +764,9 @@ public class Enemy : MonoBehaviour
         desiredPosition = new Vector3(playerTransform.position.x + surroundOffsetX, playerTransform.position.y + surroundOffsetY, playerTransform.position.z);
         movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
     }
-    private void UpdateGuardPosition()
+    private void UpdatePatrolPosition()
     {
-        desiredPosition = guardPosition;
+        desiredPosition = this.transform.localPosition;
         movementVector = (desiredPosition - this.transform.localPosition).normalized * moveSpeed;
     }
     private void UpdateRandomAnglePosition()
