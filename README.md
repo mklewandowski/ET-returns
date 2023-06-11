@@ -1,10 +1,21 @@
-# ET-VCS-reboot
-A sequel/reboot/remix of E.T., the 1982 pixel-art adventure classic for the Atari 2600. Inspired by [Vampire Surivors](https://poncle.itch.io/vampire-survivors) and my decades-long dream of building an homage to and reboot of one of my all-time favorite console games (which I believe is unjustly maligned by many lay historians).
+# ET-returns
+E.T. Returns is a sorta-sequel, sorta-remix of the iconic Atari 2600 game that is sort of a classic and maybe ushered in the downfall of the entire home videogame industry*. Heavily influenced by by [Vampire Surivors](https://poncle.itch.io/vampire-survivors) and borrowing characters from dozens of retro games and Atari 2600 titles, E.T. Returns features copious helpings of homage and action parody. Upgrade your E.T., unlock characters, and shoot holes in the heroes of yesterday.
+
+*Alex Smith's recent research digs into the real reasons behind the 1982/1983 videogame crash. You can hear more on his excellent podcast, [They Create Worlds](https://www.theycreateworlds.com/).
+
+## Gameplay
+- Destroy earth heroes and collect candy to level up.
+- Destroy FBI agents and collect phone pieces.
+- Collect 3 phone pieces and phone in an upgrade.
+- Survive as long as you can.
+
+![E.T. Returns gameplay](https://github.com/mklewandowski/et-returns/blob/main/Assets/Images/et-returns-gameplay.gif?raw=true)
+
+### Controls
+Use arrow keys, WASD keys, or a controller to move.
 
 ## Supported Platforms
-E.T. Reboot is designed for use on multiple platforms including:
-- iOS
-- Android
+E.T. Returns is designed for use on multiple platforms including:
 - Web
 - Mac and PC standalone builds
 
