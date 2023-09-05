@@ -22,7 +22,7 @@ E.T. Returns is designed for use on multiple platforms including:
 ## Running Locally
 Use the following steps to run locally:
 1. Clone this repo
-2. Open repo folder using Unity 2021.3.23f1
+2. Open repo folder using Unity 2021.3.27f1
 3. Install Text Mesh Pro
 
 ## Building the Project
