@@ -37,7 +37,9 @@ public class Globals
         Croc,
         Toxic,
         Ghost,
-        Invader
+        Invader,
+        Rain,
+        Bees,
     }
 
     public static string[] PlayerNames = {
@@ -66,6 +68,8 @@ public class Globals
         "Toxic E.T.",
         "Ghost E.T.",
         "Invader E.T.",
+        "Stormy Weather E.T.",
+        "Honey Farmer E.T."
     };
 
     public static string[] PlayerUnlockTexts = {
@@ -94,7 +98,8 @@ public class Globals
         "Upgrade slime to level 5",
         "Upgrade ghost to level 5",
         "Upgrade invader to level 5",
-
+        "Upgrade tornado to level 5",
+        "Upgrade killer bees to level 5",
     };
 
     public static string[] AnimationSuffixes = {
@@ -123,10 +128,12 @@ public class Globals
         "-toxic",
         "-ghost",
         "-invader",
+        "-rain",
+        "-bee"
     };
 
     public static PlayerTypes currentPlayerType = PlayerTypes.Cinema;
-    public static int MaxPlayerTypes = 25;
+    public static int MaxPlayerTypes = 27;
     public static int[] CharacterUnlockStates = new int[MaxPlayerTypes];
 
     public enum EnemyTypes {
@@ -443,6 +450,7 @@ public class Globals
             CharacterUnlockStates[x] = unlock;
         }
         CharacterUnlockStates[0] = 1;
+        // CharacterUnlockStates[(int)PlayerTypes.Bees] = 1;
     }
 
     public static void UnlockCharacter(int playerTypeNum)

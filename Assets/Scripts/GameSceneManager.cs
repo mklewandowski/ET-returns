@@ -1026,6 +1026,8 @@ public class GameSceneManager : MonoBehaviour
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Croc);
         if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Breakout] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Smurf] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Smurf);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Tornado] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Rain] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Rain);
 
         if (bossDefeated && currentBossType == Globals.EnemyTypes.PacBoss && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Pac] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Pac);
