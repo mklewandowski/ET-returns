@@ -1032,6 +1032,12 @@ public class GameSceneManager : MonoBehaviour
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Bees);
         if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SpreadShot] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Commando] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Commando);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.ForceField] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Tron] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Tron);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Speed] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Flash] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Flash);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.ICBM] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Missile] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Missile);
 
         if (bossDefeated && currentBossType == Globals.EnemyTypes.PacBoss && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Pac] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Pac);
