@@ -141,7 +141,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: et-tronpng_0
+      name: et-tron_0
       rect:
         serializedVersion: 2
         x: 0
@@ -155,14 +155,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: adcc5c6af246b0f409a797e8067de3a1
-      internalID: 1970784405
+      spriteID: 11cbcea0c9e77a748828d9098a871da6
+      internalID: -973429207
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: et-tronpng_1
+      name: et-tron_1
       rect:
         serializedVersion: 2
         x: 18
@@ -176,14 +176,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fa9259a81dc3d544b8a73df773d68206
-      internalID: -1257084102
+      spriteID: 182602c7c0f6d9441ac5b09ce11778a9
+      internalID: 2035749666
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: et-tronpng_2
+      name: et-tron_2
       rect:
         serializedVersion: 2
         x: 36
@@ -197,14 +197,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 84cd873f07d9ecb469f262c83f0e3e9b
-      internalID: 281190757
+      spriteID: 8cfa35c1cdc6be143b109ffe77354e53
+      internalID: 1275198492
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: et-tronpng_3
+      name: et-tron_3
       rect:
         serializedVersion: 2
         x: 54
@@ -218,14 +218,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d201f6dddc512e94793f371395a3437b
-      internalID: -2087069794
+      spriteID: ce1f4f869d72e0f45b22fc6c397f9600
+      internalID: 678395735
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: et-tronpng_4
+      name: et-tron_4
       rect:
         serializedVersion: 2
         x: 72
@@ -239,14 +239,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cf05f3d5c2ab1314babf4abc22c2a603
-      internalID: -1613980947
+      spriteID: 5300813e947f4ba4ab83b995b363a6c1
+      internalID: 1932719105
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: et-tronpng_5
+      name: et-tron_5
       rect:
         serializedVersion: 2
         x: 90
@@ -260,14 +260,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4ee2b4a98e518264abab55ff487f9c5c
-      internalID: 1491749626
+      spriteID: 4b0142ccea0c5a4418007bcdb46773f1
+      internalID: -761323924
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: et-tronpng_6
+      name: et-tron_6
       rect:
         serializedVersion: 2
         x: 108
@@ -281,14 +281,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eb6fd7c5fa09bea42868a855600f11af
-      internalID: 1487270797
+      spriteID: 14607d8ca4f821f4dad691476c004b6e
+      internalID: -1625007944
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: et-tronpng_7
+      name: et-tron_7
       rect:
         serializedVersion: 2
         x: 126
@@ -302,8 +302,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 969b3dc603af8c94685faf100f192466
-      internalID: -2062735861
+      spriteID: bb19b46210bb0f245bcaeef67de04d70
+      internalID: 46227552
       vertices: []
       indices: 
       edges: []
@@ -319,14 +319,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      et-tronpng_0: 1970784405
-      et-tronpng_1: -1257084102
-      et-tronpng_2: 281190757
-      et-tronpng_3: -2087069794
-      et-tronpng_4: -1613980947
-      et-tronpng_5: 1491749626
-      et-tronpng_6: 1487270797
-      et-tronpng_7: -2062735861
+      et-tron_0: -973429207
+      et-tron_1: 2035749666
+      et-tron_2: 1275198492
+      et-tron_3: 678395735
+      et-tron_4: 1932719105
+      et-tron_5: -761323924
+      et-tron_6: -1625007944
+      et-tron_7: 46227552
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
