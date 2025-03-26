@@ -44,6 +44,11 @@ public class Globals
         Tron,
         Flash,
         Missile,
+        Karate,
+        Hulk2,
+        Snake,
+        Rambo,
+        Macho,
     }
 
     public static string[] PlayerNames = {
@@ -78,6 +83,11 @@ public class Globals
         "Light Cycle E.T.",
         "Flashy E.T.",
         "Missile Command E.T.",
+        "Karate E.T.",
+        "Other Hulk E.T.",
+        "Snake Commander E.T.",
+        "Angry War Vet E.T.",
+        "Macho E.T.",
     };
 
     public static string[] PlayerUnlockTexts = {
@@ -100,7 +110,7 @@ public class Globals
         "Upgrade laser to level 5",
         "Upgrade seeker star to level 5",
         "Upgrade swirl to level 5",
-        "Upgrade pit trap to level 5",
+        "Upgrade orbiting drone to level 5",
         "Upgrade bomb to level 5",
         "Upgrade boomerang to level 5",
         "Upgrade slime to level 5",
@@ -112,6 +122,11 @@ public class Globals
         "Upgrade force field to level 5",
         "Upgrade speed to level 5",
         "Upgrade ICBM to level 5",
+        "Upgrade pit trap to level 5",
+        "Upgrade defense to level 5",
+        "Upgrade rear shot to level 5",
+        "Upgrade side shot to level 5",
+        "Upgrade attack to level 5",
     };
 
     public static string[] AnimationSuffixes = {
@@ -146,10 +161,15 @@ public class Globals
         "-tron",
         "-flash",
         "-missile",
+        "-karate",
+        "-hulk2",
+        "-snake",
+        "-rambo",
+        "-macho",
     };
 
     public static PlayerTypes currentPlayerType = PlayerTypes.Cinema;
-    public static int MaxPlayerTypes = 31;
+    public static int MaxPlayerTypes = 36;
     public static int[] CharacterUnlockStates = new int[MaxPlayerTypes];
 
     public enum EnemyTypes {
@@ -469,6 +489,12 @@ public class Globals
         // CharacterUnlockStates[(int)PlayerTypes.Tron] = 1;
         // CharacterUnlockStates[(int)PlayerTypes.Flash] = 1;
         // CharacterUnlockStates[(int)PlayerTypes.Missile] = 1;
+
+        // CharacterUnlockStates[(int)PlayerTypes.Macho] = 1;
+        // CharacterUnlockStates[(int)PlayerTypes.Rambo] = 1;
+        // CharacterUnlockStates[(int)PlayerTypes.Snake] = 1;
+        // CharacterUnlockStates[(int)PlayerTypes.Hulk2] = 1;
+        // CharacterUnlockStates[(int)PlayerTypes.Karate] = 1;
     }
 
     public static void UnlockCharacter(int playerTypeNum)
