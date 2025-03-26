@@ -5271,6 +5271,11 @@ MonoBehaviour:
   - {fileID: -973429207, guid: b2696d67d118e02409766ddd5ca10de3, type: 3}
   - {fileID: 406097693, guid: 7ffa39c6ed5fe2c4999e59727e35adc2, type: 3}
   - {fileID: 1330972407, guid: c059df573cb9e9a4880ff2c3de6712bc, type: 3}
+  - {fileID: -509856769, guid: 8b02e144660a15c469725522cc29ef66, type: 3}
+  - {fileID: -2120571795, guid: 298ed034253d966428bc780134647406, type: 3}
+  - {fileID: -1836731914, guid: cbcb925c12c21f349b686c906b061a20, type: 3}
+  - {fileID: 416978173, guid: f9a6bc19909276f49867358a355fc7bb, type: 3}
+  - {fileID: 1873715562, guid: 7a6700df7f42cf6428700ba57727e874, type: 3}
   ETgunSprites:
   - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
   - {fileID: 21300000, guid: 81ea442cc72fbaf46a84ec2732cf2d77, type: 3}
@@ -5302,6 +5307,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
   - {fileID: 21300000, guid: 8c800bb23b897ff4c8fab3588b07dcfe, type: 3}
   - {fileID: 21300000, guid: e70c6650e2892454d946f1f7ea877a17, type: 3}
+  - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
+  - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
+  - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
+  - {fileID: 21300000, guid: 0ba7573af371f20429ac0ee814289a88, type: 3}
+  - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
   - {fileID: 21300000, guid: 8f5e87a409d6577438cbe14cbdb197ae, type: 3}
   NextButton: {fileID: 530340897}
 --- !u!1 &1270150134

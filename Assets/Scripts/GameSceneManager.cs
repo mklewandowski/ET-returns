@@ -1012,7 +1012,7 @@ public class GameSceneManager : MonoBehaviour
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Ninja);
         if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Swirl] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Crush] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Crush);
-        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Grape] == 0)
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Surround] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Grape] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Grape);
         if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bomb] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Bomber] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Bomber);
@@ -1038,6 +1038,17 @@ public class GameSceneManager : MonoBehaviour
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Flash);
         if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.ICBM] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Missile] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Missile);
+
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Karate] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Karate);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Attack] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Macho] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Macho);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Defense] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Hulk2] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Hulk2);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.RearShot] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Snake] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Snake);
+        if (Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SideShot] >= Globals.MaxUpgradeLevel && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Rambo] == 0)
+            Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Rambo);
 
         if (bossDefeated && currentBossType == Globals.EnemyTypes.PacBoss && Globals.CharacterUnlockStates[(int)Globals.PlayerTypes.Pac] == 0)
             Globals.AddUnlockedCharacterToList(Globals.PlayerTypes.Pac);
