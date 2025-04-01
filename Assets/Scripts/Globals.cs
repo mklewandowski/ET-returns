@@ -92,7 +92,7 @@ public class Globals
         "Karate E.T.",
         "Other Hulk E.T.",
         "Snake Commander E.T.",
-        "Angry War Vet E.T.",
+        "Grizzled War Vet E.T.",
         "Macho E.T.",
     };
 
