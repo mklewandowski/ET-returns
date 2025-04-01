@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class Globals
 {
+    // turn on to unlock all characters and powerups
     public static bool DebugMode = false;
+    public static bool UnlockCharacters = false;
+    public static bool Unlock6Weapons = false;
+    // turn on to speed up enemy spawning
+    public static float SpawnSpeedMultiplier = 1f;
+    public static float DifficultySpeedMultiplier = 1f;
 
     // audio and music
     public static bool AudioOn = true;
@@ -486,15 +492,45 @@ public class Globals
             CharacterUnlockStates[x] = unlock;
         }
         CharacterUnlockStates[0] = 1;
-        // CharacterUnlockStates[(int)PlayerTypes.Tron] = 1;
-        // CharacterUnlockStates[(int)PlayerTypes.Flash] = 1;
-        // CharacterUnlockStates[(int)PlayerTypes.Missile] = 1;
 
-        // CharacterUnlockStates[(int)PlayerTypes.Macho] = 1;
-        // CharacterUnlockStates[(int)PlayerTypes.Rambo] = 1;
-        // CharacterUnlockStates[(int)PlayerTypes.Snake] = 1;
-        // CharacterUnlockStates[(int)PlayerTypes.Hulk2] = 1;
-        // CharacterUnlockStates[(int)PlayerTypes.Karate] = 1;
+        if (Globals.UnlockCharacters) {
+            CharacterUnlockStates[(int)PlayerTypes.Atari2600] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Goth] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Miami] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Punk] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.New] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Bubblegum] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Electro] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Hulk] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Super] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Pac] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Sailor] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Mario] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Luigi] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Koolaid] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Smurf] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.RadStyle] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Ninja] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Crush] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Grape] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Bomber] = 1;
+
+            CharacterUnlockStates[(int)PlayerTypes.Croc] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Toxic] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Ghost] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Invader] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Rain] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Bees] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Commando] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Tron] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Flash] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Missile] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Karate] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Hulk2] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Snake] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Rambo] = 1;
+            CharacterUnlockStates[(int)PlayerTypes.Macho] = 1;
+        }
     }
 
     public static void UnlockCharacter(int playerTypeNum)
@@ -536,8 +572,16 @@ public class Globals
         {
             Globals.CurrentUpgradeLevels[x] = 0;
         }
-        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Slime] = 5;
-        // Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Pit] = 5;
+
+        if (Globals.Unlock6Weapons) {
+            Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Surround] = 5;
+            Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.ForceField] = 5;
+            Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Tornado] = 5;
+            Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Bees] = 5;
+            Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.Invader] = 5;
+            Globals.CurrentUpgradeLevels[(int)Globals.UpgradeTypes.SeekerMissile] = 5;
+        }
+
         CurrentUpgradeTypes.Clear();
 
         int numOffsets = 15;

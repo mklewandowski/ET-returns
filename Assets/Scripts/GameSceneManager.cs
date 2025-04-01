@@ -503,7 +503,7 @@ public class GameSceneManager : MonoBehaviour
 
     void HandleDifficultyTimer()
     {
-        difficultyTimer -= Time.deltaTime;
+        difficultyTimer -= Time.deltaTime  * Globals.DifficultySpeedMultiplier;
         if (difficultyTimer <= 0)
         {
             difficultyTimer = difficultyTimerMax;
@@ -610,13 +610,13 @@ public class GameSceneManager : MonoBehaviour
 
     void HandleEnemySpawnTimer()
     {
-        spawnTimer -= Time.deltaTime;
+        spawnTimer -= Time.deltaTime * Globals.SpawnSpeedMultiplier;
         if (spawnTimer <= 0)
         {
             spawnTimer = spawnTimerMax;
             SpawnEnemies(10 + (int)((float)difficultyLevel * 1.5f), true);
         }
-        FBIspawnTimer -= Time.deltaTime;
+        FBIspawnTimer -= Time.deltaTime * Globals.SpawnSpeedMultiplier;
         if (FBIspawnTimer <= 0)
         {
             FBIspawnTimer = FBIspawnTimerMax;
