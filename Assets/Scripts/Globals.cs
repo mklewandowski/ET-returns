@@ -91,7 +91,7 @@ public class Globals
         "Missile Command E.T.",
         "Karate E.T.",
         "Other Hulk E.T.",
-        "Snake Commander E.T.",
+        "Snake Boss E.T.",
         "Grizzled War Vet E.T.",
         "Macho E.T.",
     };
